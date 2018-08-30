@@ -1,0 +1,20 @@
+-content_for :title do
+  Bloodhound::About
+
+%h2 About
+
+%p
+  This proof-of-concept was produced by 
+  %a{href: "https://orcid.org/0000-0001-7618-5230" } David P. Shorthouse 
+  using biodiversity occurrence data from the 
+  %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
+  (GBIF) and academic information from 
+  = succeed "." do
+    %a{href: "https://orcid.org" } ORCID
+  Only specimens collected from 1970 to 2018 were included in this project.
+  Collector and determiner names were parsed and cleaned using the 
+  %a{href: "https://rubygems.org/gems/namae" } Namae gem 
+  among other custom regular expressions in an effort to help minimize the noise.
+  The MIT-licensed code is available on 
+  = succeed "." do
+    %a{href: "https://github.com/dshorthouse/bloodhound" } GitHub

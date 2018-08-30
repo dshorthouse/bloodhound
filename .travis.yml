@@ -1,0 +1,12 @@
+sudo: false
+language: ruby
+rvm:
+  - 2.3.3
+branches:
+  only:
+      - master
+bundler_args: --without development
+before_script:
+  - cp config.yml.sample config.yml
+  - rake db:create:all
+  - RACK_ENV=test rake db:migrate

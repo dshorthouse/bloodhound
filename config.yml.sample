@@ -1,0 +1,62 @@
+development:
+  adapter: mysql2
+  host: localhost
+  username: root
+  password:
+  database: collector_dev
+  reconnect: true
+  bold_api_url: 'http://www.boldsystems.org/index.php/API_Public/specimen'
+  datacite_api_url: 'http://search.datacite.org/api'
+  orcid_api_url: 'http://pub.orcid.org/v1.2/'
+  orcid_key: ''
+  orcid_secret: ''
+  orcid_site: 'https://sandbox.orcid.org'
+  orcid_authorize_url: 'https://sandbox.orcid.org/oauth/authorize'
+  orcid_token_url: 'https://api.sandbox.orcid.org/oauth/token'
+  elastic_server: 'http://localhost:9200'
+  elastic_index: 'collector'
+  eol_api: 'http://eol.org/api/'
+  gn_api: 'https://resolver.globalnames.org/'
+  google_analytics: ''
+
+test:
+  adapter: mysql2
+  host: localhost
+  username: root
+  password:
+  database: collector_test
+  reconnect: true
+  bold_api_url: 'http://www.boldsystems.org/index.php/API_Public/specimen'
+  datacite_api_url: 'http://search.datacite.org/api'
+  orcid_api_url: 'http://pub.orcid.org/v1.2/'
+  orcid_key: ''
+  orcid_secret: ''
+  orcid_site: 'https://sandbox.orcid.org'
+  orcid_authorize_url: 'https://sandbox.orcid.org/oauth/authorize'
+  orcid_token_url: 'https://api.sandbox.orcid.org/oauth/token'
+  elastic_server: 'http://localhost:9200'
+  elastic_index: 'collector'
+  eol_api: 'http://eol.org/api/'
+  gn_api: 'https://resolver.globalnames.org/'
+  google_analytics: ''
+
+production:
+  adapter: mysql2
+  host: localhost
+  username: root
+  password:
+  database: collector
+  reconnect: true
+  bold_api_url: 'http://www.boldsystems.org/index.php/API_Public/specimen'
+  datacite_api_url: 'http://search.datacite.org/api'
+  orcid_api_url: 'http://pub.orcid.org/v1.2/'
+  orcid_key: ''
+  orcid_secret: ''
+  orcid_site: 'https://sandbox.orcid.org'
+  orcid_authorize_url: 'https://sandbox.orcid.org/oauth/authorize'
+  orcid_token_url: 'https://api.sandbox.orcid.org/oauth/token'
+  elastic_server: 'http://localhost:9200'
+  elastic_index: 'collector'
+  eol_api: 'http://eol.org/api/'
+  gn_api: 'https://resolver.globalnames.org/'
+  google_analytics: ''

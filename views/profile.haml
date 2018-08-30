@@ -1,0 +1,25 @@
+-content_for :title do
+  Bloodhound::#{@user[:given]} #{@user[:family]}
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid"}
+    %div{class: "container-fluid"}
+      %h2{class:"display-4"} #{@user[:given]} #{@user[:family]}
+      %p.orcid
+        %a{href: "https://orcid.org/#{@user[:orcid]}"}
+          %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+        %a{href: "https://orcid.org/#{@user[:orcid]}"} http://orcid.org/#{@user[:orcid]}
+
+%dl.row
+  - if @result[:person][:"other-names"] && @result[:person][:"other-names"][:"other-name"].size > 0
+    %dt.col-sm-2 Alternate Name(s)
+    %dd.col-sm-10
+      - @result[:person][:"other-names"][:"other-name"].each do |alt|
+        %p{itemprop: "alternateName"} #{alt[:content]}
+
+  - if !@result[:person][:emails].nil?
+    %dt.col-sm-2 Email Address(es)
+    %dd.col-sm-10
+      - @result[:person][:emails][:email].each do |email|
+        %p
+          %a{href: "mailto:#{email[:email]}", itemprop: "email" }= email[:email]

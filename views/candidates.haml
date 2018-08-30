@@ -1,0 +1,75 @@
+-content_for :title do
+  Bloodhound::Your candidate specimens
+
+-content_for :stylesheets do
+  %link{href: "https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css", rel: "stylesheet", type: "text/css"}
+
+-content_for :scripts do
+  %script{src: "https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"}
+  :javascript
+    $(function() {
+        $('input').change(function() {
+            var id = $(this).attr("data-id");
+            if($(this).attr("name") === "selection-all") {
+                $.ajax({
+                    method: "POST",
+                    url: "/user-occurrence/bulk.json",
+                    dataType: "json",
+                    data: JSON.stringify({ ids: id })
+                }).done(function(data) {
+                    $('.table tbody tr').fadeOut(1000, function() {
+                      $(this).remove();
+                    });
+                });
+            } else {
+                $(this).parent().parent().parent().fadeOut(1000, function() {
+                    var row = $(this);
+                    $.ajax({
+                        method: "POST",
+                        url: "/user-occurrence/" + id + ".json"
+                    }).done(function(data) {
+                        row.remove();
+                    });
+                });
+            }
+        });
+    });
+
+%h2{class:"display-4"} Candidate Specimens
+
+
+- if @results.empty?
+  %p
+    Bloodhound could not sniff any relevant specimens collected or identified by you and indexed by the 
+    %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
+    (GBIF).
+- else
+  %p Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens that might be yours
+  %table{class:"table table-hover"}
+    %thead{class: "thead-light"}
+      %tr
+        %th{scope: "col"}
+          %input{type:"checkbox", name:"selection-all", "data-toggle": "toggle", "data-onstyle":"success", "data-on": "Linked", "data-off": "Link All", "data-size":"small", "data-id":"#{@results.map{|o| o.id}.join(",")}"}
+        %th{scope: "col"} Scientific Name
+        %th{scope: "col"} Collectors
+        %th{scope: "col"} Determiners
+        %th{scope: "col"} Date Collected
+        %th{scope: "col"} Date Identified
+        %th{scope: "col"} Institution
+        %th{scope: "col"} Type Status
+
+    %tbody
+      - @results.each do |o|
+        %tr
+          %td
+            %input{type:"checkbox", name:"selection", "data-toggle": "toggle", "data-onstyle":"success", "data-on": "Linked", "data-off": "Link", "data-size":"small", "data-id":"#{o.id}"}
+          %td
+            %a{href: "https://www.gbif.org/occurrence/#{o.gbifID}" } #{o.scientificName}
+          %td #{o.recordedBy}
+          %td #{o.identifiedBy}
+          %td #{o.eventDate}
+          %td #{o.dateIdentified}
+          %td #{o.institutionCode}
+          %td #{o.typeStatus}
+
+  = will_paginate @results, { class: "pagination" }
