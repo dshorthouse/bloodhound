@@ -49,6 +49,27 @@ module Sinatra
         number.to_s.reverse.gsub(/(\d{3}(?=(\d)))/, "\\1#{options[:delimiter]}").reverse
       end
 
+      def search_agent
+        @results = []
+        filters = []
+        searched_term = params[:q]
+        return if !searched_term.present?
+
+        page = (params[:page] || 1).to_i
+        search_size = (params[:per] || 20).to_i
+
+        client = Elasticsearch::Client.new
+        body = build_name_query(searched_term)
+        from = (page -1) * search_size
+
+        response = client.search index: settings.elastic_index, type: "agent", from: from, size: search_size, body: body
+        results = response["hits"].deep_symbolize_keys
+
+        @results = WillPaginate::Collection.create(page, search_size, results[:total]) do |pager|
+          pager.replace results[:hits]
+        end
+      end
+
       def search_agents(family, given)
         client = Elasticsearch::Client.new
         body = {
@@ -68,12 +89,38 @@ module Sinatra
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) } rescue []
       end
 
+      def build_name_query(search)
+        parsed = Namae.parse search
+        name = ::Bloodhound::AgentUtility.clean(parsed[0])
+        family = !name[:family].nil? ? name[:family] : ""
+        given = !name[:given].nil? ? name[:given] : ""
+        {
+          query: {
+            bool: {
+              must: [
+                match: { "family" => family }
+              ],
+              should: [
+                { match: { "family" => search } },
+                { match: { "given" => given } }
+              ]
+            }
+          }
+        }
+      end
+
       def format_agent(n)
-        orcid = n[:_source][:orcid].presence if n[:_source].has_key? :orcid
         { id: n[:_source][:id],
-          name: [n[:_source][:personal][:family].presence, n[:_source][:personal][:given].presence].compact.join(", "),
-          orcid: orcid,
-          collector_index:  n[:_source][:collector_index]
+          name: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", ")
+        }
+      end
+
+      def format_agents
+        @results.map{ |n|
+          { id: n[:_source][:id],
+            name: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", "),
+            fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(" ")
+          }
         }
       end
 

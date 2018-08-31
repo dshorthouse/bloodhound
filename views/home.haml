@@ -1,87 +1,15 @@
 -content_for :title do
   Bloodhound
 
--content_for :stylesheets do
-  %link{href: "https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css", rel: "stylesheet", type: "text/css"}
-
--content_for :scripts do
-  %script{src: "https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"}
-  :javascript
-    $(function() {
-        $('input').change(function() {
-            var id = $(this).attr("data-id");
-            if($(this).attr("name") === "selection-all") {
-                $.ajax({
-                    method: "DELETE",
-                    url: "/user-occurrence/bulk.json",
-                    dataType: "json",
-                    data: JSON.stringify({ ids: id })
-                }).done(function(data) {
-                    $('.table tbody tr').fadeOut(1000, function() {
-                      $(this).remove();
-                    });
-                });
-            } else {
-                $(this).parent().parent().parent().fadeOut(1000, function() {
-                    var row = $(this);
-                    $.ajax({
-                        method: "DELETE",
-                        url: "/user-occurrence/" + id + ".json"
-                    }).done(function(data) {
-                        row.remove();
-                    });
-                });
-            }
-        });
-    });
-
 -content_for :jumbotron do
   %div{class: "jumbotron"}
     %div{class: "container-fluid"}
       %h1{class: "display-3"} Bloodhound
-      %p.lead Be notified of taxonomic changes made to specimens you collected and identified
+      %p.lead Claim the specimens you collected or identified, receive credit, and be notified of taxonomic changes
       - if !authorized?
         %a{ href:"/auth/orcid", id: "connect-orcid-button", role: "button", class: "btn btn-outline-success" }
           %img{ alt: "ORCID logo", height:24, width:24, id:"orcid-id-logo", src:"/images/orcid_24x24.png"}
             Log in with your ORCID Account
       - else
-        %a{ href:"/candidates", id: "link-specimens-button", role: "button", class: "btn btn-success" } Link Your Specimens
-
-
-- if authorized? && !@results.empty?
-  %p
-    Bloodhound is sniffing your 
-    %span{id: "counter"}
-      #{number_with_delimiter(@total, delimeter: ",")}
-    specimens.
-  %table{class:"table table-hover"}
-    %thead{class: "thead-light"}
-      %tr
-        %th{scope: "col"}
-          %input{type:"checkbox", name:"selection-all", "data-toggle": "toggle", "data-onstyle":"danger", "data-on": "Linked", "data-off": "Unlink All", "data-size":"small", "data-id":"#{@results.map{|o| o[:user_occurrence_id]}.join(",")}"}
-        %th{scope: "col"} Scientific Name
-        %th{scope: "col"} Collectors
-        %th{scope: "col"} Determiners
-        %th{scope: "col"} Date Collected
-        %th{scope: "col"} Date Identified
-        %th{scope: "col"} Institution
-        %th{scope: "col"} Type Status
-        %th{scope: "col"} Last Checked
-
-    %tbody
-      - @results.each do |o|
-        %tr
-          %td
-            %input{type:"checkbox", name:"selection", "data-toggle": "toggle", "data-onstyle":"danger", "data-on": "Unlinked", "data-off": "Unlink", "data-size":"small", "data-id":"#{o[:user_occurrence_id]}"}
-          %td
-            %a{href: "https://www.gbif.org/occurrence/#{o[:gbifID]}" } #{o[:scientificName]}
-          %td #{o[:recordedBy]}
-          %td #{o[:identifiedBy]}
-          %td #{o[:eventDate]}
-          %td #{o[:dateIdentified]}
-          %td #{o[:institutionCode]}
-          %td #{o[:typeStatus]}
-          - last_checked = o[:lastChecked].nil? ? "Coming..." : o[:lastChecked]
-          %td #{last_checked}
-
-  = will_paginate @results, { class: "pagination" }
+        %a{ href:"/candidates", id: "candidates-button", role: "button", class: "btn btn-success" } Claim Your Specimens
+        %a{ href: "/claimed", id: "linked-button", role: "button", class: "btn btn-info" } Claimed Specimens

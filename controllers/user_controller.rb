@@ -9,6 +9,21 @@ module Sinatra
 
           #/auth/orcid is automatically added by OmniAuth
 
+          app.get '/auth/orcid/callback' do
+            session_data = request.env['omniauth.auth'].deep_symbolize_keys
+            user = User.create_with(
+                          family: session_data[:info][:last_name],
+                          given: session_data[:info][:first_name],
+                          orcid: session_data[:uid],
+                          email: session_data[:info][:email])
+                       .find_or_create_by(orcid: session_data[:uid])
+                       .as_json.symbolize_keys
+            
+            user[:other_names] = session_data[:extra][:raw_info][:other_names] rescue []
+            session[:omniauth] = user
+            redirect '/'
+          end
+
           app.get '/profile' do
             protected!
             @result = get_orcid_profile(@user[:orcid])
@@ -23,9 +38,21 @@ module Sinatra
 
             agents = search_agents(@user[:family], @user[:given])
 
-            if !agents.empty?
+            if !@user[:other_names].empty?
+              @user[:other_names].each do |other_name|
+                parsed = Namae.parse other_name
+                name = ::Bloodhound::AgentUtility.clean(parsed[0])
+                family = !name[:family].nil? ? name[:family] : ""
+                given = !name[:given].nil? ? name[:given] : ""
+                agents.concat search_agents(@user[:family], @user[:given])
+              end
+            end
+
+            uniq_agents = agents.compact.uniq
+
+            if !uniq_agents.empty?
               scores = {}
-              agents.each{|a| scores[a[:id]] = a[:score] }
+              uniq_agents.each{|a| scores[a[:id]] = a[:score] }
               linked_ids = User.find(@user[:id]).occurrences.pluck(:id)
               recorded = OccurrenceRecorder.where(agent_id: scores.keys)
                                            .where.not(occurrence_id: linked_ids)
@@ -47,20 +74,42 @@ module Sinatra
             haml :candidates
           end
 
-          app.get '/logout' do
-            session.clear
-            redirect '/'
+          app.get '/candidates/agent/:id' do
+            protected!
+            occurrence_ids = []
+            page = (params[:page] || 1).to_i
+            search_size = (params[:per] || 25).to_i
+
+            @searched_user = Agent.find(params[:id])
+
+            recorded = OccurrenceRecorder.where(agent_id: @searched_user.id).pluck(:occurrence_id)
+            determined = OccurrenceDeterminer.where(agent_id: @searched_user.id).pluck(:occurrence_id)
+            occurrence_ids = (recorded + determined).uniq
+
+            @total = occurrence_ids.length
+
+            @results = WillPaginate::Collection.create(page, search_size, occurrence_ids.length) do |pager|
+              pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
+            end
+            haml :candidates_agent
           end
 
-          app.get '/auth/orcid/callback' do
-            session_data = request.env['omniauth.auth'].deep_symbolize_keys
-            user = User.create_with(
-                          family: session_data[:info][:last_name],
-                          given: session_data[:info][:first_name],
-                          orcid: session_data[:uid],
-                          email: session_data[:info][:email])
-                       .find_or_create_by(orcid: session_data[:uid])
-            session[:omniauth] = user
+          app.get '/claimed' do
+            protected!
+            page = (params[:page] || 1).to_i
+            search_size = (params[:per] || 25).to_i
+            occurrences = User.find(@user[:id]).user_occurrence_occurrences
+
+            @total = occurrences.length
+
+            @results = WillPaginate::Collection.create(page, search_size, occurrences.length) do |pager|
+              pager.replace occurrences[pager.offset, pager.per_page]
+            end
+            haml :claimed
+          end
+
+          app.get '/logout' do
+            session.clear
             redirect '/'
           end
 

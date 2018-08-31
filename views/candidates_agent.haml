@@ -1,5 +1,5 @@
 -content_for :title do
-  Bloodhound::Candidate Specimens
+  Bloodhound::#{@searched_user.given} #{@searched_user.family}'s Specimens
 
 -content_for :stylesheets do
   %link{href: "https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css", rel: "stylesheet", type: "text/css"}
@@ -17,7 +17,7 @@
 %div{class:"container-fluid"}
   %div{class:"row"}
     %div{class:"col title-col"}
-      %h2{class:"display-4 text-left"} Your Candidate Specimens
+      %h2{class:"display-4 text-left"}#{@searched_user.given} #{@searched_user.family}'s Specimens
     %div{class:"col"}
       %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8"}
         %div{class: "inputs search-agent float-right"}
@@ -26,14 +26,11 @@
 
 - if @results.empty?
   %p
-    Bloodhound could not sniff any relevant specimens collected or identified by you and indexed by the 
+    Bloodhound could not sniff any relevant specimens index by 
     %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
     (GBIF).
 - else
-  %p
-    Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens indexed by the 
-    %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
-    you likely collected or identified. Claim them as your own!
+  %p Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens that are likely collected or identified by #{@searched_user.given} #{@searched_user.family}
   %table{class:"table table-hover"}
     %thead{class: "thead-light"}
       %tr
@@ -53,7 +50,7 @@
           %td
             %input{type:"checkbox", name:"selection", class:"toggle", "data-toggle": "toggle", "data-onstyle":"success", "data-on": "Claimed", "data-off": "Claim", "data-size":"small", "data-id":"#{o.id}"}
           %td
-            %a{href: "https://www.gbif.org/occurrence/#{o.gbifID}", target: "_blank"} #{o.scientificName}
+            %a{href: "https://www.gbif.org/occurrence/#{o.gbifID}" } #{o.scientificName}
           %td #{o.recordedBy}
           %td #{o.identifiedBy}
           %td #{o.eventDate}
