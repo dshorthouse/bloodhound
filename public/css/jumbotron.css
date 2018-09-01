@@ -8,7 +8,14 @@ a:hover, .page-link:hover{
   padding-top:2em;
 }
 .jumbotron{
-  margin-bottom:1rem;
+  margin-bottom:0;
+  padding:2rem 1rem;
+}
+.alt-name-wrapper{
+  margin-top:0.8rem;
+}
+.alt-name{
+  display:block;
 }
 #connect-orcid-button:hover {
   color: #fff;
