@@ -9,6 +9,8 @@
         %a{href: "https://orcid.org/#{@user[:orcid]}"}
           %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
         %a{href: "https://orcid.org/#{@user[:orcid]}"} http://orcid.org/#{@user[:orcid]}
+      %a{ href:"/candidates", id: "candidates-button", role: "button", class: "btn btn-success" } Claim Your Specimens
+      %a{ href: "/claimed", id: "linked-button", role: "button", class: "btn btn-info" } Claimed Specimens
 
 %dl.row
   - if @result[:person][:"other-names"] && @result[:person][:"other-names"][:"other-name"].size > 0
