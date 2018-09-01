@@ -24,3 +24,30 @@
   The MIT-licensed code is available on 
   = succeed "." do
     %a{href: "https://github.com/dshorthouse/bloodhound" } GitHub
+
+%h2 Background
+
+%p
+  Despite the world-wide importance of natural history collections, most are at risk because they are critically underfunded or undervaled. A significant contributing factor for this apparent neglect is the lack of a professional reward system; one that articulates and quantifies the breadth and depth of activities and expertise required to maintain, digitize, mobilize, and enhance data deriving from collections. If people throughout the full value-chain in natural history collections received professional credit for their efforts, ideally recognized by their administrators and funding bodies, they would prioritize traditionally unrewarded tasks and could convincingly self-advocate. Proper methods of attribution at both the individual and institutional level are essential.
+
+%p
+  As a direct consequence of a reward system, the wider biodiversity community would finally benefit from a rapid way to obtain accurate answers to questions such as, 
+  %em "Who is an expert collector or determiner of taxon X?"
+  , or 
+  %em "Who is an expert collector or determiner of taxon X in a particular region of the world)?"
+  , or indeed 
+  %em "Who has collected at a particular place in the world and as a consequence, ought to be familiar with local collecting regulations and how to apply for permits?" 
+  without having to resort to mining the taxonomic literature. Use-cases like these and others are met in surprising ways if we had a mechanism to unequivocally stitch people and their identities to legacy specimen data. This "Bloodhound" proof-of-concept is a first step to do just that.
+
+%p
+  The 
+  %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility 
+  (GBIF) itself has prioritized a focus on people. The very first planned item in their 
+  %a{href: "https://www.gbif.org/document/83029/gbif-implementation-plan-2017-2021-and-annual-work-programme-2017" }Implementation Plan for 2017-2021 
+  and Annual Work Programme states, "1.a.i: Develop mechanisms to support and reflect the skills, expertise and experience of individual and organizational contributions to the GBIF network, including revision of identity management system and integration of ORCID identifiers". They have explicitly recognized that 
+  %a{href: "https://www.orcid.org"} ORCID 
+  is the organiztion that is best positioned to capture and resolve the identity of people in academia and professional settings. However, a bottleneck that prevents the full execution of GBIF's plan is a legacy of seemingly intractable, text-based content shared from natural history museums that ambiguously record people or organizations implicated in specimen data, none of which include pre-determined links to ORCID identifiers. Typical content shared under the Darwin Core terms 
+  %a{href: "http://rs.tdwg.org/dwc/terms/#recordedBy"} recordedBy 
+  (collector) and 
+  %a{href: "http://rs.tdwg.org/dwc/terms/#identifidBy"} identifiedBy 
+  (determiners) is unstructured and highly variable. They may include ordered or unorderd people names, suffer from insensitivity to cultural preferences, express the full or abbreviated names of organizations, or indeed include combinations of people and organization names.
