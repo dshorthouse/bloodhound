@@ -45,6 +45,7 @@
         %th{scope: "col"} Date Collected
         %th{scope: "col"} Date Identified
         %th{scope: "col"} Institution
+        %th{scope: "col"} Catalog Number
         %th{scope: "col"} Type Status
 
     %tbody
@@ -59,6 +60,7 @@
           %td #{o.eventDate}
           %td #{o.dateIdentified}
           %td #{o.institutionCode}
+          %td #{o.catalogNumber}
           %td #{o.typeStatus}
 
   = will_paginate @results, { class: "pagination" }

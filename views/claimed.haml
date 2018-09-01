@@ -54,6 +54,7 @@
         %th{scope: "col"} Date Collected
         %th{scope: "col"} Date Identified
         %th{scope: "col"} Institution
+        %th{scope: "col"} Catalog Number
         %th{scope: "col"} Type Status
         %th{scope: "col"} Last Checked
 
@@ -69,6 +70,7 @@
           %td #{o[:eventDate]}
           %td #{o[:dateIdentified]}
           %td #{o[:institutionCode]}
+          %td #{o[:catalogNumber]}
           %td #{o[:typeStatus]}
           - last_checked = o[:lastChecked].nil? ? "Coming..." : o[:lastChecked]
           %td #{last_checked}
