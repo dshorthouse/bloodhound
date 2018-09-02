@@ -1,12 +1,9 @@
 -content_for :title do
   Bloodhound::#{user_text}
 
--content_for :stylesheets do
-  %link{href: "/css/bootstrap-toggle.min.css", rel: "stylesheet", type: "text/css"}
-
 -content_for :scripts do
-  %script{src: "/js/bootstrap-toggle.min.js"}
   :javascript
+    /*
     $(function() {
         $('input').change(function() {
             var id = $(this).attr("data-id");
@@ -34,6 +31,7 @@
             }
         });
     });
+    */
 
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid"}
@@ -67,7 +65,15 @@
     %thead{class: "thead-light"}
       %tr
         %th{scope: "col"}
-          %input{type:"checkbox", name:"selection-all", "data-toggle": "toggle", "data-onstyle":"danger", "data-on": "Claimed", "data-off": "Unclaim All", "data-size":"small", "data-id":"#{@results.map{|o| o[:user_occurrence_id]}.join(",")}"}
+          %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
+            %label{class:"btn btn-choice btn-light"}
+              %input{type:"radio", name:"selection-all", "data-id":"#{@results.map{|o| o[:user_occurrence_id]}.join(",")}", "data-option": "recorded", autocomplete:"off"}
+                %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected All", width:18}
+            %label{class:"btn  btn-choice btn-light"}
+              %input{type:"radio", name:"selection-all", "data-id":"#{@results.map{|o| o[:user_occurrence_id]}.join(",")}", "data-option": "identified", autocomplete:"off"}
+                %img{src:"/images/microscope-unselected.png", alt:"Identified All", title: "Identified",width:18}
+            %label{class:"btn  btn-choice btn-light"}
+              %input{type:"radio", name:"selection-all", "data-id":"#{@results.map{|o| o[:user_occurrence_id]}.join(",")}", "data-option": "both", autocomplete:"off"} Both
         %th{scope: "col"} Scientific Name
         %th{scope: "col"} Collectors
         %th{scope: "col"} Determiners
@@ -82,7 +88,15 @@
       - @results.each do |o|
         %tr
           %td
-            %input{type:"checkbox", name:"selection", "data-toggle": "toggle", "data-onstyle":"danger", "data-on": "Unclaimed", "data-off": "Unclaim", "data-size":"small", "data-id":"#{o[:user_occurrence_id]}"}
+            %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
+              %label{class:"btn btn-choice btn-light"}
+                %input{type:"radio", name:"selection-#{o[:user_occurrence_id]}", "data-id":"#{o[:user_occurrence_id]}", "data-option": "recorded", autocomplete:"off"}
+                  %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+              %label{class:"btn  btn-choice btn-light"}
+                %input{type:"radio", name:"selection-#{o[:user_occurrence_id]}", "data-id":"#{o[:user_occurrence_id]}", "data-option": "identified", autocomplete:"off"}
+                  %img{src:"/images/microscope-unselected.png", alt:"Identified", title: "Identified",width:18}
+              %label{class:"btn  btn-choice btn-light"}
+                %input{type:"radio", name:"selection-#{o[:user_occurrence_id]}", "data-id":"#{o[:user_occurrence_id]}", "data-option": "both", autocomplete:"off"} Both
           %td
             %a{href: "https://www.gbif.org/occurrence/#{o[:gbifID]}" } #{o[:scientificName]}
           %td #{o[:recordedBy]}

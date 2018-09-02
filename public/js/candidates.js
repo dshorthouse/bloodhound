@@ -54,6 +54,7 @@ var Candidates = (function($, window) {
       window.location.href = '/?q='+encodeURIComponent($(this).val());
     },
     activate_toggles: function(){
+/*
       $('input.toggle').change(function() {
           var id = $(this).attr("data-id");
           if($(this).attr("name") === "selection-all") {
@@ -79,6 +80,7 @@ var Candidates = (function($, window) {
               });
           }
       });
+*/
     }
   };
 
