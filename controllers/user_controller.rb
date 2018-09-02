@@ -11,15 +11,16 @@ module Sinatra
 
           app.get '/auth/orcid/callback' do
             session_data = request.env['omniauth.auth'].deep_symbolize_keys
-            user = User.create_with(
-                          family: session_data[:info][:last_name],
-                          given: session_data[:info][:first_name],
-                          orcid: session_data[:uid],
-                          email: session_data[:info][:email])
-                       .find_or_create_by(orcid: session_data[:uid])
+            orcid = session_data[:uid]
+            family = session_data[:info][:last_name] rescue nil
+            given = session_data[:info][:first_name] rescue nil
+            email = session_data[:info][:email] rescue nil
+            other_names = session_data[:extra][:raw_info][:other_names] rescue []
+            user = User.create_with(family: family, given: given, orcid: session_data[:uid], email: email)
+                       .find_or_create_by(orcid: orcid)
                        .as_json.symbolize_keys
             
-            user[:other_names] = session_data[:extra][:raw_info][:other_names] rescue []
+            user[:other_names] = other_names
             session[:omniauth] = user
             redirect '/'
           end
@@ -46,41 +47,47 @@ module Sinatra
             page = (params[:page] || 1).to_i
             search_size = (params[:per] || 25).to_i
 
-            agents = search_agents(@user[:family], @user[:given])
+            if @user[:family].nil?
+              @results = []
+              @total = nil
+            else
+              agents = search_agents(@user[:family], @user[:given])
 
-            if !@user[:other_names].empty?
-              @user[:other_names].each do |other_name|
-                parsed = Namae.parse other_name
-                name = ::Bloodhound::AgentUtility.clean(parsed[0])
-                family = !name[:family].nil? ? name[:family] : ""
-                given = !name[:given].nil? ? name[:given] : ""
-                agents.concat search_agents(@user[:family], @user[:given])
+              if !@user[:other_names].empty?
+                @user[:other_names].each do |other_name|
+                  parsed = Namae.parse other_name
+                  name = ::Bloodhound::AgentUtility.clean(parsed[0])
+                  family = !name[:family].nil? ? name[:family] : ""
+                  given = !name[:given].nil? ? name[:given] : ""
+                  agents.concat search_agents(@user[:family], @user[:given])
+                end
+              end
+
+              uniq_agents = agents.compact.uniq
+
+              if !uniq_agents.empty?
+                scores = {}
+                uniq_agents.each{|a| scores[a[:id]] = a[:score] }
+                linked_ids = User.find(@user[:id]).occurrences.pluck(:id)
+                recorded = OccurrenceRecorder.where(agent_id: scores.keys)
+                                             .where.not(occurrence_id: linked_ids)
+                                             .pluck(:agent_id, :occurrence_id)
+                determined = OccurrenceDeterminer.where(agent_id: scores.keys)
+                                                 .where.not(occurrence_id: linked_ids)
+                                                 .pluck(:agent_id, :occurrence_id)
+                occurrence_ids = (recorded + determined).uniq
+                                                        .sort_by{|o| scores.fetch(o[0])}
+                                                        .reverse
+                                                        .map(&:last)
+              end
+
+              @total = occurrence_ids.length
+
+              @results = WillPaginate::Collection.create(page, search_size, occurrence_ids.length) do |pager|
+                pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
               end
             end
 
-            uniq_agents = agents.compact.uniq
-
-            if !uniq_agents.empty?
-              scores = {}
-              uniq_agents.each{|a| scores[a[:id]] = a[:score] }
-              linked_ids = User.find(@user[:id]).occurrences.pluck(:id)
-              recorded = OccurrenceRecorder.where(agent_id: scores.keys)
-                                           .where.not(occurrence_id: linked_ids)
-                                           .pluck(:agent_id, :occurrence_id)
-              determined = OccurrenceDeterminer.where(agent_id: scores.keys)
-                                               .where.not(occurrence_id: linked_ids)
-                                               .pluck(:agent_id, :occurrence_id)
-              occurrence_ids = (recorded + determined).uniq
-                                                      .sort_by{|o| scores.fetch(o[0])}
-                                                      .reverse
-                                                      .map(&:last)
-            end
-
-            @total = occurrence_ids.length
-
-            @results = WillPaginate::Collection.create(page, search_size, occurrence_ids.length) do |pager|
-              pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
-            end
             haml :candidates
           end
 

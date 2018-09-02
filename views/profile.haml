@@ -1,5 +1,5 @@
 -content_for :title do
-  Bloodhound::#{@user[:given]} #{@user[:family]}
+  Bloodhound::#{user_text}
 
 -content_for :stylesheets do
   %link{href: "/css/bootstrap-toggle.min.css", rel: "stylesheet", type: "text/css"}
@@ -40,12 +40,12 @@
     %div{class: "container-fluid"}
       %div{class:"row"}
         %div{class:"col title-col"}
-          %h2{class:"display-4 text-left"} #{@user[:given]} #{@user[:family]}
+          %h2{class:"display-4 text-left"}= user_text
           %p.orcid
             %a{href: "https://orcid.org/#{@user[:orcid]}"}
               %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
             %a{href: "https://orcid.org/#{@user[:orcid]}"} http://orcid.org/#{@user[:orcid]}
-          %a{ href:"/candidates", id: "candidates-button", role: "button", class: "btn btn-success" } Claim Your Specimens
+
         %div{class:"col alt-name-wrapper"}
           - if @user[:other_names].size > 0
             %dl.row
@@ -54,14 +54,15 @@
                 - @user[:other_names].each do |alt|
                   %span{itemprop: "alternateName", class:"alt-name"} #{alt}
 
-%h3{class:"display-5"} Your Claimed Specimens
+%p
+  %a{ href:"/candidates", id: "candidates-button", role: "button", class: "btn btn-success" }
+    - if !@results.empty?
+      Claim More Specimens
+    - else
+      Claim Specimens
+
 
 - if authorized? && !@results.empty?
-  %p
-    Bloodhound is sniffing your 
-    %span{id: "counter"}
-      #{number_with_delimiter(@total, delimeter: ",")}
-    specimens.
   %table{class:"table table-hover"}
     %thead{class: "thead-light"}
       %tr

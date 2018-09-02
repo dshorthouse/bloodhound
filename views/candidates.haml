@@ -25,15 +25,16 @@
           %input.typeahead{id: "typeahead", type: :text, name: "q", placeholder: "Mary Smith", value: "#{params[:q]}", size: 30}
 
 - if @results.empty?
-  %p
+  %div{class: "alert alert-warning", role:"alert"}
     Bloodhound could not sniff any relevant specimens collected or identified by you and indexed by the 
     %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
-    (GBIF).
+    (GBIF). Have you made your name public in your ORCID account?
 - else
-  %p
+  %div{class: "alert alert-info", role: "alert"}
     Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens indexed by the 
     %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
     you may have collected or identified. They are presented from greatest to least likely.
+
   %table{class:"table table-hover"}
     %thead{class: "thead-light"}
       %tr

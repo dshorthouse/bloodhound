@@ -36,7 +36,7 @@
         %ul{class: "navbar-nav flex-row ml-md-auto d-none d-md-flex"}
           - if authorized?
             %li{class: "nav-item"}
-              %a{ href: "/profile", id: "linked-button", role: "button", class: "btn btn-success" } #{@user[:given]} #{@user[:family]}
+              %a{ href: "/profile", id: "linked-button", role: "button", class: "btn btn-success" }= user_text
             %li{class: "nav-item"}
               %a{ href: "/logout", class: "nav-link" } Logout
 

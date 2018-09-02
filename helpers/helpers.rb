@@ -70,7 +70,7 @@ module Sinatra
         end
       end
 
-      def search_agents(family, given)
+      def search_agents(family, given = nil)
         client = Elasticsearch::Client.new
         body = {
           query: {
@@ -126,6 +126,14 @@ module Sinatra
 
       def cycle
         %w{even odd}[@_cycle = ((@_cycle || -1) + 1) % 2]
+      end
+
+      def user_text
+        if !@user[:family].nil?
+          [@user[:given], @user[:family]].compact.join(" ")
+        else
+          @user[:orcid]
+        end
       end
 
     end
