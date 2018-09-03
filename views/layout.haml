@@ -19,12 +19,12 @@
 
     %title
       = yield_content :title
-    %link{href: '/css/bootstrap.min.css', rel: 'stylesheet', type: 'text/css', integrity: 'sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO', crossorigin: 'anonymous' }
+    %link{href: '/css/bootstrap.min.css', rel: 'stylesheet', type: 'text/css', crossorigin: 'anonymous' }
     %link{href: '/css/jumbotron.css', rel: 'stylesheet', type: 'text/css' }
     = yield_content :stylesheets
-    %script{src: '/js/bootstrap.min.js', integrity: 'sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy', crossorigin: 'anonymous' }
+    %script{src: '/js/bootstrap.min.js', crossorigin: 'anonymous' }
     %script{src:"/js/jquery-3.3.1.min.js"}
-    %script{src:"/js/popper.min.js", integrity:"sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49", crossorigin:"anonymous"}
+    %script{src:"/js/popper.min.js", crossorigin:"anonymous"}
     = yield_content :scripts
   %body
     %nav{class:"navbar navbar-expand-md navbar-dark bg-dark"}

@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   has_many :occurrences, through: :user_occurrences, source: :occurrence
 
   def user_occurrence_occurrences
-    user_occurrences.map{|u| { user_occurrence_id: u.id }.merge(u.occurrence.attributes.symbolize_keys) }
+    user_occurrences.map{|u| { user_occurrence_id: u.id, action: u.action }.merge(u.occurrence.attributes.symbolize_keys) }
   end
 
   def check_changes

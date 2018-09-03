@@ -136,6 +136,14 @@ module Sinatra
         end
       end
 
+      def checked_tag(user_action, action)
+        (user_action == action) ? "checked" : ""
+      end
+
+      def active_class(user_action, action)
+        (user_action == action) ? "active" : ""
+      end
+
     end
   end
 end

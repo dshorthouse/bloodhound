@@ -39,16 +39,16 @@
         %th{scope: "col"}
           %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
             %label{class:"btn btn-choice btn-light"}
-              %input{type:"radio", name:"selection-all", "data-id":"#{@results.map{|o| o.id}.join(",")}", "data-option": "recorded", autocomplete:"off"}
-                %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected All", width:18}
+              %input{type:"radio", name:"selection-all", class:"specimen-selector", "data-id":"#{@results.map{|o| o.id}.join(",")}", "data-action": "recorded", autocomplete:"off"}
+                %img{src:"/images/net-unselected.png", alt:"Collected All", title:"Collected All", width:18}
             %label{class:"btn  btn-choice btn-light"}
-              %input{type:"radio", name:"selection-all", "data-id":"#{@results.map{|o| o.id}.join(",")}", "data-option": "identified", autocomplete:"off"}
-                %img{src:"/images/microscope-unselected.png", alt:"Identified All", title: "Identified",width:18}
+              %input{type:"radio", name:"selection-all",  class:"specimen-selector", "data-id":"#{@results.map{|o| o.id}.join(",")}", "data-action": "identified", autocomplete:"off"}
+                %img{src:"/images/microscope-unselected.png", alt:"Identified All", title: "Identified All",width:18}
             %label{class:"btn  btn-choice btn-light"}
-              %input{type:"radio", name:"selection-all", "data-id":"#{@results.map{|o| o.id}.join(",")}", "data-option": "both", autocomplete:"off"} Both
+              %input{type:"radio", name:"selection-all",  class:"specimen-selector", "data-id":"#{@results.map{|o| o.id}.join(",")}", "data-action": "both", autocomplete:"off"} Both
         %th{scope: "col"} Scientific Name
-        %th{scope: "col"} Collectors
-        %th{scope: "col"} Determiners
+        %th{scope: "col"} Collected By
+        %th{scope: "col"} Identified By
         %th{scope: "col"} Date Collected
         %th{scope: "col"} Date Identified
         %th{scope: "col"} Institution
@@ -61,13 +61,13 @@
           %td
             %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
               %label{class:"btn btn-choice btn-light"}
-                %input{type:"radio", name:"selection-#{o.id}", "data-id":"#{o.id}", "data-option": "recorded", autocomplete:"off"}
+                %input{type:"radio", name:"selection-#{o.id}",  class:"specimen-selector", "data-id":"#{o.id}", "data-action": "recorded", autocomplete:"off"}
                   %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
               %label{class:"btn  btn-choice btn-light"}
-                %input{type:"radio", name:"selection-#{o.id}", "data-id":"#{o.id}", "data-option": "identified", autocomplete:"off"}
+                %input{type:"radio", name:"selection-#{o.id}",  class:"specimen-selector", "data-id":"#{o.id}", "data-action": "identified", autocomplete:"off"}
                   %img{src:"/images/microscope-unselected.png", alt:"Identified", title: "Identified",width:18}
               %label{class:"btn  btn-choice btn-light"}
-                %input{type:"radio", name:"selection-#{o.id}", "data-id":"#{o.id}", "data-option": "both", autocomplete:"off"} Both
+                %input{type:"radio", name:"selection-#{o.id}",  class:"specimen-selector", "data-id":"#{o.id}", "data-action": "both", autocomplete:"off"} Both
           %td
             %a{href: "https://www.gbif.org/occurrence/#{o.gbifID}", target: "_blank"} #{o.scientificName}
           %td #{o.recordedBy}

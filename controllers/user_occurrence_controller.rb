@@ -10,16 +10,37 @@ module Sinatra
           app.post '/user-occurrence/bulk.json' do
             protected!
             req = JSON.parse(request.body.read).symbolize_keys
-            data = req[:ids].split(",").map{|o| { user_id: @user[:id], occurrence_id: o.to_i }}
+            action = req[:action]
+            data = req[:ids].split(",").map{|o| { user_id: @user[:id], occurrence_id: o.to_i, action: action } }
             UserOccurrence.create(data)
             { message: "ok" }.to_json
           end
 
-          app.post '/user-occurrence/:occurrence_id.json' do
+          app.post '/user-occurrence/:id.json' do
             protected!
+            req = JSON.parse(request.body.read).symbolize_keys
+            action = req[:action]
             uo = UserOccurrence.new
             uo.user_id = @user[:id]
-            uo.occurrence_id = params[:occurrence_id]
+            uo.occurrence_id = params[:id]
+            uo.action = action
+            uo.save
+            { message: "ok", id: uo.id }.to_json
+          end
+
+          app.put '/user-occurrence/bulk.json' do
+            protected!
+            req = JSON.parse(request.body.read).symbolize_keys
+            ids = req[:ids].split(",")
+            UserOccurrence.where(id: ids).update_all({action: req[:action]})
+            { message: "ok" }.to_json
+          end
+
+          app.put '/user-occurrence/:id.json' do
+            protected!
+            req = JSON.parse(request.body.read).symbolize_keys
+            uo = UserOccurrence.find(params[:id])
+            uo.action = req[:action]
             uo.save
             { message: "ok" }.to_json
           end

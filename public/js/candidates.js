@@ -5,14 +5,12 @@ var Candidates = (function($, window) {
 
   var _private = {
 
-    data_sources: { agent : {}, taxon : {} },
-    map: {},
-    layer: {},
+    data_sources: { agent : {} },
 
     init: function() {
       this.bloodhound();
       this.typeahead();
-      this.activate_toggles();
+      this.activate_radios();
     },
     bloodhound: function() {
       this.data_sources.agent = this.create_bloodhound('agent');
@@ -44,43 +42,35 @@ var Candidates = (function($, window) {
           window.location.href = '/candidates/agent/' + datum.id;
         });
     },
-    getParameterByName: function(name) {
-        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-            results = regex.exec(window.location.search);
-        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-    },
-    dropdown_selected: function(){
-      window.location.href = '/?q='+encodeURIComponent($(this).val());
-    },
-    activate_toggles: function(){
-/*
-      $('input.toggle').change(function() {
-          var id = $(this).attr("data-id");
-          if($(this).attr("name") === "selection-all") {
-              $.ajax({
-                  method: "POST",
-                  url: "/user-occurrence/bulk.json",
-                  dataType: "json",
-                  data: JSON.stringify({ ids: id })
-              }).done(function(data) {
-                  $('.table tbody tr').fadeOut(1000, function() {
-                    $(this).remove();
-                  });
-              });
-          } else {
-              $(this).parent().parent().parent().fadeOut(1000, function() {
-                  var row = $(this);
-                  $.ajax({
-                      method: "POST",
-                      url: "/user-occurrence/" + id + ".json"
-                  }).done(function(data) {
-                      row.remove();
-                  });
-              });
-          }
+    activate_radios: function(){
+      $('input.specimen-selector').change(function() {
+        var id = $(this).attr("data-id"),
+            action = $(this).attr("data-action"),
+            input = $(this);
+        if($(this).attr("name") === "selection-all") {
+            $.ajax({
+                method: "POST",
+                url: "/user-occurrence/bulk.json",
+                dataType: "json",
+                data: JSON.stringify({ ids: id, action: action })
+            }).done(function(data) {
+                $('.table tbody tr').fadeOut(500, function() {
+                  $(this).remove();
+                });
+            });
+        } else {
+          $.ajax({
+              method: "POST",
+              url: "/user-occurrence/" + id + ".json",
+              dataType: "json",
+              data: JSON.stringify({ action: action })
+          }).done(function(data) {
+            input.parents("tr").fadeOut(500, function() {
+              $(this).remove();
+            });
+          });
+        }
       });
-*/
     }
   };
 
