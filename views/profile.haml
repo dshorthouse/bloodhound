@@ -20,11 +20,11 @@
             %a{href: "https://orcid.org/#{@user[:orcid]}"} http://orcid.org/#{@user[:orcid]}
 
         %div{class:"col alt-name-wrapper"}
-          - if @user[:other_names].size > 0
+          - if !@user[:other_names].nil?
             %dl.row
               %dt.col-sm-4 Alternate Name(s)
               %dd.col-sm-8
-                - @user[:other_names].each do |alt|
+                - @user[:other_names].split("|").each do |alt|
                   %span{itemprop: "alternateName", class:"alt-name"} #{alt}
 
 %p

@@ -15,12 +15,16 @@ module Sinatra
             family = session_data[:info][:last_name] rescue nil
             given = session_data[:info][:first_name] rescue nil
             email = session_data[:info][:email] rescue nil
-            other_names = session_data[:extra][:raw_info][:other_names] rescue []
-            user = User.create_with(family: family, given: given, orcid: session_data[:uid], email: email)
+            other_names = session_data[:extra][:raw_info][:other_names].join("|") rescue nil
+            user = User.create_with(
+                          family: family,
+                          given: given,
+                          orcid: session_data[:uid],
+                          email: email,
+                          other_names: other_names
+                        )
                        .find_or_create_by(orcid: orcid)
                        .as_json.symbolize_keys
-            
-            user[:other_names] = other_names
             session[:omniauth] = user
             redirect '/'
           end
@@ -53,8 +57,8 @@ module Sinatra
             else
               agents = search_agents(@user[:family], @user[:given])
 
-              if !@user[:other_names].empty?
-                @user[:other_names].each do |other_name|
+              if !@user[:other_names].nil?
+                @user[:other_names].split("|").each do |other_name|
                   parsed = Namae.parse other_name
                   name = ::Bloodhound::AgentUtility.clean(parsed[0])
                   family = !name[:family].nil? ? name[:family] : ""
