@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
     Pony.options = {
       subject: "Bloodhound Notification: Your specimens have been re-identified",
       body: "Hello #{given} #{family},\n\nAt least one of your specimens have been re-identified and are now being shared under a new scientific name.\n\n#{updates}",
-      via: :smtp,
+      via: :sendmail,
       via_options: {
         address:              Sinatra::Application.settings.smtp_address,
         port:                 '587',

@@ -75,7 +75,7 @@ module Sinatra
                 determined = OccurrenceDeterminer.where(agent_id: scores.keys)
                                                  .where.not(occurrence_id: linked_ids)
                                                  .pluck(:agent_id, :occurrence_id)
-                occurrence_ids = (recorded + determined).uniq
+                occurrence_ids = (determined + recorded).uniq
                                                         .sort_by{|o| scores.fetch(o[0])}
                                                         .reverse
                                                         .map(&:last)

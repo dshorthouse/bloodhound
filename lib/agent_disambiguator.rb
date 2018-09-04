@@ -65,7 +65,7 @@ module Bloodhound
     end
 
     def write_graphic_file(family, type)
-      if @graph.length > 1
+      if !@graph.empty?
         @graph.write_to_graphic_file('png', 'public/images/graphs/' + family.gsub(/[^0-9A-Za-z.\-]/, '_') + "_" + type)
       end
     end
@@ -102,7 +102,6 @@ module Bloodhound
       [diff1, diff2].min
     end
 
-    # TODO: not flexible enough to accommodate more nuances in score
     def name_similarity(agent1, agent2)
       given1 = agent1[:given]
       given2 = agent2[:given]
@@ -182,10 +181,7 @@ module Bloodhound
 
     def reassign_data
       models = [
-        "AgentBarcode",
-        "AgentDataset",
         "AgentDescription",
-        "AgentWork",
         "OccurrenceDeterminer",
         "OccurrenceRecorder",
         "TaxonDeterminer"

@@ -47,7 +47,7 @@ namespace :db do
   task(:migrate => :environment) do
     ActiveRecord::Base.logger = Logger.new(STDOUT)
     ActiveRecord::Migration.verbose = true
-    ActiveRecord::Migrator.migrate("db/migrate")
+    ActiveRecord::MigrationContext.new('db/migrate').migrate
   end
 
   namespace :drop do
