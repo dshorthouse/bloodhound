@@ -18,6 +18,16 @@
             %a{href: "https://orcid.org/#{@user[:orcid]}"}
               %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
             %a{href: "https://orcid.org/#{@user[:orcid]}"} http://orcid.org/#{@user[:orcid]}
+          %p.orcid-refresh
+            %a{href: "/refresh-orcid.json"}
+              %img{src: "/images/orcid_refresh_24x24.png", alt:"Refresh ORCID iD Content"}
+            %a{href: "/refresh-orcid.json"} Refresh ORCID Data
+
+          %div{class:"alert alert-success alert-dismissible fade show", role: "alert"}
+            ORCID Data was refreshed.
+            %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+              %span{"aria-hidden":"true"} &times;
+            
 
         %div{class:"col alt-name-wrapper"}
           - if !@user[:other_names].nil?

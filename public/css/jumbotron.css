@@ -47,3 +47,6 @@ a:hover, .page-link:hover{
 p.orcid{
   font-size:1.2rem;
 }
+.alert-dismissible{
+  display:none;
+}

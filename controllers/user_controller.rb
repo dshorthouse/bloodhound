@@ -120,6 +120,22 @@ module Sinatra
             redirect '/'
           end
 
+          app.get '/orcid-refresh.json' do
+            protected!
+            data = get_orcid_profile(@user[:orcid])
+            given = data[:person][:name][:"given-names"][:value]
+            family = data[:person][:name][:"family-name"][:value]
+            email = nil
+            data[:person][:emails][:email].each do |mail|
+              next if !mail[:primary]
+              email = mail[:email]
+            end
+            other_names = data[:person][:"other-names"][:"other-name"].map{|n| n[:content]}.join("|") rescue nil
+            user = User.find(@user[:id])
+            user.update({family: family, given: given, email: email, other_names: other_names, updated: Time.now})
+            { message: "ok" }.to_json
+          end
+
           app.get '/:orcid.json' do
             if params[:orcid].is_orcid?
               @viewed_user = User.find_by_orcid(params[:orcid])

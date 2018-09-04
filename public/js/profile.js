@@ -7,6 +7,7 @@ var Profile = (function($, window) {
 
     init: function() {
       this.activate_radios();
+      this.activate_orcid_refresh();
     },
     activate_radios: function(){
       $('input').change(function() {
@@ -52,6 +53,17 @@ var Profile = (function($, window) {
                   $(this).remove();
               });
           });
+      });
+    },
+    activate_orcid_refresh: function(){
+      $("p.orcid-refresh a").on("click", function() {
+        $.ajax({
+            method: "GET",
+            url: "/orcid-refresh.json"
+        }).done(function(data) {
+          $(".alert").alert().show();
+        });
+        return false;
       });
     }
   };
