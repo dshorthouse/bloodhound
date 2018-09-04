@@ -3,13 +3,14 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 02, 2018 at 06:06 PM
+-- Generation Time: Sep 04, 2018 at 12:40 PM
 -- Server version: 5.7.22
 -- PHP Version: 5.6.36
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -86,18 +87,6 @@ CREATE TABLE `occurrences` (
   `typeStatus` text CHARACTER SET utf8 COLLATE utf8_bin,
   `lastChecked` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `occurrence_codes`
---
-
-DROP TABLE IF EXISTS `occurrence_codes`;
-CREATE TABLE `occurrence_codes` (
-  `gbifID` int(11) NOT NULL,
-  `catalogNumber` text CHARACTER SET utf8 COLLATE utf8_bin
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -188,6 +177,7 @@ CREATE TABLE `users` (
   `given` varchar(255) DEFAULT NULL,
   `orcid` varchar(25) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
+  `is_public` tinyint(1) DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -201,7 +191,8 @@ DROP TABLE IF EXISTS `user_occurrences`;
 CREATE TABLE `user_occurrences` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `occurrence_id` int(11) NOT NULL
+  `occurrence_id` int(11) NOT NULL,
+  `action` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -237,12 +228,6 @@ ALTER TABLE `descriptions`
 ALTER TABLE `occurrences`
   ADD PRIMARY KEY (`id`),
   ADD KEY `gbif_idx` (`gbifID`);
-
---
--- Indexes for table `occurrence_codes`
---
-ALTER TABLE `occurrence_codes`
-  ADD UNIQUE KEY `gbif_idx` (`gbifID`);
 
 --
 -- Indexes for table `occurrence_determiners`
@@ -372,7 +357,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_occurrences`
 --
 ALTER TABLE `user_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

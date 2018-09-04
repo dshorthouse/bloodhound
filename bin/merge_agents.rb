@@ -33,10 +33,7 @@ if options[:sources] && options[:destination]
   sources = options[:sources].map(&:to_i)
   destination = options[:destination].to_i
   models = [
-    "AgentBarcode",
-    "AgentDataset",
     "AgentDescription",
-    "AgentWork",
     "OccurrenceDeterminer",
     "OccurrenceRecorder",
     "TaxonDeterminer"
@@ -48,18 +45,6 @@ if options[:sources] && options[:destination]
   agents.update_all(canonical_id: destination)
 
   if options[:search]
-    agent = Agent.find(destination)
-    occurrences = agent.occurrence_recorders.pluck(:occurrence_id)
-    Parallel.map(occurrences.in_groups_of(100, false), progress: "UpdateOccurrences")  do |batch|
-      index.bulk_occurrence(batch)
-    end
-    index.update_agent(agent)
-
-    colleagues = agent.recordings_with.pluck(:id)
-    Parallel.map(colleagues.in_groups_of(5, false), progress: "UpdateColleagues") do |batch|
-      index.bulk_agent(batch)
-    end
-
     agents.find_each do |agent|
       index.delete_agent(agent) rescue nil
     end
