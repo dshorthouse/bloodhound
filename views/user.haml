@@ -1,0 +1,41 @@
+-content_for :title do
+  Bloodhound::#{viewed_user_text}
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid"}
+    %div{class: "container-fluid"}
+      %div{class:"row"}
+        %div{class:"col title-col"}
+          %h2{class:"display-4 text-left"}= viewed_user_text
+          %p.orcid
+            %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"}
+              %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+            %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"} http://orcid.org/#{@viewed_user[:orcid]}
+
+- if !@results.empty?
+  %table{class:"table table-hover"}
+    %thead{class: "thead-light"}
+      %tr
+        %th{scope: "col"} Scientific Name
+        %th{scope: "col"} Collected By
+        %th{scope: "col"} Identified By
+        %th{scope: "col"} Date Collected
+        %th{scope: "col"} Date Identified
+        %th{scope: "col"} Institution
+        %th{scope: "col"} Catalog Number
+        %th{scope: "col"} Type Status
+
+    %tbody
+      - @results.each do |o|
+        %tr
+          %td
+            %a{href: "https://www.gbif.org/occurrence/#{o[:gbifID]}" } #{o[:scientificName]}
+          %td #{o[:recordedBy]}
+          %td #{o[:identifiedBy]}
+          %td #{o[:eventDate]}
+          %td #{o[:dateIdentified]}
+          %td #{o[:institutionCode]}
+          %td #{o[:catalogNumber]}
+          %td #{o[:typeStatus]}
+
+  = will_paginate @results, { class: "pagination" }

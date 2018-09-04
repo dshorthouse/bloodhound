@@ -116,6 +116,60 @@ module Sinatra
             redirect '/'
           end
 
+          app.get '/:orcid.json' do
+            if params[:orcid].is_orcid?
+              @viewed_user = User.find_by_orcid(params[:orcid])
+              user = {}
+              user[:personal] = @viewed_user
+              user[:occurrences] = @viewed_user.user_occurrence_occurrences
+              user.to_json
+            else
+              status 404
+              haml :oops
+            end
+          end
+
+          app.get '/:orcid.csv' do
+            if params[:orcid].is_orcid?
+              content_type "application/csv"
+              attachment   "#{params[:orcid]}.csv"
+              @viewed_user = User.find_by_orcid(params[:orcid])
+              records = @viewed_user.user_occurrence_occurrences
+              CSV.generate do |csv|
+                csv << records.first.keys
+                records.each { |r| csv << r.values }
+              end
+            else
+              status 404
+              haml :oops
+            end
+          end
+
+          app.get '/:orcid' do
+            if params[:orcid].is_orcid?
+              @viewed_user = User.find_by_orcid(params[:orcid])
+              if @viewed_user && @viewed_user.is_public?
+                page = (params[:page] || 1).to_i
+                search_size = (params[:per] || 25).to_i
+                occurrences = @viewed_user.user_occurrence_occurrences
+
+                @total = occurrences.length
+
+                @results = WillPaginate::Collection.create(page, search_size, occurrences.length) do |pager|
+                  pager.replace occurrences[pager.offset, pager.per_page]
+                end
+
+                haml :user
+              else
+                status 404
+                haml :oops
+              end
+            else
+              status 404
+              haml :oops
+            end
+          end
+
         end
 
       end

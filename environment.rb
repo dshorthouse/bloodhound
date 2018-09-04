@@ -41,6 +41,7 @@ require 'net/http'
 require 'uri'
 require 'capitalize_names'
 require 'pony'
+require 'csv'
 require 'byebug'
 
 require_all 'lib'

@@ -1,5 +1,17 @@
 # encoding: utf-8
 
+class String
+  def is_doi?
+    doi_pattern = /^(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?![%"#? ])\S)+)$/i
+    doi_pattern.match?(self)
+  end
+
+  def is_orcid?
+    orcid_pattern = /^(\d{4}-){3}\d{3}[0-9X]{1}$/
+    orcid_pattern.match?(self)
+  end
+end
+
 module Sinatra
   module Bloodhound
     module Helpers
@@ -136,12 +148,32 @@ module Sinatra
         end
       end
 
+      def viewed_user_text
+        if !@viewed_user[:family].nil?
+          [@viewed_user[:given], @viewed_user[:family]].compact.join(" ")
+        else
+          @viewed_user[:orcid]
+        end
+      end
+
       def checked_tag(user_action, action)
         (user_action == action) ? "checked" : ""
       end
 
       def active_class(user_action, action)
         (user_action == action) ? "active" : ""
+      end
+
+      def is_orcid?
+        orcid_pattern = /^(\d{4}-){3}\d{3}[0-9X]{1}$/
+        orcid_pattern.match?(self)
+      end
+
+      def to_csv(model, records)
+        CSV.generate do |csv|
+          csv << model.attribute_names
+          records.each { |r| csv << r.attributes.values }
+        end
       end
 
     end
