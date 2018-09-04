@@ -31,6 +31,10 @@ module Sinatra
         JSON.parse(response, :symbolize_names => true)
       end
 
+      def public_profiles
+        @results = User.where(is_public: true)
+      end
+
       def protected!
         return if authorized?
         halt 401, "Not authorized\n"
@@ -153,6 +157,14 @@ module Sinatra
           [@viewed_user[:given], @viewed_user[:family]].compact.join(" ")
         else
           @viewed_user[:orcid]
+        end
+      end
+
+      def user_label(user)
+        if !user[:family].nil?
+          [user[:family], user[:given]].compact.join(", ")
+        else
+          user[:orcid]
         end
       end
 

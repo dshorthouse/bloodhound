@@ -18,3 +18,10 @@
           Disclaimer: This is a proof-of-concept submission for the 
           %a{href: "https://www.gbif.org/news/1GQURfK5jS4Iq4O06Y0EK4/2018-gbif-ebbe-nielsen-challenge-seeks-open-data-innovations-for-biodiversity"} Ebbe Nielsen Challenge 
           and is subject to change.
+
+- if !@results.empty?
+  %h2 Examples
+  
+  - @results.each do |user|
+    %div
+      %a{href: "/#{user[:orcid]}"} #{user_label(user)}

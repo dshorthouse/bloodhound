@@ -12,6 +12,7 @@ module Sinatra
           end
 
           app.get '/' do
+            public_profiles
             haml :home
           end
 
