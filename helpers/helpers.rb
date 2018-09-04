@@ -22,6 +22,11 @@ module Sinatra
         end
       end
 
+      def update_session
+        session[:omniauth] = User.find(@user[:id]).reload.as_json.symbolize_keys
+        set_session
+      end
+
       def get_orcid_profile(uid)
         response = RestClient::Request.execute(
           method: :get,
@@ -174,6 +179,10 @@ module Sinatra
 
       def active_class(user_action, action)
         (user_action == action) ? "active" : ""
+      end
+
+      def is_public?
+        @user[:is_public] ? true : false
       end
 
       def is_orcid?

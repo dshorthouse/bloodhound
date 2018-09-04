@@ -7,10 +7,23 @@ var Profile = (function($, window) {
 
     init: function() {
       this.activate_radios();
+      this.activate_switch();
       this.activate_orcid_refresh();
     },
+    activate_switch: function() {
+      $('#toggle-public').change(function() {
+        $.ajax({
+          method: "PUT",
+          url: "/profile.json",
+          dataType: "json",
+          data: JSON.stringify({ is_public: $(this).prop('checked') })
+        }).done(function(data) {
+          
+        });
+      });
+    },
     activate_radios: function(){
-      $('input').change(function() {
+      $('input.action-radio').change(function() {
           var id = $(this).attr("data-id"),
               action = $(this).attr("data-action"),
               label = $(this).parent();

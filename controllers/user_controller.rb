@@ -41,8 +41,17 @@ module Sinatra
             @results = WillPaginate::Collection.create(page, search_size, occurrences.length) do |pager|
               pager.replace occurrences[pager.offset, pager.per_page]
             end
-
             haml :profile
+          end
+
+          app.put '/profile.json' do
+            protected!
+            req = JSON.parse(request.body.read).symbolize_keys
+            user = User.find(@user[:id])
+            user.is_public = req[:is_public]
+            user.save
+            update_session
+            { message: "ok"}.to_json
           end
 
           app.get '/candidates' do

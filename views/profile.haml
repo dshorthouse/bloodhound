@@ -1,8 +1,12 @@
 -content_for :title do
   Bloodhound::#{user_text}
 
+-content_for :stylesheets do
+  %link{href: "/css/bootstrap-toggle.min.css", rel: "stylesheet", type: "text/css"}
+
 -content_for :scripts do
   %script{src:"/js/profile.js"}
+  %script{src:"/js/bootstrap-toggle.min.js"}
   :javascript
     $(function() {
         Profile.init();
@@ -27,7 +31,6 @@
             ORCID Data was refreshed.
             %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
               %span{"aria-hidden":"true"} &times;
-            
 
         %div{class:"col alt-name-wrapper"}
           - if !@user[:other_names].nil?
@@ -43,6 +46,7 @@
       Claim More Specimens
     - else
       Claim Specimens
+  %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", checked: is_public? }
 
 
 - if authorized? && !@results.empty?
@@ -52,13 +56,13 @@
         %th{scope: "col"}
           %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
             %label{class:"btn btn-choice btn-light"}
-              %input{type:"radio", name:"selection-all", "data-id":"#{@results.map{|o| o[:user_occurrence_id]}.join(",")}", "data-action": "recorded", autocomplete:"off"}
+              %input{type:"radio", class:"action-radio", name:"selection-all", "data-id":"#{@results.map{|o| o[:user_occurrence_id]}.join(",")}", "data-action": "recorded", autocomplete:"off"}
                 %img{src:"/images/net-unselected.png", alt:"Collected All", title:"Collected All", width:18}
             %label{class:"btn  btn-choice btn-light"}
-              %input{type:"radio", name:"selection-all", "data-id":"#{@results.map{|o| o[:user_occurrence_id]}.join(",")}", "data-action": "identified", autocomplete:"off"}
+              %input{type:"radio", class:"action-radio", name:"selection-all", "data-id":"#{@results.map{|o| o[:user_occurrence_id]}.join(",")}", "data-action": "identified", autocomplete:"off"}
                 %img{src:"/images/microscope-unselected.png", alt:"Identified All", title: "Identified All",width:18}
             %label{class:"btn  btn-choice btn-light"}
-              %input{type:"radio", name:"selection-all", "data-id":"#{@results.map{|o| o[:user_occurrence_id]}.join(",")}", "data-action": "recorded,identified", autocomplete:"off"} Both
+              %input{type:"radio", class:"action-radio", name:"selection-all", "data-id":"#{@results.map{|o| o[:user_occurrence_id]}.join(",")}", "data-action": "recorded,identified", autocomplete:"off"} Both
         %th{scope: "col"} Scientific Name
         %th{scope: "col"} Collected By
         %th{scope: "col"} Identified By
@@ -76,13 +80,13 @@
           %td
             %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
               %label{class:"btn btn-choice btn-light #{active_class(o[:action], "recorded")}"}
-                %input{type:"radio", name:"selection-#{o[:user_occurrence_id]}", "data-id":"#{o[:user_occurrence_id]}", "data-action": "recorded", autocomplete:"off"}
+                %input{type:"radio", class:"action-radio", name:"selection-#{o[:user_occurrence_id]}", "data-id":"#{o[:user_occurrence_id]}", "data-action": "recorded", autocomplete:"off"}
                   %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
               %label{class:"btn  btn-choice btn-light #{active_class(o[:action], "identified")}"}
-                %input{type:"radio", name:"selection-#{o[:user_occurrence_id]}", "data-id":"#{o[:user_occurrence_id]}", "data-action": "identified", autocomplete:"off"}
+                %input{type:"radio", class:"action-radio", name:"selection-#{o[:user_occurrence_id]}", "data-id":"#{o[:user_occurrence_id]}", "data-action": "identified", autocomplete:"off"}
                   %img{src:"/images/microscope-unselected.png", alt:"Identified", title:"Identified", width:18}
               %label{class:"btn  btn-choice btn-light #{active_class(o[:action], "recorded,identified")}"}
-                %input{type:"radio", name:"selection-#{o[:user_occurrence_id]}", "data-id":"#{o[:user_occurrence_id]}", "data-action": "recorded,identified", autocomplete:"off"} Both
+                %input{type:"radio", class:"action-radio", name:"selection-#{o[:user_occurrence_id]}", "data-id":"#{o[:user_occurrence_id]}", "data-action": "recorded,identified", autocomplete:"off"} Both
           %td
             %a{href: "https://www.gbif.org/occurrence/#{o[:gbifID]}" } #{o[:scientificName]}
           %td #{o[:recordedBy]}
