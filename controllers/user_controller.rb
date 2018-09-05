@@ -54,6 +54,27 @@ module Sinatra
             { message: "ok"}.to_json
           end
 
+          app.get '/profile/download.json' do
+            protected!
+            current_user = User.find(@user[:id])
+            user = {}
+            user[:personal] = current_user
+            user[:occurrences] = current_user.user_occurrence_occurrences
+            user.to_json
+          end
+
+          app.get '/profile/download.csv' do
+            protected!
+            content_type "application/csv"
+            attachment   "download.csv"
+            user = User.find(@user[:id])
+            records = user.user_occurrence_occurrences
+            CSV.generate do |csv|
+              csv << records.first.keys
+              records.each { |r| csv << r.values }
+            end
+          end
+
           app.get '/candidates' do
             protected!
             occurrence_ids = []
