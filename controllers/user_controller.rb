@@ -70,9 +70,11 @@ module Sinatra
                 @user[:other_names].split("|").each do |other_name|
                   parsed = Namae.parse other_name
                   name = ::Bloodhound::AgentUtility.clean(parsed[0])
-                  family = !name[:family].nil? ? name[:family] : ""
-                  given = !name[:given].nil? ? name[:given] : ""
-                  agents.concat search_agents(@user[:family], @user[:given])
+                  family = !name[:family].nil? ? name[:family] : nil
+                  given = !name[:given].nil? ? name[:given] : nil
+                  if !family.nil?
+                    agents.concat search_agents(family, given)
+                  end
                 end
               end
 
@@ -141,7 +143,13 @@ module Sinatra
             end
             other_names = data[:person][:"other-names"][:"other-name"].map{|n| n[:content]}.join("|") rescue nil
             user = User.find(@user[:id])
-            user.update({family: family, given: given, email: email, other_names: other_names, updated: Time.now})
+            user.update({
+              family: family,
+              given: given,
+              email: email,
+              other_names: other_names,
+              updated: Time.now
+            })
             { message: "ok" }.to_json
           end
 
