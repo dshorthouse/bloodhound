@@ -10,7 +10,7 @@
         - if !authorized?
           %a{ href:"/auth/orcid", id: "connect-orcid-button", role: "button", class: "btn btn-outline-success" }
             %img{ alt: "ORCID logo", height:24, width:24, id:"orcid-id-logo", src:"/images/orcid_24x24.png"}
-              Log in with your ORCID Account
+            Log in with your ORCID Account
         - else
           %a{ href:"/candidates", id: "candidates-button", role: "button", class: "btn btn-success" } Claim Your Specimens
       %p{class: "small text-sm-right"}
