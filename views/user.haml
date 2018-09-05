@@ -13,18 +13,17 @@
             %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"} http://orcid.org/#{@viewed_user[:orcid]}
 
 - if !@results.empty?
-  %div{class: "container"}
-    %div{class: "alert alert-info row", role: "alert"}
-      %div{class: "col"}
-        %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
+  %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    %div{class: "col"}
+      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
         collected
-        %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
         identified
-      %div{class: "col text-right"}
-        %a{href: "/#{@viewed_user[:orcid]}.csv"}
-          %img{src: "/images/csv-icon.png", width:24, alt: "CSV download"}
-        %a{href: "/#{@viewed_user[:orcid]}.json"}
-          %img{src: "/images/json-icon.png", width:24, alt: "JSON download"}
+    %div{class: "col text-right"}
+      %a{href: "/#{@viewed_user[:orcid]}.csv"}
+        %img{src: "/images/csv-icon.png", width:24, alt: "CSV download"}
+      %a{href: "/#{@viewed_user[:orcid]}.json"}
+        %img{src: "/images/json-icon.png", width:24, alt: "JSON download"}
     
   %table{class:"table table-hover"}
     %thead{class: "thead-light"}
