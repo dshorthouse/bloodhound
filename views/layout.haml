@@ -1,10 +1,10 @@
 !!! 5
-%html
+%html{lang: "en", prefix: "og: http://ogp.me/ns#"}
   %head
     %meta{charset: "UTF-8" }/
-    %meta{description: "Claim the natural history specimens you collected or identified, receive credit, and be notified of taxonomic changes"}/
-    %meta{keywords: "credit,specimens,natural,history,orcid,gbif"}/
-    %meta{name: "David P. Shorthouse"}/
+    %meta{name:"description", content:"Claim the natural history specimens you collected or identified, receive credit, and be notified of taxonomic changes"}/
+    %meta{name: "keywords", content: "credit,specimens,natural,history,orcid,gbif"}/
+    %meta{name: "author", content:"David P. Shorthouse"}/
     %meta{name:"twitter:card", content:"summary"}/
     %meta{name:"twitter:site" ,content:"@dpsSpiders"}/
     %meta{name:"twitter:description", content:"Claim the natural history specimens you collected or identified, receive credit, and be notified of taxonomic changes"}/
@@ -29,7 +29,7 @@
   %body
     %nav{class:"navbar navbar-expand-md navbar-dark bg-dark"}
       %a{class:"navbar-brand", href:"/"}
-        %img{src: "/images/logo.png", height:48}
+        %img{src: "/images/logo.png", height:48, alt: "Bloodhound"}
       %button{class:"navbar-toggler", type:"button", "data-toggle":"collapse", "data-target":"#navbarSupportedContent", "aria-controls":"navbarSupportedContent", "aria-expanded":"false", "aria-label":"Toggle navigation"}
         %span{class:"navbar-toggler-icon"}
       %div{class: "collapse navbar-collapse", id:"navbarSupportedContent"}
@@ -49,6 +49,6 @@
 
     = yield_content :jumbotron
 
-    %main{role: "main", id:"main"}
+    %main{id:"main"}
       %div{class: "container-fluid"}
         = yield

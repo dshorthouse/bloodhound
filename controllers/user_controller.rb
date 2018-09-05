@@ -150,6 +150,7 @@ module Sinatra
               other_names: other_names,
               updated: Time.now
             })
+            update_session
             { message: "ok" }.to_json
           end
 
