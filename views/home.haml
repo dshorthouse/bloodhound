@@ -22,6 +22,11 @@
 - if !@results.empty?
   %h2 Examples
   
-  - @results.each do |user|
-    %div
-      %a{href: "/#{user[:orcid]}"} #{user_label(user)}
+  - @results.find_in_batches(batch_size: 3).each do |batch|
+    %div{class: "container"}
+      %div{class: "row"}
+        - batch.each do |user|
+          %div{class: "col-sm"}
+            %div{class: "card"}
+              %div{class: "card-body"}
+                %a{href: "/#{user[:orcid]}"} #{user_label(user)}
