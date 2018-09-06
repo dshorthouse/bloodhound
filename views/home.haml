@@ -20,7 +20,7 @@
           and is subject to change.
 
 - if !@results.empty?
-  %h2 Sample Profiles
+  %h2{class: "text-center"} Sample Profiles
   
   - @results.find_in_batches(batch_size: 3).each do |batch|
     %div{class: "container"}
