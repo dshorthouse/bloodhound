@@ -12,7 +12,7 @@ module Sinatra
           end
 
           app.get '/' do
-            public_profiles
+            example_profiles
             haml :home
           end
 
@@ -23,6 +23,11 @@ module Sinatra
           app.get '/agent.json' do
             search_agent
             format_agents.to_json
+          end
+
+          app.get '/roster' do
+            roster
+            haml :roster
           end
 
           app.not_found do

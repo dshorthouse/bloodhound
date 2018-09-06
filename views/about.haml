@@ -1,7 +1,10 @@
 -content_for :title do
   Bloodhound::About
 
-%h2 About
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid"}
+    %div{class: "container-fluid"}
+      %h2 About
 
 %p
   This proof-of-concept was produced by 
@@ -30,7 +33,7 @@
   = succeed "." do
     %a{href: "https://github.com/dshorthouse/bloodhound" } GitHub
 
-%h2 Background
+%h3 Background
 
 %p
   Despite the world-wide importance of natural history collections, most are at risk because they are critically underfunded or undervalued. A significant contributing factor for this apparent neglect is the lack of a professional reward system; one that articulates and quantifies the breadth and depth of activities and expertise required to maintain, digitize, mobilize, and enhance data deriving from collections. If people throughout the full value-chain in natural history collections received professional credit for their efforts, ideally recognized by their administrators and funding bodies, they would prioritize traditionally unrewarded tasks and could convincingly self-advocate. Proper methods of attribution at both the individual and institutional level are essential.

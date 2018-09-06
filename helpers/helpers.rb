@@ -36,8 +36,8 @@ module Sinatra
         JSON.parse(response, :symbolize_names => true)
       end
 
-      def public_profiles
-        @results = User.where(is_public: true)
+      def example_profiles
+        @results = User.where(is_public: true).limit(9)
       end
 
       def protected!
@@ -108,6 +108,10 @@ module Sinatra
         response = client.search index: settings.elastic_index, type: "agent", body: body
         results = response["hits"].deep_symbolize_keys
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) } rescue []
+      end
+
+      def roster
+        @results = User.where(is_public: true).order(:family).paginate :page => params[:page]
       end
 
       def build_name_query(search)
