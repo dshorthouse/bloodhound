@@ -26,7 +26,21 @@ test:
   username: root
   password:
   database: bloodhound_test
+  reconnect: true
+  orcid_api_url: 'https://pub.orcid.org/v2.1/'
+  orcid_key: ''
+  orcid_secret: ''
+  orcid_site: 'https://orcid.org'
+  orcid_authorize_url: 'https://orcid.org/oauth/authorize'
+  orcid_token_url: 'https://pub.orcid.org/oauth/token'
+  elastic_server: 'http://localhost:9200'
+  elastic_index: 'bloodhound'
+  gbif_api: 'http://api.gbif.org/v1/'
+  eol_api: 'http://eol.org/api/'
   google_analytics: ''
+  smtp_address: ''
+  smtp_email: ''
+  smtp_password: ''
 
 production:
   adapter: mysql2
