@@ -24,7 +24,7 @@
   
   - @results.find_in_batches(batch_size: 3).each do |batch|
     %div{class: "container"}
-      %div{class: "row"}
+      %div{class: "row profile-examples"}
         - batch.each do |user|
           %div{class: "col-sm"}
             %div{class: "card"}
