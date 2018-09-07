@@ -37,7 +37,7 @@ module Sinatra
       end
 
       def example_profiles
-        @results = User.where(is_public: true).limit(9)
+        @results = User.where(is_public: true).order(:family).limit(9)
       end
 
       def protected!
