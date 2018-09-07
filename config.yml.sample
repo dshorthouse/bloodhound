@@ -3,60 +3,49 @@ development:
   host: localhost
   username: root
   password:
-  database: collector_dev
+  database: bloodhound
   reconnect: true
-  bold_api_url: 'http://www.boldsystems.org/index.php/API_Public/specimen'
-  datacite_api_url: 'http://search.datacite.org/api'
-  orcid_api_url: 'http://pub.orcid.org/v1.2/'
+  orcid_api_url: 'https://pub.orcid.org/v2.1/'
   orcid_key: ''
   orcid_secret: ''
-  orcid_site: 'https://sandbox.orcid.org'
-  orcid_authorize_url: 'https://sandbox.orcid.org/oauth/authorize'
-  orcid_token_url: 'https://api.sandbox.orcid.org/oauth/token'
+  orcid_site: 'https://orcid.org'
+  orcid_authorize_url: 'https://orcid.org/oauth/authorize'
+  orcid_token_url: 'https://pub.orcid.org/oauth/token'
   elastic_server: 'http://localhost:9200'
-  elastic_index: 'collector'
+  elastic_index: 'bloodhound'
+  gbif_api: 'http://api.gbif.org/v1/'
   eol_api: 'http://eol.org/api/'
-  gn_api: 'https://resolver.globalnames.org/'
   google_analytics: ''
+  smtp_address: ''
+  smtp_email: ''
+  smtp_password: ''
 
 test:
   adapter: mysql2
   host: localhost
   username: root
   password:
-  database: collector_test
-  reconnect: true
-  bold_api_url: 'http://www.boldsystems.org/index.php/API_Public/specimen'
-  datacite_api_url: 'http://search.datacite.org/api'
-  orcid_api_url: 'http://pub.orcid.org/v1.2/'
-  orcid_key: ''
-  orcid_secret: ''
-  orcid_site: 'https://sandbox.orcid.org'
-  orcid_authorize_url: 'https://sandbox.orcid.org/oauth/authorize'
-  orcid_token_url: 'https://api.sandbox.orcid.org/oauth/token'
-  elastic_server: 'http://localhost:9200'
-  elastic_index: 'collector'
-  eol_api: 'http://eol.org/api/'
-  gn_api: 'https://resolver.globalnames.org/'
+  database: bloodhound_test
   google_analytics: ''
 
 production:
   adapter: mysql2
   host: localhost
-  username: root
-  password:
-  database: collector
+  username: ''
+  password: ''
+  database: bloodhound_prod
   reconnect: true
-  bold_api_url: 'http://www.boldsystems.org/index.php/API_Public/specimen'
-  datacite_api_url: 'http://search.datacite.org/api'
-  orcid_api_url: 'http://pub.orcid.org/v1.2/'
+  orcid_api_url: 'https://pub.orcid.org/v2.0/'
   orcid_key: ''
   orcid_secret: ''
-  orcid_site: 'https://sandbox.orcid.org'
-  orcid_authorize_url: 'https://sandbox.orcid.org/oauth/authorize'
-  orcid_token_url: 'https://api.sandbox.orcid.org/oauth/token'
+  orcid_site: 'https://orcid.org'
+  orcid_authorize_url: 'https://orcid.org/oauth/authorize'
+  orcid_token_url: 'https://pub.orcid.org/oauth/token'
   elastic_server: 'http://localhost:9200'
-  elastic_index: 'collector'
+  elastic_index: 'bloodhound'
+  gbif_api: 'http://api.gbif.org/v1/'
   eol_api: 'http://eol.org/api/'
-  gn_api: 'https://resolver.globalnames.org/'
   google_analytics: ''
+  smtp_address: ''
+  smtp_email: ''
+  smtp_password: ''
