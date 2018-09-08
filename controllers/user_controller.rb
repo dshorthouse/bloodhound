@@ -104,7 +104,8 @@ module Sinatra
               if !uniq_agents.empty?
                 scores = {}
                 uniq_agents.each{|a| scores[a[:id]] = a[:score] }
-                linked_ids = User.find(@user[:id]).occurrences.pluck(:id)
+                user = User.find(@user[:id])
+                linked_ids = user.user_occurrences.pluck(:occurrence_id)
                 recorded = OccurrenceRecorder.where(agent_id: scores.keys)
                                              .where.not(occurrence_id: linked_ids)
                                              .pluck(:agent_id, :occurrence_id)

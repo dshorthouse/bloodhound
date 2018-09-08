@@ -19,7 +19,7 @@
         %tr
           %td 
             %a{href: "/#{o.orcid}"} #{user_label(o)}
-          %td #{o.user_occurrences.count}
+          %td #{o.user_occurrences.where(visible: true).count}
           %td
             %a{href: "https://orcid.org/#{o.orcid}"}
               %img{src: "/images/orcid_16x16.png", alt:"ORCID iD"}

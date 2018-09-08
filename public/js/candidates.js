@@ -71,6 +71,20 @@ var Candidates = (function($, window) {
           });
         }
       });
+      $('button.remove').on('click', function() {
+          var id = $(this).attr("data-id"),
+              row = $(this).parents("tr");
+          $.ajax({
+              method: "POST",
+              url: "/user-occurrence/" + id + ".json",
+              dataType: "json",
+              data: JSON.stringify({ visible: false})
+          }).done(function(data) {
+              row.fadeOut(500, function() {
+                  $(this).remove();
+              });
+          });
+      });
     }
   };
 

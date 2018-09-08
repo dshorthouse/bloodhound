@@ -24,9 +24,9 @@
 
 - if @results.empty?
   %div{class: "alert alert-warning", role:"alert"}
-    Bloodhound could not sniff any relevant specimens collected or identified by you and indexed by the 
+    Bloodhound did not sniff any relevant specimens collected or identified by you and indexed by the 
     %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
-    (GBIF). Have you made your name public in your ORCID account?
+    (GBIF).
 - else
   %div{class: "alert alert-info", role: "alert"}
     Choose 
@@ -56,6 +56,7 @@
         %th{scope: "col"} Institution
         %th{scope: "col"} Catalog Number
         %th{scope: "col"} Type Status
+        %th{scope: "col"}
 
     %tbody
       - @results.each do |o|
@@ -79,5 +80,7 @@
           %td #{o.institutionCode}
           %td #{o.catalogNumber}
           %td #{o.typeStatus}
+          %td
+            %button{type:"button", class:"btn btn-warning remove", "data-id":"#{o.id}"} Hide
 
   = will_paginate @results, { class: "pagination" }

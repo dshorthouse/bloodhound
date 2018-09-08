@@ -19,11 +19,13 @@ module Sinatra
           app.post '/user-occurrence/:id.json' do
             protected!
             req = JSON.parse(request.body.read).symbolize_keys
-            action = req[:action]
+            action = req[:action] rescue nil
+            visible = req[:visible] rescue true
             uo = UserOccurrence.new
             uo.user_id = @user[:id]
             uo.occurrence_id = params[:id]
             uo.action = action
+            uo.visible = visible
             uo.save
             { message: "ok", id: uo.id }.to_json
           end

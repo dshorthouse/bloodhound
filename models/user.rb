@@ -9,8 +9,13 @@ class User < ActiveRecord::Base
     is_public
   end
 
+  def visible_occurrences
+    occurrences.joins(:user_occurrences).where(user_occurrences: { visible: true })
+  end
+
   def user_occurrence_occurrences
-    user_occurrences.map{|u| { user_occurrence_id: u.id, action: u.action }.merge(u.occurrence.attributes.symbolize_keys) }
+    user_occurrences.where(visible: true)
+                    .map{|u| { user_occurrence_id: u.id, action: u.action }.merge(u.occurrence.attributes.symbolize_keys) }
   end
 
   def check_changes
