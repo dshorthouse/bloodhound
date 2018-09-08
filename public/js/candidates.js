@@ -52,7 +52,7 @@ var Candidates = (function($, window) {
                 method: "POST",
                 url: "/user-occurrence/bulk.json",
                 dataType: "json",
-                data: JSON.stringify({ ids: id, action: action })
+                data: JSON.stringify({ ids: id, action: action, visible: true })
             }).done(function(data) {
                 $('.table tbody tr').fadeOut(500, function() {
                   $(this).remove();
@@ -63,7 +63,7 @@ var Candidates = (function($, window) {
               method: "POST",
               url: "/user-occurrence/" + id + ".json",
               dataType: "json",
-              data: JSON.stringify({ action: action })
+              data: JSON.stringify({ action: action, visible: true })
           }).done(function(data) {
             input.parents("tr").fadeOut(500, function() {
               $(this).remove();
