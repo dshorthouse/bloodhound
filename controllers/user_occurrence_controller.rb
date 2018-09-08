@@ -11,7 +11,13 @@ module Sinatra
             protected!
             req = JSON.parse(request.body.read).symbolize_keys
             action = req[:action]
-            data = req[:ids].split(",").map{|o| { user_id: @user[:id], occurrence_id: o.to_i, action: action } }
+            data = req[:ids].split(",").map{|o| { 
+              user_id: @user[:id],
+              occurrence_id: o.to_i,
+              action: action,
+              visible: visible
+              }
+            }
             UserOccurrence.create(data)
             { message: "ok" }.to_json
           end
@@ -43,6 +49,7 @@ module Sinatra
             req = JSON.parse(request.body.read).symbolize_keys
             uo = UserOccurrence.find(params[:id])
             uo.action = req[:action]
+            uo.visible = true
             uo.save
             { message: "ok" }.to_json
           end
