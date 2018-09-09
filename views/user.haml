@@ -11,6 +11,7 @@
             %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"}
               %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
             %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"} http://orcid.org/#{@viewed_user[:orcid]}
+          %p #{@total} Specimens
 
 - if !@results.empty?
   %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
@@ -39,24 +40,25 @@
         %th{scope: "col"} Type Status
 
     %tbody
-      - @results.each do |o|
+      - @results.each do |uo|
+        - o = uo.occurrence
         %tr
           %td
-            - if o[:action] == "recorded"
+            - if uo.action == "recorded"
               %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
-            - elsif o[:action] == "identified"
+            - elsif uo.action == "identified"
               %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
             - else
               %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
               %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
           %td
-            %a{href: "https://www.gbif.org/occurrence/#{o[:gbifID]}" } #{o[:scientificName]}
-          %td #{o[:recordedBy]}
-          %td #{o[:identifiedBy]}
-          %td #{o[:eventDate]}
-          %td #{o[:dateIdentified]}
-          %td #{o[:institutionCode]}
-          %td #{o[:catalogNumber]}
-          %td #{o[:typeStatus]}
+            %a{href: "https://www.gbif.org/occurrence/#{o.gbifID}" } #{o.scientificName}
+          %td #{o.recordedBy}
+          %td #{o.identifiedBy}
+          %td #{o.eventDate}
+          %td #{o.dateIdentified}
+          %td #{o.institutionCode}
+          %td #{o.catalogNumber}
+          %td #{o.typeStatus}
 
   = will_paginate @results, { class: "pagination" }

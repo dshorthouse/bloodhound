@@ -210,14 +210,9 @@ module Sinatra
               @viewed_user = User.find_by_orcid(params[:orcid])
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
-                search_size = (params[:per] || 25).to_i
-                occurrences = @viewed_user.user_occurrence_occurrences
-
-                @total = occurrences.length
-
-                @results = WillPaginate::Collection.create(page, search_size, occurrences.length) do |pager|
-                  pager.replace occurrences[pager.offset, pager.per_page]
-                end
+                visible = @viewed_user.user_occurrences.where(visible: true)
+                @results = visible.paginate :page => params[:page]
+                @total = visible.count
 
                 haml :user
               else
