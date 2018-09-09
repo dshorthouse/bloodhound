@@ -18,7 +18,7 @@
       %h2{class:"display-4 text-left"} Your Candidate Specimens
     %div{class:"col"}
       %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8"}
-        %div{class: "inputs search-agent float-right"}
+        %div{class: "inputs search-agent"}
           %label{for: "typeahead"}= "Search"
           %input.typeahead{id: "typeahead", type: :text, name: "q", placeholder: "Mary Smith", value: "#{params[:q]}", size: 30}
 

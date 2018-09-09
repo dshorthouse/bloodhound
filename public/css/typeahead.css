@@ -5,6 +5,7 @@ label input {
 #form-wrapper {
   margin-bottom:1.75em;
 }
+
 #form-wrapper .search-agent{
   vertical-align:middle;
 }
@@ -97,4 +98,10 @@ label input {
 }
 .btn-choice{
   padding:0.2rem 0.5rem;
+}
+
+@media only screen and (min-width: 450px) {
+  .search-agent {
+    float:right !important;
+  }
 }
