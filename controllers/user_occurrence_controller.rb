@@ -10,7 +10,8 @@ module Sinatra
           app.post '/user-occurrence/bulk.json' do
             protected!
             req = JSON.parse(request.body.read).symbolize_keys
-            action = req[:action]
+            action = req[:action] rescue nil
+            visible = req[:visible] rescue true
             data = req[:ids].split(",").map{|o| { 
               user_id: @user[:id],
               occurrence_id: o.to_i,
