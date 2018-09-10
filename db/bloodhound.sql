@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 07, 2018 at 03:08 PM
+-- Generation Time: Sep 10, 2018 at 12:19 PM
 -- Server version: 5.7.22
 -- PHP Version: 5.6.36
 
@@ -194,7 +194,8 @@ CREATE TABLE `user_occurrences` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `occurrence_id` int(11) NOT NULL,
-  `action` varchar(100) DEFAULT NULL
+  `action` varchar(100) DEFAULT NULL,
+  `visible` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -323,13 +324,13 @@ ALTER TABLE `occurrences`
 -- AUTO_INCREMENT for table `occurrence_determiners`
 --
 ALTER TABLE `occurrence_determiners`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38141371;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38110301;
 
 --
 -- AUTO_INCREMENT for table `occurrence_recorders`
 --
 ALTER TABLE `occurrence_recorders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67501051;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67469981;
 
 --
 -- AUTO_INCREMENT for table `taxa`
@@ -341,25 +342,25 @@ ALTER TABLE `taxa`
 -- AUTO_INCREMENT for table `taxon_determiners`
 --
 ALTER TABLE `taxon_determiners`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27721306;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27705608;
 
 --
 -- AUTO_INCREMENT for table `taxon_occurrences`
 --
 ALTER TABLE `taxon_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33226246;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33185762;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user_occurrences`
 --
 ALTER TABLE `user_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
