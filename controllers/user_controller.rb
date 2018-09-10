@@ -178,6 +178,7 @@ module Sinatra
 
           app.get '/:orcid.json' do
             if params[:orcid].is_orcid?
+              content_type "application/json"
               @viewed_user = User.find_by_orcid(params[:orcid])
               user = {}
               user[:personal] = @viewed_user
