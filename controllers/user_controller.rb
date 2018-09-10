@@ -212,7 +212,10 @@ module Sinatra
                 page = (params[:page] || 1).to_i
                 visible = @viewed_user.user_occurrences.where(visible: true)
                 @results = visible.paginate :page => params[:page]
-                @total = visible.count
+                @total = {
+                  identified: @viewed_user.identified_count,
+                  recorded: @viewed_user.recorded_count
+                }
 
                 haml :user
               else

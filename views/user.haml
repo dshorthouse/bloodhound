@@ -11,7 +11,7 @@
             %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"}
               %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
             %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"} http://orcid.org/#{@viewed_user[:orcid]}
-          %p #{@total} Specimens
+          %p.lead Collected #{@total[:recorded]} and identified #{@total[:identified]} specimens
 
 - if !@results.empty?
   %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}

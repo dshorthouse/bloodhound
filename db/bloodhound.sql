@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 10, 2018 at 12:19 PM
+-- Generation Time: Sep 10, 2018 at 12:41 PM
 -- Server version: 5.7.22
 -- PHP Version: 5.6.36
 
@@ -291,6 +291,7 @@ ALTER TABLE `user_occurrences`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id_idx` (`user_id`),
   ADD KEY `occurrence_id_idx` (`occurrence_id`);
+ALTER TABLE `user_occurrences` ADD FULLTEXT KEY `action_idx` (`action`);
 
 --
 -- AUTO_INCREMENT for dumped tables

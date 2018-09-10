@@ -18,6 +18,22 @@ class User < ActiveRecord::Base
                     .map{|u| { user_occurrence_id: u.id, action: u.action }.merge(u.occurrence.attributes.symbolize_keys) }
   end
 
+  def identifications
+    occurrences.joins(:user_occurrences).where("MATCH (user_occurrences.action) AGAINST ('identified')")
+  end
+
+  def recordings
+    occurrences.joins(:user_occurrences).where("MATCH (user_occurrences.action) AGAINST ('recorded')")
+  end
+
+  def identified_count
+    user_occurrences.where("MATCH (user_occurrences.action) AGAINST ('identified')").count
+  end
+
+  def recorded_count
+    user_occurrences.where("MATCH (user_occurrences.action) AGAINST ('recorded')").count
+  end
+
   def check_changes
     changes = []
     occurrences.each do |o|
