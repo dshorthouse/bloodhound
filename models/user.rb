@@ -26,12 +26,20 @@ class User < ActiveRecord::Base
     occurrences.joins(:user_occurrences).where("MATCH (user_occurrences.action) AGAINST ('recorded')")
   end
 
+  def identifications_recordings
+    occurrences.joins(:user_occurrences).where("MATCH (user_occurrences.action) AGAINST ('+recorded +identified' IN BOOLEAN MODE)")
+  end
+
   def identified_count
-    user_occurrences.where("MATCH (user_occurrences.action) AGAINST ('identified')").count
+    user_occurrences.where("MATCH (action) AGAINST ('identified')").count
   end
 
   def recorded_count
-    user_occurrences.where("MATCH (user_occurrences.action) AGAINST ('recorded')").count
+    user_occurrences.where("MATCH (action) AGAINST ('recorded')").count
+  end
+
+  def identified_recorded_count
+    user_occurrences.where("MATCH (action) AGAINST ('+recorded +identified' IN BOOLEAN MODE)").count
   end
 
   def check_changes
