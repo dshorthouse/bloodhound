@@ -32,13 +32,13 @@ module Sinatra
           app.get '/profile' do
             protected!
 
-            page = (params[:page] || 1).to_i
-            search_size = (params[:per] || 25).to_i
+            @page = (params[:page] || 1).to_i
+            @search_size = (params[:per] || 25).to_i
             occurrences = User.find(@user[:id]).user_occurrence_occurrences
 
             @total = occurrences.length
 
-            @results = WillPaginate::Collection.create(page, search_size, occurrences.length) do |pager|
+            @results = WillPaginate::Collection.create(@page, @search_size, occurrences.length) do |pager|
               pager.replace occurrences[pager.offset, pager.per_page]
             end
             haml :profile
@@ -78,8 +78,8 @@ module Sinatra
           app.get '/candidates' do
             protected!
             occurrence_ids = []
-            page = (params[:page] || 1).to_i
-            search_size = (params[:per] || 25).to_i
+            @page = (params[:page] || 1).to_i
+            @search_size = (params[:per] || 25).to_i
 
             if @user[:family].nil?
               @results = []
@@ -120,7 +120,7 @@ module Sinatra
 
               @total = occurrence_ids.length
 
-              @results = WillPaginate::Collection.create(page, search_size, occurrence_ids.length) do |pager|
+              @results = WillPaginate::Collection.create(@page, @search_size, occurrence_ids.length) do |pager|
                 pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
               end
             end
@@ -131,18 +131,24 @@ module Sinatra
           app.get '/candidates/agent/:id' do
             protected!
             occurrence_ids = []
-            page = (params[:page] || 1).to_i
-            search_size = (params[:per] || 25).to_i
+            @page = (params[:page] || 1).to_i
+            @search_size = (params[:per] || 25).to_i
 
             @searched_user = Agent.find(params[:id])
+            user = User.find(@user[:id])
+            linked_ids = user.user_occurrences.pluck(:occurrence_id)
 
-            recorded = OccurrenceRecorder.where(agent_id: @searched_user.id).pluck(:occurrence_id)
-            determined = OccurrenceDeterminer.where(agent_id: @searched_user.id).pluck(:occurrence_id)
+            recorded = OccurrenceRecorder.where(agent_id: @searched_user.id)
+                                         .where.not(occurrence_id: linked_ids)
+                                         .pluck(:occurrence_id)
+            determined = OccurrenceDeterminer.where(agent_id: @searched_user.id)
+                                             .where.not(occurrence_id: linked_ids)
+                                             .pluck(:occurrence_id)
             occurrence_ids = (recorded + determined).uniq
 
             @total = occurrence_ids.length
 
-            @results = WillPaginate::Collection.create(page, search_size, occurrence_ids.length) do |pager|
+            @results = WillPaginate::Collection.create(@page, @search_size, occurrence_ids.length) do |pager|
               pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
             end
             haml :candidates_agent
