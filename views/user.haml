@@ -9,7 +9,7 @@
           %h2{class:"display-4 text-left"}= viewed_user_text
 
         %div{class:"col alt-name-wrapper"}
-          - if !@viewed_user[:other_names].nil?
+          - if !@viewed_user[:other_names].blank?
             %dl.row
               %dt.col-sm-4 Alternate Name(s)
               %dd.col-sm-8
