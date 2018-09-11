@@ -18,19 +18,6 @@
       %div{class:"row"}
         %div{class:"col title-col"}
           %h2{class:"display-4 text-left"}= user_text
-          %p.orcid
-            %a{href: "https://orcid.org/#{@user[:orcid]}"}
-              %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-            %a{href: "https://orcid.org/#{@user[:orcid]}"} http://orcid.org/#{@user[:orcid]}
-          %p.orcid-refresh
-            %a{href: "/refresh-orcid.json"}
-              %img{src: "/images/orcid_refresh_24x24.png", alt:"Refresh ORCID iD Content"}
-            %a{href: "/refresh-orcid.json"} Refresh ORCID Data
-
-          %div{class:"alert alert-success alert-dismissible fade show", role: "alert"}
-            ORCID Data was refreshed.
-            %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
-              %span{"aria-hidden":"true"} &times;
 
         %div{class:"col alt-name-wrapper"}
           - if !@user[:other_names].nil?
@@ -39,6 +26,20 @@
               %dd.col-sm-8
                 - @user[:other_names].split("|").each do |alt|
                   %span{itemprop: "alternateName", class:"alt-name"} #{alt}
+
+    %p.orcid
+      %a{href: "https://orcid.org/#{@user[:orcid]}"}
+        %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+      %a{href: "https://orcid.org/#{@user[:orcid]}"} http://orcid.org/#{@user[:orcid]}
+    %p.orcid-refresh
+      %a{href: "/refresh-orcid.json"}
+        %img{src: "/images/orcid_refresh_24x24.png", alt:"Refresh ORCID iD Content"}
+      %a{href: "/refresh-orcid.json"} Refresh ORCID Data
+
+    %div{class:"alert alert-success alert-dismissible fade show", role: "alert"}
+      ORCID Data was refreshed.
+      %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+        %span{"aria-hidden":"true"} &times;
 
 %p{class: "text-right"}
   %a{ href:"/candidates", id: "candidates-button", role: "button", class: "btn btn-success" }

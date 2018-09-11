@@ -7,11 +7,20 @@
       %div{class:"row"}
         %div{class:"col title-col"}
           %h2{class:"display-4 text-left"}= viewed_user_text
-          %p.orcid
-            %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"}
-              %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-            %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"} http://orcid.org/#{@viewed_user[:orcid]}
-          %p.lead Collected #{@total[:recorded]} and identified #{@total[:identified]} specimens
+
+        %div{class:"col alt-name-wrapper"}
+          - if !@viewed_user[:other_names].nil?
+            %dl.row
+              %dt.col-sm-4 Alternate Name(s)
+              %dd.col-sm-8
+                - @viewed_user[:other_names].split("|").each do |alt|
+                  %span{itemprop: "alternateName", class:"alt-name"} #{alt}
+
+      %p.orcid
+        %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"}
+          %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+        %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"} http://orcid.org/#{@viewed_user[:orcid]}
+      %p.lead Collected #{@total[:recorded]} and identified #{@total[:identified]} specimens
 
 - if !@results.empty?
   %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
