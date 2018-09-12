@@ -16,7 +16,7 @@ module Bloodhound
       \b[,;]?\s*(?i:undetermined|indeterminable|dummy)\b|
       \b[,;]?\s*(?i:importer)\b|
       \b[,;]?\s*(?i:frère|frere|père|pere|soeur|sister|bro)\.?(\b|\z)|
-      (?i:no\s+data)|
+      (?i:no\s+(data|disponible))|
       \b[,;]?\s*(?i:stet)[,!]?\s*\d*\z|
       [,;]?\s*\d+[-/\s+](?i:\d+|Jan|Feb|Mar|Apr|
         May|Jun|Jul|Aug|Sept?|
@@ -117,6 +117,10 @@ module Bloodhound
       '*' => ''
     }
 
+    COMPLEX_SEPARATORS = %r{
+      ^([A-Za-z]{4,},\s+(?:[A-Z]\.\s*){1,})\s+([A-Za-z]{4,},\s+(?:[A-Z]\.\s*){1,})$
+    }x
+
     BLACKLIST = %r{
       (?i:abundant)|
       (?i:adult|juvenile)|
@@ -131,6 +135,7 @@ module Bloodhound
       \b\s*(?i:help)\s*\b|
       (?i:description|drawing|identification|remark|original|illustration|checklist|intermedia|measurement|indisting|series|imperfect)|
       (?i:evidence)|
+      (?i:inconn?u)|
       (?i:internation|gou?vern|ministry|unit|district|provincial|na(c|t)ional|military|region|environ|natur(e|al)|naturelles|division|program|direction|national)|
       (?i:label)|
       (?i:o?\.?m\.?n\.?r\.?)|
@@ -172,6 +177,7 @@ module Bloodhound
       cleaned = name.gsub(STRIP_OUT, ' ')
                     .gsub(/[#{CHAR_SUBS.keys.join('\\')}]/, CHAR_SUBS)
                     .gsub(/([A-Z]{1}\.)([[:alpha:]]{2,})/, '\1 \2')
+                    .gsub(COMPLEX_SEPARATORS, '\1 | \2')
                     .gsub(/,\z/, '')
                     .squeeze(' ').strip
       Namae.parse(cleaned)

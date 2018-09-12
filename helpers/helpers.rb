@@ -42,7 +42,7 @@ module Sinatra
 
       def protected!
         return if authorized?
-        halt 401, "Not authorized\n"
+        halt 401, haml(:not_authorized)
       end
 
       def authorized?

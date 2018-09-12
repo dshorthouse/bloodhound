@@ -36,6 +36,22 @@ describe "Utility functions to handle names of people" do
     expect(@utility.clean(parsed[0]).to_h).to eq({given:'C.', family: 'Tanner'})
   end
 
+  it "should recognize a single name in reverse order with a comma" do
+    input = "Tanner, C.A."
+    parsed = @utility.parse(input)
+    expect(parsed.size).to eq(1)
+    expect(parsed[0].values_at(:given, :family)).to eq(['C.A.', 'Tanner'])
+    expect(@utility.clean(parsed[0]).to_h).to eq({given:'C.A.', family: 'Tanner'})
+  end
+
+  it "should recognize a single name as a family name" do
+    input = "Tanner"
+    parsed = @utility.parse(input)
+    expect(parsed.size).to eq(1)
+    expect(parsed[0].values_at(:given, :family)).to eq(['Tanner', nil]) #expect this because parser doesn't get it right
+    expect(@utility.clean(parsed[0]).to_h).to eq({given:nil, family: 'Tanner'})
+  end
+
   it "should remove numerical values and lowercase letter" do
     input = "23440a Ian D. MacDonald"
     parsed = @utility.parse(input)
@@ -80,6 +96,15 @@ describe "Utility functions to handle names of people" do
     expect(parsed[0].values_at(:given, :family)).to eq(["MACLENNAN", "SOSIAK"])
     expect(@utility.clean(parsed[0]).to_h).to eq({given: 'MacLennan', family:'Sosiak'})
   end
+
+  #TODO Latin American names not parsed properly when Namae.options[:prefer_comma_as_separator] = true
+#  it "should deal with composite family names" do
+#    input = "Rázuri Gonzales, Ernesto"
+#    parsed = @utility.parse(input)
+#    expect(parsed.size).to eq(1)
+#    expect(parsed[0].values_at(:given, :family)).to eq(["Ernesto", "Rázuri Gonzales"])
+#    expect(@utility.clean(parsed[0]).to_h).to eq({given: 'Ernesto', family:'Rázuri Gonzales'})
+#  end
 
   it "should remove 'et al'" do
     input = "Jack Smith et al"
@@ -296,6 +321,12 @@ describe "Utility functions to handle names of people" do
     parsed = @utility.parse(input)
     expect(parsed).to eq([])
   end
+
+  it "should remove [no disponible]" do
+    input = "[no disponible]"
+    parsed = @utility.parse(input)
+    expect(parsed).to eq([])
+  end
   
   it "should parse name with many given initials" do
     input = "FAH Sperling"
@@ -383,6 +414,14 @@ describe "Utility functions to handle names of people" do
     expect(parsed.size).to eq(2)
     expect(parsed[0].values_at(:given, :family)).to eq(['Jack', 'Smith'])
     expect(parsed[1].values_at(:given, :family)).to eq(['Yves', 'Archambault'])
+  end
+
+  it "should explode names with spaces" do
+    input = "Puttock, C.F. James, S.A."
+    parsed = @utility.parse(input)
+    expect(parsed.size).to eq(2)
+    expect(parsed[0].values_at(:given, :family)).to eq(['C.F.', 'Puttock'])
+    expect(parsed[1].values_at(:given, :family)).to eq(['S.A.', 'James'])
   end
 
   it "should explode names with ' | '" do
