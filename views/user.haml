@@ -14,7 +14,7 @@
               %dt.col-sm-4 Alternate Name(s)
               %dd.col-sm-8
                 - @viewed_user[:other_names].split("|").each do |alt|
-                  %span{itemprop: "alternateName", class:"alt-name"} #{alt}
+                  %span{class:"alt-name"} #{alt}
 
       %p.orcid
         %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"}
