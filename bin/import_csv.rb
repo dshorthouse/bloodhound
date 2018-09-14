@@ -56,7 +56,7 @@ def import_file(file_path)
       end
     end
     sql = "LOAD DATA INFILE '#{output}' 
-           INTO TABLE occurrence_codes 
+           INTO TABLE occurrences 
            CHARACTER SET UTF8 
            FIELDS TERMINATED BY ',' 
            OPTIONALLY ENCLOSED BY '\"'
