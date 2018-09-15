@@ -57,6 +57,7 @@ var Candidates = (function($, window) {
                 $('.table tbody tr').fadeOut(500, function() {
                   $(this).remove();
                 });
+                location.reload();
             });
         } else {
           $.ajax({
