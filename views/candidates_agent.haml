@@ -1,5 +1,5 @@
 -content_for :title do
-  Bloodhound::#{@searched_user.given} #{@searched_user.family}'s Specimens
+  Bloodhound :: #{@searched_user.fullname}'s Specimens
 
 -content_for :stylesheets do
   %link{href: "/css/typeahead.css", rel: "stylesheet", type: "text/css"}
@@ -15,7 +15,7 @@
 %div{class:"container-fluid"}
   %div{class:"row"}
     %div{class:"col title-col"}
-      %h2{class:"display-4 text-left"}#{@searched_user.given} #{@searched_user.family}'s Specimens
+      %h2{class:"display-4 text-left"}#{@searched_user.fullname}'s Specimens
     %div{class:"col"}
       %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8"}
         %div{class: "inputs search-agent"}

@@ -25,7 +25,7 @@ module Sinatra
       def update_session
         user = User.find(@user[:id]).reload
         user_hash = user.as_json.symbolize_keys
-        user_hash[:label] = user.label
+        user_hash[:fullname] = user.fullname
         session[:omniauth] = user_hash
         set_session
       end

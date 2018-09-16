@@ -1,5 +1,5 @@
 -content_for :title do
-  Bloodhound::#{@user[:label]}
+  Bloodhound :: #{@user[:fullname]}
 
 -content_for :stylesheets do
   %link{href: "/css/bootstrap-toggle.min.css", rel: "stylesheet", type: "text/css"}
@@ -17,7 +17,7 @@
     %div{class: "container-fluid"}
       %div{class:"row"}
         %div{class:"col title-col"}
-          %h2{class:"display-4 text-left"}= @user[:label]
+          %h2{class:"display-4 text-left"}= @user[:fullname]
 
         %div{class:"col alt-name-wrapper"}
           - if !@user[:other_names].blank?

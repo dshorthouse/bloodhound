@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
     is_public
   end
 
-  def label
+  def fullname
     if !family.nil?
       [given, family].compact.join(" ")
     else
@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def label_reverse
+  def fullname_reverse
     if !family.nil?
       [family, given].compact.join(", ")
     else
@@ -26,24 +26,29 @@ class User < ActiveRecord::Base
   end
 
   def visible_occurrences
-    occurrences.joins(:user_occurrences).where(user_occurrences: { visible: true })
+    occurrences.joins(:user_occurrences)
+               .where(user_occurrences: { visible: true })
   end
 
   def user_occurrence_occurrences
     user_occurrences.where(visible: true)
-                    .map{|u| { user_occurrence_id: u.id, action: u.action }.merge(u.occurrence.attributes.symbolize_keys) }
+                    .map{|u| { user_occurrence_id: u.id, action: u.action }
+                    .merge(u.occurrence.attributes.symbolize_keys) }
   end
 
   def identifications
-    occurrences.joins(:user_occurrences).where("MATCH (user_occurrences.action) AGAINST ('+identified' IN BOOLEAN MODE)")
+    occurrences.joins(:user_occurrences)
+               .where("MATCH (user_occurrences.action) AGAINST ('+identified' IN BOOLEAN MODE)")
   end
 
   def recordings
-    occurrences.joins(:user_occurrences).where("MATCH (user_occurrences.action) AGAINST ('+recorded' IN BOOLEAN MODE)")
+    occurrences.joins(:user_occurrences)
+               .where("MATCH (user_occurrences.action) AGAINST ('+recorded' IN BOOLEAN MODE)")
   end
 
   def identifications_recordings
-    occurrences.joins(:user_occurrences).where("MATCH (user_occurrences.action) AGAINST ('+recorded +identified' IN BOOLEAN MODE)")
+    occurrences.joins(:user_occurrences)
+               .where("MATCH (user_occurrences.action) AGAINST ('+recorded +identified' IN BOOLEAN MODE)")
   end
 
   def identified_count

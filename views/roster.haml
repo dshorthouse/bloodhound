@@ -1,5 +1,5 @@
 -content_for :title do
-  Bloodhound::Roster
+  Bloodhound :: Roster
 
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid"}
@@ -18,7 +18,7 @@
       - @results.each do |o|
         %tr
           %td 
-            %a{href: "/#{o.orcid}"} #{o.label_reverse}
+            %a{href: "/#{o.orcid}"} #{o.fullname_reverse}
           %td #{o.user_occurrences.where(visible: true).count}
           %td
             %a{href: "https://orcid.org/#{o.orcid}"}

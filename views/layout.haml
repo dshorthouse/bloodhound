@@ -46,7 +46,7 @@
         %ul{class: "navbar-nav"}
           - if authorized?
             %li{class: "nav-item"}
-              %a{ href: "/profile", id: "linked-button", role: "button", class: "btn btn-success" }= @user[:label]
+              %a{ href: "/profile", id: "linked-button", role: "button", class: "btn btn-success" }= @user[:fullname]
             %li{class: "nav-item"}
               %a{ href: "/logout", class: "nav-link" } Logout
 
