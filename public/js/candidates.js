@@ -1,4 +1,4 @@
-/*global jQuery, window, document, self, encodeURIComponent, google, Bloodhound */
+/*global jQuery, window, document, self, encodeURIComponent, Bloodhound */
 var Candidates = (function($, window) {
 
   "use strict";
@@ -24,7 +24,9 @@ var Candidates = (function($, window) {
         remote : {
           url : '/'+type+'.json?q=%QUERY',
           wildcard : '%QUERY',
-          transform : function(r) { return $.map(r, function(v) { v['type'] = type; return v; });  }
+          transform : function(r) { 
+            return $.map(r, function(v) { v['type'] = type; return v; });
+          }
         }
       });
     },
@@ -52,7 +54,9 @@ var Candidates = (function($, window) {
                 method: "POST",
                 url: "/user-occurrence/bulk.json",
                 dataType: "json",
-                data: JSON.stringify({ ids: id, action: action, visible: true })
+                data: JSON.stringify({
+                  ids: id, action: action, visible: true
+                })
             }).done(function(data) {
                 $('.table tbody tr').fadeOut(500, function() {
                   $(this).remove();

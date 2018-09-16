@@ -1,12 +1,12 @@
 -content_for :title do
-  Bloodhound::#{viewed_user_text}
+  Bloodhound::#{@viewed_user.label}
 
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid"}
     %div{class: "container-fluid"}
       %div{class:"row"}
         %div{class:"col title-col"}
-          %h2{class:"display-4 text-left"}= viewed_user_text
+          %h2{class:"display-4 text-left"}= @viewed_user.label
 
         %div{class:"col alt-name-wrapper"}
           - if !@viewed_user[:other_names].blank?

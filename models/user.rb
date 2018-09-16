@@ -9,6 +9,22 @@ class User < ActiveRecord::Base
     is_public
   end
 
+  def label
+    if !family.nil?
+      [given, family].compact.join(" ")
+    else
+      orcid
+    end
+  end
+
+  def label_reverse
+    if !family.nil?
+      [family, given].compact.join(", ")
+    else
+      orcid
+    end
+  end
+
   def visible_occurrences
     occurrences.joins(:user_occurrences).where(user_occurrences: { visible: true })
   end
@@ -19,11 +35,11 @@ class User < ActiveRecord::Base
   end
 
   def identifications
-    occurrences.joins(:user_occurrences).where("MATCH (user_occurrences.action) AGAINST ('identified')")
+    occurrences.joins(:user_occurrences).where("MATCH (user_occurrences.action) AGAINST ('+identified' IN BOOLEAN MODE)")
   end
 
   def recordings
-    occurrences.joins(:user_occurrences).where("MATCH (user_occurrences.action) AGAINST ('recorded')")
+    occurrences.joins(:user_occurrences).where("MATCH (user_occurrences.action) AGAINST ('+recorded' IN BOOLEAN MODE)")
   end
 
   def identifications_recordings
@@ -31,11 +47,11 @@ class User < ActiveRecord::Base
   end
 
   def identified_count
-    user_occurrences.where("MATCH (action) AGAINST ('identified')").count
+    user_occurrences.where("MATCH (action) AGAINST ('+identified' IN BOOLEAN MODE)").count
   end
 
   def recorded_count
-    user_occurrences.where("MATCH (action) AGAINST ('recorded')").count
+    user_occurrences.where("MATCH (action) AGAINST ('+recorded' IN BOOLEAN MODE)").count
   end
 
   def identified_recorded_count

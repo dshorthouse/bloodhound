@@ -18,7 +18,7 @@
       - @results.each do |o|
         %tr
           %td 
-            %a{href: "/#{o.orcid}"} #{user_label(o)}
+            %a{href: "/#{o.orcid}"} #{o.label_reverse}
           %td #{o.user_occurrences.where(visible: true).count}
           %td
             %a{href: "https://orcid.org/#{o.orcid}"}

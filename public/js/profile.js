@@ -1,4 +1,4 @@
-/*global jQuery, window, document, self, encodeURIComponent, google, Bloodhound */
+/*global jQuery, window, document, self, encodeURIComponent, Bloodhound */
 var Profile = (function($, window) {
 
   "use strict";

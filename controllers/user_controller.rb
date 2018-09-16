@@ -24,8 +24,9 @@ module Sinatra
                           other_names: other_names
                         )
                        .find_or_create_by(orcid: orcid)
-                       .as_json.symbolize_keys
-            session[:omniauth] = user
+            user_hash = user.as_json.symbolize_keys
+            user_hash[:label] = user.label
+            session[:omniauth] = user_hash
             redirect '/'
           end
 

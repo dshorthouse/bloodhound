@@ -23,7 +23,10 @@ module Sinatra
       end
 
       def update_session
-        session[:omniauth] = User.find(@user[:id]).reload.as_json.symbolize_keys
+        user = User.find(@user[:id]).reload
+        user_hash = user.as_json.symbolize_keys
+        user_hash[:label] = user.label
+        session[:omniauth] = user_hash
         set_session
       end
 
@@ -153,30 +156,6 @@ module Sinatra
         %w{even odd}[@_cycle = ((@_cycle || -1) + 1) % 2]
       end
 
-      def user_text
-        if !@user[:family].nil?
-          [@user[:given], @user[:family]].compact.join(" ")
-        else
-          @user[:orcid]
-        end
-      end
-
-      def viewed_user_text
-        if !@viewed_user[:family].nil?
-          [@viewed_user[:given], @viewed_user[:family]].compact.join(" ")
-        else
-          @viewed_user[:orcid]
-        end
-      end
-
-      def user_label(user)
-        if !user[:family].nil?
-          [user[:family], user[:given]].compact.join(", ")
-        else
-          user[:orcid]
-        end
-      end
-
       def checked_tag(user_action, action)
         (user_action == action) ? "checked" : ""
       end
@@ -187,11 +166,6 @@ module Sinatra
 
       def is_public?
         @user[:is_public] ? true : false
-      end
-
-      def is_orcid?
-        orcid_pattern = /^(\d{4}-){3}\d{3}[0-9X]{1}$/
-        orcid_pattern.match?(self)
       end
 
       def to_csv(model, records)
