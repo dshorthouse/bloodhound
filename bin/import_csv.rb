@@ -28,10 +28,12 @@ end.parse!
 
 def import_file(file_path)
   attributes = Occurrence.attribute_names.map(&:downcase)
-  attributes.shift
+  attributes << "gbifid"
 
   header = File.open(file_path, &:readline).gsub("\n", "").split("\t")
   indices = header.each_with_index.select{|v,i| i if attributes.include?(v.downcase)}.to_h
+  indices["id"] = indices["gbifID"]
+  indices.delete("gbifID")
 
   time = Time.now.to_i
 

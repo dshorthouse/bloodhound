@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 10, 2018 at 12:41 PM
+-- Generation Time: Sep 17, 2018 at 07:53 PM
 -- Server version: 5.7.22
 -- PHP Version: 5.6.36
 
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `bloodhound`
 --
-CREATE DATABASE IF NOT EXISTS `bloodhound` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `bloodhound`;
 
 -- --------------------------------------------------------
 
@@ -72,8 +70,8 @@ CREATE TABLE `descriptions` (
 
 DROP TABLE IF EXISTS `occurrences`;
 CREATE TABLE `occurrences` (
-  `id` int(11) NOT NULL,
-  `gbifID` int(11) NOT NULL,
+  `id` int(11) NOT NULL COMMENT 'This is gbifID.',
+  `occurrenceID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `dateIdentified` text COLLATE utf8_unicode_ci,
   `decimalLatitude` text COLLATE utf8_unicode_ci,
   `decimalLongitude` text COLLATE utf8_unicode_ci,
@@ -96,10 +94,9 @@ CREATE TABLE `occurrences` (
 
 DROP TABLE IF EXISTS `occurrence_determiners`;
 CREATE TABLE `occurrence_determiners` (
-  `id` int(11) NOT NULL,
   `occurrence_id` int(11) NOT NULL,
   `agent_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -109,10 +106,9 @@ CREATE TABLE `occurrence_determiners` (
 
 DROP TABLE IF EXISTS `occurrence_recorders`;
 CREATE TABLE `occurrence_recorders` (
-  `id` int(11) NOT NULL,
   `occurrence_id` int(11) NOT NULL,
   `agent_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -159,10 +155,9 @@ CREATE TABLE `taxon_determiners` (
 
 DROP TABLE IF EXISTS `taxon_occurrences`;
 CREATE TABLE `taxon_occurrences` (
-  `id` int(11) NOT NULL,
   `occurrence_id` int(11) NOT NULL,
   `taxon_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -194,7 +189,7 @@ CREATE TABLE `user_occurrences` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `occurrence_id` int(11) NOT NULL,
-  `action` varchar(100) DEFAULT NULL,
+  `action` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `visible` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -229,24 +224,21 @@ ALTER TABLE `descriptions`
 -- Indexes for table `occurrences`
 --
 ALTER TABLE `occurrences`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `gbif_idx` (`gbifID`);
+  ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
 -- Indexes for table `occurrence_determiners`
 --
 ALTER TABLE `occurrence_determiners`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `occurrence_idx` (`occurrence_id`),
-  ADD KEY `agent_idx` (`agent_id`);
+  ADD KEY `occurrence_id_idx` (`occurrence_id`) USING BTREE,
+  ADD KEY `agent_id_idx` (`agent_id`) USING BTREE;
 
 --
 -- Indexes for table `occurrence_recorders`
 --
 ALTER TABLE `occurrence_recorders`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `occurrence_idx` (`occurrence_id`),
-  ADD KEY `agent_idx` (`agent_id`);
+  ADD KEY `occurrence_id_idx` (`occurrence_id`),
+  ADD KEY `agent_id_idx` (`agent_id`) USING BTREE;
 
 --
 -- Indexes for table `schema_migrations`
@@ -273,9 +265,8 @@ ALTER TABLE `taxon_determiners`
 -- Indexes for table `taxon_occurrences`
 --
 ALTER TABLE `taxon_occurrences`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `occurrence_idx` (`occurrence_id`),
-  ADD KEY `taxon_idx` (`taxon_id`);
+  ADD UNIQUE KEY `occurrence_id_idx` (`occurrence_id`),
+  ADD KEY `taxon_id_idx` (`taxon_id`);
 
 --
 -- Indexes for table `users`
@@ -316,24 +307,6 @@ ALTER TABLE `descriptions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66213;
 
 --
--- AUTO_INCREMENT for table `occurrences`
---
-ALTER TABLE `occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88441181;
-
---
--- AUTO_INCREMENT for table `occurrence_determiners`
---
-ALTER TABLE `occurrence_determiners`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38110301;
-
---
--- AUTO_INCREMENT for table `occurrence_recorders`
---
-ALTER TABLE `occurrence_recorders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67469981;
-
---
 -- AUTO_INCREMENT for table `taxa`
 --
 ALTER TABLE `taxa`
@@ -346,22 +319,16 @@ ALTER TABLE `taxon_determiners`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27705608;
 
 --
--- AUTO_INCREMENT for table `taxon_occurrences`
---
-ALTER TABLE `taxon_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33185762;
-
---
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `user_occurrences`
 --
 ALTER TABLE `user_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32771;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

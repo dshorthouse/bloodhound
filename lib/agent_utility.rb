@@ -134,6 +134,7 @@ module Bloodhound
       (?i:herbarium|herbier|collection|collected|publication|specimen|species|describe|an(a|o)morph|isolated|recorded|inspection|define|status|lighthouse)|
       \b\s*(?i:help)\s*\b|
       (?i:description|drawing|identification|remark|original|illustration|checklist|intermedia|measurement|indisting|series|imperfect)|
+      (?i:desconocido)|
       (?i:evidence)|
       (?i:inconn?u)|
       (?i:internation|gou?vern|ministry|unit|district|provincial|na(c|t)ional|military|region|environ|natur(e|al)|naturelles|division|program|direction|national)|

@@ -80,7 +80,7 @@
               %label{class:"btn  btn-choice btn-light"}
                 %input{type:"radio", name:"selection-#{o.id}",  class:"specimen-selector", "data-id":"#{o.id}", "data-action": "recorded,identified", autocomplete:"off"} Both
           %td
-            %a{href: "https://www.gbif.org/occurrence/#{o.gbifID}", target: "_blank"} #{o.scientificName}
+            %a{href: "https://www.gbif.org/occurrence/#{o.id}", target: "_blank"} #{o.scientificName}
           %td #{o.recordedBy}
           %td #{o.identifiedBy}
           %td #{o.eventDate}
