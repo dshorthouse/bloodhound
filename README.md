@@ -5,9 +5,10 @@ Proof-of-concept, Sinatra app to parse people names from structured biodiversity
 
 ## Requirements
 
-1. ruby 2.5.1
-2. ElasticSearch 6.2.4
-3. MySQL 14.14
+1. ruby 2.5.1+
+2. ElasticSearch 6.2.4+
+3. MySQL 14.14+
+4. Redis 4.0.9+
 
 ## Installation
 
@@ -20,6 +21,16 @@ Proof-of-concept, Sinatra app to parse people names from structured biodiversity
      # Adjust content of config.yml
      $ ./application.rb
      # See utilities in bin/ for importing and loading data, creation of search index
+
+## Worker Queues
+
+### Populate Agents
+
+     $ COUNT=5 QUEUE=agent rake environment resque:workers
+
+### Populate Taxa
+
+     $ COUNT=5 QUEUE=taxon rake environment resque:workers
 
 ## Elasticsearch Snapshot & Restore
 

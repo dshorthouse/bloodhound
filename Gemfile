@@ -28,6 +28,7 @@ gem 'parallel'
 gem 'dwc-archive'
 gem 'redis'
 gem 'pony'
+gem 'resque'
 
 group :production do
 end

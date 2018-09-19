@@ -1,4 +1,7 @@
 class Agent < ActiveRecord::Base
+  @queue = :agent
+
+  after_create :set_canonical_id
 
   has_many :occurrence_determiners, dependent: :destroy
   has_many :determinations, through: :occurrence_determiners, source: :occurrence
@@ -16,6 +19,16 @@ class Agent < ActiveRecord::Base
   belongs_to :canonical, class_name: "Agent"
 
   PARSER = ScientificNameParser.new
+
+  def self.enqueue(o)
+    Resque.enqueue(Agent, o.id)
+  end
+
+  def self.perform(id)
+    o = Occurrence.find(id)
+    job = Bloodhound::AgentWorker.new(o)
+    job.process
+  end
 
   def self.parse_search_orcid_response(agent, response)
     matches = {}
@@ -135,6 +148,13 @@ class Agent < ActiveRecord::Base
     network = Bloodhound::AgentNetwork.new(self)
     network.build
     network.to_vis
+  end
+
+  private
+
+  def set_canonical_id
+    self.canonical_id = self.id
+    self.save
   end
 
 end

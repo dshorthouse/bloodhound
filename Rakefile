@@ -1,11 +1,15 @@
 require 'rake'
 require 'bundler/setup'
 require 'rspec/core/rake_task'
-require 'byebug'
+require 'resque/tasks'
 require './environment'
 
 task :default => :test
 task :test => :spec
+
+task :environment do
+  require_relative './environment'
+end
 
 if !defined?(RSpec)
   puts "spec targets require RSpec"
@@ -55,7 +59,7 @@ namespace :db do
       if ['0.0.0.0', '127.0.0.1', 'localhost'].include?(conf[env][:host].strip)
         database = conf[env].delete(:database)
         ActiveRecord::Base.establish_connection(conf[env])
-        ActiveRecord::Base.connection.execute("drop database if exists  #{database}")
+        ActiveRecord::Base.connection.execute("drop database if exists #{database}")
       end
     end
   end
@@ -69,9 +73,8 @@ namespace :db do
       end
     end
   end
-
 end
 
-task :environment do
-  require_relative './environment'
+namespace :resque do
+  task setup: :environment
 end

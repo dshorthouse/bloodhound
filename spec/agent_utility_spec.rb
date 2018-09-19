@@ -127,6 +127,13 @@ describe "Utility functions to handle names of people" do
     expect(parsed[0].values_at(:given, :family)).to eq(['Jack', 'Smith'])
   end
 
+  it "should remove Collector(s):" do
+    input = "Collector(s): Richard D. Worthington"
+    parsed = @utility.parse(input)
+    expect(parsed.size).to eq(1)
+    expect(parsed[0].values_at(:given, :family)).to eq(['Richard D.', 'Worthington'])
+  end
+
   it "should remove 'and others'" do
     input = "Jack Smith and others"
     parsed = @utility.parse(input)
@@ -288,6 +295,22 @@ describe "Utility functions to handle names of people" do
     parsed = @utility.parse(input)
     expect(parsed.size).to eq(1)
     expect(parsed[0].values_at(:given, :family)).to eq(['Jack', 'Smith'])
+  end
+
+  it "should explode by 'e'" do
+    input = "Jack Smith e Carlos Santos"
+    parsed = @utility.parse(input)
+    expect(parsed.size).to eq(2)
+    expect(parsed[0].values_at(:given, :family)).to eq(['Jack', 'Smith'])
+    expect(parsed[1].values_at(:given, :family)).to eq(['Carlos', 'Santos'])
+  end
+
+  it "should not explode by E" do
+    input = "Jack E Smith"
+    parsed = @utility.parse(input)
+    expect(parsed.size).to eq(1)
+    expect(parsed[0].values_at(:given, :family)).to eq(['Jack E', 'Smith'])
+    expect(@utility.clean(parsed[0]).to_h).to eq({ family: "Smith", given: "Jack E."})
   end
 
   it "should remove 'UNKNOWN'" do
@@ -1096,6 +1119,13 @@ describe "Utility functions to handle names of people" do
     expect(parsed.size).to eq(3)
     expect(parsed[0].values_at(:given, :family)).to eq(['J.', 'Green'])
     expect(@utility.clean(parsed[2]).to_h).to eq({ family: nil, given: nil })
+  end
+
+  it "should parse a whole bunch of names" do
+    input = "Smith, William Leo; Bentley, Andrew C; Girard, Matthew G; Davis, Matthew P; Ho, Hsuan-Ching"
+    parsed = @utility.parse(input)
+    expect(parsed.size).to eq(5)
+    expect(parsed[4].values_at(:given, :family)).to eq(['Hsuan-Ching', 'Ho'])
   end
 
   it "should ignore names with 'the'" do

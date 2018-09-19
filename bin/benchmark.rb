@@ -3,15 +3,28 @@
 require_relative '../environment.rb'
 require 'benchmark'
 
-iterations = 100
+namestring = "Smith, William Leo; Bentley, Andrew C; Girard, Matthew G; Davis, Matthew P; Ho, Hsuan-Ching"
 
-occ = Bloodhound.find(1124328)
+iterations = 3500
 
 Benchmark.bm do |bm|
 
-  bm.report("agents_orig") do
+  bm.report("custom_parse") do
     iterations.times do
-      occ.agents
+      names = []
+      Bloodhound::AgentUtility.parse(namestring).each do |r|
+        name = Bloodhound::AgentUtility.clean(r)
+        if !name[:family].nil? && name[:family].length >= 3
+          names << name
+        end
+      end
+      names.uniq
+    end
+  end
+
+  bm.report("namae_parse") do
+    iterations.times do
+      Namae.parse(namestring)
     end
   end
 

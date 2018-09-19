@@ -23,8 +23,12 @@ if options[:truncate]
   Occurrence.connection.execute("TRUNCATE TABLE taxon_determiners")
 end
 
-puts "Populating taxa..."
-Occurrence.populate_taxa
+pbar = ProgressBar.create(title: "PopulatingTaxa", total: Occurrence.count, autofinish: false, format: '%t %b>> %i| %e')
+Occurrence.find_each do |o|
+  Taxon.enqueue(o)
+  pbar.increment
+end
+pbar.finish
 
 puts "Populating kingdoms..."
 Taxon.populate_kingdoms

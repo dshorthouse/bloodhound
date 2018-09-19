@@ -43,6 +43,7 @@ require 'uri'
 require 'capitalize_names'
 require 'pony'
 require 'csv'
+require 'resque'
 require 'byebug'
 
 require_all 'lib'

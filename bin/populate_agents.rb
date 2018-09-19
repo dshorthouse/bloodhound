@@ -31,5 +31,11 @@ if options[:truncate]
   end
 end
 
-Occurrence.populate_agents
+pbar = ProgressBar.create(title: "PopulatingAgents", total: Occurrence.count, autofinish: false, format: '%t %b>> %i| %e')
+Occurrence.find_each do |o|
+  Agent.enqueue(o)
+  pbar.increment
+end
+pbar.finish
+
 Description.populate_agents
