@@ -48,6 +48,9 @@ GEM
     dwc-archive (1.0.1)
       nokogiri (~> 1.8)
       parsley-store (~> 0.3)
+    dwc_agent (0.0.1)
+      capitalize-names (~> 1)
+      namae (~> 1)
     elasticsearch (6.1.0)
       elasticsearch-api (= 6.1.0)
       elasticsearch-transport (= 6.1.0)
@@ -211,6 +214,7 @@ DEPENDENCIES
   capitalize-names
   chronic
   dwc-archive
+  dwc_agent
   elasticsearch
   haml
   htmlentities

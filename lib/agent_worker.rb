@@ -12,7 +12,7 @@ module Bloodhound
       identifiers = parse(@o.identifiedBy)
 
       (recorders + identifiers).uniq.each do |a|
-        agent = Agent.find_or_create_by(family: a[:family].to_s, given: a[:given].to_s)
+        agent = Agent.where(family: a[:family].to_s, given: a[:given].to_s).first_or_create
         if recorders.include? a
           OccurrenceRecorder.create(occurrence_id: @o.id, agent_id: agent.id)
         end
@@ -24,8 +24,8 @@ module Bloodhound
 
     def parse(raw_names)
       names = []
-      Bloodhound::AgentUtility.parse(raw_names).each do |r|
-        name = Bloodhound::AgentUtility.clean(r)
+      DwcAgent.parse(raw_names).each do |r|
+        name = DwcAgent.clean(r)
         if !name[:family].nil? && name[:family].length >= 3
           names << name
         end

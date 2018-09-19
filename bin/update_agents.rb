@@ -54,7 +54,7 @@ end
 
 if options[:agent]
   id = options[:agent]
-  if Bloodhound::AgentUtility.is_orcid? id
+  if id.is_orcid?
     agent = Agent.find_by_orcid(id)
   else
     agent = Agent.find(id)

@@ -29,6 +29,7 @@ gem 'dwc-archive'
 gem 'redis'
 gem 'pony'
 gem 'resque'
+gem 'dwc_agent'
 
 group :production do
 end

@@ -44,6 +44,7 @@ require 'capitalize_names'
 require 'pony'
 require 'csv'
 require 'resque'
+require 'dwc_agent'
 require 'byebug'
 
 require_all 'lib'
