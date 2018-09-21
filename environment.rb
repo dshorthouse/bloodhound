@@ -44,6 +44,8 @@ require 'capitalize_names'
 require 'pony'
 require 'csv'
 require 'resque'
+require 'sidekiq'
+require 'sidekiq/web'
 require 'dwc_agent'
 require 'byebug'
 

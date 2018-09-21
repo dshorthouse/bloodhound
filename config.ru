@@ -8,4 +8,4 @@ log = File.new("log/sinatra.log", "a+")
 $stdout.reopen(log)
 $stderr.reopen(log)
 
-run BLOODHOUND
+run Rack::URLMap.new('/' => BLOODHOUND, '/sidekiq' => Sidekiq::Web)

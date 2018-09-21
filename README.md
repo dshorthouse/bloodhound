@@ -19,18 +19,20 @@ Proof-of-concept, Sinatra app to parse people names from structured biodiversity
      $ mysql -u root bloodhound < db/bloodhound.sql
      $ cp config.yml.sample config.yml
      # Adjust content of config.yml
-     $ ./application.rb
+     $ rackup -p 4567 config.ru
      # See utilities in bin/ for importing and loading data, creation of search index
 
 ## Worker Queues
 
 ### Populate Agents
 
-     $ COUNT=5 QUEUE=agent rake environment resque:workers
+     $ ./bin/populate_agents.rb
+     $ sidekiq -c 20 -q agent -r ./environment.rb
 
 ### Populate Taxa
 
-     $ COUNT=5 QUEUE=taxon rake environment resque:workers
+     $ ./bin/populate_taxa.rb
+     $ sidekiq -c 20 -q taxon -r ./environment.rb
 
 ## Elasticsearch Snapshot & Restore
 

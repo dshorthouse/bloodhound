@@ -1,6 +1,4 @@
 class Agent < ActiveRecord::Base
-  @queue = :agent
-
   after_create :set_canonical_id
 
   has_many :occurrence_determiners, dependent: :destroy
@@ -21,13 +19,7 @@ class Agent < ActiveRecord::Base
   PARSER = ScientificNameParser.new
 
   def self.enqueue(o)
-    Resque.enqueue(Agent, o.id)
-  end
-
-  def self.perform(id)
-    o = Occurrence.find(id)
-    job = Bloodhound::AgentWorker.new(o)
-    job.process
+    Sidekiq::Client.enqueue(Bloodhound::AgentWorker, o.id)
   end
 
   def self.parse_search_orcid_response(agent, response)

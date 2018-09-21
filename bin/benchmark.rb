@@ -12,8 +12,8 @@ Benchmark.bm do |bm|
   bm.report("custom_parse") do
     iterations.times do
       names = []
-      Bloodhound::AgentUtility.parse(namestring).each do |r|
-        name = Bloodhound::AgentUtility.clean(r)
+      DwcAgent.parse(namestring).each do |r|
+        name = DwcAgent.clean(r)
         if !name[:family].nil? && name[:family].length >= 3
           names << name
         end

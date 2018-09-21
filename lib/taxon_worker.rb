@@ -2,19 +2,13 @@
 
 module Bloodhound
   class TaxonWorker
+    include Sidekiq::Worker
+    sidekiq_options queue: :taxon
 
-    def initialize(occurrence)
-      @o = occurrence
-    end
-
-    def process
-      if !@o.family.blank?
-        taxon = Taxon.find_or_create_by(family: @o.family)
-        TaxonOccurrence.create(occurrence_id: @o.id, taxon_id: taxon.id)
-        OccurrenceDeterminer.where(occurrence_id: @o.id).pluck(:agent_id).each do |agent_id|
-          TaxonDeterminer.create(agent_id: agent_id, taxon_id: taxon.id)
-        end
-      end
+    def perform(id)
+      o = Occurrence.find(id)
+      job = Bloodhound::TaxonProcessor.new(o)
+      job.process
     end
 
   end

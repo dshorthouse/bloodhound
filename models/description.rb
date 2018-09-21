@@ -2,6 +2,7 @@ class Description < ActiveRecord::Base
   has_many :agent_descriptions
   has_many :agents, through: :agent_descriptions
 
+  #TODO: convert to sidekiq queue
   def self.populate_agents
     parser = ScientificNameParser.new
     types = Occurrence.where("LOWER(typeStatus) LIKE '%type%'").pluck(:scientificName).uniq
@@ -21,9 +22,9 @@ class Description < ActiveRecord::Base
         Description.transaction do
           description = Description.find_or_create_by(scientificName: normalized_scientific_name, year: authors_year[:year])
           authors_year[:authors].uniq.each do |d|
-            names = Bloodhound::AgentUtility.parse(d)
+            names = DwcAgent.parse(d)
             names.each do |name|
-              cleaned_name = Bloodhound::AgentUtility.clean(name)
+              cleaned_name = DwcAgent.clean(name)
               if !cleaned_name[:family].nil?
                 agent = Agent.find_or_create_by(family: cleaned_name[:family].to_s, given: cleaned_name[:given].to_s)
                 if agent.canonical_id.nil?

@@ -119,7 +119,7 @@ module Sinatra
 
       def build_name_query(search)
         parsed = Namae.parse search
-        name = ::Bloodhound::AgentUtility.clean(parsed[0])
+        name = DwcAgent.clean(parsed[0])
         family = !name[:family].nil? ? name[:family] : ""
         given = !name[:given].nil? ? name[:given] : ""
         {

@@ -1,6 +1,4 @@
 class Taxon < ActiveRecord::Base
-  @queue = :taxon
-
   has_many :taxon_determiners
   has_many :determinations, through: :taxon_determiners, source: :agent
 
@@ -8,13 +6,7 @@ class Taxon < ActiveRecord::Base
   has_many :occurrences, through: :taxon_occurrences, source: :occurrence
 
   def self.enqueue(o)
-    Resque.enqueue(Taxon, o.id)
-  end
-
-  def self.perform(id)
-    o = Occurrence.find(id)
-    job = Bloodhound::TaxonWorker.new(o)
-    job.process
+    Sidekiq::Client.enqueue(Bloodhound::TaxonWorker, o.id)
   end
 
   def self.populate_metadata
