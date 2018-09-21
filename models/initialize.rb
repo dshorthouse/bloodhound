@@ -7,12 +7,14 @@ module Sinatra
 
         def self.registered(app)
           ActiveRecord::Base.establish_connection(
-            :adapter => app.settings.adapter,
-            :database =>  app.settings.database,
-            :host => app.settings.host,
-            :username => app.settings.username,
-            :password => app.settings.password,
-            :reconnect => true
+            adapter: app.settings.adapter,
+            database: app.settings.database,
+            host: app.settings.host,
+            username: app.settings.username,
+            password: app.settings.password,
+            reconnect: app.settings.reconnect,
+            pool: app.settings.pool,
+            timeout: app.settings.timeout
           )
 
           ActiveSupport::Inflector.inflections do |inflect|

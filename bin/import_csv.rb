@@ -26,7 +26,7 @@ OptionParser.new do |opts|
 
 end.parse!
 
-#TODO: convert to worker QUEUE
+#TODO: convert to sidekiq worker QUEUE
 def import_file(file_path)
   attributes = Occurrence.attribute_names.map(&:downcase)
   attributes << "gbifid"

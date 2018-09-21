@@ -5,6 +5,8 @@ development:
   password:
   database: bloodhound
   reconnect: true
+  pool: 40
+  timeout: 5000
   orcid_api_url: 'https://pub.orcid.org/v2.1/'
   orcid_key: ''
   orcid_secret: ''
@@ -49,6 +51,8 @@ production:
   password: ''
   database: bloodhound_prod
   reconnect: true
+  pool: 40
+  timeout: 5000
   orcid_api_url: 'https://pub.orcid.org/v2.0/'
   orcid_key: ''
   orcid_secret: ''
