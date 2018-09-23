@@ -23,6 +23,8 @@ if options[:truncate]
   Occurrence.connection.execute("TRUNCATE TABLE taxon_determiners")
 end
 
+Sidekiq::Stats.new.reset
+
 pbar = ProgressBar.create(title: "PopulatingTaxa", total: Occurrence.count, autofinish: false, format: '%t %b>> %i| %e')
 Occurrence.find_each do |o|
   Taxon.enqueue(o)

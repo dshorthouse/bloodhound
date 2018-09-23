@@ -24,6 +24,11 @@ Proof-of-concept, Sinatra app to parse people names from structured biodiversity
 
 ## Worker Queues
 
+### Import CSV
+
+     $ ./bin/import_csv.rb -f occurrence.csv
+     $ sidekiq -c 20 -q occurrence -r ./environment.rb
+
 ### Populate Agents
 
      $ ./bin/populate_agents.rb

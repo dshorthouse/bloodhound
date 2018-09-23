@@ -3,6 +3,9 @@
 require_relative '../environment.rb'
 require 'optparse'
 require 'fileutils'
+require 'tempfile'
+
+# Imports a occurrence.csv from an unzipped DwC file
 
 ARGV << '-h' if ARGV.empty?
 
@@ -15,7 +18,11 @@ OptionParser.new do |opts|
     options[:file] = file
   end
 
-  opts.on("-d", "--directory [directory]", String, "Directory containing 1+ csv file(s)") do |directory|
+  opts.on("-t", "--truncate", "Truncate data") do |a|
+    options[:truncate] = true
+  end
+
+  opts.on("-d", "--tornado [directory]", String, "Directory containing 1+ csv file(s)") do |directory|
     options[:directory] = directory
   end
 
@@ -26,48 +33,55 @@ OptionParser.new do |opts|
 
 end.parse!
 
-#TODO: convert to sidekiq worker QUEUE
 def import_file(file_path)
-  attributes = Occurrence.attribute_names.map(&:downcase)
-  attributes << "gbifid"
+  Sidekiq::Stats.new.reset
 
-  header = File.open(file_path, &:readline).gsub("\n", "").split("\t")
-  indices = header.each_with_index.select{|v,i| i if attributes.include?(v.downcase)}.to_h
-  indices["id"] = indices["gbifID"]
-  indices.delete("gbifID")
+  attributes = Occurrence.attribute_names
+  attributes << "gbifID"
 
-  time = Time.now.to_i
+  batch_size   = 50_000
+  line_count = `wc -l "#{file_path}"`.strip.split(' ')[0].to_i
 
-  chunked_dir = "/tmp/#{time}/"
-  FileUtils.mkdir(chunked_dir)
-  
-  #split files
-  puts "Splitting the csv..."
-  system("split -l 100000 #{file_path} #{chunked_dir}")
+  pbar_options = {
+    title: "PopulatingOccurrences",
+    total: line_count/batch_size,
+    autofinish: false,
+    format: '%t %b>> %i| %e'
+  }
 
-  tmp_files = Dir.entries(chunked_dir).map{|f| File.join(chunked_dir, f) if !File.directory?(f)}.compact
-  
-  #remove the header row from the first file
-  system("tail -n +2 #{tmp_files[0]} > #{tmp_files[0]}.new && mv -f #{tmp_files[0]}.new #{tmp_files[0]}")
+  pbar = ProgressBar.create(pbar_options)
 
-  #load data in parallel
-  Parallel.map(tmp_files.each, progress: "Importing CSV", processes: 6) do |file|
-    output = file + ".csv"
-    CSV.open(output, 'w') do |csv|
-      CSV.foreach(file, options = { col_sep: "\t", quote_char: "\x00", liberal_parsing: true }) do |row|
-        csv << row.values_at(*indices.values).map {|s| s.gsub("\\", '') if !s.nil?}
+  csv_options = {
+    col_sep: "\t",
+    row_sep: "\n"
+  }
+
+  db_folder = File.join(File.expand_path(File.dirname(__FILE__)), "..", "db")
+
+  File.open(file_path) do |file|
+    header = file.first.gsub(csv_options[:row_sep], "").split(csv_options[:col_sep])
+    indices = header.each_with_index.select{|v,i| i if attributes.include?(v)}.to_h
+    indices["id"] = indices["gbifID"]
+    indices.delete("gbifID")
+
+    file.lazy.each_slice(batch_size) do |lines|
+      pbar.increment
+      tmp_file = File.join(db_folder, ('a'..'z').to_a.shuffle[0,8].join + ".csv")
+      CSV.open(tmp_file, 'w') do |csv|
+        lines.each do |line|
+          csv << line.gsub(csv_options[:row_sep], "")
+                   .split(csv_options[:col_sep])
+                   .values_at(*indices.values)
+        end
       end
+      Occurrence.enqueue({indices: indices, tmp_file: tmp_file})
     end
-    sql = "LOAD DATA INFILE '#{output}' 
-           INTO TABLE occurrences 
-           CHARACTER SET UTF8 
-           FIELDS TERMINATED BY ',' 
-           OPTIONALLY ENCLOSED BY '\"'
-           LINES TERMINATED BY '\n'
-           (" + indices.keys.join(",") + ")"
-    Occurrence.connection.execute sql
   end
-  FileUtils.rm_rf(chunked_dir)
+  pbar.finish
+end
+
+if options[:truncate]
+  Occurrence.connection.execute("TRUNCATE TABLE occurrences")
 end
 
 if options[:file]
@@ -78,10 +92,17 @@ end
 
 if options[:directory]
   directory = options[:directory]
-  raise "Directory not foud" unless File.directory?(directory)
+  raise "Directory not found" unless File.directory?(directory)
   accepted_formats = [".csv"]
   files = Dir.entries(directory).select {|f| accepted_formats.include?(File.extname(f))}
+  indices = {"institutionCode"=>59, "collectionCode"=>60, "occurrenceID"=>67, "catalogNumber"=>68, "recordedBy"=>70, "eventDate"=>98, "decimalLatitude"=>132, "decimalLongitude"=>133, "typeStatus"=>168, "identifiedBy"=>169, "dateIdentified"=>170, "scientificName"=>182, "family"=>194, "id"=>0}
   files.each do |file|
-    import_file(File.join(directory, file))
+    CSV.foreach(File.join(options[:directory], file)) do |row|
+      begin
+        Occurrence.create(indices.keys.zip(row).to_h)
+      rescue
+        puts file + ": " + indices.keys.zip(row).to_h
+      end
+    end
   end
 end

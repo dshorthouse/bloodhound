@@ -9,6 +9,10 @@ class Occurrence < ActiveRecord::Base
   has_many :user_occurrences
   has_many :users, through: :user_occurrences, source: :user
 
+  def self.enqueue(o)
+    Sidekiq::Client.enqueue(Bloodhound::OccurrenceWorker, o)
+  end
+
   def coordinates
     lat = decimalLatitude.to_f
     long = decimalLongitude.to_f

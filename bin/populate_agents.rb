@@ -31,6 +31,8 @@ if options[:truncate]
   end
 end
 
+Sidekiq::Stats.new.reset
+
 pbar = ProgressBar.create(title: "PopulatingAgents", total: Occurrence.count, autofinish: false, format: '%t %b>> %i| %e')
 Occurrence.find_each do |o|
   Agent.enqueue(o)
