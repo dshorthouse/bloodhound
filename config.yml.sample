@@ -29,6 +29,8 @@ test:
   password:
   database: bloodhound_test
   reconnect: true
+  pool: 10
+  timeout: 5000
   orcid_api_url: 'https://pub.orcid.org/v2.1/'
   orcid_key: ''
   orcid_secret: ''
