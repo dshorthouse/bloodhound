@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 17, 2018 at 07:53 PM
+-- Generation Time: Sep 25, 2018 at 12:55 PM
 -- Server version: 5.7.22
 -- PHP Version: 5.6.36
 
@@ -28,13 +28,12 @@ SET time_zone = "+00:00";
 -- Table structure for table `agents`
 --
 
-DROP TABLE IF EXISTS `agents`;
 CREATE TABLE `agents` (
   `id` int(11) NOT NULL,
   `canonical_id` int(11) DEFAULT NULL,
-  `family` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-  `given` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `family` varchar(255) COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+  `given` varchar(255) COLLATE utf8mb4_bin NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -42,12 +41,11 @@ CREATE TABLE `agents` (
 -- Table structure for table `agent_descriptions`
 --
 
-DROP TABLE IF EXISTS `agent_descriptions`;
 CREATE TABLE `agent_descriptions` (
   `id` int(11) NOT NULL,
   `agent_id` int(11) NOT NULL,
   `description_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -55,12 +53,11 @@ CREATE TABLE `agent_descriptions` (
 -- Table structure for table `descriptions`
 --
 
-DROP TABLE IF EXISTS `descriptions`;
 CREATE TABLE `descriptions` (
   `id` int(11) NOT NULL,
-  `scientificName` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `scientificName` varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `year` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -68,23 +65,23 @@ CREATE TABLE `descriptions` (
 -- Table structure for table `occurrences`
 --
 
-DROP TABLE IF EXISTS `occurrences`;
 CREATE TABLE `occurrences` (
   `id` int(11) NOT NULL COMMENT 'This is gbifID.',
-  `occurrenceID` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `dateIdentified` text COLLATE utf8_unicode_ci,
-  `decimalLatitude` text COLLATE utf8_unicode_ci,
-  `decimalLongitude` text COLLATE utf8_unicode_ci,
-  `eventDate` text COLLATE utf8_unicode_ci,
-  `family` text CHARACTER SET utf8 COLLATE utf8_bin,
-  `identifiedBy` text CHARACTER SET utf8 COLLATE utf8_bin,
-  `institutionCode` text CHARACTER SET utf8 COLLATE utf8_bin,
-  `catalogNumber` text CHARACTER SET utf8 COLLATE utf8_bin,
-  `recordedBy` text CHARACTER SET utf8 COLLATE utf8_bin,
-  `scientificName` text CHARACTER SET utf8 COLLATE utf8_bin,
-  `typeStatus` text CHARACTER SET utf8 COLLATE utf8_bin,
+  `occurrenceID` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `dateIdentified` text COLLATE utf8mb4_bin,
+  `decimalLatitude` text COLLATE utf8mb4_bin,
+  `decimalLongitude` text COLLATE utf8mb4_bin,
+  `eventDate` text COLLATE utf8mb4_bin,
+  `family` text COLLATE utf8mb4_bin,
+  `identifiedBy` text COLLATE utf8mb4_bin,
+  `institutionCode` text COLLATE utf8mb4_bin,
+  `collectionCode` text COLLATE utf8mb4_bin,
+  `catalogNumber` text COLLATE utf8mb4_bin,
+  `recordedBy` text COLLATE utf8mb4_bin,
+  `scientificName` text COLLATE utf8mb4_bin,
+  `typeStatus` text COLLATE utf8mb4_bin,
   `lastChecked` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -92,11 +89,10 @@ CREATE TABLE `occurrences` (
 -- Table structure for table `occurrence_determiners`
 --
 
-DROP TABLE IF EXISTS `occurrence_determiners`;
 CREATE TABLE `occurrence_determiners` (
   `occurrence_id` int(11) NOT NULL,
   `agent_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -104,11 +100,10 @@ CREATE TABLE `occurrence_determiners` (
 -- Table structure for table `occurrence_recorders`
 --
 
-DROP TABLE IF EXISTS `occurrence_recorders`;
 CREATE TABLE `occurrence_recorders` (
   `occurrence_id` int(11) NOT NULL,
   `agent_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -116,10 +111,9 @@ CREATE TABLE `occurrence_recorders` (
 -- Table structure for table `schema_migrations`
 --
 
-DROP TABLE IF EXISTS `schema_migrations`;
 CREATE TABLE `schema_migrations` (
-  `version` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `version` varchar(255) COLLATE utf8mb4_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -127,12 +121,11 @@ CREATE TABLE `schema_migrations` (
 -- Table structure for table `taxa`
 --
 
-DROP TABLE IF EXISTS `taxa`;
 CREATE TABLE `taxa` (
   `id` int(11) NOT NULL,
-  `kingdom` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `family` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `kingdom` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `family` varchar(255) COLLATE utf8mb4_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -140,12 +133,11 @@ CREATE TABLE `taxa` (
 -- Table structure for table `taxon_determiners`
 --
 
-DROP TABLE IF EXISTS `taxon_determiners`;
 CREATE TABLE `taxon_determiners` (
   `id` int(11) NOT NULL,
   `agent_id` int(11) NOT NULL,
   `taxon_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -153,11 +145,10 @@ CREATE TABLE `taxon_determiners` (
 -- Table structure for table `taxon_occurrences`
 --
 
-DROP TABLE IF EXISTS `taxon_occurrences`;
 CREATE TABLE `taxon_occurrences` (
   `occurrence_id` int(11) NOT NULL,
   `taxon_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -165,18 +156,17 @@ CREATE TABLE `taxon_occurrences` (
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `family` varchar(255) DEFAULT NULL,
-  `given` varchar(255) DEFAULT NULL,
-  `orcid` varchar(25) NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `other_names` text,
+  `family` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `given` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `orcid` varchar(25) COLLATE utf8mb4_bin NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `other_names` mediumtext COLLATE utf8mb4_bin,
   `is_public` tinyint(1) DEFAULT '0',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -184,14 +174,13 @@ CREATE TABLE `users` (
 -- Table structure for table `user_occurrences`
 --
 
-DROP TABLE IF EXISTS `user_occurrences`;
 CREATE TABLE `user_occurrences` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `occurrence_id` int(11) NOT NULL,
-  `action` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `action` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
   `visible` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 --
 -- Indexes for dumped tables
@@ -292,31 +281,31 @@ ALTER TABLE `user_occurrences` ADD FULLTEXT KEY `action_idx` (`action`);
 -- AUTO_INCREMENT for table `agents`
 --
 ALTER TABLE `agents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=496149;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `agent_descriptions`
 --
 ALTER TABLE `agent_descriptions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80950;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `descriptions`
 --
 ALTER TABLE `descriptions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66213;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `taxa`
 --
 ALTER TABLE `taxa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8674;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `taxon_determiners`
 --
 ALTER TABLE `taxon_determiners`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27705608;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -328,7 +317,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_occurrences`
 --
 ALTER TABLE `user_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32771;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34897;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

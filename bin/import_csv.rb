@@ -22,7 +22,7 @@ OptionParser.new do |opts|
     options[:truncate] = true
   end
 
-  opts.on("-d", "--tornado [directory]", String, "Directory containing 1+ csv file(s)") do |directory|
+  opts.on("-d", "--directory [directory]", String, "Directory containing 1+ csv file(s)") do |directory|
     options[:directory] = directory
   end
 
@@ -74,7 +74,7 @@ def import_file(file_path)
                    .values_at(*indices.values)
         end
       end
-      Occurrence.enqueue({indices: indices, tmp_file: tmp_file})
+      Occurrence.enqueue({indices: indices, tmp_file: tmp_file, csv_options: csv_options})
     end
   end
   pbar.finish
@@ -95,14 +95,7 @@ if options[:directory]
   raise "Directory not found" unless File.directory?(directory)
   accepted_formats = [".csv"]
   files = Dir.entries(directory).select {|f| accepted_formats.include?(File.extname(f))}
-  indices = {"institutionCode"=>59, "collectionCode"=>60, "occurrenceID"=>67, "catalogNumber"=>68, "recordedBy"=>70, "eventDate"=>98, "decimalLatitude"=>132, "decimalLongitude"=>133, "typeStatus"=>168, "identifiedBy"=>169, "dateIdentified"=>170, "scientificName"=>182, "family"=>194, "id"=>0}
   files.each do |file|
-    CSV.foreach(File.join(options[:directory], file)) do |row|
-      begin
-        Occurrence.create(indices.keys.zip(row).to_h)
-      rescue
-        puts file + ": " + indices.keys.zip(row).to_h
-      end
-    end
+    import_file(file)
   end
 end

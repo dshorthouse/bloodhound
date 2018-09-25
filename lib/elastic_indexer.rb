@@ -76,6 +76,7 @@ module Bloodhound
       @client.indices.create index: @settings.elastic_index, body: config
     end
 
+    #TODO: convert to sidekiq queue
     def import_agents
       agents = Agent.where("id = canonical_id").pluck(:id)
       Parallel.map(agents.in_groups_of(10_000, false), progress: "Search-Agents") do |batch|

@@ -6,19 +6,24 @@ module Bloodhound
     sidekiq_options queue: :occurrence
 
     def perform(o)
-      sql = "LOAD DATA INFILE '#{o["tmp_file"]}' 
+      keys = o["indices"].keys
+      tmp_file = o["tmp_file"]
+      csv_options = o["csv_options"]
+      sql = "LOAD DATA INFILE '#{tmp_file}' 
              INTO TABLE occurrences 
              CHARACTER SET UTF8 
              FIELDS TERMINATED BY ',' 
              OPTIONALLY ENCLOSED BY '\"'
              LINES TERMINATED BY '\n'
-             (" + o["indices"].keys.join(",") + ")"
+             (" + keys.join(",") + ")"
       begin
         Occurrence.connection.execute sql
-        FileUtils.rm(o["tmp_file"])
       rescue ActiveRecord::StatementInvalid
-        puts o["tmp_file"] + " failed"
+        CSV.foreach(tmp_file) do |row|
+          Occurrence.create(keys.zip(row).to_h)
+        end
       end
+      FileUtils.rm(tmp_file)
     end
 
   end

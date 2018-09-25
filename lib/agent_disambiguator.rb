@@ -18,6 +18,7 @@ module Bloodhound
       Agent.connection.execute("UPDATE agents SET canonical_id = id")
     end
 
+    #TODO: convert to sidekiq queue
     def disambiguate
       duplicates = Agent.where("family NOT LIKE '%.%'")
                         .group(:family).count
