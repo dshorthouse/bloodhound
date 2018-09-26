@@ -13,3 +13,5 @@ log/*.log
 config.yml
 metastore_db
 derby.log
+csv_to_parquet
+rawAgentsActions
