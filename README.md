@@ -27,17 +27,19 @@ Proof-of-concept, Sinatra app to parse people names from structured biodiversity
 ### Import CSV
 
      $ ./bin/import_csv.rb -f occurrence.csv
-     $ sidekiq -c 20 -q occurrence -r ./environment.rb
+     $ sidekiq -c 40 -q occurrence -r ./environment.rb
+
+See also Apache Spark example in /db
 
 ### Populate Agents
 
-     $ ./bin/populate_agents.rb
-     $ sidekiq -c 20 -q agent -r ./environment.rb
+     $ ./bin/populate_agents.rb -t
+     $ sidekiq -c 40 -q agent -r ./environment.rb
 
 ### Populate Taxa
 
      $ ./bin/populate_taxa.rb
-     $ sidekiq -c 20 -q taxon -r ./environment.rb
+     $ sidekiq -c 40 -q taxon -r ./environment.rb
 
 ## Elasticsearch Snapshot & Restore
 
