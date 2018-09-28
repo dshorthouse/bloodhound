@@ -1,7 +1,6 @@
 require 'rake'
 require 'bundler/setup'
 require 'rspec/core/rake_task'
-require 'resque/tasks'
 require './environment'
 
 task :default => :test
@@ -73,8 +72,4 @@ namespace :db do
       end
     end
   end
-end
-
-namespace :resque do
-  task setup: :environment
 end
