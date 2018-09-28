@@ -60,10 +60,10 @@ val occurrences = sqlContext.
       WHERE 
         COALESCE(recordedBy, identifiedBy) IS NOT NULL""")
 
-//optionally save the DataFrame to disk to we don't have to do the above again
+//optionally save the DataFrame to disk so we don't have to do the above again
 occurrences.write.save("occurrences")
 
-//load the saved DataFrame, can later skip the above processes
+//load the saved DataFrame, can later skip the above processes and start from here
 val occurrences = spark.
     read.
     option("header","true").
@@ -84,13 +84,13 @@ occurrences.write.mode("append").jdbc(url, "occurrences", prop)
 val recordedByGroups = occurrences.
     filter(!isnull($"recordedBy")).
     groupBy($"recordedBy" as "agents").
-    agg(collect_set($"id") as "recordedByIDs")
+    agg(collect_set($"id") as "gbifIDs_recordedBy")
 
 //aggregate identifiedBy
 val identifiedByGroups = occurrences.
     filter(!isnull($"identifiedBy")).
     groupBy($"identifiedBy" as "agents").
-    agg(collect_set($"id") as "identifiedByIDs")
+    agg(collect_set($"id") as "gbifIDs_identifiedBy")
 
 //union identifiedBy and recordedBy entries
 val unioned = spark.
@@ -110,9 +110,9 @@ val unioned = spark.
 def stringify(c: Column) = concat(lit("["), concat_ws(",", c), lit("]"))
 
 //write aggregated agents to csv files for the Parse & Populate Agents script, /bin/parse_agents.rb
-unioned.select("agents", "recordedByIDs", "identifiedByIDs").
-    withColumn("recordedByIDs", stringify($"recordedByIDs")).
-    withColumn("identifiedByIDs", stringify($"identifiedByIDs")).
+unioned.select("agents", "gbifIDs_recordedBy", "gbifIDs_identifiedBy").
+    withColumn("gbifIDs_recordedBy", stringify($"gbifIDs_recordedBy")).
+    withColumn("gbifIDs_identifiedBy", stringify($"gbifIDs_identifiedBy")).
     write.
     mode("overwrite").
     option("header", "true").
@@ -124,11 +124,11 @@ unioned.select("agents", "recordedByIDs", "identifiedByIDs").
 val familyGroups = occurrences.
     filter(!isnull($"family")).
     groupBy($"family").
-    agg(collect_set($"id") as "familyIDs")
+    agg(collect_set($"id") as "gbifIDs_family")
 
 //write aggregated families to csv files for the Populate Taxa script, /bin/populate_taxa.rb
-familyGroups.select("family", "familyIDs").
-    withColumn("familyIDs", stringify($"familyIDs")).
+familyGroups.select("family", "gbifIDs_family").
+    withColumn("gbifIDs_family", stringify($"gbifIDs_family")).
     write.
     mode("overwrite").
     option("header", "true").
