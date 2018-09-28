@@ -13,14 +13,20 @@ class Agent < ActiveRecord::Base
   has_many :aliases, class_name: "Agent", foreign_key: "canonical_id"
   belongs_to :canonical, class_name: "Agent"
 
-  PARSER = ScientificNameParser.new
-
   def self.enqueue(file_path)
     Sidekiq::Client.enqueue(Bloodhound::AgentWorker, file_path)
   end
 
   def fullname
     [given, family].join(" ").strip
+  end
+
+  def agents_same_family
+    Agent.where(family: family)
+  end
+
+  def disambiguated?
+    agents_same_family.map{|a| a.id != a.canonical_id}.include?(true)
   end
 
   def determinations_institutions
@@ -81,14 +87,8 @@ class Agent < ActiveRecord::Base
     determined_taxa.group_by{|i| i }.map{|k, v| { id: k.id, family: k.family, count: v.size } }.sort_by { |a| a[:family] }
   end
 
-  def refresh_orcid_data
-    return if !orcid.present?
-    response = RestClient::Request.execute(
-      method: :get,
-      url: Sinatra::Application.settings.orcid_api_url + orcid,
-      headers: { accept: 'application/orcid+json' }
-    )
-    self.class.parse_profile_orcid_response(self, response)
+  def occurrences
+    recordings | determinations
   end
 
   def aka

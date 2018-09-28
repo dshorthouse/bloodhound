@@ -12,7 +12,9 @@ module Bloodhound
       @cutoff_weight = 0.8
       @graph = WeightedGraph.new
       agents = []
-      Agent.where(family: opts["family_name"]).find_each do |a|
+
+      agent = Agent.find(opts["id"])
+      agent.agents_same_family.find_each do |a|
          if !a.given.empty?
           agents << {
             id: a.id, 

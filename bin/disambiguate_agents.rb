@@ -28,8 +28,13 @@ if options[:disambiguate]
   duplicates = Agent.where("family NOT LIKE '%.%'")
                     .group(:family).count
                     .map{ |k,v| k if v > 1 }.compact
-  duplicates.each do |family_name|
-    data = { family_name: family_name, write_graphics: write_graphics }
-    Sidekiq::Client.enqueue(Bloodhound::DisambiguateWorker, data)
+  duplicates.each do |family|
+    #Only need one of the ids in the bundle to disambiguate the whole lot
+    agent = Agent.find_by_family(family)
+    #Check to see if any in the bundle have already been disambiguated
+    if !agent.disambiguated?
+      data = { id: agent.id, write_graphics: write_graphics }
+      Sidekiq::Client.enqueue(Bloodhound::DisambiguateWorker, data)
+    end
   end
 end
