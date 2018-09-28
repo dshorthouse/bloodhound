@@ -1,6 +1,6 @@
-# Apache Spark Bulk Import to MySQL
+# Apache Spark Bulk Import Data and Aggregations into MySQL
 
-...and producing source csv files for Parse & Populate Agent and Populate Taxa scripts.
+...and to produce necessary source csv files for [Parse & Populate Agent](bin/parse_agents.rb) and [Populate Taxa](bin/populate_taxa.rb) scripts.
 
 - Create the database using the [schema in /db](db/bloodhound.sql)
 - Ensure that MySQL has utf8mb4 collation. See [https://mathiasbynens.be/notes/mysql-utf8mb4](https://mathiasbynens.be/notes/mysql-utf8mb4) to set server connection
