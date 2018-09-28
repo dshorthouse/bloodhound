@@ -1,9 +1,9 @@
 # Apache Spark Bulk Import to MySQL
 
-...and producing source csv files to later Parse & Populate Agent records as well Populate Taxa records
+...and producing source csv files for Parse & Populate Agent and Populate Taxa scripts.
 
-- Ensure that MySQL has utf8mb4 collation. See [https://mathiasbynens.be/notes/mysql-utf8mb4](https://mathiasbynens.be/notes/mysql-utf8mb4) to set server, table, columns.
 - Create the database using the [schema in /db](db/bloodhound.sql)
+- Ensure that MySQL has utf8mb4 collation. See [https://mathiasbynens.be/notes/mysql-utf8mb4](https://mathiasbynens.be/notes/mysql-utf8mb4) to set server connection
 - Get the mysql-connector-java (Connector/J) from [https://dev.mysql.com/downloads/connector/j/8.0.html](https://dev.mysql.com/downloads/connector/j/8.0.html).
 
 On a Mac with Homebrew:
@@ -109,7 +109,7 @@ val unioned = spark.
 //concatenate arrays into strings
 def stringify(c: Column) = concat(lit("["), concat_ws(",", c), lit("]"))
 
-//write aggregated agents to csv file to [Parse & Populate Agents](bin/parse_agents.rb)
+//write aggregated agents to csv files for the Parse & Populate Agents script, /bin/parse_agents.rb
 unioned.select("agents", "recordedByIDs", "identifiedByIDs").
     withColumn("recordedByIDs", stringify($"recordedByIDs")).
     withColumn("identifiedByIDs", stringify($"identifiedByIDs")).
@@ -126,7 +126,7 @@ val familyGroups = occurrences.
     groupBy($"family").
     agg(collect_set($"id") as "familyIDs")
 
-//write aggregated families to csv files to [Populate Taxa](bin/populate_taxa.rb)
+//write aggregated families to csv files for the Populate Taxa script, /bin/populate_taxa.rb
 familyGroups.select("family", "familyIDs").
     withColumn("familyIDs", stringify($"familyIDs")).
     write.
