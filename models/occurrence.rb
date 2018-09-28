@@ -1,5 +1,4 @@
 class Occurrence < ActiveRecord::Base
-
   has_many :occurrence_determiners
   has_many :determiners, through: :occurrence_determiners, source: :agent
 

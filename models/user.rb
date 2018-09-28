@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-
   has_many :user_occurrences
   has_many :occurrences, through: :user_occurrences, source: :occurrence
 

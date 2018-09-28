@@ -19,41 +19,6 @@ class Agent < ActiveRecord::Base
     Sidekiq::Client.enqueue(Bloodhound::AgentWorker, file_path)
   end
 
-  def self.parse_search_orcid_response(agent, response)
-    matches = {}
-    results = JSON.parse(response, :symbolize_names => true)[:"orcid-search-results"][:"orcid-search-result"] rescue []
-    results.each do |r|
-      orcid_id = r[:"orcid-profile"][:"orcid-identifier"][:path] rescue nil
-      orcid_given = r[:"orcid-profile"][:"orcid-bio"][:"personal-details"][:"given-names"][:value] rescue nil
-      orcid_family = r[:"orcid-profile"][:"orcid-bio"][:"personal-details"][:"family-name"][:value] rescue nil
-      orcid_credit = r[:"orcid-profile"][:"orcid-bio"][:"personal-details"][:"credit-name"][:value] rescue nil
-      next if orcid_family != agent.family
-      matches[orcid_given] = orcid_id
-      matches[orcid_credit] = orcid_id
-    end
-    agent.orcid = matches[agent.fullname] || matches[agent.given]
-  end
-
-  def self.populate_profiles
-    Parallel.map(Agent.where.not(orcid: nil).where(processed_profile: nil).find_each, progress: "Profiles") do |agent|
-      response = RestClient::Request.execute(
-        method: :get,
-        url: Sinatra::Application.settings.orcid_api_url + agent.orcid + '/orcid-profile',
-        headers: { accept: 'application/orcid+json' }
-      )
-      parse_profile_orcid_response(agent, response)
-      agent.processed_profile = true
-      agent.save
-    end
-  end
-
-  def self.parse_profile_orcid_response(agent, response)
-    profile = JSON.parse(response, :symbolize_names => true)[:"orcid-profile"]
-    agent.email = profile[:"orcid-bio"][:"contact-details"][:email][0][:value] rescue nil
-    agent.position = profile[:"orcid-activities"][:affiliations][:affiliation][0][:"role-title"] rescue nil
-    agent.affiliation = profile[:"orcid-activities"][:affiliations][:affiliation][0][:organization][:name] rescue nil
-  end
-
   def fullname
     [given, family].join(" ").strip
   end
