@@ -26,6 +26,7 @@ if options[:disambiguate]
   Sidekiq::Stats.new.reset
   write_graphics = options[:write] ? true : false
   duplicates = Agent.where("family NOT LIKE '%.%'")
+                    .where.not(given: ["", nil])
                     .group(:family).count
                     .map{ |k,v| k if v > 1 }.compact
   duplicates.each do |family|
