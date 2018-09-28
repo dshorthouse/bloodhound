@@ -32,7 +32,7 @@ val df = spark.
     option("quote", "\"").
     option("escape", "\"").
     option("treatEmptyValuesAsNulls", "true").
-    option("ignoreLeadingWhiteSpace", true).
+    option("ignoreLeadingWhiteSpace", "true").
     load("/Users/dshorthouse/Downloads/GBIF Data/verbatim.txt")
 
 df.registerTempTable("occurrences")
