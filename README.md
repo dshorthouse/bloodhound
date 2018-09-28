@@ -3,6 +3,10 @@ Proof-of-concept, Sinatra app to parse people names from structured biodiversity
 
 [![Build Status](https://travis-ci.org/dshorthouse/bloodhound.svg?branch=master)](https://travis-ci.org/dshorthouse/bloodhound)
 
+## Recent Updates
+
+- **September 29, 2018**: The core, parsing component of this project has been split off into a stand-alone ruby gem, [dwc_agent](https://rubygems.org/gems/dwc_agent).
+
 ## Requirements
 
 1. ruby 2.5.1+
