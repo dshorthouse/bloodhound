@@ -2,8 +2,6 @@
 
 The following script written in Scala illustrates how to rapidly import into MySQL a massive GBIF occurrence csv files contained in a Darwin Core Archive download. Other methods here produce aggregates of these same occurrence data for rapid import into relational tables. The goal here is to produce a unique list of agents as a union of recordedBy and identifiedBy Darwin Core fields while retaining their occurrence record memberships. This greatly accelerates processing and parsing steps prior to reconciling people names. Aggregating identifiedBy and recordedBy fields from an occurrence csv file containing 73M records takes 20-30 minutes using 6GB of memory.
 
-and to produce necessary source csv files for [Parse & Populate Agent](bin/parse_agents.rb) and [Populate Taxa](bin/populate_taxa.rb) scripts.
-
 - Create the database using the [schema in /db](db/bloodhound.sql)
 - Ensure that MySQL has utf8mb4 collation. See [https://mathiasbynens.be/notes/mysql-utf8mb4](https://mathiasbynens.be/notes/mysql-utf8mb4) to set server connection
 - Get the mysql-connector-java (Connector/J) from [https://dev.mysql.com/downloads/connector/j/8.0.html](https://dev.mysql.com/downloads/connector/j/8.0.html).
