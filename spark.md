@@ -1,6 +1,6 @@
 # Apache Spark Bulk Import Data and Aggregations into MySQL
 
-The following script written in Scala illustrates how to rapidly import into MySQL a massive GBIF occurrence csv files contained in a Darwin Core Archive download. Other methods here produce aggregates of these same occurrence data for rapid import into relational tables. The goal here is to produce a unique list of agents as a union of recordedBy and identifiedBy Darwin Core fields while retaining their occurrence record memberships. This greatly accelerates processing and parsing steps prior to reconciling the agents. Aggregating identifiedBy and recordedBy fields from an occurrence csv file containing 73M records takes 20-30 minutes using 6GB of memory.
+The following script written in Scala illustrates how to rapidly import into MySQL a massive GBIF occurrence csv files contained in a Darwin Core Archive download. Other methods here produce aggregates of these same occurrence data for rapid import into relational tables. The goal here is to produce a unique list of agents as a union of recordedBy and identifiedBy Darwin Core fields while retaining their occurrence record memberships. This greatly accelerates processing and parsing steps prior to reconciling people names. Aggregating identifiedBy and recordedBy fields from an occurrence csv file containing 73M records takes 20-30 minutes using 6GB of memory.
 
 and to produce necessary source csv files for [Parse & Populate Agent](bin/parse_agents.rb) and [Populate Taxa](bin/populate_taxa.rb) scripts.
 
