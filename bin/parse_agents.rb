@@ -7,8 +7,12 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: populate_agents.rb [options]"
 
-  opts.on("-f", "--flush", "Flush parsed data") do |a|
-    options[:flush] = true
+  opts.on("-d", "--directory [directory]", String, "Directory containing csv file(s)") do |directory|
+    options[:directory] = directory
+  end
+
+  opts.on("-t", "--truncate", "Truncate data") do |a|
+    options[:truncate] = true
   end
 
   opts.on("-h", "--help", "Prints this help") do
@@ -17,15 +21,30 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-if options[:flush]
-  Occurrence.connection.execute("UPDATE occurrences SET identifiedByParsed = NULL, recordedByParsed = NULL")
+if options[:truncate]
+  tables = [
+    "agents",
+    "occurrence_determiners",
+    "occurrence_recorders",
+    "taxon_determiners"
+  ]
+  tables.each do |table|
+    Occurrence.connection.execute("TRUNCATE TABLE #{table}")
+  end
+  Sidekiq::Stats.new.reset
 end
 
-Sidekiq::Stats.new.reset
+if options[:directory]
+  directory = options[:directory]
+  raise "Directory not found" unless File.directory?(directory)
+  accepted_formats = [".csv"]
+  files = Dir.entries(directory).select {|f| accepted_formats.include?(File.extname(f))}
 
-pbar = ProgressBar.create(title: "ParseAgents", total: Occurrence.count, autofinish: false, format: '%t %b>> %i| %e')
-Occurrence.find_each do |o|
-  Agent.enqueue(o)
-  pbar.increment
+  files.each do |file|
+    file_path = File.join(options[:directory], file)
+    Agent.enqueue(file_path)
+  end
+
 end
-pbar.finish
+
+

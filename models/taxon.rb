@@ -5,8 +5,8 @@ class Taxon < ActiveRecord::Base
   has_many :taxon_occurrences
   has_many :occurrences, through: :taxon_occurrences, source: :occurrence
 
-  def self.enqueue(o)
-    Sidekiq::Client.enqueue(Bloodhound::TaxonWorker, o.id)
+  def self.enqueue(file_path)
+    Sidekiq::Client.enqueue(Bloodhound::TaxonWorker, file_path)
   end
 
   def self.populate_metadata

@@ -4,48 +4,34 @@ require 'rgl/connected_components'
 require 'rgl/dot'
 
 module Bloodhound
-  class AgentDisambiguator
+  class DisambiguateWorker
+    include Sidekiq::Worker
+    sidekiq_options queue: :disambiguate
 
-    attr_accessor :write_graphics
-    attr_accessor :cutoff_weight
-
-    def initialize
-      @graph = {}
+    def perform(opts)
       @cutoff_weight = 0.8
-    end
-
-    def reset
-      Agent.connection.execute("UPDATE agents SET canonical_id = id")
-    end
-
-    #TODO: convert to sidekiq queue
-    def disambiguate
-      duplicates = Agent.where("family NOT LIKE '%.%'")
-                        .group(:family).count
-                        .map{ |k,v| k if v > 1 }.compact
-      Parallel.map(duplicates.in_groups_of(100), progress: "Disambiguations") do |batch|
-        batch.each do |d|
-          @graph = WeightedGraph.new
-          agents = []
-
-          Agent.where(family: d).find_each do |a|
-             if !a.given.empty?
-              agents << {
-                id: a.id, 
-                given: a.given,
-                collected_with: a.recordings_with.map(&:family).uniq,
-                determined_families: a.determined_families,
-                recordings_year_range: a.recordings_year_range
-              }
-            end
-          end
-          add_edges(agents)
-          write_graphic_file(d, 'raw') if @write_graphics
-          prune_graph
-          write_graphic_file(d, 'pruned') if @write_graphics
-          combine_subgraphs
+      @graph = WeightedGraph.new
+      agents = []
+      Agent.where(family: opts["family_name"]).find_each do |a|
+         if !a.given.empty?
+          agents << {
+            id: a.id, 
+            given: a.given,
+            collected_with: a.recordings_with.map(&:family).uniq,
+            determined_families: a.determined_families,
+            recordings_year_range: a.recordings_year_range
+          }
         end
       end
+      add_edges(agents)
+      if opts["write_graphics"]
+        write_graphic_file(opts["family_name"], 'raw')
+      end
+      prune_graph
+      if opts["write_graphics"]
+        write_graphic_file(opts["family_name"], 'pruned')
+      end
+      combine_subgraphs_reassign
     end
 
     def add_edges(agents)
@@ -81,13 +67,24 @@ module Bloodhound
       edges
     end
 
-    def combine_subgraphs
+    def combine_subgraphs_reassign
+      models = [
+        "OccurrenceDeterminer",
+        "OccurrenceRecorder",
+        "TaxonDeterminer"
+      ]
       @graph.each_connected_component do |vertices|
         sorted_vertices = vertices.sort_by { |g| g[:given].length }
         ids = sorted_vertices.map{|v| v[:id]}
         #TODO: make version with greatest number of objects the canonical version
         canonical = ids.pop
-        Agent.where(id: ids).update_all(canonical_id: canonical)
+        Agent.where(id: ids).find_each do |a|
+          a.canonical_id = canonical
+          a.save
+          models.each do |model|
+            model.constantize.where(agent_id: a.id).update_all(agent_id: canonical)
+          end
+        end
       end
     end
 
@@ -178,37 +175,6 @@ module Bloodhound
     def adjust_score(score)
       adjusted = (score > 1) ? 1 : score
       adjusted.round(2)
-    end
-
-    def reassign_data
-      models = [
-        "AgentDescription",
-        "OccurrenceDeterminer",
-        "OccurrenceRecorder",
-        "TaxonDeterminer"
-      ]
-      agents = Agent.where("id != canonical_id")
-      pbar = ProgressBar.create(title: "Reassign", total: agents.count, autofinish: false, format: '%t %b>> %i| %e')
-      agents.find_each do |a|
-        pbar.increment
-        models.each do |model|
-          model.constantize.where(agent_id: a.id).update_all(agent_id: a.canonical_id)
-        end
-      end
-      pbar.finish
-    end
-
-    def erroneous_reassignment
-      agents = Agent.where("id = canonical_id")
-      pbar = ProgressBar.create(title: "Erroneous", total: agents.count, autofinish: false, format: '%t %b>> %i| %e')
-      agents.find_each do |a|
-        pbar.increment
-        gap = a.recordings_year_range.max - a.recordings_year_range.min rescue 0
-        if gap >= 50
-          #Houston, we have a problem
-        end
-      end
-      pbar.finish
     end
 
   end

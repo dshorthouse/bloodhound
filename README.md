@@ -9,6 +9,7 @@ Proof-of-concept, Sinatra app to parse people names from structured biodiversity
 2. ElasticSearch 6.2.4+
 3. MySQL 14.14+
 4. Redis 4.0.9+
+5. Apache Spark 2+
 
 ## Installation
 
@@ -20,26 +21,31 @@ Proof-of-concept, Sinatra app to parse people names from structured biodiversity
      $ cp config.yml.sample config.yml
      # Adjust content of config.yml
      $ rackup -p 4567 config.ru
-     # See utilities in bin/ for importing and loading data, creation of search index
 
-## Worker Queues
+## Steps to Import Data & Execute Parsing / Reconciling
 
-### Import CSV
+### Step 1:  Import Data
 
-     $ ./bin/import_csv.rb -f occurrence.csv
-     $ sidekiq -c 40 -q occurrence -r ./environment.rb
+See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the occurrence csv from a DwC Archive downloaded from [GBIF](https://www.gbif.org). Apache Spark is used to produce the necessary source csv files for the "Parse & Populate Agents" and "Populate Taxa" steps below.
 
-See also Apache Spark example in /db
+### Step 2:  Parse & Populate Agents
 
-### Populate Agents
-
-     $ ./bin/populate_agents.rb -t
+     $ ./bin/parse_agents.rb --truncate --directory /directory-to-spark-csv-files/
      $ sidekiq -c 40 -q agent -r ./environment.rb
 
-### Populate Taxa
+### Step 3: Populate Taxa
 
-     $ ./bin/populate_taxa.rb
+     $ ./bin/populate_taxa.rb --truncate --directory /directory-to-spark-csv-files/
      $ sidekiq -c 40 -q taxon -r ./environment.rb
+
+### Step 4: Disambiguate Agents
+
+     $ ./bin/disambiguate_agents.rb --truncate --disambiguate
+     $ sidekiq -c 40 -q disambiguate -r ./environment.rb
+
+### Step 5: Populate Search
+
+     $ ./bin/populate_search.rb --rebuild-agents
 
 ## Elasticsearch Snapshot & Restore
 

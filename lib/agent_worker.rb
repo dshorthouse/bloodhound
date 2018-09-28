@@ -5,11 +5,27 @@ module Bloodhound
     include Sidekiq::Worker
     sidekiq_options queue: :agent
 
-    def perform(id)
-      o = Occurrence.find(id)
-      o.recordedByParsed = parse(o.recordedBy).as_json
-      o.identifiedByParsed = parse(o.identifiedBy).as_json
-      o.save
+    def perform(file_path)
+      CSV.foreach(file_path, :headers => true) do |row|
+        agents = parse(row["agents"])
+        recordedByIDs = row["recordedByIDs"].tr('[]', '').split(',').map(&:to_i)
+        identifiedByIDs = row["identifiedByIDs"].tr('[]', '').split(',').map(&:to_i)
+        agents.each do |a|
+          begin
+            agent = Agent.find_or_create_by(family: a[:family].to_s, given: a[:given].to_s)
+          rescue
+            retry
+          end
+          if !recordedByIDs.empty?
+            data = recordedByIDs.map{|r| { occurrence_id: r, agent_id: agent.id}}
+            OccurrenceRecorder.import data
+          end
+          if !identifiedByIDs.empty?
+            data = identifiedByIDs.map{|r| { occurrence_id: r, agent_id: agent.id}}
+            OccurrenceDeterminer.import data
+          end
+        end
+      end
     end
 
     def parse(raw_names)

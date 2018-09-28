@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 25, 2018 at 12:55 PM
+-- Generation Time: Sep 28, 2018 at 04:12 AM
 -- Server version: 5.7.22
 -- PHP Version: 5.6.36
 
@@ -33,30 +33,6 @@ CREATE TABLE `agents` (
   `canonical_id` int(11) DEFAULT NULL,
   `family` varchar(255) COLLATE utf8mb4_bin NOT NULL DEFAULT '',
   `given` varchar(255) COLLATE utf8mb4_bin NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `agent_descriptions`
---
-
-CREATE TABLE `agent_descriptions` (
-  `id` int(11) NOT NULL,
-  `agent_id` int(11) NOT NULL,
-  `description_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `descriptions`
---
-
-CREATE TABLE `descriptions` (
-  `id` int(11) NOT NULL,
-  `scientificName` varchar(255) COLLATE utf8mb4_bin NOT NULL,
-  `year` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
@@ -195,21 +171,6 @@ ALTER TABLE `agents`
   ADD KEY `canonical_idx` (`canonical_id`);
 
 --
--- Indexes for table `agent_descriptions`
---
-ALTER TABLE `agent_descriptions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `agent_idx` (`agent_id`),
-  ADD KEY `description_idx` (`description_id`);
-
---
--- Indexes for table `descriptions`
---
-ALTER TABLE `descriptions`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `idx_scientific_name` (`scientificName`);
-
---
 -- Indexes for table `occurrences`
 --
 ALTER TABLE `occurrences`
@@ -281,31 +242,19 @@ ALTER TABLE `user_occurrences` ADD FULLTEXT KEY `action_idx` (`action`);
 -- AUTO_INCREMENT for table `agents`
 --
 ALTER TABLE `agents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `agent_descriptions`
---
-ALTER TABLE `agent_descriptions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `descriptions`
---
-ALTER TABLE `descriptions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=963838;
 
 --
 -- AUTO_INCREMENT for table `taxa`
 --
 ALTER TABLE `taxa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20827;
 
 --
 -- AUTO_INCREMENT for table `taxon_determiners`
 --
 ALTER TABLE `taxon_determiners`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31850011;
 
 --
 -- AUTO_INCREMENT for table `users`

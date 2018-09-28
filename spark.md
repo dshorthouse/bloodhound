@@ -1,0 +1,137 @@
+# Apache Spark Bulk Import to MySQL
+
+...and producing source csv files to later Parse & Populate Agent records as well Populate Taxa records
+
+- Ensure that MySQL has utf8mb4 collation. See [https://mathiasbynens.be/notes/mysql-utf8mb4](https://mathiasbynens.be/notes/mysql-utf8mb4) to set server, table, columns.
+- Create the database using the [schema in /db](db/bloodhound.sql)
+- Get the mysql-connector-java (Connector/J) from [https://dev.mysql.com/downloads/connector/j/8.0.html](https://dev.mysql.com/downloads/connector/j/8.0.html).
+
+On a Mac with Homebrew:
+
+```bash
+$ brew install apache-spark
+$ spark-shell --jars /usr/local/opt/mysql-connector-java/libexec/mysql-connector-java-8.0.12.jar --driver-memory 6G
+```
+
+```scala
+import sys.process._
+import org.apache.spark.sql.Column
+import org.apache.spark.sql.types._
+import org.apache.spark.sql.functions._
+
+val sqlContext = new org.apache.spark.sql.SQLContext(sc)
+
+//load a big tsv from a DwC-A
+val df = spark.
+    read.
+    format("csv").
+    option("inferSchema", "true").
+    option("header", "true").
+    option("mode", "DROPMALFORMED").
+    option("delimiter", "\t").
+    option("quote", "\"").
+    option("escape", "\"").
+    option("treatEmptyValuesAsNulls", "true").
+    option("ignoreLeadingWhiteSpace", true).
+    load("/Users/dshorthouse/Downloads/GBIF Data/verbatim.txt")
+
+df.registerTempTable("occurrences")
+
+//select columns & skip rows if both identifiedBy and recordedBy are empty
+val occurrences = sqlContext.
+    sql("""
+      SELECT 
+        gbifID AS id,
+        occurrenceID,
+        dateIdentified,
+        decimalLatitude,
+        decimalLongitude,
+        eventDate,
+        family,
+        identifiedBy,
+        institutionCode,
+        collectionCode,
+        catalogNumber,
+        recordedBy,
+        scientificName,
+        typeStatus 
+      FROM 
+        occurrences 
+      WHERE 
+        COALESCE(recordedBy, identifiedBy) IS NOT NULL""")
+
+//optionally save the DataFrame to disk to we don't have to do the above again
+occurrences.write.save("occurrences")
+
+//load the saved DataFrame, can later skip the above processes
+val occurrences = spark.
+    read.
+    option("header","true").
+    load("occurrences")
+
+//set some properties for a MySQL connection
+val prop = new java.util.Properties
+prop.setProperty("driver", "com.mysql.cj.jdbc.Driver")
+prop.setProperty("user", "root")
+prop.setProperty("password", "")
+
+val url = "jdbc:mysql://localhost:3306/bloodhound?serverTimezone=UTC&useSSL=false"
+
+//write occurrences data to the database
+occurrences.write.mode("append").jdbc(url, "occurrences", prop)
+
+//aggregate recordedBy
+val recordedByGroups = occurrences.
+    filter(!isnull($"recordedBy")).
+    groupBy($"recordedBy" as "agents").
+    agg(collect_set($"id") as "recordedByIDs")
+
+//aggregate identifiedBy
+val identifiedByGroups = occurrences.
+    filter(!isnull($"identifiedBy")).
+    groupBy($"identifiedBy" as "agents").
+    agg(collect_set($"id") as "identifiedByIDs")
+
+//union identifiedBy and recordedBy entries
+val unioned = spark.
+    read.
+    json(recordedByGroups.toJSON.union(identifiedByGroups.toJSON))
+
+//optionally save the DataFrame to disk
+unioned.write.save("occurrences-unioned")
+
+//load the saved DataFrame, can later skip all the above processes
+val unioned = spark.
+    read.
+    option("header","true").
+    load("occurrences-unioned")
+
+//concatenate arrays into strings
+def stringify(c: Column) = concat(lit("["), concat_ws(",", c), lit("]"))
+
+//write aggregated agents to csv file to [Parse & Populate Agents](bin/parse_agents.rb)
+unioned.select("agents", "recordedByIDs", "identifiedByIDs").
+    withColumn("recordedByIDs", stringify($"recordedByIDs")).
+    withColumn("identifiedByIDs", stringify($"identifiedByIDs")).
+    write.
+    mode("overwrite").
+    option("header", "true").
+    option("quote", "\"").
+    option("escape", "\"").
+    csv("agents-unioned-csv")
+
+//aggregate families (Taxa)
+val familyGroups = occurrences.
+    filter(!isnull($"family")).
+    groupBy($"family").
+    agg(collect_set($"id") as "familyIDs")
+
+//write aggregated families to csv files to [Populate Taxa](bin/populate_taxa.rb)
+familyGroups.select("family", "familyIDs").
+    withColumn("familyIDs", stringify($"familyIDs")).
+    write.
+    mode("overwrite").
+    option("header", "true").
+    option("quote", "\"").
+    option("escape", "\"").
+    csv("family-csv")

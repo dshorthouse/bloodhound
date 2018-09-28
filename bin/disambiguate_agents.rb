@@ -7,16 +7,12 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: disambiguate_agents.rb [options]"
 
-  opts.on("-r", "--reset", "Reset") do |a|
-    options[:reset] = true
-  end
-
   opts.on("-w", "--write-graphics", "Write graphics files") do
     options[:write] = true
   end
 
-  opts.on("-x", "--reassign", "Reassign data") do
-    options[:reassign] = true
+  opts.on("-d", "--disambiguate", "Disambiguate family names") do
+    options[:disambiguate] = true
   end
 
   opts.on("-h", "--help", "Prints this help") do
@@ -26,19 +22,14 @@ OptionParser.new do |opts|
 
 end.parse!
 
-graphs = Bloodhound::AgentDisambiguator.new
-
-if options[:reset]
-  graphs.reset
-end
-
-if options[:write]
-  graphs.write_graphics = true
-end
-
-puts "Disambiguating agents..."
-graphs.disambiguate
-
-if options[:reassign]
-  graphs.reassign_data
+if options[:disambiguate]
+  Sidekiq::Stats.new.reset
+  write_graphics = options[:write] ? true : false
+  duplicates = Agent.where("family NOT LIKE '%.%'")
+                    .group(:family).count
+                    .map{ |k,v| k if v > 1 }.compact
+  duplicates.each do |family_name|
+    data = { family_name: family_name, write_graphics: write_graphics }
+    Sidekiq::Client.enqueue(Bloodhound::DisambiguateWorker, data)
+  end
 end

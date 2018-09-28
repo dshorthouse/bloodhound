@@ -7,9 +7,6 @@ class Agent < ActiveRecord::Base
   has_many :occurrence_recorders, dependent: :destroy
   has_many :recordings, through: :occurrence_recorders, source: :occurrence
 
-  has_many :agent_descriptions, dependent: :destroy
-  has_many :descriptions, through: :agent_descriptions, source: :description
-
   has_many :taxon_determiners, dependent: :destroy
   has_many :determined_taxa, through: :taxon_determiners, source: :taxon
 
@@ -18,8 +15,8 @@ class Agent < ActiveRecord::Base
 
   PARSER = ScientificNameParser.new
 
-  def self.enqueue(o)
-    Sidekiq::Client.enqueue(Bloodhound::AgentWorker, o.id)
+  def self.enqueue(file_path)
+    Sidekiq::Client.enqueue(Bloodhound::AgentWorker, file_path)
   end
 
   def self.parse_search_orcid_response(agent, response)

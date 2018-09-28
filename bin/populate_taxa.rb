@@ -11,6 +11,10 @@ OptionParser.new do |opts|
     options[:truncate] = true
   end
 
+  opts.on("-d", "--directory [directory]", String, "Directory containing csv file(s)") do |directory|
+    options[:directory] = directory
+  end
+
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
@@ -21,16 +25,34 @@ if options[:truncate]
   Occurrence.connection.execute("TRUNCATE TABLE taxa")
   Occurrence.connection.execute("TRUNCATE TABLE taxon_occurrences")
   Occurrence.connection.execute("TRUNCATE TABLE taxon_determiners")
+  Sidekiq::Stats.new.reset
 end
 
-Sidekiq::Stats.new.reset
+if options[:directory]
+  directory = options[:directory]
+  raise "Directory not found" unless File.directory?(directory)
+  accepted_formats = [".csv"]
+  files = Dir.entries(directory).select {|f| accepted_formats.include?(File.extname(f))}
 
-pbar = ProgressBar.create(title: "PopulatingTaxa", total: Occurrence.count, autofinish: false, format: '%t %b>> %i| %e')
-Occurrence.find_each do |o|
-  Taxon.enqueue(o)
-  pbar.increment
+  files.each do |file|
+    file_path = File.join(options[:directory], file)
+    Taxon.enqueue(file_path)
+  end
 end
-pbar.finish
 
-puts "Populating kingdoms..."
-Taxon.populate_kingdoms
+=begin
+
+AFTER taxon queue is empty of jobs, must execute the following:
+
+  sql = "INSERT INTO 
+          taxon_determiners 
+            (taxon_id, agent_id) 
+         SELECT 
+           t.taxon_id, d.agent_id 
+         FROM 
+           occurrence_determiners d 
+         JOIN taxon_occurrences t ON d.occurrence_id = t.occurrence_id"
+
+  Occurrence.connection.execute(sql)
+  Taxon.populate_kingdoms
+=end

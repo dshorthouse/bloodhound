@@ -5,10 +5,17 @@ module Bloodhound
     include Sidekiq::Worker
     sidekiq_options queue: :taxon
 
-    def perform(id)
-      o = Occurrence.find(id)
-      job = Bloodhound::TaxonProcessor.new(o)
-      job.process
+    def perform(file_path)
+      CSV.foreach(file_path, :headers => true) do |row|
+        begin
+          taxon = Taxon.find_or_create_by(family: row["family"].strip)
+        rescue
+          retry
+        end
+        familyIDs = row["familyIDs"].tr('[]', '').split(',').map(&:to_i)
+        data = familyIDs.map{|r| { occurrence_id: r, taxon_id: taxon.id}}
+        TaxonOccurrence.import data
+      end
     end
 
   end
