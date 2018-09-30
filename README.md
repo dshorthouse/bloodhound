@@ -44,7 +44,7 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
 
 ### Step 4: Disambiguate Agents
 
-     $ ./bin/disambiguate_agents.rb --truncate --disambiguate
+     $ ./bin/disambiguate_agents.rb --disambiguate
      $ sidekiq -c 40 -q disambiguate -r ./environment.rb
 
 ### Step 5: Populate Search

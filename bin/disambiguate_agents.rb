@@ -25,17 +25,16 @@ end.parse!
 if options[:disambiguate]
   Sidekiq::Stats.new.reset
   write_graphics = options[:write] ? true : false
-  duplicates = Agent.where("family NOT LIKE '%.%'")
+  duplicates = Agent.where(processed: false)
+                    .where("family NOT LIKE '%.%'")
                     .where.not(given: ["", nil])
-                    .group(:family).count
-                    .map{ |k,v| k if v > 1 }.compact
-  duplicates.each do |family|
-    #Only need one of the ids in the bundle to disambiguate the whole lot
-    agent = Agent.find_by_family(family)
-    #Check to see if any in the bundle have already been disambiguated
-    if !agent.disambiguated?
-      data = { id: agent.id, write_graphics: write_graphics }
-      Sidekiq::Client.enqueue(Bloodhound::DisambiguateWorker, data)
-    end
+                    .group("family, LOWER(LEFT(given,1))")
+                    .having('count(*) > 1')
+                    .pluck(:id)
+
+  duplicates.each do |id|
+    data = { id: id, write_graphics: write_graphics }
+    Sidekiq::Client.enqueue(Bloodhound::DisambiguateWorker, data)
   end
+
 end

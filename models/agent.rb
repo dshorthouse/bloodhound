@@ -25,8 +25,12 @@ class Agent < ActiveRecord::Base
     Agent.where(family: family)
   end
 
-  def disambiguated?
-    agents_same_family.map{|a| a.id != a.canonical_id}.include?(true)
+  def agents_same_family_first_initial
+    agents_same_family.where("LOWER(LEFT(given,1)) = '#{given[0].downcase}'") rescue []
+  end
+
+  def processed?
+    processed
   end
 
   def determinations_institutions
@@ -69,18 +73,6 @@ class Agent < ActiveRecord::Base
 
   def identified_taxa
     determinations.pluck(:scientificName).compact.uniq
-  end
-
-  def identified_species
-    species = identified_taxa.map do |name|
-      species_name = nil
-      parsed = PARSER.parse(name) rescue nil
-      if !parsed.nil? && parsed[:scientificName][:parsed] && parsed[:scientificName][:details][0].has_key?(:species)
-        species_name = parsed[:scientificName][:canonical]
-      end
-      species_name
-    end
-    species.compact.sort
   end
 
   def determined_families

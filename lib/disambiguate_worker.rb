@@ -14,7 +14,8 @@ module Bloodhound
       agents = []
 
       agent = Agent.find(opts["id"])
-      agent.agents_same_family.find_each do |a|
+      similar_agents = agent.agents_same_family_first_initial
+      similar_agents.each do |a|
          if !a.given.empty?
           agents << {
             id: a.id, 
@@ -34,6 +35,10 @@ module Bloodhound
         write_graphic_file(opts["family_name"], 'pruned')
       end
       combine_subgraphs_reassign
+      similar_agents.each do |a|
+        a.processed = true
+        a.save
+      end
     end
 
     def add_edges(agents)
@@ -81,8 +86,6 @@ module Bloodhound
         #TODO: make version with greatest number of objects the canonical version
         canonical = ids.pop
         Agent.where(id: ids).find_each do |a|
-          a.canonical_id = canonical
-          a.save
           models.each do |model|
             model.constantize.where(agent_id: a.id).update_all(agent_id: canonical)
           end
