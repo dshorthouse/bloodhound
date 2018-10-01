@@ -66,9 +66,13 @@ class Agent < ActiveRecord::Base
   end
 
   def recordings_with
-    Agent.joins(:occurrence_recorders)
-         .where(occurrence_recorders: { occurrence_id: occurrence_recorders.pluck(:occurrence_id) })
-         .where.not(occurrence_recorders: { agent_id: id }).uniq
+    colleagues = Set.new
+    occurrence_recorders.pluck(:occurrence_id).in_groups_of(500, false).each do |group|
+      agents = Agent.joins(:occurrence_recorders)
+                    .where(occurrence_recorders: { occurrence_id: group }).uniq
+      colleagues.merge(agents)
+    end
+    colleagues.delete(self)
   end
 
   def identified_taxa

@@ -20,7 +20,7 @@ module Bloodhound
           agents << {
             id: a.id, 
             given: a.given,
-            collected_with: a.recordings_with.map(&:family).uniq,
+            collected_with: a.recordings_with.map(&:family),
             determined_families: a.determined_families,
             recordings_year_range: a.recordings_year_range
           }
