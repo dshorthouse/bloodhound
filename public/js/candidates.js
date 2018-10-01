@@ -62,7 +62,7 @@ var Candidates = (function($, window) {
                   $(this).remove();
                 });
                 location.reload();
-            });
+            }); 
         } else {
           $.ajax({
               method: "POST",
@@ -75,6 +75,22 @@ var Candidates = (function($, window) {
             });
           });
         }
+      });
+      $('button.remove-all').on('click', function() {
+        var id = $(this).attr("data-id");
+        $.ajax({
+            method: "POST",
+            url: "/user-occurrence/bulk.json",
+            dataType: "json",
+            data: JSON.stringify({
+              ids: id, visible: false
+            })
+        }).done(function(data) {
+            $('.table tbody tr').fadeOut(500, function() {
+              $(this).remove();
+            });
+            location.reload();
+        });
       });
       $('button.remove').on('click', function() {
           var id = $(this).attr("data-id"),

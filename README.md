@@ -42,6 +42,9 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
      $ ./bin/populate_taxa.rb --truncate --directory /directory-to-spark-csv-files/
      $ sidekiq -c 40 -q taxon -r ./environment.rb
 
+     $ ./bin/populate_taxa.rb --kingdoms
+     $ sidekiq -c 40 kingdom -r ./environment.rb
+
 ### Step 4: Disambiguate Agents
 
      $ ./bin/disambiguate_agents.rb --disambiguate

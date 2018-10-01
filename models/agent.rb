@@ -80,7 +80,9 @@ class Agent < ActiveRecord::Base
   end
 
   def determined_families
-    determined_taxa.group_by{|i| i }.map{|k, v| { id: k.id, family: k.family, count: v.size } }.sort_by { |a| a[:family] }
+    determined_taxa.group_by{|i| i }
+                   .map{|k, v| { id: k.id, family: k.family, count: v.size } }
+                   .sort_by { |a| a[:family] }
   end
 
   def occurrences

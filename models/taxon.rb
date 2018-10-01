@@ -9,25 +9,8 @@ class Taxon < ActiveRecord::Base
     Sidekiq::Client.enqueue(Bloodhound::TaxonWorker, file_path)
   end
 
-  #TODO: convert to sidekiq queue
-  def self.populate_kingdoms
-    accepted = ["Animalia", "Plantae", "Fungi", "Protista", "Chromista", "Protozoa"]
-    taxa = Taxon.where(kingdom: nil)
-    pbar = ProgressBar.create(title: "Kingdoms", total: taxa.count, autofinish: false, format: '%t %b>> %i| %e')
-    taxa.find_each do |t|
-      response = RestClient::Request.execute(
-        method: :get,
-        url: Sinatra::Application.settings.gn_api + 'name_resolvers.json?data_source_ids=11&names=' + URI::encode(t.family),
-      )
-      results = JSON.parse(response, :symbolize_names => true)
-      kingdom = results[:data][0][:results][0][:classification_path].split("|")[0] rescue nil
-      if accepted.include?(kingdom)
-        t.kingdom = kingdom
-        t.save
-      end
-      pbar.increment
-    end
-    pbar.finish
+  def self.enqueue_kingdoms(id)
+    Sidekiq::Client.enqueue(Bloodhound::KingdomWorker, id)
   end
 
 end
