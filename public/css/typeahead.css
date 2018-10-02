@@ -100,6 +100,18 @@ label input {
   padding:0.2rem 0.5rem;
 }
 
+.btn-light{
+  color:#D3633C;
+  background-color:#fff;
+  border: 1px solid #dee2e6;
+  border-radius:0px !important;
+  font-size:1rem !important;
+}
+.dropdown-menu{
+  border-radius:0px !important;
+  font-size:1rem !important;
+}
+
 @media only screen and (min-width: 450px) {
   .search-agent {
     float:right !important;

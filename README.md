@@ -64,7 +64,7 @@ Notes to self:
       {
           "type": "fs",
           "settings": {
-              "location": "/home/dshorthouse/es_backup",
+              "location": "/Users/dshorthouse/Documents/es_backup",
               "compress": true
           }
       }
