@@ -1,6 +1,7 @@
 require 'rake'
 require 'bundler/setup'
 require 'rspec/core/rake_task'
+require 'concerns/model_utility'
 require './environment'
 
 task :default => :test
