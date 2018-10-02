@@ -60,7 +60,7 @@ module Sinatra
             current_user = User.find(@user[:id])
             user = {}
             user[:personal] = current_user
-            user[:occurrences] = current_user.user_occurrence_occurrences
+            user[:occurrences] = current_user.user_occurrence_downloadable
             user.to_json
           end
 
@@ -69,7 +69,7 @@ module Sinatra
             content_type "application/csv"
             attachment   "download.csv"
             user = User.find(@user[:id])
-            records = user.user_occurrence_occurrences
+            records = user.user_occurrence_downloadable
             CSV.generate do |csv|
               csv << records.first.keys
               records.each { |r| csv << r.values }
@@ -189,7 +189,7 @@ module Sinatra
               @viewed_user = User.find_by_orcid(params[:orcid])
               user = {}
               user[:personal] = @viewed_user
-              user[:occurrences] = @viewed_user.user_occurrence_occurrences
+              user[:occurrences] = @viewed_user.user_occurrence_downloadable
               user.to_json
             else
               status 404
@@ -202,7 +202,7 @@ module Sinatra
               content_type "application/csv"
               attachment   "#{params[:orcid]}.csv"
               @viewed_user = User.find_by_orcid(params[:orcid])
-              records = @viewed_user.user_occurrence_occurrences
+              records = @viewed_user.user_occurrence_downloadable
               CSV.generate do |csv|
                 csv << records.first.keys
                 records.each { |r| csv << r.values }

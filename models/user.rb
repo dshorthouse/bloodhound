@@ -35,6 +35,12 @@ class User < ActiveRecord::Base
                     .merge(u.occurrence.attributes.symbolize_keys) }
   end
 
+  def user_occurrence_downloadable
+    user_occurrences.where(visible: true)
+                    .map{|u| { action: u.action }
+                    .merge(u.occurrence.custom_attributes.symbolize_keys) }
+  end
+
   def identifications
     occurrences.joins(:user_occurrences)
                .where("MATCH (user_occurrences.action) AGAINST ('+identified' IN BOOLEAN MODE)")

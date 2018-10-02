@@ -49,9 +49,9 @@ require 'byebug'
 require_all 'lib'
 require_all 'helpers'
 require_all 'controllers'
-require_all 'models'
 
 register Sinatra::ConfigFile
 config_file File.join(File.dirname(__FILE__), 'config.yml')
 
+require_relative 'models/initialize'
 register Sinatra::Bloodhound::Model::Initialize

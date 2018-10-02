@@ -1,4 +1,5 @@
 # encoding: utf-8
+require_relative '../concerns/model_utility'
 
 module Sinatra
   module Bloodhound
@@ -16,6 +17,8 @@ module Sinatra
             pool: app.settings.pool,
             timeout: app.settings.timeout
           )
+          ActiveRecord::Base.send :include, ModelUtility
+          require_all 'models'
 
           ActiveSupport::Inflector.inflections do |inflect|
             inflect.irregular 'taxon', 'taxa'

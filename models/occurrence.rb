@@ -8,6 +8,8 @@ class Occurrence < ActiveRecord::Base
   has_many :user_occurrences
   has_many :users, through: :user_occurrences, source: :user
 
+  custom_attribute :gbifID, :id
+
   def self.enqueue(o)
     Sidekiq::Client.enqueue(Bloodhound::OccurrenceWorker, o)
   end
