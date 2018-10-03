@@ -11,6 +11,9 @@ class Occurrence < ActiveRecord::Base
   has_many :user_occurrences
   has_many :users, through: :user_occurrences, source: :user
 
+  has_one :taxon_occurrence
+  has_one :taxon, through: :taxon_occurrence, source: :taxon
+
   alias_attribute :id, :gbifID
 
   def self.enqueue(o)

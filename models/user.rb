@@ -52,8 +52,9 @@ class User < ActiveRecord::Base
   end
 
   def identified_families
-    identifications.group(:family)
-                   .having('COUNT(family) > 0')
+    identifications.joins(:taxon)
+                   .group(:'taxa.family')
+                   .having("COUNT(taxa.family) > 0")
                    .count
                    .sort_by {|_key, value| value}
                    .reverse
@@ -61,8 +62,9 @@ class User < ActiveRecord::Base
   end
 
   def recorded_families
-    recordings.group(:family)
-              .having('COUNT(family) > 0')
+    recordings.joins(:taxon)
+              .group(:'taxa.family')
+              .having("COUNT(taxa.family) > 0")
               .count
               .sort_by {|_key, value| value}
               .reverse
