@@ -55,3 +55,7 @@ p.orcid{
   display:none;
 }
 .alert{margin-top:1rem;}
+
+.card-hover:hover{
+  background-color: rgba(0, 0, 0, 0.075);
+}
