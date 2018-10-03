@@ -9,6 +9,7 @@ module Sinatra
 
           app.post '/user-occurrence/bulk.json' do
             protected!
+            content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
             action = req[:action] rescue nil
             visible = req[:visible] rescue true
@@ -25,6 +26,7 @@ module Sinatra
 
           app.post '/user-occurrence/:id.json' do
             protected!
+            content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
             action = req[:action] rescue nil
             visible = req[:visible] rescue true
@@ -39,6 +41,7 @@ module Sinatra
 
           app.put '/user-occurrence/bulk.json' do
             protected!
+            content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
             ids = req[:ids].split(",")
             UserOccurrence.where(id: ids).update_all({action: req[:action]})
@@ -47,6 +50,7 @@ module Sinatra
 
           app.put '/user-occurrence/:id.json' do
             protected!
+            content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
             uo = UserOccurrence.find(params[:id])
             uo.action = req[:action]
@@ -57,6 +61,7 @@ module Sinatra
 
           app.delete '/user-occurrence/bulk.json' do
             protected!
+            content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
             data = req[:ids].split(",")
             UserOccurrence.delete(data)
@@ -65,6 +70,7 @@ module Sinatra
 
           app.delete '/user-occurrence/:id.json' do
             protected!
+            content_type "application/json"
             uo = UserOccurrence.find(params[:id])
             uo.destroy
             { message: "ok" }.to_json

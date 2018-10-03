@@ -47,6 +47,7 @@ module Sinatra
 
           app.put '/profile.json' do
             protected!
+            content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
             user = User.find(@user[:id])
             user.is_public = req[:is_public]
@@ -57,6 +58,7 @@ module Sinatra
 
           app.get '/profile/download.json' do
             protected!
+            content_type "application/json"
             current_user = User.find(@user[:id])
             user = {}
             user[:personal] = current_user
@@ -162,6 +164,7 @@ module Sinatra
 
           app.get '/orcid-refresh.json' do
             protected!
+            content_type "application/json"
             data = get_orcid_profile(@user[:orcid])
             given = data[:person][:name][:"given-names"][:value]
             family = data[:person][:name][:"family-name"][:value]

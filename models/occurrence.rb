@@ -28,4 +28,17 @@ class Occurrence < ActiveRecord::Base
     }
   end
 
+  def actions
+    identified = user_occurrences.select(:'users.orcid', :'users.given', :'users.family', :'users.email')
+                                 .joins(:user)
+                                 .where("MATCH (user_occurrences.action) AGAINST ('+identified' IN BOOLEAN MODE)")
+    recorded = user_occurrences.select(:'users.orcid', :'users.given', :'users.family', :'users.email')
+                               .joins(:user)
+                               .where("MATCH (user_occurrences.action) AGAINST ('+recorded' IN BOOLEAN MODE)")
+    {
+      identified: identified.as_json(except: :id),
+      recorded: recorded.as_json(except: :id)
+    }
+  end
+
 end

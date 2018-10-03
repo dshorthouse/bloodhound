@@ -21,8 +21,19 @@ module Sinatra
           end
 
           app.get '/agent.json' do
+            content_type "application/json"
             search_agent
             format_agents.to_json
+          end
+
+          app.get '/occurrence/:id.json' do
+            content_type "application/json"
+            occurrence = Occurrence.find(params[:id])
+            response = occurrence.custom_attributes
+                                 .symbolize_keys
+                                 .as_json(except: :lastChecked)
+            response[:actions] = occurrence.actions
+            response.to_json
           end
 
           app.get '/roster' do

@@ -1,7 +1,6 @@
 require 'rake'
 require 'bundler/setup'
 require 'rspec/core/rake_task'
-require 'concerns/model_utility'
 require './environment'
 
 task :default => :test
@@ -59,8 +58,6 @@ namespace :db do
       if ['0.0.0.0', '127.0.0.1', 'localhost'].include?(conf[env][:host].strip)
         database = conf[env].delete(:database)
         ActiveRecord::Base.establish_connection(conf[env])
-        ActiveRecord::Base.send :include, ModelUtility
-        require_all 'models'
         ActiveRecord::Base.connection.execute("drop database if exists #{database}")
       end
     end
@@ -71,8 +68,6 @@ namespace :db do
       if ['0.0.0.0', '127.0.0.1', 'localhost'].include?(conf[env][:host].strip)
         database = conf[env].delete(:database)
         ActiveRecord::Base.establish_connection(conf[env])
-        ActiveRecord::Base.send :include, ModelUtility
-        require_all 'models'
         ActiveRecord::Base.connection.execute("create database if not exists #{database}")
       end
     end
