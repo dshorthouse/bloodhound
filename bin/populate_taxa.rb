@@ -26,9 +26,14 @@ OptionParser.new do |opts|
 end.parse!
 
 if options[:truncate]
-  Occurrence.connection.execute("TRUNCATE TABLE taxa")
-  Occurrence.connection.execute("TRUNCATE TABLE taxon_occurrences")
-  Occurrence.connection.execute("TRUNCATE TABLE taxon_determiners")
+  tables = [
+    "taxa",
+    "taxon_occurrences",
+    "taxon_determiners"
+  ]
+  tables.each do |table|
+    Occurrence.connection.execute("TRUNCATE TABLE #{table}")
+  end
   Sidekiq::Stats.new.reset
 end
 
@@ -64,5 +69,4 @@ AFTER taxon queue is empty of jobs, must execute the following:
          JOIN taxon_occurrences t ON d.occurrence_id = t.occurrence_id"
 
   Occurrence.connection.execute(sql)
-  Taxon.populate_kingdoms
 =end
