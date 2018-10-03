@@ -8,5 +8,6 @@ branches:
 bundler_args: --without development
 before_script:
   - cp config.yml.sample config.yml
+  - RACK_ENV=test
   - rake db:create:all
-  - RACK_ENV=test rake db:migrate
+  - rake db:migrate

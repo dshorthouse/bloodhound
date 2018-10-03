@@ -29,7 +29,7 @@ module Sinatra
           app.get '/occurrence/:id.json' do
             content_type "application/json"
             occurrence = Occurrence.find(params[:id])
-            response = occurrence.custom_attributes
+            response = occurrence.attributes
                                  .symbolize_keys
                                  .as_json(except: :lastChecked)
             response[:actions] = occurrence.actions
