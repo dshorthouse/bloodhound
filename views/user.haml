@@ -33,18 +33,25 @@
   %div{class: "container-fluid"}
     %div{class: "row"}
       %div{class: "col"}
-        - if !@families_identified.empty?
+        - if @families_recorded.empty? && !@families_identified.empty?
           %h3 Families Identified
           %ul{class: "list-group"}
             - @families_identified.each do |k,v|
               %li{class: "list-group-item d-flex justify-content-between align-items-center"}
                 #{k}
-                %span{class: "badge badge-info badge-pill"} #{v}
-      %div{class: "col"}
-        - if !@families_recorded.empty?
+                %span{class: "badge badge-success badge-pill"} #{v}
+        - elsif !@families_recorded.empty?
           %h3 Families Collected
           %ul{class: "list-group"}
             - @families_recorded.each do |k,v|
               %li{class: "list-group-item d-flex justify-content-between align-items-center"}
                 #{k}
-                %span{class: "badge badge-info badge-pill"} #{v}
+                %span{class: "badge badge-success badge-pill"} #{v}
+      %div{class: "col"}
+        - if !@families_recorded.empty? && !@families_identified.empty?
+          %h3 Families Identified
+          %ul{class: "list-group"}
+            - @families_identified.each do |k,v|
+              %li{class: "list-group-item d-flex justify-content-between align-items-center"}
+                #{k}
+                %span{class: "badge badge-success badge-pill"} #{v}
