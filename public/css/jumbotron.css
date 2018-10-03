@@ -59,3 +59,7 @@ p.orcid{
 .card-hover:hover{
   background-color: rgba(0, 0, 0, 0.075);
 }
+
+.nav-tabs{
+  margin-bottom:1em;
+}

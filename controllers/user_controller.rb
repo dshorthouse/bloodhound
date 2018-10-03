@@ -186,7 +186,7 @@ module Sinatra
             { message: "ok" }.to_json
           end
 
-          app.get '/:orcid.json' do
+          app.get '/:orcid/specimens.json' do
             if params[:orcid].is_orcid?
               content_type "application/json"
               @viewed_user = User.find_by_orcid(params[:orcid])
@@ -200,7 +200,7 @@ module Sinatra
             end
           end
 
-          app.get '/:orcid.csv' do
+          app.get '/:orcid/specimens.csv' do
             if params[:orcid].is_orcid?
               content_type "application/csv"
               attachment   "#{params[:orcid]}.csv"
@@ -220,15 +220,36 @@ module Sinatra
             if params[:orcid].is_orcid?
               @viewed_user = User.find_by_orcid(params[:orcid])
               if @viewed_user && @viewed_user.is_public?
+                @total = {
+                  identified: @viewed_user.identified_count,
+                  recorded: @viewed_user.recorded_count
+                }
+                @families_identified = @viewed_user.identified_families
+                @families_recorded = @viewed_user.recorded_families
+                haml :user
+              else
+                status 404
+                haml :oops
+              end
+            else
+              status 404
+              haml :oops
+            end
+          end
+
+          app.get '/:orcid/specimens' do
+            if params[:orcid].is_orcid?
+              @viewed_user = User.find_by_orcid(params[:orcid])
+              if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
-                visible = @viewed_user.user_occurrences.where(visible: true)
+                visible = @viewed_user.visible_user_occurrences
                 @results = visible.paginate :page => params[:page]
                 @total = {
                   identified: @viewed_user.identified_count,
                   recorded: @viewed_user.recorded_count
                 }
 
-                haml :user
+                haml :user_specimens
               else
                 status 404
                 haml :oops

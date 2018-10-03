@@ -29,48 +29,85 @@ class User < ActiveRecord::Base
                .where(user_occurrences: { visible: true })
   end
 
-  def user_occurrence_occurrences
+  def visible_user_occurrences
     user_occurrences.where(visible: true)
-                    .map{|u| { user_occurrence_id: u.id, action: u.action }
-                    .merge(u.occurrence.attributes.symbolize_keys) }
+  end
+
+  def user_occurrence_occurrences
+    visible_user_occurrences.map{|u| { user_occurrence_id: u.id, action: u.action }
+                            .merge(u.occurrence.attributes.symbolize_keys) }
   end
 
   def user_occurrence_downloadable
-    user_occurrences.where(visible: true)
-                    .map{|u| { action: u.action }
-                    .merge(u.occurrence.attributes.symbolize_keys) }
+    visible_user_occurrences.map{|u| { action: u.action }
+                            .merge(u.occurrence.attributes.symbolize_keys) }
   end
 
   def identifications
-    occurrences.joins(:user_occurrences)
-               .where("MATCH (user_occurrences.action) AGAINST ('+identified' IN BOOLEAN MODE)")
+    visible_occurrences.where(qry_identified)
   end
 
   def recordings
-    occurrences.joins(:user_occurrences)
-               .where("MATCH (user_occurrences.action) AGAINST ('+recorded' IN BOOLEAN MODE)")
+    visible_occurrences.where(qry_recorded)
+  end
+
+  def identified_families
+    identifications.group(:family)
+                   .having('COUNT(family) > 0')
+                   .count
+                   .sort_by {|_key, value| value}
+                   .reverse
+                   .to_h
+  end
+
+  def recorded_families
+    recordings.group(:family)
+              .having('COUNT(family) > 0')
+              .count
+              .sort_by {|_key, value| value}
+              .reverse
+              .to_h
   end
 
   def identifications_recordings
-    occurrences.joins(:user_occurrences)
-               .where("MATCH (user_occurrences.action) AGAINST ('+recorded +identified' IN BOOLEAN MODE)")
+    visible_occurrences.where(qry_identified_recorded)
   end
 
   def identified_count
-    user_occurrences.where("MATCH (action) AGAINST ('+identified' IN BOOLEAN MODE)").count
+    visible_user_occurrences.where(qry_identified).count
   end
 
   def recorded_count
-    user_occurrences.where("MATCH (action) AGAINST ('+recorded' IN BOOLEAN MODE)").count
+    visible_user_occurrences.where(qry_recorded).count
   end
 
-  def identified_recorded_count
-    user_occurrences.where("MATCH (action) AGAINST ('+recorded +identified' IN BOOLEAN MODE)").count
+  def identified_and_recorded_count
+    visible_user_occurrences.where(qry_identified_and_recorded).count
+  end
+
+  def identified_or_recorded_count
+    visible_user_occurrences.where(qry_identified_or_recorded).count
+  end
+
+  def qry_identified
+    "MATCH (user_occurrences.action) AGAINST ('+identified' IN BOOLEAN MODE)"
+  end
+
+  def qry_recorded
+    "MATCH (user_occurrences.action) AGAINST ('+recorded' IN BOOLEAN MODE)"
+  end
+
+  def qry_identified_and_recorded
+    "MATCH (user_occurrences.action) AGAINST ('+recorded +identified' IN BOOLEAN MODE)"
+  end
+
+  def qry_identified_or_recorded
+    "MATCH (user_occurrences.action) AGAINST ('recorded identified' IN BOOLEAN MODE)"
   end
 
   def check_changes
     changes = []
-    occurrences.each do |o|
+    visible_occurrences.each do |o|
       response = gbif_response(o.gbifID)
       if response[:scientificName] != o.scientificName
         changes << { gbifID: o.gbifID, old_name: o.scientificName.dup, new_name: response[:scientificName] }

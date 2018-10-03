@@ -22,52 +22,29 @@
         %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"} http://orcid.org/#{@viewed_user[:orcid]}
       %p.lead Collected #{@total[:recorded]} and identified #{@total[:identified]} specimens
 
-- if !@results.empty?
-  %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-    %div{class: "col"}
-      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
-      collected
-      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-      identified
-    %div{class: "col text-right"}
-      %a{href: "/#{@viewed_user[:orcid]}.csv"}
-        %img{src: "/images/csv-icon.png", width:24, alt: "CSV download"}
-      %a{href: "/#{@viewed_user[:orcid]}.json"}
-        %img{src: "/images/json-icon.png", width:24, alt: "JSON download"}
-    
-  %table{class:"table table-hover"}
-    %thead{class: "thead-light"}
-      %tr
-        %th{scope: "col", style:"min-width:65px"}
-        %th{scope: "col"} Scientific Name
-        %th{scope: "col"} Collected By
-        %th{scope: "col"} Identified By
-        %th{scope: "col"} Date Collected
-        %th{scope: "col"} Date Identified
-        %th{scope: "col"} Institution
-        %th{scope: "col"} Catalog Number
-        %th{scope: "col"} Type Status
+%ul{class: "nav nav-tabs"}
+  %li{class: "nav-item"}
+    %a{class: "nav-link active", href: "/#{@viewed_user[:orcid]}"} Overview
+  %li{class: "nav-item"}
+    %a{class: "nav-link", href: "/#{@viewed_user[:orcid]}/specimens"} Specimens
 
-    %tbody
-      - @results.each do |uo|
-        - o = uo.occurrence
-        %tr
-          %td
-            - if uo.action == "recorded"
-              %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
-            - elsif uo.action == "identified"
-              %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-            - else
-              %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
-              %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-          %td
-            %a{href: "https://www.gbif.org/occurrence/#{o.id}" } #{o.scientificName}
-          %td #{o.recordedBy}
-          %td #{o.identifiedBy}
-          %td #{o.eventDate}
-          %td #{o.dateIdentified}
-          %td #{o.institutionCode}
-          %td #{o.catalogNumber}
-          %td #{o.typeStatus}
+- if !@families_identified.empty? || !@families_recorded.empty?
 
-  = will_paginate @results, { class: "pagination" }
+  %div{class: "container-fluid"}
+    %div{class: "row"}
+      %div{class: "col"}
+        - if !@families_identified.empty?
+          %h3 Families Identified
+          %ul{class: "list-group"}
+            - @families_identified.each do |k,v|
+              %li{class: "list-group-item d-flex justify-content-between align-items-center"}
+                #{k}
+                %span{class: "badge badge-info badge-pill"} #{v}
+      %div{class: "col"}
+        - if !@families_recorded.empty?
+          %h3 Families Collected
+          %ul{class: "list-group"}
+            - @families_recorded.each do |k,v|
+              %li{class: "list-group-item d-flex justify-content-between align-items-center"}
+                #{k}
+                %span{class: "badge badge-info badge-pill"} #{v}
