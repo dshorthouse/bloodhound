@@ -41,7 +41,7 @@ df.registerTempTable("occurrences")
 val occurrences = sqlContext.
     sql("""
       SELECT 
-        gbifID AS id,
+        gbifID,
         occurrenceID,
         dateIdentified,
         decimalLatitude,
@@ -84,13 +84,13 @@ occurrences.write.mode("append").jdbc(url, "occurrences", prop)
 val recordedByGroups = occurrences.
     filter(!isnull($"recordedBy")).
     groupBy($"recordedBy" as "agents").
-    agg(collect_set($"id") as "gbifIDs_recordedBy")
+    agg(collect_set($"gbifID") as "gbifIDs_recordedBy")
 
 //aggregate identifiedBy
 val identifiedByGroups = occurrences.
     filter(!isnull($"identifiedBy")).
     groupBy($"identifiedBy" as "agents").
-    agg(collect_set($"id") as "gbifIDs_identifiedBy")
+    agg(collect_set($"gbifID") as "gbifIDs_identifiedBy")
 
 //union identifiedBy and recordedBy entries
 val unioned = spark.
@@ -124,7 +124,7 @@ unioned.select("agents", "gbifIDs_recordedBy", "gbifIDs_identifiedBy").
 val familyGroups = occurrences.
     filter(!isnull($"family")).
     groupBy($"family").
-    agg(collect_set($"id") as "gbifIDs_family")
+    agg(collect_set($"gbifID") as "gbifIDs_family")
 
 //write aggregated families to csv files for the Populate Taxa script, /bin/populate_taxa.rb
 familyGroups.select("family", "gbifIDs_family").
