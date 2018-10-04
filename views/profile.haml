@@ -1,5 +1,5 @@
 -content_for :title do
-  Bloodhound :: #{@user[:fullname]}
+  Bloodhound: #{@user[:fullname]}
 
 -content_for :stylesheets do
   %link{href: "/css/bootstrap-toggle.min.css", rel: "stylesheet", type: "text/css"}
@@ -15,29 +15,32 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid"}
     %div{class: "container-fluid"}
-      %div{class:"row"}
-        %div{class:"col title-col"}
-          %h2{class:"display-4 text-left"}= @user[:fullname]
 
-        %div{class:"col alt-name-wrapper"}
-          %dl.row
+      %h2{class:"display-4 text-center"}= @user[:fullname]
+
+      %div{class: "row justify-content-lg-center text-center"}
+        %div{class: "col"}
+        %div{class: "col-6"}
+          %div.row
             - if !@user[:other_names].blank?
-              %dt.col-sm-4 Alternate Name(s)
-              %dd.col-sm-8
-                - @user[:other_names].split("|").each do |alt|
-                  %span{class:"alt-name"} #{alt}
+              %dl{class: "col"}
+                %dt Also known as
+                %dd #{@user[:other_names].split("|").join("; ")}
             - if !@user[:country].blank?
-              %dt.col-sm-4 Country
-              %dd.col-sm-8 #{@user[:country]}
+              %dl{class: "col"}
+                %dt Country
+                %dd #{@user[:country]}
+        %div{class: "col"}
 
-    %p.orcid
-      %a{href: "https://orcid.org/#{@user[:orcid]}"}
-        %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-      %a{href: "https://orcid.org/#{@user[:orcid]}"} http://orcid.org/#{@user[:orcid]}
-    %p.orcid-refresh
-      %a{href: "/refresh-orcid.json"}
-        %img{src: "/images/orcid_refresh_24x24.png", alt:"Refresh ORCID iD Content"}
-      %a{href: "/refresh-orcid.json"} Refresh ORCID Data
+      %div{class: "orcid text-center"}
+        %a{href: "https://orcid.org/#{@user[:orcid]}"}
+          %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+        %a{href: "https://orcid.org/#{@user[:orcid]}"} http://orcid.org/#{@user[:orcid]}
+
+      %div{class: "orcid-refresh text-center"}
+        %a{href: "/refresh-orcid.json"}
+          %img{src: "/images/orcid_refresh_24x24.png", alt:"Refresh ORCID iD Content"}
+        %a{href: "/refresh-orcid.json"} Refresh ORCID Data
 
     %div{class:"alert alert-success alert-dismissible fade show", role: "alert"}
       ORCID Data was refreshed.

@@ -1,35 +1,38 @@
 -content_for :title do
-  Bloodhound :: #{@viewed_user.fullname}
+  Bloodhound: #{@viewed_user.fullname}
 
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid"}
-    %div{class: "container-fluid"}
-      %div{class:"row"}
-        %div{class:"col title-col"}
-          %h2{class:"display-4 text-left"}= @viewed_user.fullname
+    %div{class:"container-fluid"}
 
-        %div{class:"col alt-name-wrapper"}
-          %dl.row
+      %h2{class:"display-4 text-center"}= @viewed_user.fullname
+
+      %div{class: "row justify-content-lg-center text-center"}
+        %div{class: "col"}
+        %div{class: "col-6"}
+          %div.row
             - if !@viewed_user[:other_names].blank?
-              %dt.col-sm-4 Alternate Name(s)
-              %dd.col-sm-8
-                - @viewed_user[:other_names].split("|").each do |alt|
-                  %span{class:"alt-name"} #{alt}
+              %dl{class: "col"}
+                %dt Also known as
+                %dd #{@viewed_user[:other_names].split("|").join("; ")}
             - if !@viewed_user[:country].blank?
-              %dt.col-sm-4 Country
-              %dd.col-sm-8 #{@viewed_user[:country]}
+              %dl{class: "col"}
+                %dt Country
+                %dd #{@viewed_user[:country]}
+        %div{class: "col"}
 
-      %p.orcid
+      %div{class: "orcid text-center"}
         %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"}
           %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
         %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"} http://orcid.org/#{@viewed_user[:orcid]}
-      %p.lead Collected #{@total[:recorded]} and identified #{@total[:identified]} specimens
 
 %ul{class: "nav nav-tabs"}
   %li{class: "nav-item"}
     %a{class: "nav-link active", href: "/#{@viewed_user[:orcid]}"} Overview
   %li{class: "nav-item"}
     %a{class: "nav-link", href: "/#{@viewed_user[:orcid]}/specimens"} Specimens
+
+%div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"} Collected #{@total[:recorded]} and identified #{@total[:identified]} specimens
 
 - if !@families_identified.empty? || !@families_recorded.empty?
 
