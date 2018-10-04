@@ -55,6 +55,7 @@ class User < ActiveRecord::Base
     identifications.joins(:taxon)
                    .group(:'taxa.family')
                    .having("COUNT(taxa.family) > 0")
+                   .distinct
                    .count
                    .sort_by {|_key, value| value}
                    .reverse
@@ -65,6 +66,7 @@ class User < ActiveRecord::Base
     recordings.joins(:taxon)
               .group(:'taxa.family')
               .having("COUNT(taxa.family) > 0")
+              .distinct
               .count
               .sort_by {|_key, value| value}
               .reverse
