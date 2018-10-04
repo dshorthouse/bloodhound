@@ -60,8 +60,8 @@ var Candidates = (function($, window) {
             }).done(function(data) {
                 $('.table tbody tr').fadeOut(500, function() {
                   $(this).remove();
+                  location.reload();
                 });
-                location.reload();
             }); 
         } else {
           $.ajax({
@@ -88,8 +88,8 @@ var Candidates = (function($, window) {
         }).done(function(data) {
             $('.table tbody tr').fadeOut(500, function() {
               $(this).remove();
+              location.reload();
             });
-            location.reload();
         });
       });
       $('button.remove').on('click', function() {

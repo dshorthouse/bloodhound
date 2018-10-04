@@ -20,12 +20,15 @@
           %h2{class:"display-4 text-left"}= @user[:fullname]
 
         %div{class:"col alt-name-wrapper"}
-          - if !@user[:other_names].blank?
-            %dl.row
+          %dl.row
+            - if !@user[:other_names].blank?
               %dt.col-sm-4 Alternate Name(s)
               %dd.col-sm-8
                 - @user[:other_names].split("|").each do |alt|
                   %span{class:"alt-name"} #{alt}
+            - if !@user[:country].blank?
+              %dt.col-sm-4 Country
+              %dd.col-sm-8 #{@user[:country]}
 
     %p.orcid
       %a{href: "https://orcid.org/#{@user[:orcid]}"}

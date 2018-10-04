@@ -29,6 +29,7 @@ gem 'redis'
 gem 'pony'
 gem 'sidekiq'
 gem 'dwc_agent'
+gem 'iso_country_codes'
 
 group :production do
 end

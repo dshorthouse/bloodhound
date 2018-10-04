@@ -16,12 +16,15 @@ module Sinatra
             given = session_data[:info][:first_name] rescue nil
             email = session_data[:info][:email] rescue nil
             other_names = session_data[:extra][:raw_info][:other_names].join("|") rescue nil
+            country_code = session_data[:extra][:raw_info][:location]
+            country = IsoCountryCodes.find(country_code).name rescue nil
             user = User.create_with(
                           family: family,
                           given: given,
                           orcid: session_data[:uid],
                           email: email,
-                          other_names: other_names
+                          other_names: other_names,
+                          country: country
                         )
                        .find_or_create_by(orcid: orcid)
             user_hash = user.as_json.symbolize_keys
@@ -174,12 +177,15 @@ module Sinatra
               email = mail[:email]
             end
             other_names = data[:person][:"other-names"][:"other-name"].map{|n| n[:content]}.join("|") rescue nil
+            country_code = data[:person][:addresses][:address][0][:country][:value] rescue nil
+            country = IsoCountryCodes.find(country_code).name rescue nil
             user = User.find(@user[:id])
             user.update({
               family: family,
               given: given,
               email: email,
               other_names: other_names,
+              country: country,
               updated: Time.now
             })
             update_session

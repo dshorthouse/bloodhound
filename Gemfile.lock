@@ -74,6 +74,7 @@ GEM
       domain_name (~> 0.5)
     i18n (1.1.0)
       concurrent-ruby (~> 1.0)
+    iso_country_codes (0.7.8)
     jwt (1.5.6)
     lazy_priority_queue (0.1.1)
     loofah (2.2.2)
@@ -211,6 +212,7 @@ DEPENDENCIES
   elasticsearch
   haml
   htmlentities
+  iso_country_codes
   mysql2
   namae
   nokogiri

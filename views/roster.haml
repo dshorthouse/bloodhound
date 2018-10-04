@@ -11,6 +11,7 @@
     %thead{class: "thead-light"}
       %tr
         %th{scope: "col"} Users
+        %th{scope: "col"} Country
         %th{scope: "col"} Specimens
         %th{scope: "col"} ORCID
 
@@ -19,6 +20,7 @@
         %tr
           %td 
             %a{href: "/#{o.orcid}"} #{o.fullname_reverse}
+          %td #{o.country}
           %td #{o.identified_or_recorded_count}
           %td
             %a{href: "https://orcid.org/#{o.orcid}"}

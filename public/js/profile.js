@@ -75,6 +75,9 @@ var Profile = (function($, window) {
             url: "/orcid-refresh.json"
         }).done(function(data) {
           $(".alert").alert().show();
+          $(".alert").on('closed.bs.alert', function () {
+            location.reload();
+          });
         });
         return false;
       });
