@@ -69,7 +69,7 @@ var Profile = (function($, window) {
       });
     },
     activate_orcid_refresh: function(){
-      $("p.orcid-refresh a").on("click", function() {
+      $("div.orcid-refresh a").on("click", function() {
         $.ajax({
             method: "GET",
             url: "/orcid-refresh.json"
