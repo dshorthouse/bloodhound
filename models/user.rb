@@ -62,6 +62,10 @@ class User < ActiveRecord::Base
                    .to_h
   end
 
+  def top_family_identified
+    identified_families.first[0] if !identified_families.empty?
+  end
+
   def recorded_families
     recordings.joins(:taxon)
               .group(:'taxa.family')
@@ -71,6 +75,10 @@ class User < ActiveRecord::Base
               .sort_by {|_key, value| value}
               .reverse
               .to_h
+  end
+
+  def top_family_recorded
+    recorded_families.first[0] if !recorded_families.empty?
   end
 
   def identifications_recordings
