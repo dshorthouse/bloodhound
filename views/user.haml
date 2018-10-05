@@ -38,14 +38,18 @@
     %div{class: "row"}
       %div{class: "col"}
         - if @families_recorded.empty? && !@families_identified.empty?
-          %h3 Families Identified
+          %h3
+            Families Identified
+            %span{class: "badge badge-success badge-secondary"} #{@families_identified.count}
           %ul{class: "list-group"}
             - @families_identified.each do |k,v|
               %li{class: "list-group-item d-flex justify-content-between align-items-center"}
                 #{k}
                 %span{class: "badge badge-success badge-pill"} #{v}
         - elsif !@families_recorded.empty?
-          %h3 Families Collected
+          %h3
+            Families Collected
+            %span{class: "badge badge-success badge-secondary"} #{@families_recorded.count}
           %ul{class: "list-group"}
             - @families_recorded.each do |k,v|
               %li{class: "list-group-item d-flex justify-content-between align-items-center"}
@@ -53,7 +57,9 @@
                 %span{class: "badge badge-success badge-pill"} #{v}
       %div{class: "col"}
         - if !@families_recorded.empty? && !@families_identified.empty?
-          %h3 Families Identified
+          %h3
+            Families Identified
+            %span{class: "badge badge-success badge-secondary"} #{@families_identified.count}
           %ul{class: "list-group"}
             - @families_identified.each do |k,v|
               %li{class: "list-group-item d-flex justify-content-between align-items-center"}
