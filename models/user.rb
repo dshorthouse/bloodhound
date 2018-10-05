@@ -102,19 +102,19 @@ class User < ActiveRecord::Base
   end
 
   def qry_identified
-    "MATCH (user_occurrences.action) AGAINST ('+identified' IN BOOLEAN MODE)"
+    "user_occurrences.action LIKE '%identified%'"
   end
 
   def qry_recorded
-    "MATCH (user_occurrences.action) AGAINST ('+recorded' IN BOOLEAN MODE)"
+    "user_occurrences.action LIKE '%recorded%'"
   end
 
   def qry_identified_and_recorded
-    "MATCH (user_occurrences.action) AGAINST ('+recorded +identified' IN BOOLEAN MODE)"
+    "user_occurrences.action LIKE '%recorded%' AND user_occurrences.action LIKE '%identified%'"
   end
 
   def qry_identified_or_recorded
-    "MATCH (user_occurrences.action) AGAINST ('recorded identified' IN BOOLEAN MODE)"
+    "(user_occurrences.action LIKE '%recorded%' OR user_occurrences.action LIKE '%identified%')"
   end
 
   def check_changes
