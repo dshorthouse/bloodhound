@@ -13,6 +13,8 @@
         %th{scope: "col"} Users
         %th{scope: "col"} Country
         %th{scope: "col"} Total Specimens
+        %th{scope: "col"} Top Family Collected
+        %th{scope: "col"} Top Family Identified
         %th{scope: "col"} ORCID
 
     %tbody
@@ -22,6 +24,8 @@
             %a{href: "/#{u.orcid}"} #{u.fullname_reverse}
           %td #{u.country}
           %td #{u.visible_user_occurrences.count}
+          %td #{u.top_family_recorded}
+          %td #{u.top_family_identified}
           %td
             %a{href: "https://orcid.org/#{u.orcid}"}
               %img{src: "/images/orcid_16x16.png", alt:"ORCID iD"}
