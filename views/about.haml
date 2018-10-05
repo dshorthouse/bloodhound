@@ -27,16 +27,25 @@
   %a{href: "https://rubygems.org/gems/namae" } Namae gem 
   among other custom regular expressions. They were also partially reconciled by pruning 
   %a{href: "https://en.wikipedia.org/wiki/Clique_(graph_theory)"} weighted graphs 
-  of surnames whose edges were marked with a similarity score. The scoring algorithm favours instances of co-collector names (i.e. people often collect with the same group of friends), overlap in overall collection and determination date ranges, and taxon similarity (i.e. people often collect taxa within the same taxonomic Families) in an effort to help infer that different names represent the same person. For example, 
+  of surnames whose edges were marked with a similarity score. The scoring algorithm favours instances of co-collector names (
+  %em i.e. 
+  people often collect with the same group of friends), overlap in overall collection and determination date ranges, and taxon similarity (
+  %em i.e. 
+  people often collect taxa within the same taxonomic Families) in an effort to help infer that different names represent the same person. For example, 
   %em John Bain
   is likely the same person as 
   %em John F. Bain 
-  because instances of both names were associated with people with the surnames Poole, Kerr, or Turner, their collection dates and determination dates overlapped, and both collected or identified grasses.
+  because instances of both names were associated with people with the surnames 
+  %em Poole, Kerr, 
+  or 
+  %em Turner, 
+  their collection dates and determination dates overlapped, and both collected or identified grasses.
 %p
   If you declared alternate names in your ORCID account (e.g. a maiden name), these are also used to search for specimen records, which are then presented to you in greatest to least likely collected or identified by you.
   The MIT-licensed code is available on 
   = succeed "." do
     %a{href: "https://github.com/dshorthouse/bloodhound" } GitHub
+  Technologies at play include Apache Spark, Redis, Elasticsearch, and ruby.
 
 %h3 Background
 
@@ -48,7 +57,7 @@
   %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility 
   (GBIF) has prioritized a focus on people. The very first planned item in their 
   %a{href: "https://www.gbif.org/document/83029/gbif-implementation-plan-2017-2021-and-annual-work-programme-2017" }Implementation Plan for 2017-2021 
-  and Annual Work Programme states, "1.a.i: Develop mechanisms to support and reflect the skills, expertise and experience of individual and organizational contributions to the GBIF network, including revision of identity management system and integration of ORCID identifiers". They have explicitly recognized that 
+  and Annual Work Programme states, "1.a.i: Develop mechanisms to support and reflect the skills, expertise and experience of individual and organizational contributions to the GBIF network, including revision of identity management system and integration of ORCID identifiers".
   %a{href: "https://www.orcid.org"} ORCID 
   is the organization that is best positioned to capture and resolve the identity of people in academia and professional settings. However, a bottleneck that prevents the full execution of GBIF's plan is a legacy of seemingly intractable, text-based content shared from natural history museums that ambiguously record people or organizations implicated in specimen data, none of which include pre-determined links to ORCID identifiers. Typical content shared under the Darwin Core terms 
   %a{href: "http://rs.tdwg.org/dwc/terms/#recordedBy"} recordedBy 

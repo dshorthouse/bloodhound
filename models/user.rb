@@ -52,14 +52,14 @@ class User < ActiveRecord::Base
   end
 
   def identified_families
-    identifications.joins(:taxon)
-                   .group(:'taxa.family')
-                   .having("COUNT(taxa.family) > 0")
-                   .distinct
-                   .count
-                   .sort_by {|_key, value| value}
-                   .reverse
-                   .to_h
+    taxon_ids = visible_user_occurrences.where(qry_identified)
+                                        .joins(:taxon_occurrence)
+                                        .pluck(:taxon_id)
+    Hash.new(0).tap{ |h| taxon_ids.each { |f| h[f] += 1 } }
+               .transform_keys{ |key| Taxon.find(key).family }
+               .sort_by {|_key, value| value}
+               .reverse
+               .to_h
   end
 
   def top_family_identified
@@ -67,14 +67,14 @@ class User < ActiveRecord::Base
   end
 
   def recorded_families
-    recordings.joins(:taxon)
-              .group(:'taxa.family')
-              .having("COUNT(taxa.family) > 0")
-              .distinct
-              .count
-              .sort_by {|_key, value| value}
-              .reverse
-              .to_h
+    taxon_ids = visible_user_occurrences.where(qry_recorded)
+                                        .joins(:taxon_occurrence)
+                                        .pluck(:taxon_id)
+    Hash.new(0).tap{ |h| taxon_ids.each { |f| h[f] += 1 } }
+               .transform_keys{ |key| Taxon.find(key).family }
+               .sort_by {|_key, value| value}
+               .reverse
+               .to_h
   end
 
   def top_family_recorded

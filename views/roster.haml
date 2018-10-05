@@ -16,15 +16,15 @@
         %th{scope: "col"} ORCID
 
     %tbody
-      - @results.each do |o|
+      - @results.each do |u|
         %tr
           %td 
-            %a{href: "/#{o.orcid}"} #{o.fullname_reverse}
-          %td #{o.country}
-          %td #{o.identified_or_recorded_count}
+            %a{href: "/#{u.orcid}"} #{u.fullname_reverse}
+          %td #{u.country}
+          %td #{u.visible_user_occurrences.count}
           %td
-            %a{href: "https://orcid.org/#{o.orcid}"}
+            %a{href: "https://orcid.org/#{u.orcid}"}
               %img{src: "/images/orcid_16x16.png", alt:"ORCID iD"}
-            %a{href: "https://orcid.org/#{o.orcid}"} http://orcid.org/#{o.orcid}
+            %a{href: "https://orcid.org/#{u.orcid}"} http://orcid.org/#{u.orcid}
 
   = will_paginate @results, { class: "pagination" }
