@@ -40,7 +40,7 @@
         - if @families_recorded.empty? && !@families_identified.empty?
           %h3
             Families Identified
-            %span{class: "badge badge-success badge-secondary"} #{@families_identified.count}
+            %span{class: "badge badge-light badge-secondary"} #{@families_identified.count}
           %ul{class: "list-group"}
             - @families_identified.each do |k,v|
               %li{class: "list-group-item d-flex justify-content-between align-items-center"}
@@ -49,7 +49,7 @@
         - elsif !@families_recorded.empty?
           %h3
             Families Collected
-            %span{class: "badge badge-success badge-secondary"} #{@families_recorded.count}
+            %span{class: "badge badge-light badge-secondary"} #{@families_recorded.count}
           %ul{class: "list-group"}
             - @families_recorded.each do |k,v|
               %li{class: "list-group-item d-flex justify-content-between align-items-center"}
@@ -59,7 +59,7 @@
         - if !@families_recorded.empty? && !@families_identified.empty?
           %h3
             Families Identified
-            %span{class: "badge badge-success badge-secondary"} #{@families_identified.count}
+            %span{class: "badge badge-light badge-secondary"} #{@families_identified.count}
           %ul{class: "list-group"}
             - @families_identified.each do |k,v|
               %li{class: "list-group-item d-flex justify-content-between align-items-center"}
