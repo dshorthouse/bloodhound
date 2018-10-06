@@ -98,7 +98,6 @@
         %th{scope: "col"} Institution
         %th{scope: "col"} Catalog Number
         %th{scope: "col"} Type Status
-        %th{scope: "col"} Last Checked
         %th{scope: "col"}
 
     %tbody
@@ -123,8 +122,6 @@
           %td #{o[:institutionCode]}
           %td #{o[:catalogNumber]}
           %td #{o[:typeStatus]}
-          - last_checked = o[:lastChecked].nil? ? "Coming..." : o[:lastChecked]
-          %td #{last_checked}
           %td
             %button{type:"button", class:"btn btn-danger remove", "data-id":"#{o[:user_occurrence_id]}"} Remove
 

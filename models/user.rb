@@ -98,11 +98,15 @@ class User < ActiveRecord::Base
   end
 
   def identified_and_recorded_count
-    visible_user_occurrences.where(qry_identified_and_recorded).count
+    visible_user_occurrences.where(qry_identified_and_recorded)
+                            .pluck(:occurrence_id)
+                            .uniq.count
   end
 
   def identified_or_recorded_count
-    visible_user_occurrences.where(qry_identified_or_recorded).count
+    visible_user_occurrences.where(qry_identified_or_recorded)
+                            .pluck(:occurrence_id)
+                            .uniq.count
   end
 
   def qry_identified
