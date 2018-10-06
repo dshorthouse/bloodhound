@@ -40,7 +40,11 @@ module Sinatra
       end
 
       def example_profiles
-        @results = User.where(is_public: true).order(:family).limit(9)
+        @results = User.joins(:user_occurrences)
+                       .distinct
+                       .where(is_public: true)
+                       .where('user_occurrences.id > 0')
+                       .limit(9)
       end
 
       def protected!
