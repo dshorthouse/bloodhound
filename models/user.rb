@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   has_many :user_occurrences
   has_many :occurrences, through: :user_occurrences, source: :occurrence
 
-  self.per_page = 100
+  self.per_page = 25
 
   def is_public?
     is_public
