@@ -30,7 +30,7 @@ module Sinatra
             user_hash = user.as_json.symbolize_keys
             user_hash[:fullname] = user.fullname
             session[:omniauth] = user_hash
-            redirect '/'
+            redirect '/profile'
           end
 
           app.get '/profile' do
@@ -250,10 +250,6 @@ module Sinatra
                 page = (params[:page] || 1).to_i
                 visible = @viewed_user.visible_user_occurrences
                 @results = visible.paginate :page => params[:page]
-                @total = {
-                  identified: @viewed_user.identified_count,
-                  recorded: @viewed_user.recorded_count
-                }
 
                 haml :user_specimens
               else
