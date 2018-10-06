@@ -75,7 +75,7 @@
               %label{class:"btn  btn-choice btn-light"}
                 %input{type:"radio", name:"selection-#{o.id}",  class:"specimen-selector", "data-occurrence-id":"#{o.id}", "data-action": "recorded,identified", autocomplete:"off"} Both
           %td
-            - scientific_name = o.scientificName.empty? ? "not recorded" : o.scientificName
+            - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
             %a{href: "https://www.gbif.org/occurrence/#{o.id}", target: "_blank" } #{scientific_name}
           %td #{o.recordedBy}
           %td #{o.identifiedBy}

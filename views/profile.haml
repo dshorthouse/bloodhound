@@ -114,7 +114,7 @@
               %label{class:"btn  btn-choice btn-light #{active_class(o[:action], "recorded,identified")}"}
                 %input{type:"radio", class:"action-radio", name:"selection-#{o[:user_occurrence_id]}", "data-id":"#{o[:user_occurrence_id]}", "data-action": "recorded,identified", autocomplete:"off"} Both
           %td
-            - scientific_name = o[:scientificName].empty? ? "not recorded" : o[:scientificName]
+            - scientific_name = o[:scientificName].nil? ? "not recorded" : o[:scientificName]
             %a{href: "https://www.gbif.org/occurrence/#{o[:gbifID]}", target: "_blank" } #{scientific_name}
           %td #{o[:recordedBy]}
           %td #{o[:identifiedBy]}
