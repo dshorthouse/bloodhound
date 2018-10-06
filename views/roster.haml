@@ -6,29 +6,28 @@
     %div{class: "container-fluid"}
       %h2 Roster of Public Profiles
 
-%div{class: "container-fluid"}
-  %table{class:"table table-hover"}
-    %thead{class: "thead-light"}
-      %tr
-        %th{scope: "col"} Users
-        %th{scope: "col"} Country
-        %th{scope: "col"} Total Specimens
-        %th{scope: "col"} Top Family Collected
-        %th{scope: "col"} Top Family Identified
-        %th{scope: "col"} ORCID
+%table{class:"table table-hover"}
+  %thead{class: "thead-light"}
+    %tr
+      %th{scope: "col"} Users
+      %th{scope: "col"} Country
+      %th{scope: "col"} Total Specimens
+      %th{scope: "col"} Top Family Collected
+      %th{scope: "col"} Top Family Identified
+      %th{scope: "col"} ORCID
 
-    %tbody
-      - @results.each do |u|
-        %tr
-          %td 
-            %a{href: "/#{u.orcid}"} #{u.fullname_reverse}
-          %td #{u.country}
-          %td #{u.visible_user_occurrences.pluck(:occurrence_id).uniq.count}
-          %td #{u.top_family_recorded}
-          %td #{u.top_family_identified}
-          %td
-            %a{href: "https://orcid.org/#{u.orcid}"}
-              %img{src: "/images/orcid_16x16.png", alt:"ORCID iD"}
-            %a{href: "https://orcid.org/#{u.orcid}"} http://orcid.org/#{u.orcid}
+  %tbody
+    - @results.each do |u|
+      %tr
+        %td 
+          %a{href: "/#{u.orcid}"} #{u.fullname_reverse}
+        %td #{u.country}
+        %td #{u.visible_user_occurrences.pluck(:occurrence_id).uniq.count}
+        %td #{u.top_family_recorded}
+        %td #{u.top_family_identified}
+        %td
+          %a{href: "https://orcid.org/#{u.orcid}"}
+            %img{src: "/images/orcid_16x16.png", alt:"ORCID iD"}
+          %a{href: "https://orcid.org/#{u.orcid}"} http://orcid.org/#{u.orcid}
 
   = will_paginate @results, { class: "pagination" }

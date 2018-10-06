@@ -69,7 +69,8 @@
               %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
               %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
           %td
-            %a{href: "https://www.gbif.org/occurrence/#{o.id}" } #{o.scientificName}
+            - scientific_name = o.scientificName.empty? ? "not recorded" : o.scientificName
+            %a{href: "https://www.gbif.org/occurrence/#{o.id}", target: "_blank" } #{scientific_name}
           %td #{o.recordedBy}
           %td #{o.identifiedBy}
           %td #{o.eventDate}
