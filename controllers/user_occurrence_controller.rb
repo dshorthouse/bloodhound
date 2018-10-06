@@ -13,7 +13,13 @@ module Sinatra
             req = JSON.parse(request.body.read).symbolize_keys
             action = req[:action] rescue nil
             visible = req[:visible] rescue true
-            data = req[:ids].split(",").map{|o| { 
+            occurrence_ids = req[:occurrence_ids].split(",")
+            if !visible
+              UserOccurrence.where(occurrence_id: occurrence_ids)
+                            .where(user_id: @user[:id])
+                            .destroy_all
+            end
+            data = occurrence_ids.map{|o| { 
               user_id: @user[:id],
               occurrence_id: o.to_i,
               action: action,
@@ -24,7 +30,7 @@ module Sinatra
             { message: "ok" }.to_json
           end
 
-          app.post '/user-occurrence/:id.json' do
+          app.post '/user-occurrence/:occurrence_id.json' do
             protected!
             content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
@@ -32,7 +38,7 @@ module Sinatra
             visible = req[:visible] rescue true
             uo = UserOccurrence.new
             uo.user_id = @user[:id]
-            uo.occurrence_id = params[:id]
+            uo.occurrence_id = params[:occurrence_id]
             uo.action = action
             uo.visible = visible
             uo.save
@@ -63,16 +69,15 @@ module Sinatra
             protected!
             content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
-            data = req[:ids].split(",")
-            UserOccurrence.delete(data)
+            ids = req[:ids].split(",")
+            UserOccurrence.delete(ids)
             { message: "ok" }.to_json
           end
 
           app.delete '/user-occurrence/:id.json' do
             protected!
             content_type "application/json"
-            uo = UserOccurrence.find(params[:id])
-            uo.destroy
+            UserOccurrence.delete(params[:id])
             { message: "ok" }.to_json
           end
 

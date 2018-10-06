@@ -41,13 +41,13 @@
         %th{scope: "col"}
           %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
             %label{class:"btn btn-choice btn-dark"}
-              %input{type:"radio", name:"selection-all", class:"specimen-selector", "data-id":"#{@results.map{|o| o.id}.join(",")}", "data-action": "recorded", autocomplete:"off"}
+              %input{type:"radio", name:"selection-all", class:"specimen-selector", "data-occurrence-ids":"#{@results.map{|o| o.id}.join(",")}", "data-action": "recorded", autocomplete:"off"}
                 %img{src:"/images/net.png", alt:"Collected All", title:"Collected All", width:18}
             %label{class:"btn  btn-choice btn-dark"}
-              %input{type:"radio", name:"selection-all",  class:"specimen-selector", "data-id":"#{@results.map{|o| o.id}.join(",")}", "data-action": "identified", autocomplete:"off"}
+              %input{type:"radio", name:"selection-all",  class:"specimen-selector", "data-occurrence-ids":"#{@results.map{|o| o.id}.join(",")}", "data-action": "identified", autocomplete:"off"}
                 %img{src:"/images/microscope.png", alt:"Identified All", title: "Identified All",width:18}
             %label{class:"btn  btn-choice btn-dark"}
-              %input{type:"radio", name:"selection-all",  class:"specimen-selector", "data-id":"#{@results.map{|o| o.id}.join(",")}", "data-action": "recorded,identified", autocomplete:"off"} Both
+              %input{type:"radio", name:"selection-all",  class:"specimen-selector", "data-occurrence-ids":"#{@results.map{|o| o.id}.join(",")}", "data-action": "recorded,identified", autocomplete:"off"} Both
         %th{scope: "col"} Scientific Name
         %th{scope: "col"} Collected By
         %th{scope: "col"} Identified By
@@ -57,7 +57,7 @@
         %th{scope: "col"} Catalog Number
         %th{scope: "col"} Type Status
         %th{scope: "col"}
-          %button{type:"button", name:"notme-all", class:"btn btn-warning remove-all", "data-id":"#{@results.map{|o| o.id}.join(",")}"} Not me
+          %button{type:"button", name:"notme-all", class:"btn btn-warning remove-all", "data-occurrence-ids":"#{@results.map{|o| o.id}.join(",")}"} Not me
 
     %tbody
       - @results.each do |o|
@@ -65,13 +65,13 @@
           %td
             %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
               %label{class:"btn btn-choice btn-light"}
-                %input{type:"radio", name:"selection-#{o.id}",  class:"specimen-selector", "data-id":"#{o.id}", "data-action": "recorded", autocomplete:"off"}
+                %input{type:"radio", name:"selection-#{o.id}",  class:"specimen-selector", "data-occurrence-id":"#{o.id}", "data-action": "recorded", autocomplete:"off"}
                   %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
               %label{class:"btn  btn-choice btn-light"}
-                %input{type:"radio", name:"selection-#{o.id}",  class:"specimen-selector", "data-id":"#{o.id}", "data-action": "identified", autocomplete:"off"}
+                %input{type:"radio", name:"selection-#{o.id}",  class:"specimen-selector", "data-occurrence-id":"#{o.id}", "data-action": "identified", autocomplete:"off"}
                   %img{src:"/images/microscope-unselected.png", alt:"Identified", title: "Identified",width:18}
               %label{class:"btn  btn-choice btn-light"}
-                %input{type:"radio", name:"selection-#{o.id}",  class:"specimen-selector", "data-id":"#{o.id}", "data-action": "recorded,identified", autocomplete:"off"} Both
+                %input{type:"radio", name:"selection-#{o.id}",  class:"specimen-selector", "data-occurrence-id":"#{o.id}", "data-action": "recorded,identified", autocomplete:"off"} Both
           %td
             %a{href: "https://www.gbif.org/occurrence/#{o.id}", target: "_blank"} #{o.scientificName}
           %td #{o.recordedBy}
@@ -82,7 +82,7 @@
           %td #{o.catalogNumber}
           %td #{o.typeStatus}
           %td
-            %button{type:"button", class:"btn btn-outline-warning remove", "data-id":"#{o.id}"} Not me
+            %button{type:"button", class:"btn btn-outline-warning remove", "data-occurrence-id":"#{o.id}"} Not me
 
   - if @total >= 25
     %div{class: "btn-group", style:"margin-bottom:3px"}

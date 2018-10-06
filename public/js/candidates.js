@@ -46,16 +46,16 @@ var Candidates = (function($, window) {
     },
     activate_radios: function(){
       $('input.specimen-selector').change(function() {
-        var id = $(this).attr("data-id"),
-            action = $(this).attr("data-action"),
+        var action = $(this).attr("data-action"),
             input = $(this);
         if($(this).attr("name") === "selection-all") {
+            var occurrence_ids = $(this).attr("data-occurrence-ids");
             $.ajax({
                 method: "POST",
                 url: "/user-occurrence/bulk.json",
                 dataType: "json",
                 data: JSON.stringify({
-                  ids: id, action: action, visible: true
+                  occurrence_ids: occurrence_ids, action: action, visible: true
                 })
             }).done(function(data) {
                 $('.table tbody tr').fadeOut(500, function() {
@@ -64,9 +64,10 @@ var Candidates = (function($, window) {
                 });
             }); 
         } else {
+          var occurrence_id = $(this).attr("data-occurrence-id");
           $.ajax({
               method: "POST",
-              url: "/user-occurrence/" + id + ".json",
+              url: "/user-occurrence/" + occurrence_id + ".json",
               dataType: "json",
               data: JSON.stringify({ action: action, visible: true })
           }).done(function(data) {
@@ -77,13 +78,13 @@ var Candidates = (function($, window) {
         }
       });
       $('button.remove-all').on('click', function() {
-        var id = $(this).attr("data-id");
+        var occurrence_ids = $(this).attr("data-occurrence-ids");
         $.ajax({
             method: "POST",
             url: "/user-occurrence/bulk.json",
             dataType: "json",
             data: JSON.stringify({
-              ids: id, visible: false
+              occurrence_ids: occurrence_ids, visible: false
             })
         }).done(function(data) {
             $('.table tbody tr').fadeOut(500, function() {
@@ -93,11 +94,11 @@ var Candidates = (function($, window) {
         });
       });
       $('button.remove').on('click', function() {
-          var id = $(this).attr("data-id"),
+          var occurrence_id = $(this).attr("data-occurrence-id"),
               row = $(this).parents("tr");
           $.ajax({
               method: "POST",
-              url: "/user-occurrence/" + id + ".json",
+              url: "/user-occurrence/" + occurrence_id + ".json",
               dataType: "json",
               data: JSON.stringify({ visible: false})
           }).done(function(data) {

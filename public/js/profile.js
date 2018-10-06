@@ -24,15 +24,15 @@ var Profile = (function($, window) {
     },
     activate_radios: function(){
       $('input.action-radio').change(function() {
-          var id = $(this).attr("data-id"),
-              action = $(this).attr("data-action"),
+          var action = $(this).attr("data-action"),
               label = $(this).parent();
           if($(this).attr("name") === "selection-all") {
+              var ids = $(this).attr("data-ids");
               $.ajax({
                   method: "PUT",
                   url: "/user-occurrence/bulk.json",
                   dataType: "json",
-                  data: JSON.stringify({ ids: id, action: action })
+                  data: JSON.stringify({ ids: ids, action: action })
               }).done(function(data) {
                   $('label').each(function() {
                       $(this).removeClass("active");
@@ -42,6 +42,7 @@ var Profile = (function($, window) {
                   });
               });
           } else {
+              var id = $(this).attr("data-id");
               $.ajax({
                   method: "PUT",
                   url: "/user-occurrence/" + id + ".json",
