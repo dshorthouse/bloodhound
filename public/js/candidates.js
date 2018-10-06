@@ -1,4 +1,10 @@
 /*global jQuery, window, document, self, encodeURIComponent, Bloodhound */
+Array.prototype.unique = function() {
+  return this.filter(function (value, index, self) { 
+    return self.indexOf(value) === index;
+  });
+}
+
 var Candidates = (function($, window) {
 
   "use strict";
@@ -49,7 +55,9 @@ var Candidates = (function($, window) {
         var action = $(this).attr("data-action"),
             input = $(this);
         if($(this).attr("name") === "selection-all") {
-            var occurrence_ids = $(this).attr("data-occurrence-ids");
+            var occurrence_ids = $.map($('[data-occurrence-id]'), function(e) {
+              return $(e).attr("data-occurrence-id");
+            }).unique().toString();
             $.ajax({
                 method: "POST",
                 url: "/user-occurrence/bulk.json",
@@ -78,7 +86,9 @@ var Candidates = (function($, window) {
         }
       });
       $('button.remove-all').on('click', function() {
-        var occurrence_ids = $(this).attr("data-occurrence-ids");
+        var occurrence_ids = $.map($('[data-occurrence-id]'), function(e) {
+          return $(e).attr("data-occurrence-id");
+        }).unique();
         $.ajax({
             method: "POST",
             url: "/user-occurrence/bulk.json",

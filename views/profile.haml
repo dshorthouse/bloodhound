@@ -83,13 +83,13 @@
 
           %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
             %label{class:"btn btn-choice btn-dark"}
-              %input{type:"radio", class:"action-radio", name:"selection-all", "data-ids":"#{@results.map{|o| o[:user_occurrence_id]}.join(",")}", "data-action": "recorded", autocomplete:"off"}
+              %input{type:"radio", class:"action-radio", name:"selection-all", "data-action": "recorded", autocomplete:"off"}
                 %img{src:"/images/net.png", alt:"Collected All", title:"Collected All", width:18}
             %label{class:"btn  btn-choice btn-dark"}
-              %input{type:"radio", class:"action-radio", name:"selection-all", "data-ids":"#{@results.map{|o| o[:user_occurrence_id]}.join(",")}", "data-action": "identified", autocomplete:"off"}
+              %input{type:"radio", class:"action-radio", name:"selection-all", "data-action": "identified", autocomplete:"off"}
                 %img{src:"/images/microscope.png", alt:"Identified All", title: "Identified All",width:18}
             %label{class:"btn  btn-choice btn-dark"}
-              %input{type:"radio", class:"action-radio", name:"selection-all", "data-ids":"#{@results.map{|o| o[:user_occurrence_id]}.join(",")}", "data-action": "recorded,identified", autocomplete:"off"} Both
+              %input{type:"radio", class:"action-radio", name:"selection-all", "data-action": "recorded,identified", autocomplete:"off"} Both
         %th{scope: "col"} Scientific Name
         %th{scope: "col"} Collected By
         %th{scope: "col"} Identified By

@@ -1,4 +1,10 @@
 /*global jQuery, window, document, self, encodeURIComponent, Bloodhound */
+Array.prototype.unique = function() {
+  return this.filter(function (value, index, self) { 
+    return self.indexOf(value) === index;
+  });
+}
+
 var Profile = (function($, window) {
 
   "use strict";
@@ -26,8 +32,11 @@ var Profile = (function($, window) {
       $('input.action-radio').change(function() {
           var action = $(this).attr("data-action"),
               label = $(this).parent();
+              
           if($(this).attr("name") === "selection-all") {
-              var ids = $(this).attr("data-ids");
+              var ids = $.map($('[data-id]'), function(e) {
+                return $(e).attr("data-id");
+              }).unique().toString();
               $.ajax({
                   method: "PUT",
                   url: "/user-occurrence/bulk.json",
