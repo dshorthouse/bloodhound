@@ -103,7 +103,9 @@ module Bloodhound
         options.merge! vertex_attributes(v)
         nodes << options
       end
-      links = edges.map{ |e| { source: vertices.index(e.source), target: vertices.index(e.target) } }
+      links = edges.map{ |e| { 
+        source: vertices.index(e.source),
+        target: vertices.index(e.target) } }
       { nodes: nodes, edges: links }
     end
 

@@ -31,7 +31,6 @@ if options[:disambiguate]
                     .group("family, LOWER(LEFT(given,1))")
                     .having('count(*) > 1')
                     .pluck(:id)
-
   duplicates.each do |id|
     data = { id: id, write_graphics: write_graphics }
     Sidekiq::Client.enqueue(Bloodhound::DisambiguateWorker, data)

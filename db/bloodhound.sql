@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 28, 2018 at 04:12 AM
+-- Generation Time: Oct 10, 2018 at 05:29 AM
 -- Server version: 5.7.22
 -- PHP Version: 5.6.36
 
@@ -32,7 +32,8 @@ CREATE TABLE `agents` (
   `id` int(11) NOT NULL,
   `canonical_id` int(11) DEFAULT NULL,
   `family` varchar(255) COLLATE utf8mb4_bin NOT NULL DEFAULT '',
-  `given` varchar(255) COLLATE utf8mb4_bin NOT NULL DEFAULT ''
+  `given` varchar(255) COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+  `processed` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
@@ -42,7 +43,7 @@ CREATE TABLE `agents` (
 --
 
 CREATE TABLE `occurrences` (
-  `id` int(11) NOT NULL COMMENT 'This is gbifID.',
+  `gbifID` int(11) NOT NULL,
   `occurrenceID` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
   `dateIdentified` text COLLATE utf8mb4_bin,
   `decimalLatitude` text COLLATE utf8mb4_bin,
@@ -67,7 +68,8 @@ CREATE TABLE `occurrences` (
 
 CREATE TABLE `occurrence_determiners` (
   `occurrence_id` int(11) NOT NULL,
-  `agent_id` int(11) NOT NULL
+  `agent_id` int(11) NOT NULL,
+  `original_agent_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
@@ -78,7 +80,8 @@ CREATE TABLE `occurrence_determiners` (
 
 CREATE TABLE `occurrence_recorders` (
   `occurrence_id` int(11) NOT NULL,
-  `agent_id` int(11) NOT NULL
+  `agent_id` int(11) NOT NULL,
+  `original_agent_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
@@ -110,9 +113,9 @@ CREATE TABLE `taxa` (
 --
 
 CREATE TABLE `taxon_determiners` (
-  `id` int(11) NOT NULL,
   `agent_id` int(11) NOT NULL,
-  `taxon_id` int(11) NOT NULL
+  `taxon_id` int(11) NOT NULL,
+  `original_agent_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
@@ -134,15 +137,16 @@ CREATE TABLE `taxon_occurrences` (
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `family` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `given` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `orcid` varchar(25) COLLATE utf8mb4_bin NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `other_names` mediumtext COLLATE utf8mb4_bin,
+  `family` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `given` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `orcid` varchar(25) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `other_names` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -154,9 +158,9 @@ CREATE TABLE `user_occurrences` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `occurrence_id` int(11) NOT NULL,
-  `action` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  `action` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `visible` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Indexes for dumped tables
@@ -174,7 +178,7 @@ ALTER TABLE `agents`
 -- Indexes for table `occurrences`
 --
 ALTER TABLE `occurrences`
-  ADD PRIMARY KEY (`id`) USING BTREE;
+  ADD PRIMARY KEY (`gbifID`) USING BTREE;
 
 --
 -- Indexes for table `occurrence_determiners`
@@ -200,14 +204,12 @@ ALTER TABLE `schema_migrations`
 -- Indexes for table `taxa`
 --
 ALTER TABLE `taxa`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `family_idx` (`family`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `taxon_determiners`
 --
 ALTER TABLE `taxon_determiners`
-  ADD PRIMARY KEY (`id`),
   ADD KEY `agent_idx` (`agent_id`),
   ADD KEY `taxon_idx` (`taxon_id`);
 
@@ -230,9 +232,8 @@ ALTER TABLE `users`
 --
 ALTER TABLE `user_occurrences`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id_idx` (`user_id`),
-  ADD KEY `occurrence_id_idx` (`occurrence_id`);
-ALTER TABLE `user_occurrences` ADD FULLTEXT KEY `action_idx` (`action`);
+  ADD UNIQUE KEY `user_occurrence_idx` (`user_id`,`occurrence_id`),
+  ADD KEY `action_idx` (`action`) USING BTREE;
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -242,31 +243,25 @@ ALTER TABLE `user_occurrences` ADD FULLTEXT KEY `action_idx` (`action`);
 -- AUTO_INCREMENT for table `agents`
 --
 ALTER TABLE `agents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=963838;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1077634;
 
 --
 -- AUTO_INCREMENT for table `taxa`
 --
 ALTER TABLE `taxa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20827;
-
---
--- AUTO_INCREMENT for table `taxon_determiners`
---
-ALTER TABLE `taxon_determiners`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31850011;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23445;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5643;
 
 --
 -- AUTO_INCREMENT for table `user_occurrences`
 --
 ALTER TABLE `user_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34897;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1845678;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

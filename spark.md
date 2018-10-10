@@ -10,7 +10,7 @@ On a Mac with Homebrew:
 
 ```bash
 $ brew install apache-spark
-$ spark-shell --jars /usr/local/opt/mysql-connector-java/libexec/mysql-connector-java-8.0.12.jar --driver-memory 6G
+$ spark-shell --jars /usr/local/opt/mysql-connector-java/libexec/mysql-connector-java-8.0.12.jar --driver-memory 8G
 ```
 
 ```scala
@@ -61,7 +61,7 @@ val occurrences = sqlContext.
         COALESCE(recordedBy, identifiedBy) IS NOT NULL""")
 
 //optionally save the DataFrame to disk so we don't have to do the above again
-occurrences.write.save("occurrences")
+occurrences.write.mode("overwrite").save("occurrences")
 
 //load the saved DataFrame, can later skip the above processes and start from here
 val occurrences = spark.
@@ -98,7 +98,7 @@ val unioned = spark.
     json(recordedByGroups.toJSON.union(identifiedByGroups.toJSON))
 
 //optionally save the DataFrame to disk
-unioned.write.save("occurrences-unioned")
+unioned.write.mode("overwrite").save("occurrences-unioned")
 
 //load the saved DataFrame, can later skip all the above processes
 val unioned = spark.

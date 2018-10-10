@@ -86,8 +86,11 @@ module Bloodhound
         #TODO: make version with greatest number of objects the canonical version
         canonical = ids.pop
         Agent.where(id: ids).find_each do |a|
+          a.canonical_id = canonical
+          a.save
           models.each do |model|
-            model.constantize.where(agent_id: a.id).update_all(agent_id: canonical)
+            model.constantize.where(agent_id: a.id)
+                             .update_all(agent_id: canonical)
           end
         end
       end

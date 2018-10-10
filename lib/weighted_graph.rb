@@ -15,7 +15,7 @@ module Bloodhound
 
     # Create a graph from an array of [source, target, weight] triples.
     #
-    #  >> g=Collector::Disambiguator::WeightedGraph[:a, :b, 2, :b, :c, 3, :a, :c, 6]
+    #  >> g=Bloodhound::WeightedGraph[:a, :b, 2, :b, :c, 3, :a, :c, 6]
     #  >> puts g
     #  (a-2-b)
     #  (a-6-c)
@@ -148,7 +148,10 @@ module Bloodhound
         options.merge! vertex_attributes(v)
         nodes << options
       end
-      links = edges.map{ |e| { source: vertices.index(e.source), target: vertices.index(e.target), value: e.weight } }
+      links = edges.map{ |e| {
+        source: vertices.index(e.source),
+        target: vertices.index(e.target),
+        value: e.weight } }
       { nodes: nodes, edges: links }
     end
 
@@ -159,7 +162,11 @@ module Bloodhound
         options.merge! vertex_attributes(v)
         nodes << options
       end
-      links = edges.map{ |e| { from: vertex_attributes(e.source)[:id], to: vertex_attributes(e.target)[:id], value: e.weight, title: e.weight } }
+      links = edges.map{ |e| {
+        from: vertex_attributes(e.source)[:id],
+        to: vertex_attributes(e.target)[:id],
+        value: e.weight,
+        title: e.weight } }
       { nodes: nodes, edges: links }
     end
 
