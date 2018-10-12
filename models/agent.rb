@@ -79,10 +79,14 @@ class Agent < ActiveRecord::Base
     determinations.pluck(:scientificName).compact.uniq
   end
 
-  def determined_families
+  def determined_families_counts
     determined_taxa.group_by{|i| i }
                    .map{|k, v| { id: k.id, family: k.family, count: v.size } }
                    .sort_by { |a| a[:family] }
+  end
+
+  def determined_families
+    determined_taxa.uniq.pluck(:family)
   end
 
   def occurrences

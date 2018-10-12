@@ -63,6 +63,16 @@ module Bloodhound
       @weights[[u,v]] || @weights[[v,u]]
     end
 
+    # Set edge weight
+    #
+    # [_u_] source vertex
+    # [_v_] target vertex
+    # [_w_] weight
+    def set_weight(u, v, w)
+      @weights[[u,v]] = w
+      @weights[[v,u]] = w
+    end
+
     # Remove the edge between two verticies.
     #
     # [_u_] source vertex
@@ -70,6 +80,7 @@ module Bloodhound
     def remove_edge(u, v)
       super
       @weights.delete([u,v])
+      @weights.delete([v,u])
     end
 
     # The class used for edges in this graph.
@@ -77,7 +88,7 @@ module Bloodhound
       WeightedEdge
     end
 
-    # Return the array of WeightedDirectedEdge objects of the graph.
+    # Return the array of WeightedEdge objects of the graph.
     def edges
       result = []
       c = edge_class
@@ -199,6 +210,11 @@ module Bloodhound
     # The weight of this edge.
     def weight
       @graph.weight(source, target)
+    end
+
+    # Set the weight of the edge.
+    def set_weight(w)
+      @graph.set_weight(source, target, w)
     end
 
      def to_s
