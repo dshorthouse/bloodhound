@@ -5,14 +5,10 @@ require 'optparse'
 
 options = {}
 OptionParser.new do |opts|
-  opts.banner = "Usage: disambiguate_agents.rb [options]"
+  opts.banner = "Usage: cluster_agents.rb [options]"
 
-  opts.on("-w", "--write-graphics", "Write graphics files") do
-    options[:write] = true
-  end
-
-  opts.on("-d", "--disambiguate", "Disambiguate family names") do
-    options[:disambiguate] = true
+  opts.on("-c", "--cluster", "Cluster agents by family name") do
+    options[:cluster] = true
   end
 
   opts.on("-h", "--help", "Prints this help") do
@@ -22,18 +18,16 @@ OptionParser.new do |opts|
 
 end.parse!
 
-if options[:disambiguate]
+if options[:cluster]
   Sidekiq::Stats.new.reset
   write_graphics = options[:write] ? true : false
-  duplicates = Agent.where(processed: false)
-                    .where("family NOT LIKE '%.%'")
+  duplicates = Agent.where("family NOT LIKE '%.%'")
                     .where.not(given: ["", nil])
                     .group("family, LOWER(LEFT(given,1))")
                     .having('count(*) > 1')
                     .pluck(:id)
   duplicates.each do |id|
-    data = { id: id, write_graphics: write_graphics }
-    Sidekiq::Client.enqueue(Bloodhound::DisambiguateWorker, data)
+    Sidekiq::Client.enqueue(Bloodhound::ClusterWorker, id)
   end
 
 end

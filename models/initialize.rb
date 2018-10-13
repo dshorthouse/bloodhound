@@ -21,6 +21,10 @@ module Sinatra
             inflect.irregular 'taxon', 'taxa'
           end
 
+          require 'neo4j/core/cypher_session/adaptors/http'
+          neo4j_adaptor = Neo4j::Core::CypherSession::Adaptors::HTTP.new('http://localhost:7474')
+          Neo4j::ActiveBase.on_establish_session { Neo4j::Core::CypherSession.new(neo4j_adaptor) }
+
           app.before { ActiveRecord::Base.verify_active_connections! if ActiveRecord::Base.respond_to?(:verify_active_connections!) }
           app.after { ActiveRecord::Base.clear_active_connections! }
         end

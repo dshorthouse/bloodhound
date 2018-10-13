@@ -141,13 +141,21 @@ module Sinatra
             @search_size = (params[:per] || 25).to_i
 
             @searched_user = Agent.find(params[:id])
+            ids = [@searched_user.id]
+            node = AgentNode.find_by(family: @searched_user.family, given: @searched_user.given)
+            if !node.nil?
+              ids.concat(node.agent_nodes.map(&:agent_id))
+            end
+
+            #TODO: order by edge weights
+
             user = User.find(@user[:id])
             linked_ids = user.user_occurrences.pluck(:occurrence_id)
 
-            recorded = OccurrenceRecorder.where(agent_id: @searched_user.id)
+            recorded = OccurrenceRecorder.where(agent_id: ids)
                                          .where.not(occurrence_id: linked_ids)
                                          .pluck(:occurrence_id)
-            determined = OccurrenceDeterminer.where(agent_id: @searched_user.id)
+            determined = OccurrenceDeterminer.where(agent_id: ids)
                                              .where.not(occurrence_id: linked_ids)
                                              .pluck(:occurrence_id)
             occurrence_ids = (recorded + determined).uniq

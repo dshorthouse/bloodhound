@@ -14,6 +14,7 @@ Proof-of-concept, Sinatra app to parse people names from structured biodiversity
 3. MySQL 14.14+
 4. Redis 4.0.9+
 5. Apache Spark 2+
+6. Neo4j
 
 ## Installation
 
@@ -45,10 +46,10 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
      $ ./bin/populate_taxa.rb --kingdoms
      $ sidekiq -c 40 kingdom -r ./environment.rb
 
-### Step 4: Disambiguate Agents
+### Step 4: Cluster Agents
 
-     $ ./bin/disambiguate_agents.rb --disambiguate
-     $ sidekiq -c 40 -q disambiguate -r ./environment.rb
+     $ ./bin/cluster_agents.rb --cluster
+     $ sidekiq -c 40 -q cluster -r ./environment.rb
 
 ### Step 5: Populate Search
 

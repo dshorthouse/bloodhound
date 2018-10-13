@@ -30,6 +30,7 @@ gem 'pony'
 gem 'sidekiq'
 gem 'dwc_agent'
 gem 'iso_country_codes'
+gem 'neo4j'
 
 group :production do
 end

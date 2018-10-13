@@ -1,5 +1,4 @@
 class Agent < ActiveRecord::Base
-  after_create :set_canonical_id
 
   has_many :occurrence_determiners, dependent: :destroy
   has_many :determinations, through: :occurrence_determiners, source: :occurrence
@@ -9,9 +8,6 @@ class Agent < ActiveRecord::Base
 
   has_many :taxon_determiners, dependent: :destroy
   has_many :determined_taxa, through: :taxon_determiners, source: :taxon
-
-  has_many :aliases, class_name: "Agent", foreign_key: "canonical_id"
-  belongs_to :canonical, class_name: "Agent"
 
   def self.enqueue(file_path)
     Sidekiq::Client.enqueue(Bloodhound::AgentWorker, file_path)
@@ -104,13 +100,6 @@ class Agent < ActiveRecord::Base
     network = Bloodhound::AgentNetwork.new(self)
     network.build
     network.to_vis
-  end
-
-  private
-
-  def set_canonical_id
-    self.canonical_id = self.id
-    self.save
   end
 
 end

@@ -65,8 +65,6 @@ module Bloodhound
           agent: {
             properties: {
               id: { type: 'integer', index: false },
-              canonical_id: { type: 'text', index: false },
-              orcid: { type: 'text', index: false },
               family: { type: 'text', fielddata: true, search_analyzer: :family_search, analyzer: :family_index, omit_norms: true },
               given: { type: 'text', search_analyzer: :given_search, analyzer: :given_index, omit_norms: true }
             }
@@ -78,8 +76,7 @@ module Bloodhound
 
     #TODO: convert to sidekiq queue
     def import_agents
-      agents = Agent.where("id = canonical_id").pluck(:id)
-      Parallel.map(agents.in_groups_of(10_000, false), progress: "Search-Agents") do |batch|
+      Parallel.map(Agent.find_in_batches, progress: "Search-Agents") do |batch|
         bulk_agent(batch)
       end
     end
@@ -89,8 +86,8 @@ module Bloodhound
       batch.each do |a|
         agents << {
           index: {
-            _id: a,
-            data: agent_document(Agent.find(a))
+            _id: a.id,
+            data: agent_document(a)
           }
         }
       end
@@ -113,7 +110,6 @@ module Bloodhound
     def agent_document(a)
       {
         id: a.id,
-        canonical_id: a.canonical_id,
         family: a.family,
         given: a.given
       }
