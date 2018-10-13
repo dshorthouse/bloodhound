@@ -35,7 +35,7 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
 
 ### Step 2:  Parse & Populate Agents
 
-     $ ./bin/parse_agents.rb --truncate --directory /directory-to-spark-csv-files/
+     $ ./bin/populate_agents.rb --truncate --directory /directory-to-spark-csv-files/
      $ sidekiq -c 40 -q agent -r ./environment.rb
 
 ### Step 3: Populate Taxa

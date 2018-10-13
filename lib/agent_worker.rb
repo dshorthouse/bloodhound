@@ -23,15 +23,13 @@ module Bloodhound
           if !gbifIDs_recordedBy.empty?
             data = gbifIDs_recordedBy.map{|r| {
               occurrence_id: r,
-              agent_id: agent.id,
-              original_agent_id: agent.id }}
+              agent_id: agent.id }}
             OccurrenceRecorder.import data
           end
           if !gbifIDs_identifiedBy.empty?
             data = gbifIDs_identifiedBy.map{|r| {
               occurrence_id: r,
-              agent_id: agent.id,
-              original_agent_id: agent.id }}
+              agent_id: agent.id }}
             OccurrenceDeterminer.import data
           end
         end
