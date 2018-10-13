@@ -48,7 +48,7 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
 
 ### Step 4: Cluster Agents
 
-     $ ./bin/cluster_agents.rb --cluster
+     $ ./bin/cluster_agents.rb --truncate --cluster
      $ sidekiq -c 40 -q cluster -r ./environment.rb
 
 ### Step 5: Populate Search

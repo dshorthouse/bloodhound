@@ -11,12 +11,20 @@ OptionParser.new do |opts|
     options[:cluster] = true
   end
 
+  opts.on("-t", "--truncate", "Delete all nodes and relationships from Neo4j") do
+    options[:truncate] = true
+  end
+
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
   end
 
 end.parse!
+
+if options[:truncate]
+  Neo4j::ActiveBase.current_session.query('MATCH (n) DETACH DELETE n')
+end
 
 if options[:cluster]
   Sidekiq::Stats.new.reset
