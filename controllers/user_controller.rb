@@ -105,27 +105,20 @@ module Sinatra
                 end
               end
 
-              uniq_agents = agents.compact.uniq
+              agent_ids = agents.compact.uniq.map{|a| a[:id]}
 
-              if !uniq_agents.empty?
-                scores = {}
-                uniq_agents.each{|a| scores[a[:id]] = a[:score] }
-                user = User.find(@user[:id])
-                linked_ids = user.user_occurrences.pluck(:occurrence_id)
-                recorded = OccurrenceRecorder.where(agent_id: scores.keys)
-                                             .where.not(occurrence_id: linked_ids)
-                                             .pluck(:agent_id, :occurrence_id)
-                determined = OccurrenceDeterminer.where(agent_id: scores.keys)
-                                                 .where.not(occurrence_id: linked_ids)
-                                                 .pluck(:agent_id, :occurrence_id)
-                occurrence_ids = (determined + recorded).uniq
-                                                        .sort_by{|o| scores.fetch(o[0])}
-                                                        .reverse
-                                                        .map(&:last)
+              if !agent_ids.empty?
+                nodes = AgentNode.where(agent_id: agent_ids)
+                if !nodes.empty?
+                  nodes.each do |node|
+                    agent_ids.concat(node.agent_nodes_weights.map(&:first))
+                  end
+                end
+                ids = agent_ids.uniq
+                occurrence_ids = occurrences_from_agent_ids(ids)
               end
 
               @total = occurrence_ids.length
-
               @results = WillPaginate::Collection.create(@page, @search_size, occurrence_ids.length) do |pager|
                 pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
               end
@@ -142,26 +135,15 @@ module Sinatra
 
             @searched_user = Agent.find(params[:id])
             ids = [@searched_user.id]
-            node = AgentNode.find_by(family: @searched_user.family, given: @searched_user.given)
+
+            node = AgentNode.find_by(agent_id: @searched_user.id)
             if !node.nil?
-              ids.concat(node.agent_nodes.map(&:agent_id))
+              ids.concat(node.agent_nodes_weights.map(&:first))
             end
 
-            #TODO: order by edge weights
-
-            user = User.find(@user[:id])
-            linked_ids = user.user_occurrences.pluck(:occurrence_id)
-
-            recorded = OccurrenceRecorder.where(agent_id: ids)
-                                         .where.not(occurrence_id: linked_ids)
-                                         .pluck(:occurrence_id)
-            determined = OccurrenceDeterminer.where(agent_id: ids)
-                                             .where.not(occurrence_id: linked_ids)
-                                             .pluck(:occurrence_id)
-            occurrence_ids = (recorded + determined).uniq
+            occurrence_ids = occurrences_from_agent_ids(ids)
 
             @total = occurrence_ids.length
-
             @results = WillPaginate::Collection.create(@page, @search_size, occurrence_ids.length) do |pager|
               pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
             end

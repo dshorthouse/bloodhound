@@ -117,6 +117,20 @@ module Sinatra
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) } rescue []
       end
 
+      def occurrences_from_agent_ids(ids)
+        user = User.find(@user[:id])
+        linked_ids = user.user_occurrences.pluck(:occurrence_id)
+
+        #TODO: how to ensure that order of ids as entered are produced in output??
+        recorded = OccurrenceRecorder.where(agent_id: ids)
+                                     .where.not(occurrence_id: linked_ids)
+                                     .pluck(:occurrence_id)
+        determined = OccurrenceDeterminer.where(agent_id: ids)
+                                         .where.not(occurrence_id: linked_ids)
+                                         .pluck(:occurrence_id)
+        (recorded + determined).uniq
+      end
+
       def roster
         @results = User.where(is_public: true).order(:family).paginate :page => params[:page]
       end
