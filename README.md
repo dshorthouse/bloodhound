@@ -89,6 +89,11 @@ Notes to self:
       '
       $ curl -X POST "localhost:9200/bloodhound/_open"
 
+## Neo4j Dump & Restore
+
+      neo4j-admin dump --database=<database> --to=<destination-path>
+      neo4j-admin load --from=<archive-path> --database=<database> [--force]
+
 ## License
 
 The MIT License (MIT)
