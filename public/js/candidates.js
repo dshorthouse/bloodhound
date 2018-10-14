@@ -88,7 +88,7 @@ var Candidates = (function($, window) {
       $('button.remove-all').on('click', function() {
         var occurrence_ids = $.map($('[data-occurrence-id]'), function(e) {
           return $(e).attr("data-occurrence-id");
-        }).unique();
+        }).unique().toString();
         $.ajax({
             method: "POST",
             url: "/user-occurrence/bulk.json",

@@ -59,7 +59,7 @@
         %th{scope: "col"} Catalog Number
         %th{scope: "col"} Type Status
         %th{scope: "col"}
-          %button{type:"button", name:"notme-all", class:"btn btn-warning remove-all", "data-occurrence-ids":"#{@results.map{|o| o.id}.join(",")}"} Not me
+          %button{type:"button", name:"notme-all", class:"btn btn-warning remove-all", "data-occurrence-ids":"#{@results.map(&:id).join(",")}"} Not me
 
     %tbody
       - @results.each do |o|
