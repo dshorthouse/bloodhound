@@ -117,18 +117,24 @@ module Sinatra
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) } rescue []
       end
 
-      def occurrences_from_agent_ids(ids)
+      def occurrences_by_score(id_scores)
         user = User.find(@user[:id])
         linked_ids = user.user_occurrences.pluck(:occurrence_id)
 
-        #TODO: how to ensure that order of ids as entered are produced in output??
-        recorded = OccurrenceRecorder.where(agent_id: ids)
+        scores = {}
+        id_scores.sort{|a,b| b[:score] <=> a[:score]}
+                 .each{|a| scores[a[:id]] = a[:score] }
+
+        recorded = OccurrenceRecorder.where(agent_id: scores.keys)
                                      .where.not(occurrence_id: linked_ids)
-                                     .pluck(:occurrence_id)
-        determined = OccurrenceDeterminer.where(agent_id: ids)
+                                     .pluck(:agent_id, :occurrence_id)
+        determined = OccurrenceDeterminer.where(agent_id: scores.keys)
                                          .where.not(occurrence_id: linked_ids)
-                                         .pluck(:occurrence_id)
+                                         .pluck(:agent_id, :occurrence_id)
         (recorded + determined).uniq
+                               .sort_by{|o| scores.fetch(o[0])}
+                               .reverse
+                               .map(&:last)
       end
 
       def roster

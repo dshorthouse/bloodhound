@@ -105,17 +105,18 @@ module Sinatra
                 end
               end
 
-              agent_ids = agents.compact.uniq.map{|a| a[:id]}
+              id_scores = agents.compact.uniq
+                                        .map{|a| { id: a[:id], score: a[:score] }}
 
-              if !agent_ids.empty?
-                nodes = AgentNode.where(agent_id: agent_ids)
+              if !id_scores.empty?
+                ids = id_scores.map{|a| a[:id]}
+                nodes = AgentNode.where(agent_id: ids)
                 if !nodes.empty?
-                  nodes.each do |node|
-                    agent_ids.concat(node.agent_nodes_weights.map(&:first))
+                  (nodes.map(&:agent_id) - ids).each do |id|
+                    id_scores << { id: id, score: 1 } #TODO: how to use the edge weights here?
                   end
                 end
-                ids = agent_ids.uniq
-                occurrence_ids = occurrences_from_agent_ids(ids)
+                occurrence_ids = occurrences_by_score(id_scores)
               end
 
               @total = occurrence_ids.length
@@ -134,14 +135,14 @@ module Sinatra
             @search_size = (params[:per] || 25).to_i
 
             @searched_user = Agent.find(params[:id])
-            ids = [@searched_user.id]
+            id_scores = [{ id: @searched_user.id, score: 3 }]
 
             node = AgentNode.find_by(agent_id: @searched_user.id)
             if !node.nil?
-              ids.concat(node.agent_nodes_weights.map(&:first))
+              id_scores.concat(node.agent_nodes_weights.map{|a| { id: a[0], score: a[1] }})
             end
 
-            occurrence_ids = occurrences_from_agent_ids(ids)
+            occurrence_ids = occurrences_by_score(id_scores)
 
             @total = occurrence_ids.length
             @results = WillPaginate::Collection.create(@page, @search_size, occurrence_ids.length) do |pager|
