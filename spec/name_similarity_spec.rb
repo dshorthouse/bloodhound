@@ -3,7 +3,7 @@ require_relative "./spec_helper"
 
 describe "Test the similarity of given names" do
   before(:all) do
-    @w = Bloodhound::DisambiguateWorker.new
+    @w = Bloodhound::ClusterWorker.new
   end
 
   it "should give J. and John a score of 1" do
