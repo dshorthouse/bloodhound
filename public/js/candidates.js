@@ -66,7 +66,7 @@ var Candidates = (function($, window) {
                   occurrence_ids: occurrence_ids, action: action, visible: true
                 })
             }).done(function(data) {
-                $('.table tbody tr').fadeOut(500, function() {
+                $('.table tbody tr').fadeOut(250, function() {
                   $(this).remove();
                   location.reload();
                 });
@@ -79,8 +79,11 @@ var Candidates = (function($, window) {
               dataType: "json",
               data: JSON.stringify({ action: action, visible: true })
           }).done(function(data) {
-            input.parents("tr").fadeOut(500, function() {
+            input.parents("tr").fadeOut(250, function() {
               $(this).remove();
+              if ($('input.specimen-selector').length === 1) {
+                location.reload();
+              }
             });
           });
         }
@@ -97,7 +100,7 @@ var Candidates = (function($, window) {
               occurrence_ids: occurrence_ids, visible: false
             })
         }).done(function(data) {
-            $('.table tbody tr').fadeOut(500, function() {
+            $('.table tbody tr').fadeOut(250, function() {
               $(this).remove();
               location.reload();
             });
@@ -112,8 +115,11 @@ var Candidates = (function($, window) {
               dataType: "json",
               data: JSON.stringify({ visible: false})
           }).done(function(data) {
-              row.fadeOut(500, function() {
+              row.fadeOut(250, function() {
                   $(this).remove();
+                  if ($('button.remove').length === 0) {
+                    location.reload();
+                  }
               });
           });
       });

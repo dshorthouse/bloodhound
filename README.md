@@ -89,6 +89,27 @@ Notes to self:
       '
       $ curl -X POST "localhost:9200/bloodhound/_open"
 
+If ElasticSearch throws an error on the above, you may need to execute the following:
+
+      $ curl -X PUT "localhost:9200/_settings" -H 'Content-Type: application/json' -d '
+      {
+        "index": {
+          "blocks": {
+            "read_only_allow_delete": "false"
+          }
+        }
+      }
+      '
+
+      $ curl -X PUT "localhost:9200/bloodhound/_settings" -H 'Content-Type: application/json' -d '
+      {
+        "index": {
+          "blocks": {
+            "read_only_allow_delete": "false"
+          }
+        }
+      }
+      '
 ## Neo4j Dump & Restore
 
       neo4j-admin dump --database=<database> --to=<destination-path>

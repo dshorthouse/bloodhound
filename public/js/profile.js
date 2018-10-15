@@ -72,8 +72,11 @@ var Profile = (function($, window) {
               method: "DELETE",
               url: "/user-occurrence/" + id + ".json"
           }).done(function(data) {
-              row.fadeOut(500, function() {
+              row.fadeOut(250, function() {
                   $(this).remove();
+                  if ($('button.remove').length === 0) {
+                    location.reload();
+                  }
               });
           });
       });

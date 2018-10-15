@@ -20,10 +20,10 @@ module Sinatra
                             .destroy_all
             end
             data = occurrence_ids.map{|o| { 
-              user_id: @user[:id],
-              occurrence_id: o.to_i,
-              action: action,
-              visible: visible
+                user_id: @user[:id],
+                occurrence_id: o.to_i,
+                action: action,
+                visible: visible
               }
             }
             UserOccurrence.create(data)
