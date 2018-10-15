@@ -113,25 +113,13 @@ module Sinatra
                 nodes = AgentNode.where(agent_id: ids)
                 if !nodes.empty?
                   (nodes.map(&:agent_id) - ids).each do |id|
-                    id_scores << { id: id, score: 1 } #TODO: how to use the edge weights here?
+                    id_scores << { id: id, score: 1 } #TODO: how to more effectively use the edge weights here?
                   end
                 end
                 occurrence_ids = occurrences_by_score(id_scores)
               end
 
-              @total = occurrence_ids.length
-              if @page*@search_size > @total
-                @page = @total/@search_size.to_i + 1
-              end
-              @results = WillPaginate::Collection.create(@page, @search_size, occurrence_ids.length) do |pager|
-                pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
-              end
-              if @total > 0 && @results.empty?
-                @page -= 1
-                @results = WillPaginate::Collection.create(@page, @search_size, occurrence_ids.length) do |pager|
-                  pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
-                end
-              end
+              specimen_pager(occurrence_ids)
             end
 
             haml :candidates
@@ -152,20 +140,8 @@ module Sinatra
             end
 
             occurrence_ids = occurrences_by_score(id_scores)
+            specimen_pager(occurrence_ids)
 
-            @total = occurrence_ids.length
-            if @page*@search_size > @total
-              @page = @total/@search_size.to_i + 1
-            end
-            @results = WillPaginate::Collection.create(@page, @search_size, occurrence_ids.length) do |pager|
-              pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
-            end
-            if @total > 0 && @results.empty?
-              @page -= 1
-              @results = WillPaginate::Collection.create(@page, @search_size, occurrence_ids.length) do |pager|
-                pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
-              end
-            end
             haml :candidates_agent
           end
 

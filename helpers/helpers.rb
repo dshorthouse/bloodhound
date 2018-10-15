@@ -137,6 +137,23 @@ module Sinatra
                                .map(&:last)
       end
 
+      def specimen_pager(occurrence_ids)
+        @total = occurrence_ids.length
+        if @page*@search_size > @total
+          @page = @total/@search_size.to_i + 1
+        end
+        @results = WillPaginate::Collection.create(@page, @search_size, occurrence_ids.length) do |pager|
+          pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
+        end
+        if @total > 0 && @results.empty?
+          @page -= 1
+          @results = WillPaginate::Collection.create(@page, @search_size, occurrence_ids.length) do |pager|
+            pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
+          end
+        end
+        @results
+      end
+
       def roster
         @results = User.where(is_public: true).order(:family).paginate :page => params[:page]
       end
