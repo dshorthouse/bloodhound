@@ -6,11 +6,12 @@ Proof-of-concept, Sinatra app to parse people names from structured biodiversity
 ## Recent Updates
 
 - **September 29, 2018**: The core, parsing component of this project has been split off into a stand-alone ruby gem, [dwc_agent](https://rubygems.org/gems/dwc_agent).
+- **October 12, 2018**: Used Neo4j to store weighted graphs of similarly structured people names as a quick mechanism to expand the list of users' candidate specimens & then present them in greatest to least likely
 
 ## Requirements
 
 1. ruby 2.5.1+
-2. ElasticSearch 6.2.4+
+2. Elasticsearch 6.2.4+
 3. MySQL 14.14+
 4. Redis 4.0.9+
 5. Apache Spark 2+
@@ -89,7 +90,7 @@ Notes to self:
       '
       $ curl -X POST "localhost:9200/bloodhound/_open"
 
-If ElasticSearch throws an error on the above, you may need to execute the following:
+If Elasticsearch throws an error on the above, you may need to execute the following:
 
       $ curl -X PUT "localhost:9200/_settings" -H 'Content-Type: application/json' -d '
       {
