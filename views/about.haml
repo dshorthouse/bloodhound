@@ -19,33 +19,22 @@
     %a{href: "https://www.gbif.org/news/1GQURfK5jS4Iq4O06Y0EK4/2018-gbif-ebbe-nielsen-challenge-seeks-open-data-innovations-for-biodiversity"} Ebbe Nielsen Challenge
 
 %p
-  Specimens included in this project were collected 1950-2018 and have content in their 
+  The 100M 
+  %a{href: "https://doi.org/10.15468/dl.gyp78m"} specimen records included
+  in this project were collected 1950-2018 and have content in their 
   %a{href: "http://rs.tdwg.org/dwc/terms/#recordedBy"} recordedBy 
   (collector) or 
   %a{href: "http://rs.tdwg.org/dwc/terms/#identifiedBy"} identifiedBy 
-  Darwin Core fields. Collector and determiner names were pre-parsed and cleaned using the 
-  %a{href: "https://rubygems.org/gems/namae" } Namae gem 
-  among other custom regular expressions. They were also partially reconciled by pruning 
-  %a{href: "https://en.wikipedia.org/wiki/Clique_(graph_theory)"} weighted graphs 
-  of surnames whose edges were marked with a similarity score. The scoring algorithm favours instances of co-collector names (
-  %em i.e. 
-  people often collect with the same group of friends), overlap in overall collection and determination date ranges, and taxon similarity (
-  %em i.e. 
-  people often collect taxa within the same taxonomic Families) in an effort to help infer that different names represent the same person. For example, 
-  %em John Bain
-  is likely the same person as 
-  %em John F. Bain 
-  because instances of both names were associated with people with the surnames 
-  %em Poole, Kerr, 
-  or 
-  %em Turner, 
-  their collection dates and determination dates overlapped, and both collected or identified grasses.
+  Darwin Core fields. Collector and determiner names were parsed and cleaned using the 
+  %a{href: "https://github.com/dshorthouse/dwc_agent" } dwc_agent gem 
+  developed as a stand-alone utility during this project. The similarity of people names was scored using a graph theory method outlined by 
+  %a{href: "https://orcid.org/0000-0002-7101-9767"} R.D.M. Page 
+  and incorporated as a method in the dwc_agent gem. These scores were used to help expand the search for users' candidate specimens, presented in order of greatest to least likely. If you declared alternate names in your ORCID account such as a maiden name, these are also used to search for candidate specimen records. Processing these 100M specimen records is a scalable, repeatable process and requires approximately 2 hours on a laptop with 16GB of RAM.
 %p
-  If you declared alternate names in your ORCID account (e.g. a maiden name), these are also used to search for specimen records, which are then presented to you in greatest to least likely collected or identified by you.
   The MIT-licensed code is available on 
   = succeed "." do
     %a{href: "https://github.com/dshorthouse/bloodhound" } GitHub
-  Technologies at play include Apache Spark, Redis, Elasticsearch, and ruby.
+  Technologies at play include Apache Spark to group occurrence records by raw entries in recordedBy and identifiedBy and to import into MySQL, Neo4j to store the scores between similarly structured people names, Elasticsearch to aid in the searching of people names once parsed and cleaned, Redis to coordinate the processing queues, and Sinatra/ruby for the application layer.
 
 %h3 Background
 
