@@ -47,12 +47,12 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
      $ ./bin/populate_taxa.rb --kingdoms
      $ sidekiq -c 40 kingdom -r ./environment.rb
 
-### Step 4: Cluster Agents
+### Step 4: Cluster Agents & Store in Neo4j
 
      $ ./bin/cluster_agents.rb --truncate --cluster
      $ sidekiq -c 40 -q cluster -r ./environment.rb
 
-### Step 5: Populate Search
+### Step 5: Populate Search in Elasticsearch
 
      $ ./bin/populate_search.rb --rebuild-agents
 

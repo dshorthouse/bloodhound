@@ -1,6 +1,6 @@
 # Apache Spark Bulk Import Data and Aggregations into MySQL
 
-The following script written in Scala illustrates how to rapidly import into MySQL a massive GBIF occurrence csv file extracted from a Darwin Core Archive download like this one: [https://doi.org/10.15468/dl.gmhhju](https://doi.org/10.15468/dl.gmhhju). Other methods here produce aggregates of these same occurrence data for rapid import into relational tables. The goal here is to produce a unique list of agents as a union of recordedBy and identifiedBy Darwin Core fields while retaining their occurrence record memberships. This greatly accelerates processing and parsing steps prior to reconciling people names. Aggregating identifiedBy and recordedBy fields from an occurrence csv file containing 84M records takes 20-30 minutes using 6GB of memory.
+The following script written in Scala illustrates how to rapidly import into MySQL a massive GBIF occurrence csv file extracted from a Darwin Core Archive download like this one: [https://doi.org/10.15468/dl.gyp78m](https://doi.org/10.15468/dl.gyp78m). Other methods here produce aggregates of these same occurrence data for rapid import into relational tables. The goal here is to produce a unique list of agents as a union of recordedBy and identifiedBy Darwin Core fields while retaining their occurrence record memberships. This greatly accelerates processing and parsing steps prior to storing graphs of people names in Neo4j. Aggregating identifiedBy and recordedBy fields from a raw occurrence csv file containing 100M records takes 20-30 minutes using 8GB of memory.
 
 - Create the database using the [schema in /db](db/bloodhound.sql)
 - Ensure that MySQL has utf8mb4 collation. See [https://mathiasbynens.be/notes/mysql-utf8mb4](https://mathiasbynens.be/notes/mysql-utf8mb4) to set server connection
@@ -21,7 +21,7 @@ import org.apache.spark.sql.functions._
 
 val sqlContext = new org.apache.spark.sql.SQLContext(sc)
 
-//load a big tsv from a DwC-A
+//load a big, verbatim tsv file from a DwC-A download
 val df = spark.
     read.
     format("csv").
@@ -109,7 +109,7 @@ val unioned = spark.
 //concatenate arrays into strings
 def stringify(c: Column) = concat(lit("["), concat_ws(",", c), lit("]"))
 
-//write aggregated agents to csv files for the Parse & Populate Agents script, /bin/parse_agents.rb
+//write aggregated agents to csv files for the Populate Agents script, /bin/populate_agents.rb
 unioned.select("agents", "gbifIDs_recordedBy", "gbifIDs_identifiedBy").
     withColumn("gbifIDs_recordedBy", stringify($"gbifIDs_recordedBy")).
     withColumn("gbifIDs_identifiedBy", stringify($"gbifIDs_identifiedBy")).
@@ -126,7 +126,7 @@ val familyGroups = occurrences.
     groupBy($"family").
     agg(collect_set($"gbifID") as "gbifIDs_family")
 
-//write aggregated families to csv files for the Populate Taxa script, /bin/populate_taxa.rb
+//write aggregated Families to csv files for the Populate Taxa script, /bin/populate_taxa.rb
 familyGroups.select("family", "gbifIDs_family").
     withColumn("gbifIDs_family", stringify($"gbifIDs_family")).
     write.
