@@ -28,7 +28,7 @@ Proof-of-concept, Sinatra app to parse people names from structured biodiversity
      # Adjust content of config.yml
      $ rackup -p 4567 config.ru
 
-## Steps to Import Data & Execute Parsing / Reconciling
+## Steps to Import Data & Execute Parsing / Clustering
 
 ### Step 1:  Import Data
 
@@ -58,7 +58,7 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
 
 ## Elasticsearch Snapshot & Restore
 
-Notes to self:
+Notes to self because I never remember how to backup on my laptop and restore on the server:
 
 ### Make Snapshot
 
@@ -112,6 +112,8 @@ If Elasticsearch throws an error on the above, you may need to execute the follo
       }
       '
 ## Neo4j Dump & Restore
+
+Notes to self because I never remember how to dump from my laptop and reload onto the server:
 
       neo4j-admin dump --database=<database> --to=<destination-path>
       neo4j-admin load --from=<archive-path> --database=<database> [--force]

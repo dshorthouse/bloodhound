@@ -21,12 +21,12 @@
 %p
   The 100M 
   %a{href: "https://doi.org/10.15468/dl.gyp78m"} specimen records included
-  in this project were collected 1950-2018 and have content in their 
+  in this project were from specimens collected 1950-2018 and have content in their 
   %a{href: "http://rs.tdwg.org/dwc/terms/#recordedBy"} recordedBy 
   (collector) or 
   %a{href: "http://rs.tdwg.org/dwc/terms/#identifiedBy"} identifiedBy 
   Darwin Core fields. Collector and determiner names were parsed and cleaned using the 
-  %a{href: "https://github.com/dshorthouse/dwc_agent" } dwc_agent gem 
+  %a{href: "https://github.com/dshorthouse/dwc_agent" } dwc_agent ruby gem 
   developed as a stand-alone utility during this project. The similarity of people names was scored using a graph theory method outlined by 
   %a{href: "https://orcid.org/0000-0002-7101-9767"} R.D.M. Page 
   and incorporated as a method in the dwc_agent gem. These scores were used to help expand the search for users' candidate specimens, presented in order of greatest to least likely. If you declared alternate names in your ORCID account such as a maiden name, these are also used to search for candidate specimen records. Processing these 100M specimen records is a scalable, repeatable process and requires approximately 2 hours on a laptop with 16GB of RAM.
