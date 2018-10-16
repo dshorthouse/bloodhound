@@ -31,14 +31,5 @@ module Bloodhound
       end
     end
 
-    def self.doi_clean(doi)
-      sub = %r{
-        ^http\:\/\/dx\.doi\.org\/|
-        ^http\:\/\/doi\.org\/|
-        ^(?i:doi)[\=\:]?\s*
-      }x
-      doi.gsub(sub,'')
-    end
-
   end
 end

@@ -109,10 +109,11 @@ val unioned = spark.
 //concatenate arrays into strings
 def stringify(c: Column) = concat(lit("["), concat_ws(",", c), lit("]"))
 
-//write aggregated agents to csv files for the Populate Agents script, /bin/populate_agents.rb
+//write aggregated agents to 2000 csv files for the Populate Agents script, /bin/populate_agents.rb
 unioned.select("agents", "gbifIDs_recordedBy", "gbifIDs_identifiedBy").
     withColumn("gbifIDs_recordedBy", stringify($"gbifIDs_recordedBy")).
     withColumn("gbifIDs_identifiedBy", stringify($"gbifIDs_identifiedBy")).
+    repartition(2000).
     write.
     mode("overwrite").
     option("header", "true").
