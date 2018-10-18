@@ -62,7 +62,7 @@ AFTER taxon queue is empty of jobs, must execute the following:
   sql = "INSERT INTO 
           taxon_determiners 
             (taxon_id, agent_id) 
-         SELECT DISTINCT
+         SELECT
            t.taxon_id, d.agent_id
          FROM 
            occurrence_determiners d 

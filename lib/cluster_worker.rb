@@ -17,7 +17,7 @@ module Bloodhound
         nodes << AgentNode.create({agent_id: a.id, family: a.family, given: a.given})
       end
       nodes.combination(2).each do |pair|
-        w = DwCAgent.similarity_score(pair.first.given, pair.second.given)
+        w = DwcAgent.similarity_score(pair.first.given, pair.second.given)
         if w > 0
           AgentEdge.create(from_node: pair.first, to_node: pair.second, weight: w)
         end
