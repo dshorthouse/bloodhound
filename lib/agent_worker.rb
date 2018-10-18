@@ -14,9 +14,10 @@ module Bloodhound
         gbifIDs_identifiedBy = row["gbifIDs_identifiedBy"].tr('[]', '')
                                                           .split(',')
                                                           .map(&:to_i)
+
         agents.each do |a|
           begin
-            agent = Agent.find_or_create_by(family: a[:family].to_s, given: a[:given].to_s)
+            agent = Agent.find_or_create_by({family: a[:family].to_s, given: a[:given].to_s})
           rescue
             retry
           end
@@ -36,15 +37,15 @@ module Bloodhound
       end
     end
 
-    def parse(raw_names)
-      names = []
-      DwcAgent.parse(raw_names).each do |r|
-        name = DwcAgent.clean(r)
-        if !name[:family].nil? && name[:family].length >= 3
-          names << name
+    def parse(raw)
+      agents = []
+      DwcAgent.parse(raw).each do |n|
+        agent = DwcAgent.clean(n)
+        if !agent[:family].nil? && agent[:family].length >= 3
+          agents << agent
         end
       end
-      names.uniq
+      agents.uniq
     end
 
   end

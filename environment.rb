@@ -33,8 +33,6 @@ require 'net/http'
 require 'ruby-progressbar'
 require 'rack/google-analytics'
 require 'parallel'
-#TODO: resolve dwc-archive gem is causing issues in production & Travis
-#require 'dwc-archive'
 require 'redis'
 require 'net/http'
 require 'uri'
