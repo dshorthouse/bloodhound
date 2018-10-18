@@ -34,6 +34,7 @@ if options[:cluster]
                     .group("family, LOWER(LEFT(given,1))")
                     .having('count(*) > 1')
                     .pluck(:id)
+                    .uniq
   duplicates.each do |id|
     Sidekiq::Client.enqueue(Bloodhound::ClusterWorker, id)
   end
