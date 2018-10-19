@@ -27,6 +27,7 @@ module Sinatra
                           country: country
                         )
                        .find_or_create_by(orcid: orcid)
+            user.update(visited: Time.now)
             user_hash = user.as_json.symbolize_keys
             user_hash[:fullname] = user.fullname
             session[:omniauth] = user_hash
