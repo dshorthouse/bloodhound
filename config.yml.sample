@@ -18,9 +18,6 @@ development:
   gbif_api: 'http://api.gbif.org/v1/'
   gn_api: 'https://resolver.globalnames.org/'
   google_analytics: ''
-  smtp_address: ''
-  smtp_email: ''
-  smtp_password: ''
 
 test:
   adapter: mysql2
@@ -44,9 +41,6 @@ test:
   gbif_api: 'http://api.gbif.org/v1/'
   gn_api: 'https://resolver.globalnames.org/'
   google_analytics: ''
-  smtp_address: ''
-  smtp_email: ''
-  smtp_password: ''
 
 production:
   adapter: mysql2
@@ -70,6 +64,3 @@ production:
   gbif_api: 'http://api.gbif.org/v1/'
   gn_api: 'https://resolver.globalnames.org/'
   google_analytics: ''
-  smtp_address: ''
-  smtp_email: ''
-  smtp_password: ''

@@ -5,7 +5,7 @@
   %div{class: "jumbotron"}
     %div{class: "container-fluid"}
       %h1{class: "display-3"} Bloodhound
-      %p.lead Claim the natural history specimens you collected or identified, receive credit, and be notified of taxonomic changes
+      %p.lead Claim the natural history specimens you collected or identified
       %p
         - if !authorized?
           %a{ href:"/auth/orcid", id: "connect-orcid-button", role: "button", class: "btn btn-outline-success" }
