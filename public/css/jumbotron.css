@@ -61,3 +61,7 @@ a:hover, .page-link:hover{
 h3 {
   margin-top:0.5em;
 }
+.bulk-label{
+  text-align:center;
+  font-size:0.75em;
+}
