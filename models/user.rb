@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   end
 
   def fullname
-    if !family.nil?
+    if !family.blank?
       [given, family].compact.join(" ")
     else
       orcid
@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   end
 
   def fullname_reverse
-    if !family.nil?
+    if !family.blank?
       [family, given].compact.join(", ")
     else
       orcid
