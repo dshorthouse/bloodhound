@@ -10,7 +10,7 @@ module Sinatra
           app.get '/admin/users' do
             admin_protected!
             all_users
-            haml :all_users
+            haml :admin_roster
           end
 
           app.get '/admin/user/:id' do
@@ -158,8 +158,8 @@ module Sinatra
             content_type "application/json"
             user = User.find(params[:user_id].to_i)
             data = get_orcid_profile(user.orcid)
-            given = data[:person][:name][:"given-names"][:value]
-            family = data[:person][:name][:"family-name"][:value]
+            given = data[:person][:name][:"given-names"][:value] rescue nil
+            family = data[:person][:name][:"family-name"][:value] rescue nil
             email = nil
             data[:person][:emails][:email].each do |mail|
               next if !mail[:primary]
