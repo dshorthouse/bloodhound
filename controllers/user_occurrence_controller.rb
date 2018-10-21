@@ -50,7 +50,8 @@ module Sinatra
             content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
             ids = req[:ids].split(",")
-            UserOccurrence.where(id: ids).update_all({action: req[:action]})
+            UserOccurrence.where(id: ids, user_id: @user[:id])
+                          .update_all({action: req[:action]})
             { message: "ok" }.to_json
           end
 
@@ -58,7 +59,7 @@ module Sinatra
             protected!
             content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
-            uo = UserOccurrence.find(params[:id])
+            uo = UserOccurrence.find_by(id: params[:id], user_id: @user[:id])
             uo.action = req[:action]
             uo.visible = true
             uo.save
@@ -70,14 +71,16 @@ module Sinatra
             content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
             ids = req[:ids].split(",")
-            UserOccurrence.delete(ids)
+            UserOccurrence.where(id: ids, user_id: @user[:id])
+                          .delete_all
             { message: "ok" }.to_json
           end
 
           app.delete '/user-occurrence/:id.json' do
             protected!
             content_type "application/json"
-            UserOccurrence.delete(params[:id])
+            UserOccurrence.where(id: params[:id], user_id: @user[:id])
+                          .delete_all
             { message: "ok" }.to_json
           end
 

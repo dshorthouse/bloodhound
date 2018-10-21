@@ -33,6 +33,7 @@ class BLOODHOUND < Sinatra::Base
   helpers Sinatra::Bloodhound::Helpers
 
   register Sinatra::Bloodhound::Controller::ApplicationController
+  register Sinatra::Bloodhound::Controller::AdminController
   register Sinatra::Bloodhound::Controller::UserController
   register Sinatra::Bloodhound::Controller::UserOccurrenceController
 

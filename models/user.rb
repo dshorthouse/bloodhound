@@ -8,6 +8,10 @@ class User < ActiveRecord::Base
     is_public
   end
 
+  def is_admin?
+    is_admin
+  end
+
   def fullname
     if !family.blank?
       [given, family].compact.join(" ")

@@ -10,10 +10,13 @@ var Candidates = (function($, window) {
   "use strict";
 
   var _private = {
-
+    user_id: "",
+    path: "",
     data_sources: { agent : {} },
 
-    init: function() {
+    init: function(user_id = "", path = "") {
+      this.user_id = user_id;
+      this.path = path;
       this.bloodhound();
       this.typeahead();
       this.activate_radios();
@@ -51,6 +54,7 @@ var Candidates = (function($, window) {
         });
     },
     activate_radios: function(){
+      var self = this;
       $('input.specimen-selector').change(function() {
         var action = $(this).attr("data-action"),
             input = $(this);
@@ -60,10 +64,10 @@ var Candidates = (function($, window) {
             }).unique().toString();
             $.ajax({
                 method: "POST",
-                url: "/user-occurrence/bulk.json",
+                url: self.path + "/user-occurrence/bulk.json",
                 dataType: "json",
                 data: JSON.stringify({
-                  occurrence_ids: occurrence_ids, action: action, visible: true
+                  user_id: self.user_id, occurrence_ids: occurrence_ids, action: action, visible: true
                 })
             }).done(function(data) {
                 $('.table tbody tr').fadeOut(250, function() {
@@ -75,9 +79,9 @@ var Candidates = (function($, window) {
           var occurrence_id = $(this).attr("data-occurrence-id");
           $.ajax({
               method: "POST",
-              url: "/user-occurrence/" + occurrence_id + ".json",
+              url: self.path + "/user-occurrence/" + occurrence_id + ".json",
               dataType: "json",
-              data: JSON.stringify({ action: action, visible: true })
+              data: JSON.stringify({ user_id: self.user_id, action: action, visible: true })
           }).done(function(data) {
             input.parents("tr").fadeOut(250, function() {
               $(this).remove();
@@ -94,10 +98,10 @@ var Candidates = (function($, window) {
         }).unique().toString();
         $.ajax({
             method: "POST",
-            url: "/user-occurrence/bulk.json",
+            url: self.path + "/user-occurrence/bulk.json",
             dataType: "json",
             data: JSON.stringify({
-              occurrence_ids: occurrence_ids, visible: false
+              user_id: self.user_id, occurrence_ids: occurrence_ids, visible: false
             })
         }).done(function(data) {
             $('.table tbody tr').fadeOut(250, function() {
@@ -111,9 +115,9 @@ var Candidates = (function($, window) {
               row = $(this).parents("tr");
           $.ajax({
               method: "POST",
-              url: "/user-occurrence/" + occurrence_id + ".json",
+              url: self.path + "/user-occurrence/" + occurrence_id + ".json",
               dataType: "json",
-              data: JSON.stringify({ visible: false})
+              data: JSON.stringify({ user_id: self.user_id, visible: false})
           }).done(function(data) {
               row.fadeOut(250, function() {
                   $(this).remove();
@@ -127,8 +131,8 @@ var Candidates = (function($, window) {
   };
 
   return {
-    init: function() {
-      _private.init();
+    init: function(id = "", path = "") {
+      _private.init(id, path);
     }
   };
 

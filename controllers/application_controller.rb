@@ -41,11 +41,6 @@ module Sinatra
             haml :roster
           end
 
-          app.not_found do
-            status 404
-            haml :oops
-          end
-
         end
 
       end

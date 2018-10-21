@@ -9,26 +9,19 @@
   %script{src: "/js/candidates.js"}
   :javascript
     $(function() {
-      Candidates.init(#{@user[:id]});
+      Candidates.init(#{@admin_user.id}, "/admin");
     });
 
 -content_for :jumbotron do
   %div{class: "jumbotron"}
     %div{class:"container-fluid"}
-      %div{class:"row"}
-        %div{class:"col title-col"}
-          %h2{class:"display-4 text-left"} Your Candidate Specimens
-        %div{class:"col"}
-          %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8"}
-            %div{class: "inputs search-agent"}
-              %label{for: "typeahead"}= "Search"
-              %input.typeahead{id: "typeahead", type: :text, name: "q", placeholder: "Mary Smith", value: "#{params[:q]}", size: 30}
+      %h2{class:"display-4 text-left"}#{@admin_user.fullname}'s Candidate Specimens
 
 - if @results.empty?
   %div{class: "alert alert-warning", role:"alert"}
     Bloodhound did not sniff any specimens indexed by the 
     %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
-    (GBIF) that you may have collected or identified.
+    (GBIF).
 - else
   %div{class: "alert alert-info", role: "alert"}
     Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens. Choose
@@ -60,7 +53,7 @@
         %th{scope: "col"} Catalog Number
         %th{scope: "col"} Type Status
         %th{scope: "col"}
-          %button{type:"button", name:"notme-all", class:"btn btn-warning remove-all", "data-occurrence-ids":"#{@results.map(&:id).join(",")}"} Not me
+          %button{type:"button", name:"notme-all", class:"btn btn-warning remove-all", "data-occurrence-ids":"#{@results.map(&:id).join(",")}"} Hide
 
     %tbody
       - @results.each do |o|
@@ -86,7 +79,7 @@
           %td #{o.catalogNumber}
           %td #{o.typeStatus}
           %td
-            %button{type:"button", class:"btn btn-outline-warning remove", "data-occurrence-id":"#{o.id}"} Not me
+            %button{type:"button", class:"btn btn-outline-warning remove", "data-occurrence-id":"#{o.id}"} Hide
 
   - if @total >= 25
     %div{class: "btn-group", style:"margin-bottom:3px"}

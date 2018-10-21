@@ -51,6 +51,15 @@ module Sinatra
         defined? @user
       end
 
+      def admin_protected!
+        return if admin_authorized?
+        halt 401, haml(:not_authorized)
+      end
+
+      def admin_authorized?
+        defined?(@user) && is_admin?
+      end
+
       def paginate(collection)
           options = {
            inner_window: 3,
@@ -112,8 +121,8 @@ module Sinatra
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) } rescue []
       end
 
-      def occurrences_by_score(id_scores)
-        user = User.find(@user[:id])
+      def occurrences_by_score(id_scores, user_id = @user[:id])
+        user = User.find(user_id)
         linked_ids = user.user_occurrences.pluck(:occurrence_id)
 
         scores = {}
@@ -155,6 +164,11 @@ module Sinatra
                        .where("user_occurrences.visible": true)
                        .order(:family)
                        .distinct
+                       .paginate :page => params[:page]
+      end
+
+      def all_users
+        @results = User.order(:family)
                        .paginate :page => params[:page]
       end
 
@@ -207,6 +221,14 @@ module Sinatra
 
       def is_public?
         @user[:is_public] ? true : false
+      end
+
+      def is_user_public?
+        @admin_user.is_public? ? true : false
+      end
+
+      def is_admin?
+        @user[:is_admin] ? true : false
       end
 
       def to_csv(model, records)

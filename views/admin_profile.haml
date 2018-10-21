@@ -9,36 +9,36 @@
   %script{src:"/js/bootstrap-toggle.min.js"}
   :javascript
     $(function() {
-        Profile.init(#{@user[:id]});
+        Profile.init(#{@admin_user.id}, "/admin");
     });
 
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid"}
     %div{class: "container-fluid"}
 
-      %h2{class:"display-4 text-center"}= @user[:fullname]
+      %h2{class:"display-4 text-center"}= @admin_user.fullname
 
       %div{class: "row justify-content-center text-center"}
         %div{class: "col-xl-6"}
           %div.row
-            - if !@user[:other_names].blank?
+            - if !@admin_user.other_names.blank?
               %dl{class: "col"}
                 %dt Also known as
-                %dd #{@user[:other_names].split("|").join("; ")}
-            - if !@user[:country].blank?
+                %dd #{@admin_user.other_names.split("|").join("; ")}
+            - if !@admin_user.country.blank?
               %dl{class: "col"}
                 %dt Country
-                %dd #{@user[:country]}
+                %dd #{@admin_user.country}
 
       %div{class: "orcid text-center"}
         %a{href: "https://orcid.org/#{@user[:orcid]}"}
           %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-        %a{href: "https://orcid.org/#{@user[:orcid]}"} http://orcid.org/#{@user[:orcid]}
+        %a{href: "https://orcid.org/#{@user[:orcid]}"} http://orcid.org/#{@admin_user.orcid}
 
       %div{class: "orcid-refresh text-center"}
-        %a{href: "/refresh-orcid.json?user_id=#{@user[:id]}"}
+        %a{href: "/admin/refresh-orcid.json?user_id=#{@admin_user.id}"}
           %img{src: "/images/orcid_refresh_24x24.png", alt:"Refresh ORCID iD Content"}
-        %a{href: "/refresh-orcid.json?user_id=#{@user[:id]}"} Refresh ORCID Data
+        %a{href: "/admin/refresh-orcid.json?user_id=#{@admin_user.id}"} Refresh ORCID Data
 
     %div{class:"alert alert-success alert-dismissible fade show", role: "alert"}
       ORCID Data was refreshed.
@@ -46,19 +46,20 @@
         %span{"aria-hidden":"true"} &times;
 
 %p{class: "text-center"}
-  %a{ href:"/candidates", id: "candidates-button", role: "button", class: "btn btn-success" }
+  %a{ href:"/admin/candidates/#{@admin_user.id}", id: "candidates-button", role: "button", class: "btn btn-success" }
     - if !@results.empty?
       Claim More Specimens
     - else
       Claim Specimens
-  %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", checked: is_public? }
+  %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", checked: is_user_public? }
 
 
 - if authorized? && !@results.empty?
 
   %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
     %div{class: "col"}
-      You have claimed #{@total} specimens. Choose 
+      #{@admin_user.fullname} has claimed #{@total} specimens.
+      Choose 
       %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
       collected, 
       %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}

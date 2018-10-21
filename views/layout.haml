@@ -47,6 +47,9 @@
           - if authorized?
             %li{class: "nav-item"}
               %a{ href: "/profile", id: "linked-button", role: "button", class: "btn btn-success" }= @user[:fullname]
+            - if admin_authorized?
+              %li{class: "nav-item"}
+                %a{ href: "/admin/users", class:"nav-link" } Administration
             %li{class: "nav-item"}
               %a{ href: "/logout", class: "nav-link" } Logout
 

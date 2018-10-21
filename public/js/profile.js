@@ -11,16 +11,21 @@ var Profile = (function($, window) {
 
   var _private = {
 
-    init: function() {
+    user_id: "",
+    path: "",
+    init: function(user_id = "", path = "") {
+      this.user_id = user_id;
+      this.path = path;
       this.activate_radios();
       this.activate_switch();
       this.activate_orcid_refresh();
     },
     activate_switch: function() {
+      var self = this;
       $('#toggle-public').change(function() {
         $.ajax({
           method: "PUT",
-          url: "/profile.json",
+          url: self.path + "/profile.json?user_id=" + self.user_id,
           dataType: "json",
           data: JSON.stringify({ is_public: $(this).prop('checked') })
         }).done(function(data) {
@@ -29,6 +34,7 @@ var Profile = (function($, window) {
       });
     },
     activate_radios: function(){
+      var self = this;
       $('input.action-radio').change(function() {
           var action = $(this).attr("data-action"),
               label = $(this).parent();
@@ -39,9 +45,9 @@ var Profile = (function($, window) {
               }).unique().toString();
               $.ajax({
                   method: "PUT",
-                  url: "/user-occurrence/bulk.json",
+                  url: self.path + "/user-occurrence/bulk.json",
                   dataType: "json",
-                  data: JSON.stringify({ ids: ids, action: action })
+                  data: JSON.stringify({ user_id: self.user_id, ids: ids, action: action })
               }).done(function(data) {
                   $('label').each(function() {
                       $(this).removeClass("active");
@@ -54,9 +60,9 @@ var Profile = (function($, window) {
               var id = $(this).attr("data-id");
               $.ajax({
                   method: "PUT",
-                  url: "/user-occurrence/" + id + ".json",
+                  url: self.path + "/user-occurrence/" + id + ".json",
                   dataType: 'json',
-                  data: JSON.stringify({ action: action })
+                  data: JSON.stringify({ user_id: self.user_id, action: action })
               }).done(function(data) {
                   label.parent().find("label").each(function() {
                       $(this).removeClass("active");
@@ -70,7 +76,8 @@ var Profile = (function($, window) {
               row = $(this).parents("tr");
           $.ajax({
               method: "DELETE",
-              url: "/user-occurrence/" + id + ".json"
+              url: self.path + "/user-occurrence/" + id + ".json",
+              data: JSON.stringify({ user_id: self.user_id })
           }).done(function(data) {
               row.fadeOut(250, function() {
                   $(this).remove();
@@ -82,10 +89,11 @@ var Profile = (function($, window) {
       });
     },
     activate_orcid_refresh: function(){
+      var self = this;
       $("div.orcid-refresh a").on("click", function() {
         $.ajax({
             method: "GET",
-            url: "/orcid-refresh.json"
+            url: self.path + "/orcid-refresh.json?user_id=" + self.user_id
         }).done(function(data) {
           $(".alert").alert().show();
           $(".alert").on('closed.bs.alert', function () {
@@ -98,8 +106,8 @@ var Profile = (function($, window) {
   };
 
   return {
-    init: function() {
-      _private.init();
+    init: function(user_id = "", path = "") {
+      _private.init(user_id, path);
     }
   };
 
