@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 13, 2018 at 02:25 AM
+-- Generation Time: Oct 21, 2018 at 12:09 PM
 -- Server version: 5.7.22
 -- PHP Version: 5.6.36
 
@@ -132,15 +132,17 @@ CREATE TABLE `taxon_occurrences` (
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `family` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `given` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `orcid` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `other_names` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `family` varchar(255) DEFAULT NULL,
+  `given` varchar(255) DEFAULT NULL,
+  `orcid` varchar(25) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `other_names` text,
   `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
+  `is_admin` tinyint(1) NOT NULL DEFAULT '0',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated` timestamp NULL DEFAULT NULL
+  `updated` timestamp NULL DEFAULT NULL,
+  `visited` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -154,7 +156,9 @@ CREATE TABLE `user_occurrences` (
   `user_id` int(11) NOT NULL,
   `occurrence_id` int(11) NOT NULL,
   `action` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `visible` tinyint(1) NOT NULL DEFAULT '1'
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -178,13 +182,13 @@ ALTER TABLE `occurrences`
 -- Indexes for table `occurrence_determiners`
 --
 ALTER TABLE `occurrence_determiners`
-  ADD UNIQUE KEY `occurrence_agent_idx` (`occurrence_id`,`agent_id`);
+  ADD KEY `agent_idx` (`agent_id`);
 
 --
 -- Indexes for table `occurrence_recorders`
 --
 ALTER TABLE `occurrence_recorders`
-  ADD UNIQUE KEY `occurrence_agent_idx` (`occurrence_id`,`agent_id`);
+  ADD KEY `agent_idx` (`agent_id`);
 
 --
 -- Indexes for table `schema_migrations`
@@ -202,7 +206,7 @@ ALTER TABLE `taxa`
 -- Indexes for table `taxon_determiners`
 --
 ALTER TABLE `taxon_determiners`
-  ADD UNIQUE KEY `agent_taxon_idx` (`agent_id`,`taxon_id`);
+  ADD KEY `agent_idx` (`agent_id`);
 
 --
 -- Indexes for table `taxon_occurrences`
@@ -234,7 +238,7 @@ ALTER TABLE `user_occurrences`
 -- AUTO_INCREMENT for table `agents`
 --
 ALTER TABLE `agents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1048066;
 
 --
 -- AUTO_INCREMENT for table `taxa`
@@ -246,13 +250,13 @@ ALTER TABLE `taxa`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5642;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5646;
 
 --
 -- AUTO_INCREMENT for table `user_occurrences`
 --
 ALTER TABLE `user_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1880785;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2549776;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
