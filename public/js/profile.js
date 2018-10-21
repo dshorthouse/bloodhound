@@ -47,7 +47,11 @@ var Profile = (function($, window) {
                   method: "PUT",
                   url: self.path + "/user-occurrence/bulk.json",
                   dataType: "json",
-                  data: JSON.stringify({ user_id: self.user_id, ids: ids, action: action })
+                  data: JSON.stringify({
+                    user_id: self.user_id,
+                    ids: ids,
+                    action: action
+                  })
               }).done(function(data) {
                   $('label').each(function() {
                       $(this).removeClass("active");
@@ -62,7 +66,10 @@ var Profile = (function($, window) {
                   method: "PUT",
                   url: self.path + "/user-occurrence/" + id + ".json",
                   dataType: 'json',
-                  data: JSON.stringify({ user_id: self.user_id, action: action })
+                  data: JSON.stringify({
+                    user_id: self.user_id,
+                    action: action
+                  })
               }).done(function(data) {
                   label.parent().find("label").each(function() {
                       $(this).removeClass("active");

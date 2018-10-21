@@ -67,7 +67,10 @@ var Candidates = (function($, window) {
                 url: self.path + "/user-occurrence/bulk.json",
                 dataType: "json",
                 data: JSON.stringify({
-                  user_id: self.user_id, occurrence_ids: occurrence_ids, action: action, visible: true
+                  user_id: self.user_id,
+                  occurrence_ids: occurrence_ids,
+                  action: action,
+                  visible: true
                 })
             }).done(function(data) {
                 $('.table tbody tr').fadeOut(250, function() {
@@ -81,11 +84,15 @@ var Candidates = (function($, window) {
               method: "POST",
               url: self.path + "/user-occurrence/" + occurrence_id + ".json",
               dataType: "json",
-              data: JSON.stringify({ user_id: self.user_id, action: action, visible: true })
+              data: JSON.stringify({
+                user_id: self.user_id,
+                action: action,
+                visible: true
+              })
           }).done(function(data) {
             input.parents("tr").fadeOut(250, function() {
               $(this).remove();
-              if ($('input.specimen-selector').length === 1) {
+              if ($('input.specimen-selector').length === 3) {
                 location.reload();
               }
             });
