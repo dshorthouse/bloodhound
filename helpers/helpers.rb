@@ -104,6 +104,14 @@ module Sinatra
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) } rescue []
       end
 
+      def example_profiles
+        @results = User.joins(:user_occurrences)
+                       .distinct
+                       .where(is_public: true)
+                       .where('user_occurrences.id > 0')
+                       .limit(9)
+      end
+
       def occurrences_by_score(id_scores, user_id = @user[:id])
         user = User.find(user_id)
         linked_ids = user.user_occurrences.pluck(:occurrence_id)
