@@ -1,5 +1,5 @@
 -content_for :title do
-  Bloodhound: Candidate Specimens
+  Bloodhound: #{@admin_user.fullname} Candidate Specimens
 
 -content_for :stylesheets do
   %link{href: "/css/typeahead.css", rel: "stylesheet", type: "text/css"}
@@ -30,7 +30,7 @@
     %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
     identified, or Both.
 
-  %table{class:"table table-hover"}
+  %table{class:"table table-hover table-sm"}
     %thead{class: "thead-light"}
       %tr
         %th{scope: "col"}

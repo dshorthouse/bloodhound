@@ -37,7 +37,7 @@
     %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
     identified, or Both.
 
-  %table{class:"table table-hover"}
+  %table{class:"table table-hover table-sm"}
     %thead{class: "thead-light"}
       %tr
         %th{scope: "col"}
@@ -84,6 +84,29 @@
           %td #{o.catalogNumber}
           %td #{o.typeStatus}
 
+    - if @total >= 25
+      %tfoot{class: "thead-light"}
+        %tr
+          %th{scope: "col"}
+            %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
+              %label{class:"btn btn-choice btn-dark"}
+                %input{type:"radio", name:"selection-all", class:"specimen-selector", "data-action": "recorded", autocomplete:"off"}
+                  %img{src:"/images/net.png", alt:"Collected", title:"Collected All", width:18}
+              %label{class:"btn  btn-choice btn-dark"}
+                %input{type:"radio", name:"selection-all", class:"specimen-selector", "data-oaction": "identified", autocomplete:"off"}
+                  %img{src:"/images/microscope.png", alt:"Identified All", title: "Identified",width:18}
+              %label{class:"btn  btn-choice btn-dark"}
+                %input{type:"radio", name:"selection-all", class:"specimen-selector", "data-action": "recorded,identified", autocomplete:"off"} Both
+            %div.bulk-label Bulk Assignment
+          %th{scope: "col"} Scientific Name
+          %th{scope: "col"} Collectors
+          %th{scope: "col"} Determiners
+          %th{scope: "col"} Date Collected
+          %th{scope: "col"} Date Identified
+          %th{scope: "col"} Institution
+          %th{scope: "col"} Catalog Number
+          %th{scope: "col"} Type Status
+
   - if @total >= 25
     %div{class: "btn-group", style:"margin-bottom:3px"}
       %button{class:"btn btn-light btn-sm dropdown-toggle", type:"button", "data-toggle":"dropdown", "aria-haspopup":"true", "aria-expanded":"false"} Per page
@@ -91,6 +114,5 @@
         %a{href: "?page=#{@page}&per=25", class: "dropdown-item"} 25
         %a{href: "?page=#{@page}&per=100", class: "dropdown-item"} 100
         %a{href: "?page=#{@page}&per=250", class: "dropdown-item"} 250
-        %a{href: "?page=#{@page}&per=500", class: "dropdown-item"} 500
 
   = will_paginate @results, { class: "pagination" }
