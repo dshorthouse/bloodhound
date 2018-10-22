@@ -29,6 +29,7 @@ gem 'sidekiq'
 gem 'dwc_agent'
 gem 'iso_country_codes'
 gem 'neo4j'
+gem 'colorize'
 
 group :production do
 end

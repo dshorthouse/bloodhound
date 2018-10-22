@@ -25,23 +25,6 @@ module Sinatra
         set_session
       end
 
-      def get_orcid_profile(uid)
-        response = RestClient::Request.execute(
-          method: :get,
-          url: Sinatra::Application.settings.orcid_api_url + uid,
-          headers: { accept: 'application/orcid+json' }
-        )
-        JSON.parse(response, :symbolize_names => true)
-      end
-
-      def example_profiles
-        @results = User.joins(:user_occurrences)
-                       .distinct
-                       .where(is_public: true)
-                       .where('user_occurrences.id > 0')
-                       .limit(9)
-      end
-
       def protected!
         return if authorized?
         halt 401, haml(:not_authorized)

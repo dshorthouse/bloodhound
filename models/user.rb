@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
   has_many :user_occurrences
   has_many :occurrences, through: :user_occurrences, source: :occurrence
 
+  before_update :set_update_time
+
   self.per_page = 25
 
   def is_public?
@@ -127,6 +129,38 @@ class User < ActiveRecord::Base
 
   def qry_identified_or_recorded
     "(user_occurrences.action LIKE '%recorded%' OR user_occurrences.action LIKE '%identified%')"
+  end
+
+  def update_orcid_profile
+    response = RestClient::Request.execute(
+      method: :get,
+      url: Sinatra::Application.settings.orcid_api_url + orcid,
+      headers: { accept: 'application/orcid+json' }
+    )
+    data = JSON.parse(response, :symbolize_names => true)
+    given = data[:person][:name][:"given-names"][:value] rescue nil
+    family = data[:person][:name][:"family-name"][:value] rescue nil
+    email = nil
+    data[:person][:emails][:email].each do |mail|
+      next if !mail[:primary]
+      email = mail[:email]
+    end
+    other_names = data[:person][:"other-names"][:"other-name"].map{|n| n[:content]}.join("|") rescue nil
+    country_code = data[:person][:addresses][:address][0][:country][:value] rescue nil
+    country = IsoCountryCodes.find(country_code).name rescue nil
+    update({
+      family: family,
+      given: given,
+      email: email,
+      other_names: other_names,
+      country: country
+    })
+  end
+
+  private
+
+  def set_update_time
+    self.updated = Time.now
   end
 
 end

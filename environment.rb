@@ -43,6 +43,7 @@ require 'sidekiq/web'
 require 'dwc_agent'
 require 'iso_country_codes'
 require 'neo4j'
+require 'colorize'
 require 'byebug'
 
 require_all 'lib'

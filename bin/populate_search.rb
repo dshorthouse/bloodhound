@@ -6,7 +6,6 @@ require 'optparse'
 ARGV << '-h' if ARGV.empty?
 
 options = {}
-options[:type] = "d3"
 
 OptionParser.new do |opts|
   opts.banner = "Usage:populate_search.rb [options]"

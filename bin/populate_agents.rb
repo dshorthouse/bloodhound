@@ -46,5 +46,3 @@ if options[:directory]
   end
 
 end
-
-

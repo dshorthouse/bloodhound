@@ -154,26 +154,8 @@ module Sinatra
           app.get '/orcid-refresh.json' do
             protected!
             content_type "application/json"
-            data = get_orcid_profile(@user[:orcid])
-            given = data[:person][:name][:"given-names"][:value]
-            family = data[:person][:name][:"family-name"][:value]
-            email = nil
-            data[:person][:emails][:email].each do |mail|
-              next if !mail[:primary]
-              email = mail[:email]
-            end
-            other_names = data[:person][:"other-names"][:"other-name"].map{|n| n[:content]}.join("|") rescue nil
-            country_code = data[:person][:addresses][:address][0][:country][:value] rescue nil
-            country = IsoCountryCodes.find(country_code).name rescue nil
             user = User.find(@user[:id])
-            user.update({
-              family: family,
-              given: given,
-              email: email,
-              other_names: other_names,
-              country: country,
-              updated: Time.now
-            })
+            user.update_orcid_profile
             update_session
             { message: "ok" }.to_json
           end

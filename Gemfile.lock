@@ -34,6 +34,7 @@ GEM
     capitalize-names (1.0.6)
       activesupport (>= 3)
     chronic (0.10.2)
+    colorize (0.8.1)
     concurrent-ruby (1.0.5)
     connection_pool (2.2.2)
     crass (1.0.4)
@@ -83,12 +84,9 @@ GEM
     loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
-    mail (2.7.1)
-      mini_mime (>= 0.1.1)
     mime-types (3.2.2)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2018.0812)
-    mini_mime (1.0.1)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
     multi_json (1.13.1)
@@ -134,8 +132,6 @@ GEM
     orm_adapter (0.5.0)
     parallel (1.12.1)
     parsley-store (0.3.4)
-    pony (1.12)
-      mail (>= 2.0)
     rack (2.0.5)
     rack-google-analytics (1.2.0)
       actionpack
@@ -217,8 +213,9 @@ DEPENDENCIES
   byebug
   capitalize-names
   chronic
+  colorize
   dwc-archive
-  dwc_agent (~> 0.1.8)
+  dwc_agent
   elasticsearch
   haml
   htmlentities
@@ -230,7 +227,6 @@ DEPENDENCIES
   oauth2
   omniauth-orcid
   parallel
-  pony
   rack-google-analytics
   rake
   redis

@@ -170,25 +170,7 @@ module Sinatra
             admin_protected!
             content_type "application/json"
             user = User.find(params[:user_id].to_i)
-            data = get_orcid_profile(user.orcid)
-            given = data[:person][:name][:"given-names"][:value] rescue nil
-            family = data[:person][:name][:"family-name"][:value] rescue nil
-            email = nil
-            data[:person][:emails][:email].each do |mail|
-              next if !mail[:primary]
-              email = mail[:email]
-            end
-            other_names = data[:person][:"other-names"][:"other-name"].map{|n| n[:content]}.join("|") rescue nil
-            country_code = data[:person][:addresses][:address][0][:country][:value] rescue nil
-            country = IsoCountryCodes.find(country_code).name rescue nil
-            user.update({
-              family: family,
-              given: given,
-              email: email,
-              other_names: other_names,
-              country: country,
-              updated: Time.now
-            })
+            user.update_orcid_profile
             { message: "ok" }.to_json
           end
 
