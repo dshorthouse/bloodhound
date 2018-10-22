@@ -33,7 +33,7 @@ var Candidates = (function($, window) {
         remote : {
           url : '/'+type+'.json?q=%QUERY',
           wildcard : '%QUERY',
-          transform : function(r) { 
+          transform : function(r) {
             return $.map(r, function(v) { v['type'] = type; return v; });
           }
         }
