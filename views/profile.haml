@@ -118,7 +118,7 @@
           %td #{o[:catalogNumber]}
           %td #{o[:typeStatus]}
           %td
-            %button{type:"button", class:"btn btn-danger remove", "data-id":"#{o[:user_occurrence_id]}"} Remove
+            %button{type:"button", class:"btn btn-sm btn-danger remove", "data-id":"#{o[:user_occurrence_id]}"} Remove
 
     - if @total >= 25
       %tfoot{class: "thead-light"}
