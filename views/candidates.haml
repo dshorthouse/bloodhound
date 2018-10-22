@@ -87,29 +87,31 @@
           %td #{o.typeStatus}
           %td
             %button{type:"button", class:"btn btn-outline-warning remove", "data-occurrence-id":"#{o.id}"} Not me
-    %tfoot{class: "thead-light"}
-      %tr
-        %th{scope: "col"}
-          %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
-            %label{class:"btn btn-choice btn-dark"}
-              %input{type:"radio", name:"selection-all", class:"specimen-selector", "data-action": "recorded", autocomplete:"off"}
-                %img{src:"/images/net.png", alt:"Collected All", title:"Collected All", width:18}
-            %label{class:"btn  btn-choice btn-dark"}
-              %input{type:"radio", name:"selection-all",  class:"specimen-selector", "data-action": "identified", autocomplete:"off"}
-                %img{src:"/images/microscope.png", alt:"Identified All", title: "Identified All",width:18}
-            %label{class:"btn  btn-choice btn-dark"}
-              %input{type:"radio", name:"selection-all",  class:"specimen-selector", "data-action": "recorded,identified", autocomplete:"off"} Both
-          %div.bulk-label Bulk Assignment
-        %th{scope: "col"} Scientific Name
-        %th{scope: "col"} Collected By
-        %th{scope: "col"} Identified By
-        %th{scope: "col"} Date Collected
-        %th{scope: "col"} Date Identified
-        %th{scope: "col"} Institution
-        %th{scope: "col"} Catalog Number
-        %th{scope: "col"} Type Status
-        %th{scope: "col"}
-          %button{type:"button", name:"notme-all", class:"btn btn-warning remove-all", "data-occurrence-ids":"#{@results.map(&:id).join(",")}"} Not me
+
+    - if @total >= 25
+      %tfoot{class: "thead-light"}
+        %tr
+          %th{scope: "col"}
+            %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
+              %label{class:"btn btn-choice btn-dark"}
+                %input{type:"radio", name:"selection-all", class:"specimen-selector", "data-action": "recorded", autocomplete:"off"}
+                  %img{src:"/images/net.png", alt:"Collected All", title:"Collected All", width:18}
+              %label{class:"btn  btn-choice btn-dark"}
+                %input{type:"radio", name:"selection-all",  class:"specimen-selector", "data-action": "identified", autocomplete:"off"}
+                  %img{src:"/images/microscope.png", alt:"Identified All", title: "Identified All",width:18}
+              %label{class:"btn  btn-choice btn-dark"}
+                %input{type:"radio", name:"selection-all",  class:"specimen-selector", "data-action": "recorded,identified", autocomplete:"off"} Both
+            %div.bulk-label Bulk Assignment
+          %th{scope: "col"} Scientific Name
+          %th{scope: "col"} Collected By
+          %th{scope: "col"} Identified By
+          %th{scope: "col"} Date Collected
+          %th{scope: "col"} Date Identified
+          %th{scope: "col"} Institution
+          %th{scope: "col"} Catalog Number
+          %th{scope: "col"} Type Status
+          %th{scope: "col"}
+            %button{type:"button", name:"notme-all", class:"btn btn-warning remove-all", "data-occurrence-ids":"#{@results.map(&:id).join(",")}"} Not me
 
   - if @total >= 25
     %div{class: "btn-group", style:"margin-bottom:3px"}
