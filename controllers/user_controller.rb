@@ -196,7 +196,9 @@ module Sinatra
               if @viewed_user && @viewed_user.is_public?
                 @total = {
                   identified: @viewed_user.identified_count,
-                  recorded: @viewed_user.recorded_count
+                  recorded: @viewed_user.recorded_count,
+                  users_helped: @viewed_user.users_helped.count,
+                  claims_helped: @viewed_user.claims_helped.count
                 }
                 @families_identified = @viewed_user.identified_families
                 @families_recorded = @viewed_user.recorded_families

@@ -11,6 +11,9 @@ class Occurrence < ActiveRecord::Base
   has_many :user_occurrences
   has_many :users, through: :user_occurrences, source: :user
 
+  has_many :claims, class_name: "UserOccurrence"
+  has_many :claimants, through: :claims, primary_key: :created_by, class_name: "User"
+
   has_one :taxon_occurrence
   has_one :taxon, through: :taxon_occurrence, source: :taxon
 

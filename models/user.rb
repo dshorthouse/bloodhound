@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   has_many :user_occurrences
   has_many :occurrences, through: :user_occurrences, source: :occurrence
+  has_many :claims, foreign_key: :created_by, class_name: "UserOccurrence"
+  has_many :claimed_occurrences, through: :claims, source: :occurrence
 
   before_update :set_update_time
 
@@ -129,6 +131,14 @@ class User < ActiveRecord::Base
 
   def qry_identified_or_recorded
     "(user_occurrences.action LIKE '%recorded%' OR user_occurrences.action LIKE '%identified%')"
+  end
+
+  def users_helped
+    claims_helped.map(&:user).uniq
+  end
+
+  def claims_helped
+    claims.where(visible: true).where.not(user: self)
   end
 
   def update_orcid_profile

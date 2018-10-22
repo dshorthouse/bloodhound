@@ -22,6 +22,7 @@ module Sinatra
             data = occurrence_ids.map{|o| { 
                 user_id: @user[:id],
                 occurrence_id: o.to_i,
+                created_by: @user[:id],
                 action: action,
                 visible: visible
               }
@@ -39,6 +40,7 @@ module Sinatra
             uo = UserOccurrence.new
             uo.user_id = @user[:id]
             uo.occurrence_id = params[:occurrence_id]
+            uo.created_by = @user[:id]
             uo.action = action
             uo.visible = visible
             uo.save

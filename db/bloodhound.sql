@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 21, 2018 at 12:09 PM
+-- Generation Time: Oct 22, 2018 at 07:45 PM
 -- Server version: 5.7.22
 -- PHP Version: 5.6.36
 
@@ -157,6 +157,7 @@ CREATE TABLE `user_occurrences` (
   `occurrence_id` int(11) NOT NULL,
   `action` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `created_by` int(11) DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -228,7 +229,8 @@ ALTER TABLE `users`
 ALTER TABLE `user_occurrences`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `user_occurrence_idx` (`user_id`,`occurrence_id`),
-  ADD KEY `action_idx` (`action`) USING BTREE;
+  ADD KEY `action_idx` (`action`) USING BTREE,
+  ADD KEY `created_by_idx` (`created_by`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -256,7 +258,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_occurrences`
 --
 ALTER TABLE `user_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2549776;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2549953;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
