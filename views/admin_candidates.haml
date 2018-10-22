@@ -53,7 +53,7 @@
         %th{scope: "col"} Catalog Number
         %th{scope: "col"} Type Status
         %th{scope: "col"}
-          %button{type:"button", name:"notme-all", class:"btn btn-warning remove-all", "data-occurrence-ids":"#{@results.map(&:id).join(",")}"} Hide
+          %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning remove-all", "data-occurrence-ids":"#{@results.map(&:id).join(",")}"} Hide
 
     %tbody
       - @results.each do |o|
@@ -79,7 +79,7 @@
           %td #{o.catalogNumber}
           %td #{o.typeStatus}
           %td
-            %button{type:"button", class:"btn btn-outline-warning remove", "data-occurrence-id":"#{o.id}"} Hide
+            %button{type:"button", class:"btn btn-sm btn-outline-warning remove", "data-occurrence-id":"#{o.id}"} Hide
 
     - if @total >= 25
       %tfoot{class: "thead-light"}
@@ -104,7 +104,7 @@
           %th{scope: "col"} Catalog Number
           %th{scope: "col"} Type Status
           %th{scope: "col"}
-            %button{type:"button", name:"notme-all", class:"btn btn-warning remove-all", "data-occurrence-ids":"#{@results.map(&:id).join(",")}"} Hide
+            %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning remove-all", "data-occurrence-ids":"#{@results.map(&:id).join(",")}"} Hide
 
   - if @total >= 25
     %div{class: "btn-group", style:"margin-bottom:3px"}
