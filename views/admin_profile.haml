@@ -46,7 +46,7 @@
         %span{"aria-hidden":"true"} &times;
 
 %p{class: "text-center"}
-  %a{ href:"/admin/candidates/#{@admin_user.id}", id: "candidates-button", role: "button", class: "btn btn-success" }
+  %a{ href:"/admin/candidates/#{@admin_user.orcid}", id: "candidates-button", role: "button", class: "btn btn-success" }
     - if !@results.empty?
       Claim More Specimens
     - else

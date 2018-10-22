@@ -19,7 +19,7 @@
     - @results.each do |u|
       %tr
         %td 
-          %a{href: "/admin/user/#{u.id}"} #{u.fullname_reverse}
+          %a{href: "/admin/user/#{u.orcid}"} #{u.fullname_reverse}
         %td #{u.country}
         %td #{u.visited}
         %td #{u.is_public}

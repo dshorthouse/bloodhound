@@ -9,70 +9,83 @@ module Sinatra
 
           app.get '/admin/users' do
             admin_protected!
-            all_users
+            admin_roster
             haml :admin_roster
           end
 
-          app.get '/admin/user/:id' do
+          app.get '/admin/user/:orcid' do
             admin_protected!
 
-            @page = (params[:page] || 1).to_i
-            @search_size = (params[:per] || 25).to_i
-            @admin_user = User.find(params[:id])
-            occurrences = @admin_user.user_occurrence_occurrences
+            if params[:orcid].is_orcid?
+              @page = (params[:page] || 1).to_i
+              @search_size = (params[:per] || 25).to_i
+              @admin_user = User.find_by_orcid(params[:orcid])
+              occurrences = @admin_user.user_occurrence_occurrences
 
-            @total = occurrences.length
+              @total = occurrences.length
 
-            @results = WillPaginate::Collection.create(@page, @search_size, occurrences.length) do |pager|
-              pager.replace occurrences[pager.offset, pager.per_page]
+              @results = WillPaginate::Collection.create(@page, @search_size, occurrences.length) do |pager|
+                pager.replace occurrences[pager.offset, pager.per_page]
+              end
+              haml :admin_profile
+            else
+              status 404
+              haml :oops
             end
-            haml :admin_profile
+
           end
 
-          app.get '/admin/candidates/:id' do
+          app.get '/admin/candidates/:orcid' do
             admin_protected!
-            occurrence_ids = []
-            @page = (params[:page] || 1).to_i
-            @search_size = (params[:per] || 25).to_i
 
-            @admin_user = User.find(params[:id])
+            if params[:orcid].is_orcid?
+              occurrence_ids = []
+              @page = (params[:page] || 1).to_i
+              @search_size = (params[:per] || 25).to_i
 
-            if @admin_user.family.nil?
-              @results = []
-              @total = nil
+              @admin_user = User.find_by_orcid(params[:orcid])
+
+              if @admin_user.family.nil?
+                @results = []
+                @total = nil
+              else
+                agents = search_agents(@admin_user.family, @admin_user.given)
+
+                if !@admin_user.other_names.nil?
+                  @admin_user.other_names.split("|").each do |other_name|
+                    parsed = Namae.parse other_name
+                    name = DwcAgent.clean(parsed[0])
+                    family = !name[:family].nil? ? name[:family] : nil
+                    given = !name[:given].nil? ? name[:given] : nil
+                    if !family.nil?
+                      agents.concat search_agents(family, given)
+                    end
+                  end
+                end
+
+                id_scores = agents.compact.uniq
+                                          .map{|a| { id: a[:id], score: a[:score] }}
+
+                if !id_scores.empty?
+                  ids = id_scores.map{|a| a[:id]}
+                  nodes = AgentNode.where(agent_id: ids)
+                  if !nodes.empty?
+                    (nodes.map(&:agent_id) - ids).each do |id|
+                      id_scores << { id: id, score: 1 } #TODO: how to more effectively use the edge weights here?
+                    end
+                  end
+                  occurrence_ids = occurrences_by_score(id_scores, @admin_user.id)
+                end
+
+                specimen_pager(occurrence_ids)
+              end
+
+              haml :admin_candidates
             else
-              agents = search_agents(@admin_user.family, @admin_user.given)
-
-              if !@admin_user.other_names.nil?
-                @admin_user.other_names.split("|").each do |other_name|
-                  parsed = Namae.parse other_name
-                  name = DwcAgent.clean(parsed[0])
-                  family = !name[:family].nil? ? name[:family] : nil
-                  given = !name[:given].nil? ? name[:given] : nil
-                  if !family.nil?
-                    agents.concat search_agents(family, given)
-                  end
-                end
-              end
-
-              id_scores = agents.compact.uniq
-                                        .map{|a| { id: a[:id], score: a[:score] }}
-
-              if !id_scores.empty?
-                ids = id_scores.map{|a| a[:id]}
-                nodes = AgentNode.where(agent_id: ids)
-                if !nodes.empty?
-                  (nodes.map(&:agent_id) - ids).each do |id|
-                    id_scores << { id: id, score: 1 } #TODO: how to more effectively use the edge weights here?
-                  end
-                end
-                occurrence_ids = occurrences_by_score(id_scores, @admin_user.id)
-              end
-
-              specimen_pager(occurrence_ids)
+              status 404
+              haml :oops
             end
 
-            haml :admin_candidates
           end
 
           app.post '/admin/user-occurrence/bulk.json' do

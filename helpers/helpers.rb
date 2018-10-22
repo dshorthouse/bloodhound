@@ -167,7 +167,7 @@ module Sinatra
                        .paginate :page => params[:page]
       end
 
-      def all_users
+      def admin_roster
         @results = User.order(:family)
                        .paginate :page => params[:page]
       end
