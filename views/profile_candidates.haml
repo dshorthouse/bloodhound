@@ -1,10 +1,12 @@
 -content_for :title do
-  Bloodhound: Candidate Specimens
+  Bloodhound: Unclaimed Specimens
 
 -content_for :stylesheets do
+  %link{href: "/css/bootstrap-toggle.min.css", rel: "stylesheet", type: "text/css"}
   %link{href: "/css/typeahead.css", rel: "stylesheet", type: "text/css"}
 
 -content_for :scripts do
+  %script{src:"/js/bootstrap-toggle.min.js"}
   %script{src: "/js/typeahead.bundle.min.js"}
   %script{src: "/js/candidates.js"}
   :javascript
@@ -13,29 +15,80 @@
     });
 
 -content_for :jumbotron do
-  %div{class: "jumbotron"}
-    %div{class:"container-fluid"}
-      %div{class:"row"}
-        %div{class:"col title-col"}
-          %h2{class:"display-4 text-left"} Your Candidate Specimens
-        %div{class:"col"}
-          %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8"}
-            %div{class: "inputs search-agent"}
-              %label{for: "typeahead"}= "Search"
-              %input.typeahead{id: "typeahead", type: :text, name: "q", placeholder: "Mary Smith", value: "#{params[:q]}", size: 30}
+  %div{class:"jumbotron jumbotron-fluid"}
+    %div{class: "container-fluid"}
+
+      %h2{class:"display-4 text-center"}= @user[:fullname]
+
+      %div{class: "row justify-content-center text-center"}
+        %div{class: "col-xl-6"}
+          %div.row
+            - if !@user[:other_names].blank?
+              %dl{class: "col"}
+                %dt Also known as
+                %dd #{@user[:other_names].split("|").join("; ")}
+            - if !@user[:country].blank?
+              %dl{class: "col"}
+                %dt Country
+                %dd #{@user[:country]}
+          %div.row
+            %div{class: "col orcid text-center"}
+              %a{href: "https://orcid.org/#{@user[:orcid]}"}
+                %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+              %a{href: "https://orcid.org/#{@user[:orcid]}"} http://orcid.org/#{@user[:orcid]}
+
+              %div{class: "orcid-refresh text-center"}
+                %a{href: "/refresh-orcid.json?user_id=#{@user[:id]}"}
+                  %img{src: "/images/orcid_refresh_24x24.png", alt:"Refresh ORCID iD Content"}
+                %a{href: "/refresh-orcid.json?user_id=#{@user[:id]}"} Refresh ORCID Data
+
+            %div{class: "col text-center"}
+              %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", checked: is_public?, class:"btn-claim" }
+
+          %div{class:"alert row alert-success alert-dismissible fade show", role: "alert"}
+            ORCID Data was refreshed.
+            %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+              %span{"aria-hidden":"true"} &times;
+
+%ul{class: "nav nav-tabs"}
+  %li{class: "nav-item"}
+    %a{class: "nav-link", href: "/profile"} Overview
+  %li{class: "nav-item"}
+    %a{class: "nav-link", href: "/profile/specimens"} Claimed Specimens
+  %li{class: "nav-item"}
+    %a{class: "nav-link active", href: "/profile/candidates"} Unclaimed Specimens
+  %li{class: "nav-item"}
+    %a{class: "nav-link", href: "/profile/support"} Help Received
+
+- alert_class = "info"
+- placeholder = @user[:fullname]
+- if !@searched_user.nil?
+  - alert_class = "warning"
+  - placeholder = @searched_user.fullname
 
 - if @results.empty?
-  %div{class: "alert alert-warning", role:"alert"}
-    Bloodhound did not sniff any specimens indexed by the 
-    %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
-    (GBIF) that you may have collected or identified.
+  %div{class: "alert alert-warning row", role:"alert"}
+    %div{class: "col-8"}
+      Bloodhound did not sniff any specimens indexed by the 
+      %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
+      (GBIF) that you may have collected or identified.
 - else
-  %div{class: "alert alert-info", role: "alert"}
-    Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens. Choose
-    %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
-    collected, 
-    %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-    identified, or Both.
+  %div{class: "alert alert-#{alert_class} row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    %div{class: "col-8"}
+      = succeed "." do
+        Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for 
+        %span{class:"font-weight-bold"} #{placeholder}
+      Choose
+      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
+      collected, 
+      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+      identified, or Both.
+
+    %div{class:"col-4", style:"position:relative"}
+      %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline", style:"float:right"}
+        %div{class: "inputs search-agent form-group"}
+          %label{for: "typeahead"}= "Search"
+          %input.typeahead{id: "typeahead", type: :text, name: "q", placeholder: "#{placeholder}", value: "#{params[:q]}", size: 30}
 
   %table{class:"table table-hover table-sm"}
     %thead{class: "thead-light"}
@@ -60,7 +113,8 @@
         %th{scope: "col"} Catalog Number
         %th{scope: "col"} Type Status
         %th{scope: "col"}
-          %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning remove-all", "data-occurrence-ids":"#{@results.map(&:id).join(",")}"} Not me
+          - if @searched_user.nil?
+            %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning remove-all", "data-occurrence-ids":"#{@results.map(&:id).join(",")}"} Not me
 
     %tbody
       - @results.each do |o|
@@ -86,7 +140,8 @@
           %td #{o.catalogNumber}
           %td #{o.typeStatus}
           %td
-            %button{type:"button", class:"btn btn-sm btn-outline-warning remove", "data-occurrence-id":"#{o.id}"} Not me
+            - if @searched_user.nil?
+              %button{type:"button", class:"btn btn-sm btn-outline-warning remove", "data-occurrence-id":"#{o.id}"} Not me
 
     - if @total >= 25
       %tfoot{class: "thead-light"}
@@ -111,7 +166,8 @@
           %th{scope: "col"} Catalog Number
           %th{scope: "col"} Type Status
           %th{scope: "col"}
-            %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning remove-all", "data-occurrence-ids":"#{@results.map(&:id).join(",")}"} Not me
+            - if @searched_user.nil?
+              %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning remove-all", "data-occurrence-ids":"#{@results.map(&:id).join(",")}"} Not me
 
   - if @total >= 25
     %div{class: "btn-group", style:"margin-bottom:3px"}

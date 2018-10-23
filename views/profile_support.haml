@@ -42,8 +42,6 @@
                 %a{href: "/refresh-orcid.json?user_id=#{@user[:id]}"} Refresh ORCID Data
 
             %div{class: "col text-center"}
-              %a{ href:"/candidates", id: "candidates-button", role: "button", class: "btn btn-success btn-claim" }
-                Claim Specimens
               %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", checked: is_public?, class:"btn-claim" }
 
           %div{class:"alert row alert-success alert-dismissible fade show", role: "alert"}
@@ -55,7 +53,9 @@
   %li{class: "nav-item"}
     %a{class: "nav-link", href: "/profile"} Overview
   %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/profile/specimens"} Specimens
+    %a{class: "nav-link", href: "/profile/specimens"} Claimed Specimens
+  %li{class: "nav-item"}
+    %a{class: "nav-link", href: "/profile/candidates"} Unclaimed Specimens
   %li{class: "nav-item"}
     %a{class: "nav-link active", href: "/profile/support"} Help Received
 

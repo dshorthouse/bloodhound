@@ -1,27 +1,15 @@
-label input {
-  margin-right:0.5em;
-}
-
-#form-wrapper {
-  margin-bottom:1.75em;
-}
-
-#form-wrapper .search-agent{
-  vertical-align:middle;
-}
-
 .twitter-typeahead {
-  line-height:2.75em;
+  line-height:1em;
 }
 
 .typeahead,
 .tt-query,
 .tt-hint {
-  width: 22rem;
-  height: 30px;
-  padding: 1.2rem;
-  font-size: 1.5rem;
-  line-height: 1.5rem;
+  width: 18rem;
+  height: 1rem;
+  padding: 1rem;
+  font-size: 1rem;
+  line-height: 1rem;
   border: 2px solid #ccc;
   -webkit-border-radius: 8px;
      -moz-border-radius: 8px;
@@ -48,8 +36,8 @@ label input {
 }
 
 .tt-menu {
-  width: 22rem;
-  margin: 12px 0;
+  width: 18rem;
+  margin: 5px 0;
   padding: 8px 0;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -64,9 +52,10 @@ label input {
 }
 
 .tt-suggestion {
-  padding: 3px 20px;
-  font-size: 18px;
-  line-height: 24px;
+  padding: 3px 10px;
+  font-size: 1rem;
+  line-height: 1.1rem;
+  color:#495057;
 }
 
 .tt-suggestion:hover {
@@ -114,7 +103,9 @@ label input {
   border-radius:0px !important;
   font-size:1rem !important;
 }
-
+.search-agent label{
+  margin-right:0.2rem;
+}
 @media only screen and (min-width: 450px) {
   .search-agent {
     float:right !important;

@@ -50,7 +50,7 @@ var Candidates = (function($, window) {
           display : 'name'
         }
         ).on('typeahead:select', function(obj, datum) {
-          window.location.href = '/candidates/agent/' + datum.id;
+          window.location.href = '/profile/candidates/agent/' + datum.id;
         });
     },
     activate_radios: function(){

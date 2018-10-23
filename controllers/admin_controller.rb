@@ -108,7 +108,7 @@ module Sinatra
                 visible: visible
               }
             }
-            UserOccurrence.create(data)
+            UserOccurrence.import(data)
             { message: "ok" }.to_json
           end
 

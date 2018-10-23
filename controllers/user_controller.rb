@@ -109,7 +109,7 @@ module Sinatra
             end
           end
 
-          app.get '/candidates' do
+          app.get '/profile/candidates' do
             protected!
             occurrence_ids = []
             @page = (params[:page] || 1).to_i
@@ -150,10 +150,10 @@ module Sinatra
               specimen_pager(occurrence_ids)
             end
 
-            haml :candidates
+            haml :profile_candidates
           end
 
-          app.get '/candidates/agent/:id' do
+          app.get '/profile/candidates/agent/:id' do
             protected!
             occurrence_ids = []
             @page = (params[:page] || 1).to_i
@@ -170,7 +170,7 @@ module Sinatra
             occurrence_ids = occurrences_by_score(id_scores)
             specimen_pager(occurrence_ids)
 
-            haml :candidates_agent
+            haml :profile_candidates
           end
 
           app.get '/logout' do
