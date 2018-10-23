@@ -19,11 +19,25 @@ var Candidates = (function($, window) {
       this.path = path;
       this.bloodhound();
       this.typeahead();
+      this.activate_switch();
       this.activate_radios();
     },
     bloodhound: function() {
       this.data_sources.agent = this.create_bloodhound('agent');
       this.data_sources.agent.initialize();
+    },
+    activate_switch: function() {
+      var self = this;
+      $('#toggle-public').change(function() {
+        $.ajax({
+          method: "PUT",
+          url: self.path + "/profile.json?user_id=" + self.user_id,
+          dataType: "json",
+          data: JSON.stringify({ is_public: $(this).prop('checked') })
+        }).done(function(data) {
+          
+        });
+      });
     },
     create_bloodhound: function(type) {
       return new Bloodhound({

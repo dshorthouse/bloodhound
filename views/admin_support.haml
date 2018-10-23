@@ -1,5 +1,5 @@
 -content_for :title do
-  Bloodhound: Help Received
+  Bloodhound: #{@admin_user.fullname} Help Received
 
 -content_for :stylesheets do
   %link{href: "/css/bootstrap-toggle.min.css", rel: "stylesheet", type: "text/css"}
@@ -10,39 +10,39 @@
   %script{src:"/js/profile.js"}
   :javascript
     $(function() {
-        Profile.init(#{@user[:id]});
+        Profile.init(#{@admin_user.id}, "/admin");
     });
 
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid"}
     %div{class: "container-fluid"}
 
-      %h2{class:"display-4 text-center"}= @user[:fullname]
+      %h2{class:"display-4 text-center"}= @admin_user.fullname
 
       %div{class: "row justify-content-center text-center"}
         %div{class: "col-xl-8"}
           %div.row
-            - if !@user[:other_names].blank?
+            - if !@admin_user.other_names.blank?
               %dl{class: "col"}
                 %dt Also known as
-                %dd #{@user[:other_names].split("|").join("; ")}
-            - if !@user[:country].blank?
+                %dd #{@admin_user.other_names.split("|").join("; ")}
+            - if !@admin_user.country.blank?
               %dl{class: "col"}
                 %dt Country
-                %dd #{@user[:country]}
+                %dd #{@admin_user.country}
           %div.row
             %div{class: "col orcid text-center"}
-              %a{href: "https://orcid.org/#{@user[:orcid]}"}
+              %a{href: "https://orcid.org/#{@admin_user.orcid}"}
                 %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-              %a{href: "https://orcid.org/#{@user[:orcid]}"} http://orcid.org/#{@user[:orcid]}
+              %a{href: "https://orcid.org/#{@admin_user.orcid}"} http://orcid.org/#{@admin_user.orcid}
 
               %div{class: "orcid-refresh text-center"}
-                %a{href: "/refresh-orcid.json?user_id=#{@user[:id]}"}
+                %a{href: "/refresh-orcid.json?user_id=#{@admin_user.id}"}
                   %img{src: "/images/orcid_refresh_24x24.png", alt:"Refresh ORCID iD Content"}
-                %a{href: "/refresh-orcid.json?user_id=#{@user[:id]}"} Refresh ORCID Data
+                %a{href: "/refresh-orcid.json?user_id=#{@admin_user.id}"} Refresh ORCID Data
 
             %div{class: "col text-center"}
-              %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", checked: is_public?, class:"btn-claim" }
+              %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", checked: is_user_public?, class:"btn-claim" }
 
           %div{class:"alert row alert-success alert-dismissible fade show", role: "alert"}
             ORCID Data was refreshed.
@@ -50,14 +50,12 @@
               %span{"aria-hidden":"true"} &times;
 
 %ul{class: "nav nav-tabs"}
+  %li{class: "nav-item "}
+    %a{class: "nav-link", href: "/admin/user/#{@admin_user.orcid}"} Claimed Specimens
   %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/profile"} Overview
+    %a{class: "nav-link", href: "/admin/user/#{@admin_user.orcid}/candidates"} Unclaimed Specimens
   %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/profile/specimens"} Your Claimed Specimens
-  %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/profile/candidates"} Your Unclaimed Specimens
-  %li{class: "nav-item"}
-    %a{class: "nav-link active", href: "/profile/support"} Help Received
+    %a{class: "nav-link active", href: "/admin/user/#{@admin_user.orcid}/support"} Help Received
 
 - if !@results.empty?
 
@@ -92,7 +90,6 @@
         %th{scope: "col"} Catalog Number
         %th{scope: "col"} Type Status
         %th{scope: "col"} Helper
-        %th{scope: "col"}
 
     %tbody
       - @results.each do |o|
@@ -122,8 +119,6 @@
               %a{href: "/#{o[:claimant].orcid}"} #{o[:claimant].fullname_reverse}
             - else
               %a{href: "https://orcid.org/#{o[:claimant].orcid}"} #{o[:claimant].fullname_reverse}
-          %td
-            %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-id":"#{o[:user_occurrence_id]}"} Not me
 
     - if @total >= 25
       %tfoot{class: "thead-light"}
@@ -148,7 +143,6 @@
           %th{scope: "col"} Catalog Number
           %th{scope: "col"} Type Status
           %th{scope: "col"} Helper
-          %th{scope: "col"}
 
   - if @total >= 25
     %div{class: "btn-group", style:"margin-bottom:3px"}

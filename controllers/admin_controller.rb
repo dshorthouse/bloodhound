@@ -35,7 +35,24 @@ module Sinatra
 
           end
 
-          app.get '/admin/candidates/:orcid' do
+          app.get '/admin/user/:orcid/support' do
+            admin_protected!
+
+            @page = (params[:page] || 1).to_i
+            @search_size = (params[:per] || 25).to_i
+            
+            @admin_user = User.find_by_orcid(params[:orcid])
+
+            occurrences = @admin_user.claims_received_claimants
+            @total = occurrences.length
+
+            @results = WillPaginate::Collection.create(@page, @search_size, occurrences.length) do |pager|
+              pager.replace occurrences[pager.offset, pager.per_page]
+            end
+            haml :admin_support
+          end
+
+          app.get '/admin/user/:orcid/candidates' do
             admin_protected!
 
             if params[:orcid].is_orcid?

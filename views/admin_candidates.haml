@@ -2,10 +2,12 @@
   Bloodhound: #{@admin_user.fullname} Candidate Specimens
 
 -content_for :stylesheets do
+  %link{href: "/css/bootstrap-toggle.min.css", rel: "stylesheet", type: "text/css"}
   %link{href: "/css/typeahead.css", rel: "stylesheet", type: "text/css"}
 
 -content_for :scripts do
   %script{src: "/js/typeahead.bundle.min.js"}
+  %script{src:"/js/bootstrap-toggle.min.js"}
   %script{src: "/js/candidates.js"}
   :javascript
     $(function() {
@@ -13,9 +15,48 @@
     });
 
 -content_for :jumbotron do
-  %div{class: "jumbotron"}
-    %div{class:"container-fluid"}
-      %h2{class:"display-4 text-left"}#{@admin_user.fullname}'s Candidate Specimens
+  %div{class:"jumbotron jumbotron-fluid"}
+    %div{class: "container-fluid"}
+
+      %h2{class:"display-4 text-center"}= @admin_user.fullname
+
+      %div{class: "row justify-content-center text-center"}
+        %div{class: "col-xl-8"}
+          %div.row
+            - if !@admin_user.other_names.blank?
+              %dl{class: "col"}
+                %dt Also known as
+                %dd #{@admin_user.other_names.split("|").join("; ")}
+            - if !@admin_user.country.blank?
+              %dl{class: "col"}
+                %dt Country
+                %dd #{@admin_user.country}
+          %div.row
+            %div{class: "col orcid text-center"}
+              %a{href: "https://orcid.org/#{@admin_user.orcid}"}
+                %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+              %a{href: "https://orcid.org/#{@admin_user.orcid}"} http://orcid.org/#{@admin_user.orcid}
+
+              %div{class: "orcid-refresh text-center"}
+                %a{href: "/refresh-orcid.json?user_id=#{@admin_user.id}"}
+                  %img{src: "/images/orcid_refresh_24x24.png", alt:"Refresh ORCID iD Content"}
+                %a{href: "/refresh-orcid.json?user_id=#{@admin_user.id}"} Refresh ORCID Data
+
+            %div{class: "col text-center"}
+              %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", checked: is_user_public?, class:"btn-claim" }
+
+          %div{class:"alert row alert-success alert-dismissible fade show", role: "alert"}
+            ORCID Data was refreshed.
+            %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+              %span{"aria-hidden":"true"} &times;
+
+%ul{class: "nav nav-tabs"}
+  %li{class: "nav-item "}
+    %a{class: "nav-link", href: "/admin/user/#{@admin_user.orcid}"} Claimed Specimens
+  %li{class: "nav-item"}
+    %a{class: "nav-link active", href: "/admin/user/#{@admin_user.orcid}/candidates"} Unclaimed Specimens
+  %li{class: "nav-item"}
+    %a{class: "nav-link", href: "/admin/user/#{@admin_user.orcid}/support"} Help Received
 
 - if @results.empty?
   %div{class: "alert alert-warning", role:"alert"}
@@ -52,8 +93,6 @@
         %th{scope: "col"} Institution
         %th{scope: "col"} Catalog Number
         %th{scope: "col"} Type Status
-        %th{scope: "col"}
-          %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning remove-all", "data-occurrence-ids":"#{@results.map(&:id).join(",")}"} Hide
 
     %tbody
       - @results.each do |o|
@@ -78,8 +117,6 @@
           %td #{o.institutionCode}
           %td #{o.catalogNumber}
           %td #{o.typeStatus}
-          %td
-            %button{type:"button", class:"btn btn-sm btn-outline-warning remove", "data-occurrence-id":"#{o.id}"} Hide
 
     - if @total >= 25
       %tfoot{class: "thead-light"}
@@ -103,8 +140,6 @@
           %th{scope: "col"} Institution
           %th{scope: "col"} Catalog Number
           %th{scope: "col"} Type Status
-          %th{scope: "col"}
-            %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning remove-all", "data-occurrence-ids":"#{@results.map(&:id).join(",")}"} Hide
 
   - if @total >= 25
     %div{class: "btn-group", style:"margin-bottom:3px"}

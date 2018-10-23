@@ -1,5 +1,5 @@
 -content_for :title do
-  Bloodhound: #{@user[:fullname]}
+  Bloodhound: #{@admin_user.fullname}
 
 -content_for :stylesheets do
   %link{href: "/css/bootstrap-toggle.min.css", rel: "stylesheet", type: "text/css"}
@@ -20,7 +20,7 @@
       %h2{class:"display-4 text-center"}= @admin_user.fullname
 
       %div{class: "row justify-content-center text-center"}
-        %div{class: "col-xl-6"}
+        %div{class: "col-xl-8"}
           %div.row
             - if !@admin_user.other_names.blank?
               %dl{class: "col"}
@@ -30,32 +30,34 @@
               %dl{class: "col"}
                 %dt Country
                 %dd #{@admin_user.country}
+          %div.row
+            %div{class: "col orcid text-center"}
+              %a{href: "https://orcid.org/#{@admin_user.orcid}"}
+                %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+              %a{href: "https://orcid.org/#{@admin_user.orcid}"} http://orcid.org/#{@admin_user.orcid}
 
-      %div{class: "orcid text-center"}
-        %a{href: "https://orcid.org/#{@admin_user.orcid}"}
-          %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-        %a{href: "https://orcid.org/#{@admin_user.orcid}"} http://orcid.org/#{@admin_user.orcid}
+              %div{class: "orcid-refresh text-center"}
+                %a{href: "/refresh-orcid.json?user_id=#{@admin_user.id}"}
+                  %img{src: "/images/orcid_refresh_24x24.png", alt:"Refresh ORCID iD Content"}
+                %a{href: "/refresh-orcid.json?user_id=#{@admin_user.id}"} Refresh ORCID Data
 
-      %div{class: "orcid-refresh text-center"}
-        %a{href: "/admin/refresh-orcid.json?user_id=#{@admin_user.id}"}
-          %img{src: "/images/orcid_refresh_24x24.png", alt:"Refresh ORCID iD Content"}
-        %a{href: "/admin/refresh-orcid.json?user_id=#{@admin_user.id}"} Refresh ORCID Data
+            %div{class: "col text-center"}
+              %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", checked: is_user_public?, class:"btn-claim" }
 
-    %div{class:"alert alert-success alert-dismissible fade show", role: "alert"}
-      ORCID Data was refreshed.
-      %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
-        %span{"aria-hidden":"true"} &times;
+          %div{class:"alert row alert-success alert-dismissible fade show", role: "alert"}
+            ORCID Data was refreshed.
+            %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+              %span{"aria-hidden":"true"} &times;
 
-%p{class: "text-center"}
-  %a{ href:"/admin/candidates/#{@admin_user.orcid}", id: "candidates-button", role: "button", class: "btn btn-success" }
-    - if !@results.empty?
-      Claim More Specimens
-    - else
-      Claim Specimens
-  %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", checked: is_user_public? }
+%ul{class: "nav nav-tabs"}
+  %li{class: "nav-item "}
+    %a{class: "nav-link active", href: "/admin/user/#{@admin_user.orcid}"} Claimed Specimens
+  %li{class: "nav-item"}
+    %a{class: "nav-link", href: "/admin/user/#{@admin_user.orcid}/candidates"} Unclaimed Specimens
+  %li{class: "nav-item"}
+    %a{class: "nav-link", href: "/admin/user/#{@admin_user.orcid}/support"} Help Received
 
-
-- if authorized? && !@results.empty?
+- if !@results.empty?
 
   %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
     %div{class: "col-9"}
