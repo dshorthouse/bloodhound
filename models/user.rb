@@ -46,6 +46,16 @@ class User < ActiveRecord::Base
                             .merge(u.occurrence.attributes.symbolize_keys) }
   end
 
+  def claims_received_claimants
+    claims_received.map{ |u|
+                      { 
+                        user_occurrence_id: u.id,
+                        action: u.action,
+                        claimant: u.claimant,
+                      }.merge(u.occurrence.attributes.symbolize_keys)
+                    }
+  end
+
   def user_occurrence_downloadable
     visible_user_occurrences.map{|u| { action: u.action }
                             .merge(u.occurrence.attributes.symbolize_keys) }

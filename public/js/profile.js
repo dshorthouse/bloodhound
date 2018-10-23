@@ -94,6 +94,28 @@ var Profile = (function($, window) {
               });
           });
       });
+      $('button.hide').on('click', function() {
+          var id = $(this).attr("data-id"),
+              row = $(this).parents("tr");
+          $.ajax({
+              method: "PUT",
+              url: self.path + "/user-occurrence/" + id + ".json",
+              dataType: "json",
+              data: JSON.stringify({
+                user_id: self.user_id,
+                created_by: self.user_id,
+                visible: false,
+                action: null
+              })
+          }).done(function(data) {
+              row.fadeOut(250, function() {
+                  $(this).remove();
+                  if ($('button.hide').length === 0) {
+                    location.reload();
+                  }
+              });
+          });
+      });
     },
     activate_orcid_refresh: function(){
       var self = this;

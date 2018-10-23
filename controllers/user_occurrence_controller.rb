@@ -63,7 +63,8 @@ module Sinatra
             req = JSON.parse(request.body.read).symbolize_keys
             uo = UserOccurrence.find_by(id: params[:id], user_id: @user[:id])
             uo.action = req[:action]
-            uo.visible = true
+            uo.created_by = @user[:id]
+            uo.visible = req[:visible] rescue true
             uo.save
             { message: "ok" }.to_json
           end
