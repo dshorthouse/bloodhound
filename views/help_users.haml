@@ -1,0 +1,27 @@
+-content_for :title do
+  Bloodhound: Help Users
+
+-content_for :stylesheets do
+  %link{href: "/css/typeahead.css", rel: "stylesheet", type: "text/css"}
+
+-content_for :scripts do
+  %script{src: "/js/typeahead.bundle.min.js"}
+  %script{src: "/js/help-user.js"}
+  :javascript
+    $(function() {
+      HelpUser.init();
+    });
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid"}
+    %div{class: "container-fluid"}
+
+      %h2{class:"display-4 text-center"} Help Others Claim Their Specimens
+
+      %div{class: "row justify-content-center text-center"}
+        %div{class: "col-sm-12 col-m-8 col-l-6 col-xl-8"}
+          %div{class: "row justify-content-center"}
+            %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline helpers"}
+              %div{class: "form-group"}
+                %label{for: "typeahead", class:"font-weight-bold", style:"margin-right:1rem"}= "Search User"
+                %input{class: "typeahead", id: "typeahead", type: :text, name: "q", placeholder: "Mary Smith", value: "#{params[:q]}", size:"30"}

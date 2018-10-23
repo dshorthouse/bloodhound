@@ -1,0 +1,135 @@
+-content_for :title do
+  Bloodhound: Helping #{@help_user.fullname}
+
+-content_for :stylesheets do
+  %link{href: "/css/typeahead.css", rel: "stylesheet", type: "text/css"}
+
+-content_for :scripts do
+  %script{src: "/js/typeahead.bundle.min.js"}
+  %script{src: "/js/help-user.js"}
+  :javascript
+    $(function() {
+      HelpUser.init(#{@help_user.id});
+    });
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid"}
+    %div{class: "container-fluid"}
+
+      %h2{class:"display-4 text-center"} #{@help_user.fullname}
+
+      %div{class: "row justify-content-center text-center"}
+        %div{class: "col-sm-12 col-m-8 col-l-6 col-xl-8"}
+          %div.row
+            - if !@help_user.other_names.blank?
+              %dl{class: "col"}
+                %dt Also known as
+                %dd #{@help_user.other_names.split("|").join("; ")}
+            - if !@help_user.country.blank?
+              %dl{class: "col"}
+                %dt Country
+                %dd #{@help_user.country}
+          %div.row
+            %div{class: "col orcid text-center"}
+              %a{href: "https://orcid.org/#{@help_user.orcid}"}
+                %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+              %a{href: "https://orcid.org/#{@help_user.orcid}"} http://orcid.org/#{@help_user.orcid}
+
+          %div{class: "row justify-content-center"}
+            %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline helpers"}
+              %div{class: "form-group"}
+                %label{for: "typeahead", class:"font-weight-bold", style:"margin-right:1rem"}= "Search Another User"
+                %input{class: "typeahead", id: "typeahead", type: :text, name: "q", placeholder: "Mary Smith", value: "#{params[:q]}", size:"30"}
+
+%div{class: "alert alert-warning", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  - if @results.empty?
+    Did not sniff any specimens indexed by the 
+    %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
+    (GBIF).
+  - else
+    Help #{@help_user.fullname} claim up to #{number_with_delimiter(@total, delimeter: ",")} specimens on their behalf. Choose
+    %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
+    collected, 
+    %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+    identified, or Both.
+
+- if !@results.empty?
+  %table{class:"table table-hover table-sm"}
+    %thead{class: "thead-light"}
+      %tr
+        %th{scope: "col"}
+          %div.bulk-label Bulk Assignment
+          %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
+            %label{class:"btn btn-choice btn-dark"}
+              %input{type:"radio", name:"selection-all", class:"specimen-selector", "data-action": "recorded", autocomplete:"off"}
+                %img{src:"/images/net.png", alt:"Collected All", title:"Collected All", width:18}
+            %label{class:"btn  btn-choice btn-dark"}
+              %input{type:"radio", name:"selection-all",  class:"specimen-selector", "data-action": "identified", autocomplete:"off"}
+                %img{src:"/images/microscope.png", alt:"Identified All", title: "Identified All",width:18}
+            %label{class:"btn  btn-choice btn-dark"}
+              %input{type:"radio", name:"selection-all",  class:"specimen-selector", "data-action": "recorded,identified", autocomplete:"off"} Both
+        %th{scope: "col"} Scientific Name
+        %th{scope: "col"} Collected By
+        %th{scope: "col"} Identified By
+        %th{scope: "col"} Date Collected
+        %th{scope: "col"} Date Identified
+        %th{scope: "col"} Institution
+        %th{scope: "col"} Catalog Number
+        %th{scope: "col"} Type Status
+
+    %tbody
+      - @results.each do |o|
+        %tr
+          %td
+            %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
+              %label{class:"btn btn-choice btn-light"}
+                %input{type:"radio", name:"selection-#{o.id}",  class:"specimen-selector", "data-occurrence-id":"#{o.id}", "data-action": "recorded", autocomplete:"off"}
+                  %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+              %label{class:"btn  btn-choice btn-light"}
+                %input{type:"radio", name:"selection-#{o.id}",  class:"specimen-selector", "data-occurrence-id":"#{o.id}", "data-action": "identified", autocomplete:"off"}
+                  %img{src:"/images/microscope-unselected.png", alt:"Identified", title: "Identified",width:18}
+              %label{class:"btn  btn-choice btn-light"}
+                %input{type:"radio", name:"selection-#{o.id}",  class:"specimen-selector", "data-occurrence-id":"#{o.id}", "data-action": "recorded,identified", autocomplete:"off"} Both
+          %td
+            - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
+            %a{href: "https://www.gbif.org/occurrence/#{o.id}", target: "_blank" } #{scientific_name}
+          %td #{o.recordedBy}
+          %td #{o.identifiedBy}
+          %td #{o.eventDate}
+          %td #{o.dateIdentified}
+          %td #{o.institutionCode}
+          %td #{o.catalogNumber}
+          %td #{o.typeStatus}
+
+    - if @total >= 25
+      %tfoot{class: "thead-light"}
+        %tr
+          %th{scope: "col"}
+            %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
+              %label{class:"btn btn-choice btn-dark"}
+                %input{type:"radio", name:"selection-all", class:"specimen-selector", "data-action": "recorded", autocomplete:"off"}
+                  %img{src:"/images/net.png", alt:"Collected All", title:"Collected All", width:18}
+              %label{class:"btn  btn-choice btn-dark"}
+                %input{type:"radio", name:"selection-all",  class:"specimen-selector", "data-action": "identified", autocomplete:"off"}
+                  %img{src:"/images/microscope.png", alt:"Identified All", title: "Identified All",width:18}
+              %label{class:"btn  btn-choice btn-dark"}
+                %input{type:"radio", name:"selection-all",  class:"specimen-selector", "data-action": "recorded,identified", autocomplete:"off"} Both
+            %div.bulk-label Bulk Assignment
+          %th{scope: "col"} Scientific Name
+          %th{scope: "col"} Collected By
+          %th{scope: "col"} Identified By
+          %th{scope: "col"} Date Collected
+          %th{scope: "col"} Date Identified
+          %th{scope: "col"} Institution
+          %th{scope: "col"} Catalog Number
+          %th{scope: "col"} Type Status
+
+  - if @total >= 25
+    %div{class: "btn-group", style:"margin-bottom:3px"}
+      %button{class:"btn btn-light btn-sm dropdown-toggle", type:"button", "data-toggle":"dropdown", "aria-haspopup":"true", "aria-expanded":"false"} Per page
+      %div{class:"dropdown-menu", "aria-labelledby":"dropdownMenuButton"}
+        %a{href: "?page=#{@page}&per=25", class: "dropdown-item"} 25
+        %a{href: "?page=#{@page}&per=100", class: "dropdown-item"} 100
+        %a{href: "?page=#{@page}&per=250", class: "dropdown-item"} 250
+                
+  = will_paginate @results, { class: "pagination" }

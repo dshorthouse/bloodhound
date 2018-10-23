@@ -26,6 +26,12 @@ module Sinatra
             format_agents.to_json
           end
 
+          app.get '/user.json' do
+            content_type "application/json"
+            search_user
+            format_users.to_json
+          end
+
           app.get '/occurrence/:id.json' do
             content_type "application/json"
             occurrence = Occurrence.find(params[:id])

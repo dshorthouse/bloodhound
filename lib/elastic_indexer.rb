@@ -9,23 +9,19 @@ module Bloodhound
       @processes = 8
     end
 
-    def delete
-      if @client.indices.exists index: @settings.elastic_index
-        @client.indices.delete index: @settings.elastic_index
+    def delete_agent_index
+      if @client.indices.exists index: @settings.elastic_agent_index
+        @client.indices.delete index: @settings.elastic_agent_index
       end
     end
 
-    def delete_agents
-      puts "Deleting all agents..."
-      delete_docs_by_type({type: "agent"})
+    def delete_user_index
+      if @client.indices.exists index: @settings.elastic_user_index
+        @client.indices.delete index: @settings.elastic_user_index
+      end
     end
 
-    def delete_docs_by_type(hsh = {})
-      client = Elasticsearch::Client.new url: @settings.elastic_server
-      client.perform_request 'POST', @settings.elastic_index + "/#{hsh[:type]}/_delete_by_query", {}, { query: { match_all: {} } }
-    end
-
-    def create
+    def create_agent_index
       config = {
         settings: {
           analysis: {
@@ -71,10 +67,59 @@ module Bloodhound
           }
         }
       }
-      @client.indices.create index: @settings.elastic_index, body: config
+      @client.indices.create index: @settings.elastic_agent_index, body: config
     end
 
-    #TODO: convert to sidekiq queue
+    def create_user_index
+      config = {
+        settings: {
+          analysis: {
+            filter: {
+              autocomplete: {
+                type: "edgeNGram",
+                side: "front",
+                min_gram: 1,
+                max_gram: 50
+              },
+            },
+            analyzer: {
+              family_index: {
+                type: "custom",
+                tokenizer: "keyword",
+                filter: ["lowercase", "asciifolding"]
+              },
+              family_search: {
+                type: "custom",
+                tokenizer: "keyword",
+                filter: ["lowercase", "asciifolding"]
+              },
+              given_index: {
+                type: "custom",
+                tokenizer: "keyword",
+                filter: ["lowercase", "asciifolding", :autocomplete]
+              },
+              given_search: {
+                type: "custom",
+                tokenizer: "keyword",
+                filter: ["lowercase", "asciifolding", :autocomplete]
+              }
+            }
+          }
+        },
+        mappings: {
+          user: {
+            properties: {
+              id: { type: 'integer', index: false },
+              orcid: { type: 'text', index: false },
+              family: { type: 'text', fielddata: true, search_analyzer: :family_search, analyzer: :family_index, omit_norms: true },
+              given: { type: 'text', search_analyzer: :given_search, analyzer: :given_index, omit_norms: true }
+            }
+          }
+        }
+      }
+      @client.indices.create index: @settings.elastic_user_index, body: config
+    end
+
     def import_agents
       Parallel.map(Agent.find_in_batches, progress: "Search-Agents") do |batch|
         bulk_agent(batch)
@@ -91,20 +136,20 @@ module Bloodhound
           }
         }
       end
-      @client.bulk index: @settings.elastic_index, type: 'agent', refresh: false, body: agents
+      @client.bulk index: @settings.elastic_agent_index, type: 'agent', refresh: false, body: agents
     end
 
     def add_agent(a)
-      @client.index index: @settings.elastic_index, type: 'agent', id: a.id, body: agent_document(a)
+      @client.index index: @settings.elastic_agent_index, type: 'agent', id: a.id, body: agent_document(a)
     end
 
     def update_agent(a)
       doc = { doc: agent_document(a) }
-      @client.update index: @settings.elastic_index, type: 'agent', id: a.id, body: doc
+      @client.update index: @settings.elastic_agent_index, type: 'agent', id: a.id, body: doc
     end
 
     def delete_agent(a)
-      @client.delete index: @settings.elastic_index, type: 'agent', id: a.id
+      @client.delete index: @settings.elastic_agent_index, type: 'agent', id: a.id
     end
 
     def agent_document(a)
@@ -115,8 +160,54 @@ module Bloodhound
       }
     end
 
-    def refresh
-      @client.indices.refresh index: @settings.elastic_index
+    def refresh_agent_index
+      @client.indices.refresh index: @settings.elastic_agent_index
+    end
+
+    def import_users
+      users = User.where.not(family: [nil, ""]).find_in_batches
+      Parallel.map(users, progress: "Search-Users") do |batch|
+        bulk_user(batch)
+      end
+    end
+
+    def bulk_user(batch)
+      users = []
+      batch.each do |u|
+        users << {
+          index: {
+            _id: u.id,
+            data: user_document(u)
+          }
+        }
+      end
+      @client.bulk index: @settings.elastic_user_index, type: 'user', refresh: false, body: users
+    end
+
+    def add_user(u)
+      @client.index index: @settings.elastic_user_index, type: 'user', id: u.id, body: user_document(u)
+    end
+
+    def update_user(u)
+      doc = { doc: user_document(u) }
+      @client.update index: @settings.elastic_user_index, type: 'user', id: a.id, body: doc
+    end
+
+    def delete_user(a)
+      @client.delete index: @settings.elastic_user_index, type: 'user', id: a.id
+    end
+
+    def user_document(u)
+      {
+        id: u.id,
+        orcid: u.orcid,
+        family: u.family,
+        given: u.given
+      }
+    end
+
+    def refresh_user_index
+      @client.indices.refresh index: @settings.elastic_user_index
     end
 
   end

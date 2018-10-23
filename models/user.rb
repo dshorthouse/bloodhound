@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_many :claimed_occurrences, through: :claims, source: :occurrence
 
   before_update :set_update_time
+  after_create :add_search
 
   self.per_page = 25
 
@@ -189,6 +190,11 @@ class User < ActiveRecord::Base
 
   def set_update_time
     self.updated = Time.now
+  end
+
+  def add_search
+    es = Bloohound::ElasticIndexer.new
+    es.add_user(self)
   end
 
 end

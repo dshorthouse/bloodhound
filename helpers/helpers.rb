@@ -77,7 +77,7 @@ module Sinatra
         body = build_name_query(searched_term)
         from = (page -1) * search_size
 
-        response = client.search index: settings.elastic_index, type: "agent", from: from, size: search_size, body: body
+        response = client.search index: settings.elastic_agent_index, type: "agent", from: from, size: search_size, body: body
         results = response["hits"].deep_symbolize_keys
 
         @results = WillPaginate::Collection.create(page, search_size, results[:total]) do |pager|
@@ -99,7 +99,48 @@ module Sinatra
             }
           }
         }
-        response = client.search index: settings.elastic_index, type: "agent", body: body
+        response = client.search index: settings.elastic_agent_index, type: "agent", body: body
+        results = response["hits"].deep_symbolize_keys
+        results[:hits].map{|n| n[:_source].merge(score: n[:_score]) } rescue []
+      end
+
+      def search_user
+        @results = []
+        filters = []
+        searched_term = params[:q]
+        return if !searched_term.present?
+
+        page = (params[:page] || 1).to_i
+        search_size = (params[:per] || 20).to_i
+
+        client = Elasticsearch::Client.new
+        body = build_name_query(searched_term)
+        from = (page -1) * search_size
+
+        response = client.search index: settings.elastic_user_index, type: "user", from: from, size: search_size, body: body
+        results = response["hits"].deep_symbolize_keys
+
+        @results = WillPaginate::Collection.create(page, search_size, results[:total]) do |pager|
+          pager.replace results[:hits]
+        end
+      end
+
+      def search_users(family, given = nil)
+        client = Elasticsearch::Client.new
+        body = {
+          query: {
+            bool: {
+              must: [
+                match: { "family" => family }
+              ],
+              should: [
+                { match: { "given" => given } }
+              ]
+            }
+          }
+        }
+        byebug
+        response = client.search index: settings.elastic_user_index, type: "user", body: body
         results = response["hits"].deep_symbolize_keys
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) } rescue []
       end
@@ -192,6 +233,16 @@ module Sinatra
       def format_agents
         @results.map{ |n|
           { id: n[:_source][:id],
+            name: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", "),
+            fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(" ")
+          }
+        }
+      end
+
+      def format_users
+        @results.map{ |n|
+          { id: n[:_source][:id],
+            orcid: n[:_source][:orcid],
             name: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", "),
             fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(" ")
           }

@@ -10,8 +10,8 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage:populate_search.rb [options]"
 
-  opts.on("-i", "--rebuild-agents", "Rebuild the agent index") do |a|
-    options[:rebuild_agents] = true
+  opts.on("-i", "--rebuild", "Rebuild the index") do |a|
+    options[:rebuild] = true
   end
 
   opts.on("-r", "--refresh", "Refresh the index") do |a|
@@ -31,9 +31,14 @@ if options[:refresh]
   index.refresh
 end
 
-if options[:rebuild_agents]
-  index.delete
-  index.create
+if options[:rebuild]
+  index.delete_agent_index
+  index.create_agent_index
   index.import_agents
-  index.refresh
+  index.refresh_agent_index
+
+  index.delete_user_index
+  index.create_user_index
+  index.import_users
+  index.refresh_user_index
 end
