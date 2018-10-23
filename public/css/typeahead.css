@@ -107,6 +107,9 @@ label input {
   border-radius:0px !important;
   font-size:1rem !important;
 }
+.btn-claim{
+  margin:0.25rem;
+}
 .dropdown-menu{
   border-radius:0px !important;
   font-size:1rem !important;

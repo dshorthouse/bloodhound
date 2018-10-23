@@ -133,12 +133,20 @@ class User < ActiveRecord::Base
     "(user_occurrences.action LIKE '%recorded%' OR user_occurrences.action LIKE '%identified%')"
   end
 
-  def users_helped
-    claims_helped.map(&:user).uniq
+  def claims_given
+    claims.where(visible: true).where.not(user: self)
   end
 
-  def claims_helped
-    claims.where(visible: true).where.not(user: self)
+  def helped
+    claims_given.map(&:user).uniq
+  end
+
+  def claims_received
+    user_occurrences.where.not(created_by: self)
+  end
+
+  def helped_by
+    claims_received.map(&:user).uniq
   end
 
   def update_orcid_profile

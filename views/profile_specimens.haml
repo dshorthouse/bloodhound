@@ -1,0 +1,159 @@
+-content_for :title do
+  Bloodhound: Specimens
+
+-content_for :stylesheets do
+  %link{href: "/css/bootstrap-toggle.min.css", rel: "stylesheet", type: "text/css"}
+  %link{href: "/css/typeahead.css", rel: "stylesheet", type: "text/css"}
+
+-content_for :scripts do
+  %script{src:"/js/profile.js"}
+  %script{src:"/js/bootstrap-toggle.min.js"}
+  :javascript
+    $(function() {
+        Profile.init(#{@user[:id]});
+    });
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid"}
+    %div{class: "container-fluid"}
+
+      %h2{class:"display-4 text-center"}= @user[:fullname]
+
+      %div{class: "row justify-content-center text-center"}
+        %div{class: "col-xl-6"}
+          %div.row
+            - if !@user[:other_names].blank?
+              %dl{class: "col"}
+                %dt Also known as
+                %dd #{@user[:other_names].split("|").join("; ")}
+            - if !@user[:country].blank?
+              %dl{class: "col"}
+                %dt Country
+                %dd #{@user[:country]}
+          %div.row
+            %div{class: "col orcid text-center"}
+              %a{href: "https://orcid.org/#{@user[:orcid]}"}
+                %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+              %a{href: "https://orcid.org/#{@user[:orcid]}"} http://orcid.org/#{@user[:orcid]}
+
+              %div{class: "orcid-refresh text-center"}
+                %a{href: "/refresh-orcid.json?user_id=#{@user[:id]}"}
+                  %img{src: "/images/orcid_refresh_24x24.png", alt:"Refresh ORCID iD Content"}
+                %a{href: "/refresh-orcid.json?user_id=#{@user[:id]}"} Refresh ORCID Data
+
+            %div{class: "col text-center"}
+              %a{ href:"/candidates", id: "candidates-button", role: "button", class: "btn btn-success btn-claim" }
+                Claim Specimens
+              %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", checked: is_public?, class:"btn-claim" }
+
+          %div{class:"alert row alert-success alert-dismissible fade show", role: "alert"}
+            ORCID Data was refreshed.
+            %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+              %span{"aria-hidden":"true"} &times;
+
+%ul{class: "nav nav-tabs"}
+  %li{class: "nav-item"}
+    %a{class: "nav-link", href: "/profile"} Overview
+  %li{class: "nav-item"}
+    %a{class: "nav-link active", href: "/profile/specimens"} Specimens
+  %li{class: "nav-item"}
+    %a{class: "nav-link", href: "/profile/support"} Help Received
+
+- if !@results.empty?
+
+  %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    %div{class: "col-9"}
+      Choose 
+      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
+      collected, 
+      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+      identified, or Both.
+    %div{class: "col-3 text-right"}
+      %a{href: "/profile/download.csv"}
+        %img{src: "/images/csv-icon.png", width:24, alt: "CSV download"}
+      %a{href: "/profile/download.json"}
+        %img{src: "/images/json-icon.png", width:24, alt: "JSON download"}
+
+  %table{class:"table table-hover table-sm"}
+    %thead{class: "thead-light"}
+      %tr
+        %th{scope: "col"}
+          %div.bulk-label Bulk Reassignment
+          %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
+            %label{class:"btn btn-choice btn-dark"}
+              %input{type:"radio", class:"action-radio", name:"selection-all", "data-action": "recorded", autocomplete:"off"}
+                %img{src:"/images/net.png", alt:"Collected All", title:"Collected All", width:18}
+            %label{class:"btn  btn-choice btn-dark"}
+              %input{type:"radio", class:"action-radio", name:"selection-all", "data-action": "identified", autocomplete:"off"}
+                %img{src:"/images/microscope.png", alt:"Identified All", title: "Identified All",width:18}
+            %label{class:"btn  btn-choice btn-dark"}
+              %input{type:"radio", class:"action-radio", name:"selection-all", "data-action": "recorded,identified", autocomplete:"off"} Both
+        %th{scope: "col"} Scientific Name
+        %th{scope: "col"} Collected By
+        %th{scope: "col"} Identified By
+        %th{scope: "col"} Date Collected
+        %th{scope: "col"} Date Identified
+        %th{scope: "col"} Institution
+        %th{scope: "col"} Catalog Number
+        %th{scope: "col"} Type Status
+        %th{scope: "col"}
+
+    %tbody
+      - @results.each do |o|
+        %tr
+          %td
+            %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
+              %label{class:"btn btn-choice btn-light #{active_class(o[:action], "recorded")}"}
+                %input{type:"radio", class:"action-radio", name:"selection-#{o[:user_occurrence_id]}", "data-id":"#{o[:user_occurrence_id]}", "data-action": "recorded", autocomplete:"off"}
+                  %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+              %label{class:"btn  btn-choice btn-light #{active_class(o[:action], "identified")}"}
+                %input{type:"radio", class:"action-radio", name:"selection-#{o[:user_occurrence_id]}", "data-id":"#{o[:user_occurrence_id]}", "data-action": "identified", autocomplete:"off"}
+                  %img{src:"/images/microscope-unselected.png", alt:"Identified", title:"Identified", width:18}
+              %label{class:"btn  btn-choice btn-light #{active_class(o[:action], "recorded,identified")}"}
+                %input{type:"radio", class:"action-radio", name:"selection-#{o[:user_occurrence_id]}", "data-id":"#{o[:user_occurrence_id]}", "data-action": "recorded,identified", autocomplete:"off"} Both
+          %td
+            - scientific_name = o[:scientificName].nil? ? "not recorded" : o[:scientificName]
+            %a{href: "https://www.gbif.org/occurrence/#{o[:gbifID]}", target: "_blank" } #{scientific_name}
+          %td #{o[:recordedBy]}
+          %td #{o[:identifiedBy]}
+          %td #{o[:eventDate]}
+          %td #{o[:dateIdentified]}
+          %td #{o[:institutionCode]}
+          %td #{o[:catalogNumber]}
+          %td #{o[:typeStatus]}
+          %td
+            %button{type:"button", class:"btn btn-sm btn-danger remove", "data-id":"#{o[:user_occurrence_id]}"} Remove
+
+    - if @total >= 25
+      %tfoot{class: "thead-light"}
+        %tr
+          %th{scope: "col"}
+            %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
+              %label{class:"btn btn-choice btn-dark"}
+                %input{type:"radio", class:"action-radio", name:"selection-all", "data-action": "recorded", autocomplete:"off"}
+                  %img{src:"/images/net.png", alt:"Collected All", title:"Collected All", width:18}
+              %label{class:"btn  btn-choice btn-dark"}
+                %input{type:"radio", class:"action-radio", name:"selection-all", "data-action": "identified", autocomplete:"off"}
+                  %img{src:"/images/microscope.png", alt:"Identified All", title: "Identified All",width:18}
+              %label{class:"btn  btn-choice btn-dark"}
+                %input{type:"radio", class:"action-radio", name:"selection-all", "data-action": "recorded,identified", autocomplete:"off"} Both
+            %div.bulk-label Bulk Reassignment
+          %th{scope: "col"} Scientific Name
+          %th{scope: "col"} Collected By
+          %th{scope: "col"} Identified By
+          %th{scope: "col"} Date Collected
+          %th{scope: "col"} Date Identified
+          %th{scope: "col"} Institution
+          %th{scope: "col"} Catalog Number
+          %th{scope: "col"} Type Status
+          %th{scope: "col"}
+
+  - if @total >= 25
+    %div{class: "btn-group", style:"margin-bottom:3px"}
+      %button{class:"btn btn-light btn-sm dropdown-toggle", type:"button", "data-toggle":"dropdown", "aria-haspopup":"true", "aria-expanded":"false"} Per page
+      %div{class:"dropdown-menu", "aria-labelledby":"dropdownMenuButton"}
+        %a{href: "?page=#{@page}&per=25", class: "dropdown-item"} 25
+        %a{href: "?page=#{@page}&per=100", class: "dropdown-item"} 100
+        %a{href: "?page=#{@page}&per=250", class: "dropdown-item"} 250
+
+  = will_paginate @results, { class: "pagination" }

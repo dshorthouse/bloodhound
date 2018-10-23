@@ -36,6 +36,18 @@ module Sinatra
 
           app.get '/profile' do
             protected!
+            user = User.find(@user[:id])
+            @total = {
+              number_identified: user.identified_count,
+              number_recorded: user.recorded_count,
+              number_helped: user.helped.count,
+              number_claims_given: user.claims_given.count
+            }
+            haml :profile
+          end
+
+          app.get '/profile/specimens' do
+            protected!
 
             @page = (params[:page] || 1).to_i
             @search_size = (params[:per] || 25).to_i
@@ -46,7 +58,12 @@ module Sinatra
             @results = WillPaginate::Collection.create(@page, @search_size, occurrences.length) do |pager|
               pager.replace occurrences[pager.offset, pager.per_page]
             end
-            haml :profile
+            haml :profile_specimens
+          end
+
+          app.get '/profile/support' do
+            protected!
+            haml :profile_support
           end
 
           app.put '/profile.json' do
@@ -195,10 +212,10 @@ module Sinatra
               @viewed_user = User.find_by_orcid(params[:orcid])
               if @viewed_user && @viewed_user.is_public?
                 @total = {
-                  identified: @viewed_user.identified_count,
-                  recorded: @viewed_user.recorded_count,
-                  users_helped: @viewed_user.users_helped.count,
-                  claims_helped: @viewed_user.claims_helped.count
+                  number_identified: @viewed_user.identified_count,
+                  number_recorded: @viewed_user.recorded_count,
+                  number_helped: @viewed_user.helped.count,
+                  number_claims_given: @viewed_user.claims_given.count
                 }
                 @families_identified = @viewed_user.identified_families
                 @families_recorded = @viewed_user.recorded_families

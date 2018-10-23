@@ -20,6 +20,7 @@ module Sinatra
 
           ActiveSupport::Inflector.inflections do |inflect|
             inflect.irregular 'taxon', 'taxa'
+            inflect.irregular 'specimen', 'specimens'
           end
 
           username = app.settings.neo4j_username
