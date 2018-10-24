@@ -60,35 +60,61 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
 
 Notes to self because I never remember how to backup on my laptop and restore on the server:
 
-### Make Snapshot
+### Make Snapshots for Both Indices
 
-      curl -X PUT "localhost:9200/_snapshot/bloodhound_backup" -H 'Content-Type: application/json' -d'
+      curl -X PUT "localhost:9200/_snapshot/bloodhound_agents_backup" -H 'Content-Type: application/json' -d'
       {
           "type": "fs",
           "settings": {
-              "location": "/Users/dshorthouse/Documents/es_backup",
+              "location": "/Users/dshorthouse/Documents/es_backup/bloodhound_agents/",
               "compress": true
           }
       }
       '
 
-      curl -X PUT "localhost:9200/_snapshot/bloodhound_backup/all?wait_for_completion=true" -H 'Content-Type: application/json' -d '
+      curl -X PUT "localhost:9200/_snapshot/bloodhound_agents_backup/all?wait_for_completion=true" -H 'Content-Type: application/json' -d '
       {
-          "indices" : "bloodhound",
+          "indices" : "bloodhound_agents",
           "ignore_unavailable" : true,
           "include_global_state" : false
       }
       '
 
-### Restore Snapshot
-
-      $ curl -X POST "localhost:9200/bloodhound/_close"
-      $ curl -X POST "localhost:9200/_snapshot/bloodhound_backup/all/_restore" -H 'Content-Type: application/json' -d '
+      curl -X PUT "localhost:9200/_snapshot/bloodhound_users_backup" -H 'Content-Type: application/json' -d'
       {
-        "indices": "bloodhound"
+          "type": "fs",
+          "settings": {
+              "location": "/Users/dshorthouse/Documents/es_backup/bloodhound_users/",
+              "compress": true
+          }
       }
       '
-      $ curl -X POST "localhost:9200/bloodhound/_open"
+
+      curl -X PUT "localhost:9200/_snapshot/bloodhound_users_backup/all?wait_for_completion=true" -H 'Content-Type: application/json' -d '
+      {
+          "indices" : "bloodhound_users",
+          "ignore_unavailable" : true,
+          "include_global_state" : false
+      }
+      '
+
+### Restore Snapshots for Both Indices
+
+      $ curl -X POST "localhost:9200/bloodhound_agents/_close"
+      $ curl -X POST "localhost:9200/_snapshot/bloodhound_agents_backup/all/_restore" -H 'Content-Type: application/json' -d '
+      {
+        "indices": "bloodhound_agents"
+      }
+      '
+      $ curl -X POST "localhost:9200/bloodhound_agents/_open"
+
+      $ curl -X POST "localhost:9200/bloodhound_users/_close"
+      $ curl -X POST "localhost:9200/_snapshot/bloodhound_users_backup/all/_restore" -H 'Content-Type: application/json' -d '
+      {
+        "indices": "bloodhound_users"
+      }
+      '
+      $ curl -X POST "localhost:9200/bloodhound_users/_open"
 
 If Elasticsearch throws an error on the above, you may need to execute the following:
 
@@ -102,7 +128,16 @@ If Elasticsearch throws an error on the above, you may need to execute the follo
       }
       '
 
-      $ curl -X PUT "localhost:9200/bloodhound/_settings" -H 'Content-Type: application/json' -d '
+      $ curl -X PUT "localhost:9200/bloodhound_agents/_settings" -H 'Content-Type: application/json' -d '
+      {
+        "index": {
+          "blocks": {
+            "read_only_allow_delete": "false"
+          }
+        }
+      }
+      '
+      $ curl -X PUT "localhost:9200/bloodhound_users/_settings" -H 'Content-Type: application/json' -d '
       {
         "index": {
           "blocks": {

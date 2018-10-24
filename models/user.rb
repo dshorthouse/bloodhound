@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
 
   before_update :set_update_time
   after_create :add_search
+  after_destroy :remove_search
 
   self.per_page = 25
 
@@ -193,8 +194,15 @@ class User < ActiveRecord::Base
   end
 
   def add_search
-    es = Bloohound::ElasticIndexer.new
-    es.add_user(self)
+    if !self.family.blank?
+      es = Bloodhound::ElasticIndexer.new
+      es.add_user(self)
+    end
+  end
+
+  def remove_search
+    es = Bloodhound::ElasticIndexer.new
+    es.delete_user(self)
   end
 
 end

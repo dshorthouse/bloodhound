@@ -193,8 +193,8 @@ module Bloodhound
       @client.update index: @settings.elastic_user_index, type: 'user', id: a.id, body: doc
     end
 
-    def delete_user(a)
-      @client.delete index: @settings.elastic_user_index, type: 'user', id: a.id
+    def delete_user(u)
+      @client.delete index: @settings.elastic_user_index, type: 'user', id: u.id
     end
 
     def user_document(u)
