@@ -69,10 +69,9 @@
 %div{class: "container-fluid"}
   - if @results.empty?
     %div{class: "alert alert-warning row", role:"alert"}
-      %div{class: "col-8"}
-        Did not sniff any specimens indexed by the 
-        %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
-        (GBIF) that you may have collected or identified.
+      Did not sniff any specimens indexed by the 
+      %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
+      (GBIF) that you may have collected or identified.
   - else
     %div{class: "alert alert-#{alert_class} row candidates-alert", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
       %div{class: "col-12 col-sm-12 col-m-8 col-lg-8"}
