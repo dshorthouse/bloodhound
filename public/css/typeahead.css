@@ -130,3 +130,6 @@
 .helpers .twitter-typeahead{
   width:70%;
 }
+#profile-buttons input, #profile-buttons a{
+  margin:0.25rem 0;
+}

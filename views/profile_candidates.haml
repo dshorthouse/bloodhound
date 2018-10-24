@@ -42,8 +42,9 @@
                   %img{src: "/images/orcid_refresh_24x24.png", alt:"Refresh ORCID iD Content"}
                 %a{href: "/refresh-orcid.json?user_id=#{@user[:id]}"} Refresh ORCID Data
 
-            %div{class: "col text-center"}
+            %div{id: "profile-buttons", class: "col text-center"}
               %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", checked: is_public?, class:"btn-claim" }
+              %a{ href:"/help-users", role: "button", class:"btn btn-success" } Help Other Users
 
           %div{class:"alert row alert-success alert-dismissible fade show", role: "alert"}
             ORCID Data was refreshed.
