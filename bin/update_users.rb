@@ -7,8 +7,12 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: update_agents.rb [options]"
 
-  opts.on("-r", "--refresh", "Refresh ORCID data") do |a|
+  opts.on("-r", "--refresh", "Refresh ORCID data") do
     options[:refresh] = true
+  end
+
+  opts.on("-p", "--poll", "Poll ORCID for new users") do
+    options[:poll] = true
   end
 
   opts.on("-h", "--help", "Prints this help") do
@@ -22,4 +26,9 @@ if options[:refresh]
     u.update_orcid_profile
     puts "#{u.fullname_reverse}".green
   end
+end
+
+if options[:poll]
+  search = Bloodhound::OrcidSearch.new
+  search.populate_new_users
 end

@@ -121,7 +121,7 @@ module Bloodhound
     end
 
     def import_agents
-      Parallel.map(Agent.find_in_batches, progress: "Search-Agents") do |batch|
+      Agent.find_in_batches do |batch|
         bulk_agent(batch)
       end
     end
@@ -165,8 +165,7 @@ module Bloodhound
     end
 
     def import_users
-      users = User.where.not(family: [nil, ""]).find_in_batches
-      Parallel.map(users, progress: "Search-Users") do |batch|
+      User.where.not(family: [nil, ""]).find_in_batches do |batch|
         bulk_user(batch)
       end
     end
@@ -184,13 +183,21 @@ module Bloodhound
       @client.bulk index: @settings.elastic_user_index, type: 'user', refresh: false, body: users
     end
 
+    def get_user(u)
+      begin
+        @client.get index: @settings.elastic_user_index, type: 'user', id: u.id
+      rescue Elasticsearch::Transport::Transport::Errors::NotFound
+        nil
+      end
+    end
+
     def add_user(u)
       @client.index index: @settings.elastic_user_index, type: 'user', id: u.id, body: user_document(u)
     end
 
     def update_user(u)
       doc = { doc: user_document(u) }
-      @client.update index: @settings.elastic_user_index, type: 'user', id: a.id, body: doc
+      @client.update index: @settings.elastic_user_index, type: 'user', id: u.id, body: doc
     end
 
     def delete_user(u)

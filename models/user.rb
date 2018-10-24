@@ -5,7 +5,9 @@ class User < ActiveRecord::Base
   has_many :claimed_occurrences, through: :claims, source: :occurrence
 
   before_update :set_update_time
+
   after_create :add_search
+  after_update :update_search
   after_destroy :remove_search
 
   self.per_page = 25
@@ -197,6 +199,17 @@ class User < ActiveRecord::Base
     if !self.family.blank?
       es = Bloodhound::ElasticIndexer.new
       es.add_user(self)
+    end
+  end
+
+  def update_search
+    if !self.family.blank?
+      es = Bloodhound::ElasticIndexer.new
+      if !es.get_user(self)
+        es.add_user(self)
+      else
+        es.update_user(self)
+      end
     end
   end
 
