@@ -139,7 +139,6 @@ module Sinatra
             }
           }
         }
-        byebug
         response = client.search index: settings.elastic_user_index, type: "user", body: body
         results = response["hits"].deep_symbolize_keys
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) } rescue []
