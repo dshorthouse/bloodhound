@@ -65,7 +65,7 @@
 
   %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
     %div{class: "col-9"}
-      #{@admin_user.fullname} has claimed #{@total} specimens.
+      #{@admin_user.fullname} has claimed #{number_with_delimiter(@total)} specimens.
       Choose 
       %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
       collected, 
