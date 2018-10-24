@@ -27,4 +27,6 @@
                 %input{class: "typeahead", id: "typeahead", type: :text, name: "q", placeholder: "Mary Smith", value: "#{params[:q]}", size:"30"}
 
 %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-  Person you're looking for not here? Ask them to create an ORCID account, make their name publicly available, then ask them to login to Bloodhound.
+  Is the person you're looking for not here? Ask them to create an ORCID account and make their name publicly available. If they additionally assign one of the keywords 
+  %span{class: "font-italic"} #{Sinatra::Application.settings.orcid_keywords.join(", ")},
+  Bloodhound will find them.
