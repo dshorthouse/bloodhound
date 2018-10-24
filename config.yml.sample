@@ -13,6 +13,7 @@ development:
   orcid_site: 'https://orcid.org'
   orcid_authorize_url: 'https://orcid.org/oauth/authorize'
   orcid_token_url: 'https://pub.orcid.org/oauth/token'
+  orcid_keywords: ['taxonomy','taxonomist','entomology','zoology','botany']
   elastic_server: 'http://localhost:9200'
   elastic_agent_index: 'bloodhound_agents'
   elastic_user_index: 'bloodhound_users'
@@ -37,6 +38,7 @@ test:
   orcid_site: 'https://orcid.org'
   orcid_authorize_url: 'https://orcid.org/oauth/authorize'
   orcid_token_url: 'https://pub.orcid.org/oauth/token'
+  orcid_keywords: ['taxonomy','taxonomist','entomology','zoology','botany']
   elastic_server: 'http://localhost:9200'
   elastic_agent_index: 'bloodhound_agents'
   elastic_user_index: 'bloodhound_users'
@@ -61,6 +63,7 @@ production:
   orcid_site: 'https://orcid.org'
   orcid_authorize_url: 'https://orcid.org/oauth/authorize'
   orcid_token_url: 'https://pub.orcid.org/oauth/token'
+  orcid_keywords: ['taxonomy','taxonomist','entomology','zoology','botany']
   elastic_server: 'http://localhost:9200'
   elastic_agent_index: 'bloodhound_agents'
   elastic_user_index: 'bloodhound_users'
