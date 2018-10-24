@@ -25,3 +25,6 @@
               %div{class: "form-group"}
                 %label{for: "typeahead", class:"font-weight-bold", style:"margin-right:1rem"}= "Search User"
                 %input{class: "typeahead", id: "typeahead", type: :text, name: "q", placeholder: "Mary Smith", value: "#{params[:q]}", size:"30"}
+
+%div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  Person you're looking for not here? Ask them to create an ORCID account, make their name publicly available, then ask them to login to Bloodhound.
