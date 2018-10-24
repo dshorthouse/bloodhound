@@ -21,6 +21,7 @@ var Candidates = (function($, window) {
       this.typeahead();
       this.activate_switch();
       this.activate_radios();
+      this.activate_orcid_refresh();
     },
     bloodhound: function() {
       this.data_sources.agent = this.create_bloodhound('agent');
@@ -147,6 +148,21 @@ var Candidates = (function($, window) {
                   }
               });
           });
+      });
+    },
+    activate_orcid_refresh: function(){
+      var self = this;
+      $("div.orcid-refresh a").on("click", function() {
+        $.ajax({
+            method: "GET",
+            url: self.path + "/orcid-refresh.json?user_id=" + self.user_id
+        }).done(function(data) {
+          $(".alert").alert().show();
+          $(".alert").on('closed.bs.alert', function () {
+            location.reload();
+          });
+        });
+        return false;
       });
     }
   };

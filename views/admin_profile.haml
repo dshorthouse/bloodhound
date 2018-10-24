@@ -6,8 +6,8 @@
   %link{href: "/css/typeahead.css", rel: "stylesheet", type: "text/css"}
 
 -content_for :scripts do
-  %script{src:"/js/profile.js"}
   %script{src:"/js/bootstrap-toggle.min.js"}
+  %script{src:"/js/profile.js"}
   :javascript
     $(function() {
         Profile.init(#{@admin_user.id}, "/admin");
@@ -37,9 +37,9 @@
               %a{href: "https://orcid.org/#{@admin_user.orcid}"} http://orcid.org/#{@admin_user.orcid}
 
               %div{class: "orcid-refresh text-center"}
-                %a{href: "/refresh-orcid.json?user_id=#{@admin_user.id}"}
+                %a{href: "/orcid-refresh.json?user_id=#{@admin_user.id}"}
                   %img{src: "/images/orcid_refresh_24x24.png", alt:"Refresh ORCID iD Content"}
-                %a{href: "/refresh-orcid.json?user_id=#{@admin_user.id}"} Refresh ORCID Data
+                %a{href: "/orcid-refresh.json?user_id=#{@admin_user.id}"} Refresh ORCID Data
 
             %div{class: "col text-center"}
               %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", checked: is_user_public?, class:"btn-claim" }
