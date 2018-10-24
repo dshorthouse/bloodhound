@@ -90,7 +90,7 @@ var HelpUser = (function($, window) {
           }).done(function(data) {
             input.parents("tr").fadeOut(250, function() {
               $(this).remove();
-              if ($('input.specimen-selector').length === 6) {
+              if ($('input.specimen-selector').length <= 6) {
                 location.reload();
               }
             });
