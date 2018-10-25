@@ -31,13 +31,10 @@
                 %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
               %a{href: "https://orcid.org/#{@admin_user.orcid}"} http://orcid.org/#{@admin_user.orcid}
 
-              %div{class: "orcid-refresh text-center"}
-                %a{href: "/orcid-refresh.json?user_id=#{@admin_user.id}"}
-                  %img{src: "/images/orcid_refresh_24x24.png", alt:"Refresh ORCID iD Content"}
-                %a{href: "/orcid-refresh.json?user_id=#{@admin_user.id}"} Refresh ORCID Data
-
-            %div{class: "col text-center"}
+          %div.row
+            %div{id: "profile-buttons", class: "col text-center"}
               %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: is_user_public?, class:"btn-claim" }
+              %a{ href:"/orcid-refresh.json?user_id=#{@admin_user.id}", role: "button", class:"btn btn-sm btn-outline-success orcid-refresh"} Refresh ORCID Data
 
           %div{class:"alert row alert-success alert-dismissible fade show", role: "alert"}
             ORCID Data was refreshed.
