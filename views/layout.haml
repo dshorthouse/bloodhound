@@ -22,10 +22,14 @@
       = yield_content :title
     %link{href: '/css/bootstrap.min.css', rel: 'stylesheet', type: 'text/css', crossorigin: 'anonymous' }
     %link{href: '/css/jumbotron.css', rel: 'stylesheet', type: 'text/css' }
+    %link{href: "/css/bootstrap-toggle.min.css", rel: "stylesheet", type: "text/css"}
+    %link{href: "/css/typeahead.css", rel: "stylesheet", type: "text/css"}
     = yield_content :stylesheets
     %script{src:"/js/jquery-3.3.1.min.js"}
     %script{src:"/js/popper.min.js", crossorigin:"anonymous"}
     %script{src: '/js/bootstrap.min.js', crossorigin: 'anonymous' }
+    %script{src:"/js/bootstrap-toggle.min.js"}
+    %script{src: "/js/typeahead.bundle.min.js"}
     = yield_content :scripts
   %body
     %nav{class:"navbar navbar-expand-md navbar-dark bg-dark"}

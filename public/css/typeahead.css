@@ -133,3 +133,9 @@
 #profile-buttons input, #profile-buttons a{
   margin:0.25rem 0;
 }
+.orcid{
+  margin:0.5rem 0rem;
+}
+dl.col{
+  margin-bottom:0;
+}

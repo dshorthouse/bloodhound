@@ -6,7 +6,7 @@
     %div{class: "container-fluid"}
       %h1{class: "display-3"} Bloodhound
       %p.lead Claim the natural history specimens you collected or identified
-      %p
+      %p{id: "profile-buttons"}
         - if !authorized?
           %a{ href:"/auth/orcid", id: "connect-orcid-button", role: "button", class: "btn btn-outline-success" }
             %img{ alt: "ORCID logo", height:24, width:24, id:"orcid-id-logo", src:"/images/orcid_24x24.png"}

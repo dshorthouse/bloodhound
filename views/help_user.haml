@@ -1,15 +1,11 @@
 -content_for :title do
   Bloodhound: Helping #{@help_user.fullname}
 
--content_for :stylesheets do
-  %link{href: "/css/typeahead.css", rel: "stylesheet", type: "text/css"}
-
 -content_for :scripts do
-  %script{src: "/js/typeahead.bundle.min.js"}
-  %script{src: "/js/help-user.js"}
+  %script{src: "/js/application.js"}
   :javascript
     $(function() {
-      HelpUser.init(#{@help_user.id});
+      Application.init(#{@help_user.id});
     });
 
 -content_for :jumbotron do
@@ -39,7 +35,7 @@
             %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline helpers"}
               %div{class: "form-group"}
                 %label{for: "typeahead", class:"font-weight-bold", style:"margin-right:1rem"}= "Search Another User"
-                %input{class: "typeahead", id: "typeahead", type: :text, name: "q", placeholder: "Mary Smith", value: "#{params[:q]}", size:"30"}
+                %input{class: "typeahead", id: "typeahead-user", type: :text, name: "q", placeholder: "#{@help_user.fullname_reverse}", value: "#{params[:q]}", size:"30"}
 
 %div{class: "alert alert-warning", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
   - if @results.empty?
