@@ -37,7 +37,7 @@
                 %a{href: "/orcid-refresh.json?user_id=#{@admin_user.id}"} Refresh ORCID Data
 
             %div{class: "col text-center"}
-              %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", checked: is_user_public?, class:"btn-claim" }
+              %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: is_user_public?, class:"btn-claim" }
 
           %div{class:"alert row alert-success alert-dismissible fade show", role: "alert"}
             ORCID Data was refreshed.
