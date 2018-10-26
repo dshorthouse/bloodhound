@@ -192,7 +192,7 @@ module Sinatra
       def roster
         @results = User.joins(:user_occurrences)
                        .where(is_public: true)
-                       .where("user_occurrences.visible": true)
+                       .where(user_occurrences: { visible: true })
                        .order(:family)
                        .distinct
                        .paginate :page => params[:page]

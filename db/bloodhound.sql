@@ -54,8 +54,7 @@ CREATE TABLE `occurrences` (
   `catalogNumber` text COLLATE utf8mb4_bin,
   `recordedBy` text COLLATE utf8mb4_bin,
   `scientificName` text COLLATE utf8mb4_bin,
-  `typeStatus` text COLLATE utf8mb4_bin,
-  `lastChecked` timestamp NULL DEFAULT NULL
+  `typeStatus` text COLLATE utf8mb4_bin
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------

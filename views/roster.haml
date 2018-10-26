@@ -22,7 +22,7 @@
         %td 
           %a{href: "/#{u.orcid}"} #{u.fullname_reverse}
         %td #{u.country}
-        %td #{u.visible_user_occurrences.pluck(:occurrence_id).uniq.count}
+        %td #{number_with_delimiter(u.all_occurrences_count)}
         %td #{u.top_family_recorded}
         %td #{u.top_family_identified}
         %td
