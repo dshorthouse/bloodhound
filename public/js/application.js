@@ -46,6 +46,7 @@ var Application = (function($, window) {
       });
     },
     typeahead: function(){
+      var self = this;
       $('#typeahead-agent').typeahead({
           minLength: 3,
           highlight: true
@@ -69,7 +70,11 @@ var Application = (function($, window) {
           display : 'name'
         }
         ).on('typeahead:select', function(obj, datum) {
-          window.location.href = '/help-user/' + datum.orcid;
+          if (self.path === "/admin") {
+            window.location.href = '/admin/user/' + datum.orcid;
+          } else {
+            window.location.href = '/help-user/' + datum.orcid;
+          }
         });
 
     },

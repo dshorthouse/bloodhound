@@ -1,11 +1,23 @@
 -content_for :title do
   Bloodhound: All Users
 
+-content_for :scripts do
+  %script{src: "/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init("", "POST", "/admin");
+    });
+
 -content_for :jumbotron do
-  %div{class:"jumbotron jumbotron-fluid"}
+  %div{class:"jumbotron jumbotron-fluid alert-warning"}
     %div{class: "container-fluid"}
       %h2 All Users
 
+      %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline helpers"}
+        %div{class: "form-group"}
+          %label{for: "typeahead", class:"font-weight-bold", style:"margin-right:1rem"}= "Search User"
+          %input{class: "typeahead", id: "typeahead-user", type: :text, name: "q", placeholder: "Mary Smith", value: "#{params[:q]}", size:"30"}
+                
 %table{class:"table table-hover table-sm"}
   %thead{class: "thead-light"}
     %tr
