@@ -1,7 +1,6 @@
--content_for :title do
-  Bloodhound: #{@viewed_user.fullname}
+- content_for(:title, "#{@viewed_user.fullname} : Bloodhound")
 
--content_for :jumbotron do
+- content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid"}
     %div{class:"container-fluid"}
 
