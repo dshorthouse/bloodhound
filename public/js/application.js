@@ -109,7 +109,7 @@ var Application = (function($, window) {
                     visible: true
                   })
               }).done(function(data) {
-                if (self.method === "POST") {
+                if (self.method === "POST" || input.hasClass("restore-ignored")) {
                   $('.table tbody tr').fadeOut(250, function() {
                     $(this).remove();
                     location.reload();
@@ -135,7 +135,7 @@ var Application = (function($, window) {
                     visible: true
                   })
               }).done(function(data) {
-                if(self.method === "POST") {
+                if(self.method === "POST" || input.hasClass("restore-ignored")) {
                   input.parents("tr").fadeOut(250, function() {
                     $(this).remove();
                     if ($('input.action-radio').length <= 6) {

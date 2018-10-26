@@ -45,9 +45,23 @@ class User < ActiveRecord::Base
     user_occurrences.where(visible: true)
   end
 
-  def user_occurrence_occurrences
+  def visible_user_occurrence_occurrences
     visible_user_occurrences.map{|u| { user_occurrence_id: u.id, action: u.action }
                             .merge(u.occurrence.attributes.symbolize_keys) }
+  end
+
+  def hidden_occurrences
+    occurrences.joins(:user_occurrences)
+               .where(user_occurrences: { visible: false })
+  end
+
+  def hidden_user_occurrences
+    user_occurrences.where(visible: false)
+  end
+
+  def hidden_user_occurrence_occurrences
+    hidden_user_occurrences.map{|u| { user_occurrence_id: u.id, action: u.action }
+                           .merge(u.occurrence.attributes.symbolize_keys) }
   end
 
   def claims_received_claimants

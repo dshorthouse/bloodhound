@@ -51,7 +51,7 @@ module Sinatra
 
             @page = (params[:page] || 1).to_i
             @search_size = (params[:per] || 25).to_i
-            occurrences = User.find(@user[:id]).user_occurrence_occurrences
+            occurrences = User.find(@user[:id]).visible_user_occurrence_occurrences
 
             @total = occurrences.length
 
@@ -171,6 +171,21 @@ module Sinatra
             specimen_pager(occurrence_ids)
 
             haml :profile_candidates
+          end
+
+          app.get '/profile/ignored' do
+            protected!
+            @page = (params[:page] || 1).to_i
+            @search_size = (params[:per] || 25).to_i
+
+            occurrences = User.find(@user[:id]).hidden_user_occurrence_occurrences
+
+            @total = occurrences.length
+
+            @results = WillPaginate::Collection.create(@page, @search_size, occurrences.length) do |pager|
+              pager.replace occurrences[pager.offset, pager.per_page]
+            end
+            haml :profile_ignored
           end
 
           app.get '/logout' do

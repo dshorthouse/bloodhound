@@ -20,7 +20,7 @@ module Sinatra
               @page = (params[:page] || 1).to_i
               @search_size = (params[:per] || 25).to_i
               @admin_user = User.find_by_orcid(params[:orcid])
-              occurrences = @admin_user.user_occurrence_occurrences
+              occurrences = @admin_user.visible_user_occurrence_occurrences
 
               @total = occurrences.length
 
@@ -103,6 +103,23 @@ module Sinatra
               haml :oops
             end
 
+          end
+
+          app.get '/admin/user/:orcid/ignored' do
+            admin_protected!
+
+            @page = (params[:page] || 1).to_i
+            @search_size = (params[:per] || 25).to_i
+            
+            @admin_user = User.find_by_orcid(params[:orcid])
+
+            occurrences = @admin_user.hidden_user_occurrence_occurrences
+            @total = occurrences.length
+
+            @results = WillPaginate::Collection.create(@page, @search_size, occurrences.length) do |pager|
+              pager.replace occurrences[pager.offset, pager.per_page]
+            end
+            haml :admin_ignored
           end
 
           app.post '/admin/user-occurrence/bulk.json' do

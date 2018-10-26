@@ -9,7 +9,7 @@
     });
 
 -content_for :jumbotron do
-  %div{class:"jumbotron jumbotron-fluid"}
+  %div{class:"jumbotron jumbotron-fluid alert-warning"}
     %div{class: "container-fluid"}
 
       %h2{class:"display-4 text-center"}= @admin_user.fullname
@@ -47,10 +47,12 @@
   %li{class: "nav-item"}
     %a{class: "nav-link", href: "/admin/user/#{@admin_user.orcid}/candidates"} Unclaimed Specimens
   %li{class: "nav-item"}
+    %a{class: "nav-link", href: "/admin/user/#{@admin_user.orcid}/ignored"} Ignored Specimens
+  %li{class: "nav-item"}
     %a{class: "nav-link active", href: "/admin/user/#{@admin_user.orcid}/support"} Help Received
 
 - if @results.empty?
-  %div{class: "alert alert-warning row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
     Bloodhound users have not yet helped claim specimens.
 
 - if !@results.empty?
