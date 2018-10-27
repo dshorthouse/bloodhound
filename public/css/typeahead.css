@@ -23,7 +23,7 @@
 }
 
 .typeahead:focus {
-  border: 2px solid #0097cf;
+  border: 2px solid #D3633C;;
 }
 
 .tt-query {
@@ -62,12 +62,12 @@
 .tt-suggestion:hover {
   cursor: pointer;
   color: #fff;
-  background-color: #0097cf;
+  background-color: #D3633C;
 }
 
 .tt-suggestion.tt-cursor {
   color: #fff;
-  background-color: #0097cf;
+  background-color: #D3633C;
 }
 
 .tt-suggestion p {
