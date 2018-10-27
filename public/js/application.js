@@ -95,7 +95,8 @@ var Application = (function($, window) {
       var self = this;
 
       $('input.action-radio').change(function() {
-          var action = $(this).attr("data-action"),
+          var row = $(this).parents("tr"),
+              action = $(this).attr("data-action"),
               label = $(this).parent(),
               input = $(this);
 
@@ -112,7 +113,11 @@ var Application = (function($, window) {
                     occurrence_ids: occurrence_ids,
                     action: action,
                     visible: true
-                  })
+                  }),
+                  beforeSend: function(xhr) {
+                    $('.table label').addClass("disabled");
+                    $('.table button').addClass("disabled");
+                  }
               }).done(function(data) {
                 if (self.method === "POST" || input.hasClass("restore-ignored")) {
                   $('.table tbody tr').fadeOut(250, function() {
@@ -121,11 +126,12 @@ var Application = (function($, window) {
                   });
                 } else {
                   $('label').each(function() {
-                      $(this).removeClass("active");
+                      $(this).removeClass("active").removeClass("disabled");
                       if($('input:first-child', this).attr("data-action") === action) {
                           $(this).addClass("active");
                       }
                   });
+                  $('.table button').removeClass("disabled");
                 }
               });
           } else {
@@ -138,7 +144,11 @@ var Application = (function($, window) {
                     user_id: self.user_id,
                     action: action,
                     visible: true
-                  })
+                  }),
+                  beforeSend: function(xhr) {
+                    $('label', row).addClass("disabled");
+                    $('button', row).addClass("disabled");
+                  }
               }).done(function(data) {
                 if(self.method === "POST" || input.hasClass("restore-ignored")) {
                   input.parents("tr").fadeOut(250, function() {
@@ -148,10 +158,9 @@ var Application = (function($, window) {
                     }
                   });
                 } else {
-                  label.parent().find("label").each(function() {
-                      $(this).removeClass("active");
-                  });
+                  $('label', row).removeClass("active").removeClass("disabled");
                   label.addClass("active");
+                  $('button', row).removeClass("disabled");
                 }
               });
           }
@@ -162,7 +171,11 @@ var Application = (function($, window) {
           $.ajax({
               method: "DELETE",
               url: self.path + "/user-occurrence/" + occurrence_id + ".json",
-              data: JSON.stringify({ user_id: self.user_id })
+              data: JSON.stringify({ user_id: self.user_id }),
+              beforeSend: function(xhr) {
+                $('label', row).addClass("disabled");
+                $('button', row).addClass("disabled");
+              }
           }).done(function(data) {
               row.fadeOut(250, function() {
                   $(this).remove();
@@ -184,7 +197,11 @@ var Application = (function($, window) {
               user_id: self.user_id,
               occurrence_ids: occurrence_ids,
               visible: 0
-            })
+            }),
+            beforeSend: function(xhr) {
+              $('.table label').addClass("disabled");
+              $('.table button').addClass("disabled");
+            }
         }).done(function(data) {
             $('.table tbody tr').fadeOut(250, function() {
               $(this).remove();
@@ -199,7 +216,11 @@ var Application = (function($, window) {
               method: self.method,
               url: self.path + "/user-occurrence/" + occurrence_id + ".json",
               dataType: "json",
-              data: JSON.stringify({ user_id: self.user_id, visible: 0})
+              data: JSON.stringify({ user_id: self.user_id, visible: 0}),
+              beforeSend: function(xhr) {
+                $('label', row).addClass("disabled");
+                $('button', row).addClass("disabled");
+              }
           }).done(function(data) {
               row.fadeOut(250, function() {
                   $(this).remove();
