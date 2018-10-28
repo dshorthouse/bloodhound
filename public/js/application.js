@@ -1,9 +1,10 @@
 /*global jQuery, window, document, self, encodeURIComponent, Bloodhound */
-Array.prototype.unique = function() {
+Array.prototype.unique = function () {
+  "use strict";
   return this.filter(function (value, index, self) { 
     return self.indexOf(value) === index;
   });
-}
+};
 
 var Application = (function($, window) {
 
@@ -26,9 +27,9 @@ var Application = (function($, window) {
       this.activate_orcid_refresh();
     },
     bloodhound: function() {
-      this.data_sources.agent = this.create_bloodhound('agent');
+      this.data_sources.agent = this.create_bloodhound("agent");
       this.data_sources.agent.initialize();
-      this.data_sources.user = this.create_bloodhound('user');
+      this.data_sources.user = this.create_bloodhound("user");
       this.data_sources.user.initialize();
     },
     create_bloodhound: function(type) {
@@ -37,71 +38,69 @@ var Application = (function($, window) {
         queryTokenizer : Bloodhound.tokenizers.whitespace,
         sufficient : 10,
         remote : {
-          url : '/'+type+'.json?q=%QUERY',
-          wildcard : '%QUERY',
+          url : "/"+type+".json?q=%QUERY",
+          wildcard : "%QUERY",
           transform : function(r) {
-            return $.map(r, function(v) { v['type'] = type; return v; });
+            return $.map(r, function (v) { v.type = type; return v; });
           }
         }
       });
     },
     typeahead: function(){
       var self = this;
-      $('#typeahead-agent').typeahead({
+      $("#typeahead-agent").typeahead({
           minLength: 3,
           highlight: true
         },
         {
-          name: 'agent',
+          name: "agent",
           source : this.data_sources.agent.ttAdapter(),
-          display : 'name'
+          display : "name"
         }
-        ).on('typeahead:select', function(obj, datum) {
-          window.location.href = '/profile/candidates/agent/' + datum.id;
+        ).on("typeahead:select", function(obj, datum) {
+          window.location.href = "/profile/candidates/agent/" + datum.id;
         });
 
-      $('#typeahead-user').typeahead({
+      $("#typeahead-user").typeahead({
           minLength: 3,
           highlight: true
         },
         {
-          name: 'user',
+          name: "user",
           source : this.data_sources.user.ttAdapter(),
-          display : 'name'
+          display : "name"
         }
-        ).on('typeahead:select', function(obj, datum) {
+        ).on("typeahead:select", function(obj, datum) {
           if (self.path === "/admin") {
-            window.location.href = '/admin/user/' + datum.orcid;
+            window.location.href = "/admin/user/" + datum.orcid;
           } else {
-            window.location.href = '/help-user/' + datum.orcid;
+            window.location.href = "/help-user/" + datum.orcid;
           }
         });
 
     },
     activate_switch: function() {
       var self = this;
-      $('#toggle-public').change(function() {
+      $("#toggle-public").change(function() {
         $.ajax({
           method: "PUT",
           url: self.path + "/profile.json?user_id=" + self.user_id,
           dataType: "json",
-          data: JSON.stringify({ is_public: $(this).prop('checked') })
-        }).done(function(data) {
-          
+          data: JSON.stringify({ is_public: $(this).prop("checked") })
         });
       });
     },
     activate_radios: function(){
       var self = this;
 
-      $('input.action-radio').change(function() {
+      $("input.action-radio").change(function() {
           var row = $(this).parents("tr"),
               action = $(this).attr("data-action"),
               label = $(this).parent(),
               input = $(this);
 
           if($(this).attr("name") === "selection-all") {
-              var occurrence_ids = $.map($('[data-occurrence-id]'), function(e) {
+              var occurrence_ids = $.map($("[data-occurrence-id]"), function(e) {
                 return $(e).attr("data-occurrence-id");
               }).unique().toString();
               $.ajax({
@@ -115,23 +114,23 @@ var Application = (function($, window) {
                     visible: true
                   }),
                   beforeSend: function(xhr) {
-                    $('.table label').addClass("disabled");
-                    $('.table button').addClass("disabled");
+                    $(".table label").addClass("disabled");
+                    $(".table button").addClass("disabled");
                   }
               }).done(function(data) {
                 if (self.method === "POST" || input.hasClass("restore-ignored")) {
-                  $('.table tbody tr').fadeOut(250, function() {
+                  $(".table tbody tr").fadeOut(250, function() {
                     $(this).remove();
                     location.reload();
                   });
                 } else {
-                  $('label').each(function() {
+                  $("label").each(function() {
                       $(this).removeClass("active").removeClass("disabled");
-                      if($('input:first-child', this).attr("data-action") === action) {
+                      if($("input:first-child", this).attr("data-action") === action) {
                           $(this).addClass("active");
                       }
                   });
-                  $('.table button').removeClass("disabled");
+                  $(".table button").removeClass("disabled");
                 }
               });
           } else {
@@ -139,33 +138,33 @@ var Application = (function($, window) {
               $.ajax({
                   method: self.method,
                   url: self.path + "/user-occurrence/" + occurrence_id + ".json",
-                  dataType: 'json',
+                  dataType: "json",
                   data: JSON.stringify({
                     user_id: self.user_id,
                     action: action,
                     visible: true
                   }),
                   beforeSend: function(xhr) {
-                    $('label', row).addClass("disabled");
-                    $('button', row).addClass("disabled");
+                    $("label", row).addClass("disabled");
+                    $("button", row).addClass("disabled");
                   }
               }).done(function(data) {
                 if(self.method === "POST" || input.hasClass("restore-ignored")) {
                   input.parents("tr").fadeOut(250, function() {
                     $(this).remove();
-                    if ($('input.action-radio').length <= 6) {
+                    if ($("input.action-radio").length <= 6) {
                       location.reload();
                     }
                   });
                 } else {
-                  $('label', row).removeClass("active").removeClass("disabled");
+                  $("label", row).removeClass("active").removeClass("disabled");
                   label.addClass("active");
-                  $('button', row).removeClass("disabled");
+                  $("button", row).removeClass("disabled");
                 }
               });
           }
       });
-      $('button.remove').on('click', function() {
+      $("button.remove").on("click", function() {
           var occurrence_id = $(this).attr("data-occurrence-id"),
               row = $(this).parents("tr");
           $.ajax({
@@ -173,20 +172,20 @@ var Application = (function($, window) {
               url: self.path + "/user-occurrence/" + occurrence_id + ".json",
               data: JSON.stringify({ user_id: self.user_id }),
               beforeSend: function(xhr) {
-                $('label', row).addClass("disabled");
-                $('button', row).addClass("disabled");
+                $("label", row).addClass("disabled");
+                $("button", row).addClass("disabled");
               }
           }).done(function(data) {
               row.fadeOut(250, function() {
                   $(this).remove();
-                  if ($('button.remove').length === 0) {
+                  if ($("button.remove").length === 0) {
                     location.reload();
                   }
               });
           });
       });
-      $('button.hide-all').on('click', function() {
-        var occurrence_ids = $.map($('[data-occurrence-id]'), function(e) {
+      $("button.hide-all").on("click", function() {
+        var occurrence_ids = $.map($("[data-occurrence-id]"), function(e) {
           return $(e).attr("data-occurrence-id");
         }).unique().toString();
         $.ajax({
@@ -199,17 +198,17 @@ var Application = (function($, window) {
               visible: 0
             }),
             beforeSend: function(xhr) {
-              $('.table label').addClass("disabled");
-              $('.table button').addClass("disabled");
+              $(".table label").addClass("disabled");
+              $(".table button").addClass("disabled");
             }
         }).done(function(data) {
-            $('.table tbody tr').fadeOut(250, function() {
+            $(".table tbody tr").fadeOut(250, function() {
               $(this).remove();
               location.reload();
             });
         });
       });
-      $('button.hide').on('click', function() {
+      $("button.hide").on("click", function() {
           var occurrence_id = $(this).attr("data-occurrence-id"),
               row = $(this).parents("tr");
           $.ajax({
@@ -218,13 +217,13 @@ var Application = (function($, window) {
               dataType: "json",
               data: JSON.stringify({ user_id: self.user_id, visible: 0}),
               beforeSend: function(xhr) {
-                $('label', row).addClass("disabled");
-                $('button', row).addClass("disabled");
+                $("label", row).addClass("disabled");
+                $("button", row).addClass("disabled");
               }
           }).done(function(data) {
               row.fadeOut(250, function() {
                   $(this).remove();
-                  if ($('button.hide').length === 0) {
+                  if ($("button.hide").length === 0) {
                     location.reload();
                   }
               });
@@ -239,7 +238,7 @@ var Application = (function($, window) {
             url: self.path + "/orcid-refresh.json?user_id=" + self.user_id
         }).done(function(data) {
           $(".alert").alert().show();
-          $(".alert").on('closed.bs.alert', function () {
+          $(".alert").on("closed.bs.alert", function () {
             location.reload();
           });
         });
