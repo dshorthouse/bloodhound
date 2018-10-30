@@ -32,12 +32,14 @@ else
     puts "ERROR: either agent or user not found".red
     exit
   else
+    claims = user.claims.pluck(:occurrence_id)
+
     recordings = agent.occurrence_recorders.pluck(:occurrence_id)
     determinations = agent.occurrence_determiners.pluck(:occurrence_id)
 
-    uniq_recordings = recordings - determinations
-    uniq_determinations = determinations - recordings
-    both = recordings & determinations
+    uniq_recordings = (recordings - determinations) - claims
+    uniq_determinations = (determinations - recordings) - claims
+    both = (recordings & determinations) - claims
 
     puts "Claiming unique recordings...".yellow
     UserOccurrence.import uniq_recordings.map{|o| { user_id: user.id, occurrence_id: o, action: "recorded", created_by: user.id} }
