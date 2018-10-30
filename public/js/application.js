@@ -119,15 +119,16 @@ var Application = (function($, window) {
                   }
               }).done(function(data) {
                 if (self.method === "POST" || input.hasClass("restore-ignored")) {
-                  $(".table tbody tr").fadeOut(250, function() {
+                  $(".table tbody tr").fadeOut(250).promise().done(function() {
                     $(this).remove();
+                    $(".table tbody").append("<tr><td colspan=\"10\"><i class=\"fas fa-spinner fa-spin\" style=\"font-size:24px;color:#d1ecf1\"></i></td></tr>");
                     location.reload();
                   });
                 } else {
                   $("label").each(function() {
                       $(this).removeClass("active").removeClass("disabled");
                       if($("input:first-child", this).attr("data-action") === action) {
-                          $(this).addClass("active");
+                        $(this).addClass("active");
                       }
                   });
                   $(".table button").removeClass("disabled");
@@ -150,9 +151,10 @@ var Application = (function($, window) {
                   }
               }).done(function(data) {
                 if(self.method === "POST" || input.hasClass("restore-ignored")) {
-                  input.parents("tr").fadeOut(250, function() {
+                  input.parents("tr").fadeOut(250).promise().done(function() {
                     $(this).remove();
                     if ($("input.action-radio").length <= 6) {
+                      $(".table tbody").append("<tr><td colspan=\"10\"><i class=\"fas fa-spinner fa-spin\" style=\"font-size:24px;color:#d1ecf1\"></i></td></tr>");
                       location.reload();
                     }
                   });
@@ -165,29 +167,29 @@ var Application = (function($, window) {
           }
       });
       $("button.remove").on("click", function() {
-          var occurrence_id = $(this).attr("data-occurrence-id"),
-              row = $(this).parents("tr");
-          $.ajax({
-              method: "DELETE",
-              url: self.path + "/user-occurrence/" + occurrence_id + ".json",
-              data: JSON.stringify({ user_id: self.user_id }),
-              beforeSend: function(xhr) {
-                $("label", row).addClass("disabled");
-                $("button", row).addClass("disabled");
-              }
-          }).done(function(data) {
-              row.fadeOut(250, function() {
-                  $(this).remove();
-                  if ($("button.remove").length === 0) {
-                    location.reload();
-                  }
-              });
+        var occurrence_id = $(this).attr("data-occurrence-id"),
+            row = $(this).parents("tr");
+        $.ajax({
+            method: "DELETE",
+            url: self.path + "/user-occurrence/" + occurrence_id + ".json",
+            data: JSON.stringify({ user_id: self.user_id }),
+            beforeSend: function(xhr) {
+              $("label", row).addClass("disabled");
+              $("button", row).addClass("disabled");
+            }
+        }).done(function(data) {
+          row.fadeOut(250, function() {
+            row.remove();
+            if ($("button.remove").length === 0) {
+              location.reload();
+            }
           });
+        });
       });
       $("button.hide-all").on("click", function() {
         var occurrence_ids = $.map($("[data-occurrence-id]"), function(e) {
-          return $(e).attr("data-occurrence-id");
-        }).unique().toString();
+              return $(e).attr("data-occurrence-id");
+            }).unique().toString();
         $.ajax({
             method: self.method,
             url: self.path + "/user-occurrence/bulk.json",
@@ -202,10 +204,12 @@ var Application = (function($, window) {
               $(".table button").addClass("disabled");
             }
         }).done(function(data) {
-            $(".table tbody tr").fadeOut(250, function() {
-              $(this).remove();
-              location.reload();
-            });
+          $(".table tfoot").fadeOut(250);
+          $(".table tbody tr").fadeOut(250).promise().done(function() {
+            $(this).remove();
+            $(".table tbody").append("<tr><td colspan=\"10\"><i class=\"fas fa-spinner fa-spin\" style=\"font-size:24px;color:#d1ecf1\"></i></td></tr>");
+            location.reload();
+          });
         });
       });
       $("button.hide").on("click", function() {
@@ -221,12 +225,12 @@ var Application = (function($, window) {
                 $("button", row).addClass("disabled");
               }
           }).done(function(data) {
-              row.fadeOut(250, function() {
-                  $(this).remove();
-                  if ($("button.hide").length === 0) {
-                    location.reload();
-                  }
-              });
+            row.fadeOut(250, function() {
+              row.remove();
+              if ($("button.hide").length === 0) {
+                location.reload();
+              }
+            });
           });
       });
     },

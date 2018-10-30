@@ -54,6 +54,10 @@
   %li{class: "nav-item"}
     %a{class: "nav-link", href: "/profile/support"} Help Received
 
+- if @results.empty?
+  %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    You have not yet claimed any specimens.
+
 - if !@results.empty?
 
   %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
