@@ -170,7 +170,15 @@ class User < ActiveRecord::Base
   end
 
   def helped_count
-    claims_given.pluck(:user_id).uniq.count
+    helped_ids.count
+  end
+
+  def helped_ids
+    claims_given.pluck(:user_id).uniq
+  end
+
+  def helped_counts
+    claims_given.group(:user_id).count.sort_by{|a,b| b}.reverse.to_h
   end
 
   def helped
