@@ -169,6 +169,10 @@ class User < ActiveRecord::Base
     claims.where(visible: true).where.not(user: self)
   end
 
+  def helped_count
+    claims_given.pluck(:user_id).uniq.count
+  end
+
   def helped
     claims_given.map(&:user).uniq
   end

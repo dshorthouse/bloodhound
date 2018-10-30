@@ -40,7 +40,7 @@ module Sinatra
             @total = {
               number_identified: user.identified_count,
               number_recorded: user.recorded_count,
-              number_helped: user.helped.count,
+              number_helped: user.helped_count,
               number_claims_given: user.claims_given.count
             }
             haml :profile
@@ -301,7 +301,7 @@ module Sinatra
                 @total = {
                   number_identified: @viewed_user.identified_count,
                   number_recorded: @viewed_user.recorded_count,
-                  number_helped: @viewed_user.helped.count,
+                  number_helped: @viewed_user.helped_count,
                   number_claims_given: @viewed_user.claims_given.count
                 }
                 @families_identified = @viewed_user.identified_families
