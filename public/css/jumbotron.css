@@ -65,3 +65,8 @@ h3 {
   text-align:center;
   font-size:0.75em;
 }
+.dropdown-item.active, .dropdown-item:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: #D3633C;
+}
