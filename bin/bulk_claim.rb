@@ -5,10 +5,14 @@ require 'optparse'
 
 options = {}
 OptionParser.new do |opts|
-  opts.banner = "Usage: bulk_claim.rb [options]"
+  opts.banner = "Usage: bulk_claim.rb [options]. Assumes collector and determiner are spelled exactly the same."
 
   opts.on("-a", "--agent [agent_id]", Integer, "Local agent identifier") do |agent_id|
     options[:agent_id] = agent_id
+  end
+
+  opts.on("-w", "--where [where]", String, "WHERE clause as a valid JSON string on occurrence records, eg '{ \"institutionCode\" : \"CAN\" }'") do |where|
+    options[:where] = where
   end
 
   opts.on("-o", "--orcid [orcid]", String, "ORCID identifier for user") do |orcid|
@@ -34,8 +38,14 @@ else
   else
     claimed = user.user_occurrences.pluck(:occurrence_id)
 
-    recordings = agent.occurrence_recorders.pluck(:occurrence_id)
-    determinations = agent.occurrence_determiners.pluck(:occurrence_id)
+    if !options[:where]
+      recordings = agent.occurrence_recorders.pluck(:occurrence_id)
+      determinations = agent.occurrence_determiners.pluck(:occurrence_id)
+    else
+      where_hash = JSON.parse options[:where].gsub('=>', ':')
+      recordings = agent.recordings.where(where_hash).pluck(:gbifID)
+      determinations = agent.determinations.where(where_hash).pluck(:gbifID)
+    end
 
     uniq_recordings = (recordings - determinations) - claimed
     uniq_determinations = (determinations - recordings) - claimed
