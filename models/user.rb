@@ -46,8 +46,10 @@ class User < ActiveRecord::Base
   end
 
   def visible_user_occurrence_occurrences
-    visible_user_occurrences.map{|u| { user_occurrence_id: u.id, action: u.action }
-                            .merge(u.occurrence.attributes.symbolize_keys) }
+    Occurrence.select('occurrences.*', 'user_occurrences.id as user_occurrence_id', 'user_occurrences.action')
+              .joins(:user_occurrences)
+              .where(user_occurrences: { visible: true })
+              .where(user_occurrences: { user_id: self })
   end
 
   def hidden_occurrences

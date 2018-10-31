@@ -20,17 +20,14 @@ module Sinatra
               @admin_user = User.find_by_orcid(params[:orcid])
               @page = (params[:page] || 1).to_i
               search_size = (params[:per] || 25).to_i
-              @total = UserOccurrence.where(user_id: @admin_user.id, visible: true).count
+              @total = @admin_user.visible_user_occurrences.count
 
               if @page*search_size > @total
                 @page = @total/search_size.to_i + 1
               end
 
-              @results = Occurrence.select('occurrences.*', 'user_occurrences.id as user_occurrence_id', 'user_occurrences.action')
-                                   .joins(:user_occurrences)
-                                   .where(user_occurrences: { visible: true })
-                                   .where(user_occurrences: { user_id: @admin_user.id })
-                                   .paginate(page: @page, per_page: search_size)
+              @results = @admin_user.visible_user_occurrence_occurrences
+                                    .paginate(page: @page, per_page: search_size)
               haml :admin_profile
             else
               status 404
