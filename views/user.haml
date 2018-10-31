@@ -27,6 +27,8 @@
   %li{class: "nav-item"}
     %a{class: "nav-link active", href: "/#{@viewed_user[:orcid]}"} Overview
   %li{class: "nav-item"}
+    %a{class: "nav-link", href: "/#{@viewed_user[:orcid]}/specialties"} Specialties
+  %li{class: "nav-item"}
     %a{class: "nav-link", href: "/#{@viewed_user[:orcid]}/specimens"} Specimens
 
 %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
@@ -34,37 +36,3 @@
     Collected #{number_with_delimiter(@total[:number_recorded])} and identified #{number_with_delimiter(@total[:number_identified])} specimens
     - if @total[:number_helped] > 0
       and helped #{number_with_delimiter(@total[:number_helped])} #{'user'.pluralize(@total[:number_helped])} claim a total of #{number_with_delimiter(@total[:number_claims_given])} #{'specimen'.pluralize(@total[:number_claims_given])}
-
-- if !@families_identified.empty? || !@families_recorded.empty?
-
-  %div{class: "container-fluid"}
-    %div{class: "row"}
-      %div{class: "col"}
-        - if @families_recorded.empty? && !@families_identified.empty?
-          %h3
-            Families Identified
-            %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@families_identified.count)}
-          %ul{class: "list-group"}
-            - @families_identified.each do |k,v|
-              %li{class: "list-group-item d-flex justify-content-between align-items-center"}
-                #{k}
-                %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
-        - elsif !@families_recorded.empty?
-          %h3
-            Families Collected
-            %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@families_recorded.count)}
-          %ul{class: "list-group"}
-            - @families_recorded.each do |k,v|
-              %li{class: "list-group-item d-flex justify-content-between align-items-center"}
-                #{k}
-                %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
-      %div{class: "col"}
-        - if !@families_recorded.empty? && !@families_identified.empty?
-          %h3
-            Families Identified
-            %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@families_identified.count)}
-          %ul{class: "list-group"}
-            - @families_identified.each do |k,v|
-              %li{class: "list-group-item d-flex justify-content-between align-items-center"}
-                #{k}
-                %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}

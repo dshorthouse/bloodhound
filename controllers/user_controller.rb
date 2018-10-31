@@ -314,9 +314,30 @@ module Sinatra
                   number_helped: @viewed_user.helped_count,
                   number_claims_given: @viewed_user.claims_given.count
                 }
+                haml :user
+              else
+                status 404
+                haml :oops
+              end
+            else
+              status 404
+              haml :oops
+            end
+          end
+
+          app.get '/:orcid/specialties' do
+            if params[:orcid].is_orcid?
+              @viewed_user = User.find_by_orcid(params[:orcid])
+              if @viewed_user && @viewed_user.is_public?
+                @total = {
+                  number_identified: @viewed_user.identified_count,
+                  number_recorded: @viewed_user.recorded_count,
+                  number_helped: @viewed_user.helped_count,
+                  number_claims_given: @viewed_user.claims_given.count
+                }
                 @families_identified = @viewed_user.identified_families
                 @families_recorded = @viewed_user.recorded_families
-                haml :user
+                haml :user_specialties
               else
                 status 404
                 haml :oops

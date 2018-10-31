@@ -46,6 +46,7 @@ val occurrences = sqlContext.
         dateIdentified,
         decimalLatitude,
         decimalLongitude,
+        country,
         eventDate,
         family,
         identifiedBy,
