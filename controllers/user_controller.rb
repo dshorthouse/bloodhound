@@ -58,14 +58,18 @@ module Sinatra
             protected!
 
             @page = (params[:page] || 1).to_i
-            @search_size = (params[:per] || 25).to_i
-            occurrences = User.find(@user[:id]).visible_user_occurrence_occurrences
+            search_size = (params[:per] || 25).to_i
+            @total = UserOccurrence.where(user_id: @user[:id], visible: true).count
 
-            @total = occurrences.length
-
-            @results = WillPaginate::Collection.create(@page, @search_size, occurrences.length) do |pager|
-              pager.replace occurrences[pager.offset, pager.per_page]
+            if @page*search_size > @total
+              @page = @total/search_size.to_i + 1
             end
+
+            @results = Occurrence.select('occurrences.*', 'user_occurrences.id as user_occurrence_id', 'user_occurrences.action')
+                                 .joins(:user_occurrences)
+                                 .where(user_occurrences: { visible: true })
+                                 .where(user_occurrences: { user_id: @user[:id] })
+                                 .paginate(page: @page, per_page: search_size)
             haml :profile_specimens
           end
 
@@ -331,7 +335,7 @@ module Sinatra
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
                 visible = @viewed_user.visible_user_occurrences
-                @results = visible.paginate :page => params[:page]
+                @results = visible.paginate(page: params[:page])
 
                 haml :user_specimens
               else
