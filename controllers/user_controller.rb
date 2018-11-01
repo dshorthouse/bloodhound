@@ -314,6 +314,7 @@ module Sinatra
                   number_helped: @viewed_user.helped_count,
                   number_claims_given: @viewed_user.claims_given.count
                 }
+                @country_counts = @viewed_user.country_counts
                 haml :user
               else
                 status 404
