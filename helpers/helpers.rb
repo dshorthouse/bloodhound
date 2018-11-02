@@ -190,7 +190,7 @@ module Sinatra
       end
 
       def roster
-        @results = User.joins(:user_occurrences)
+        @results = User.includes(:user_occurrences)
                        .where(is_public: true)
                        .where(user_occurrences: { visible: true })
                        .order(:family)

@@ -69,8 +69,9 @@ class User < ActiveRecord::Base
   end
 
   def identified_families
-    taxon_ids = identifications.joins(:taxon_occurrence)
-                               .pluck(:taxon_id)
+    taxon_ids = visible_user_occurrences.where(qry_identified)
+                                        .joins(:taxon_occurrence)
+                                        .pluck(:taxon_id)
     Hash.new(0).tap{ |h| taxon_ids.each { |f| h[f] += 1 } }
                .transform_keys{ |key| Taxon.find(key).family }
                .sort_by {|_key, value| value}
