@@ -70,9 +70,8 @@
     %a{class: "nav-link", href: "/#{@viewed_user[:orcid]}/specimens"} Specimens
 
 %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-  = succeed "." do
-    Collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])} from #{@country_counts.count} #{'country'.pluralize(@country_counts.count)} and identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}.
-    - if @total[:number_helped] > 0
-      Helped #{number_with_delimiter(@total[:number_helped])} #{'user'.pluralize(@total[:number_helped])} claim a total of #{number_with_delimiter(@total[:number_claims_given])} #{'specimen'.pluralize(@total[:number_claims_given])}
+  Collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])} from at least #{@country_counts.count} #{'country'.pluralize(@country_counts.count)} and identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}.
+  - if @total[:number_helped] > 0
+    Helped #{number_with_delimiter(@total[:number_helped])} #{'user'.pluralize(@total[:number_helped])} claim a total of #{number_with_delimiter(@total[:number_claims_given])} #{'specimen'.pluralize(@total[:number_claims_given])}.
 
-#world-map{style:"width: 80%; height: 400px"}
+#world-map{style:"width: 80%; height: 350px"}
