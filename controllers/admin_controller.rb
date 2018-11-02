@@ -20,13 +20,13 @@ module Sinatra
               @admin_user = User.find_by_orcid(params[:orcid])
               @page = (params[:page] || 1).to_i
               search_size = (params[:per] || 25).to_i
-              @total = @admin_user.visible_user_occurrences.count
+              @total = @admin_user.visible_occurrences.count
 
               if @page*search_size > @total
                 @page = @total/search_size.to_i + 1
               end
 
-              @results = @admin_user.visible_user_occurrence_occurrences
+              @results = @admin_user.visible_occurrences
                                     .paginate(page: @page, per_page: search_size)
               haml :admin_profile
             else
@@ -36,20 +36,52 @@ module Sinatra
 
           end
 
+          app.get '/admin/user/:orcid/specimens.json' do
+            if params[:orcid].is_orcid?
+              content_type "application/json"
+              user = User.find_by_orcid(params[:orcid])
+              user = {}
+              user[:personal] = user
+              user[:occurrences] = user.visible_occurrences
+                                       .map{|o| { action: o.action }.merge(o.occurrence.as_json) }
+              user.to_json
+            else
+              status 404
+              haml :oops
+            end
+          end
+
+          app.get '/admin/user/:orcid/specimens.csv' do
+            if params[:orcid].is_orcid?
+              content_type "application/csv"
+              attachment   "#{params[:orcid]}.csv"
+              user = User.find_by_orcid(params[:orcid])
+              records = user.visible_occurrences
+              CSV.generate do |csv|
+                csv << ["action"].concat(Occurrence.attribute_names)
+                records.each { |r| csv << [r.action].concat(r.occurrence.attributes.values) }
+              end
+            else
+              status 404
+              haml :oops
+            end
+          end
+
           app.get '/admin/user/:orcid/support' do
             admin_protected!
 
-            @page = (params[:page] || 1).to_i
-            @search_size = (params[:per] || 25).to_i
-            
             @admin_user = User.find_by_orcid(params[:orcid])
 
-            occurrences = @admin_user.claims_received_claimants
-            @total = occurrences.length
+            @page = (params[:page] || 1).to_i
+            search_size = (params[:per] || 25).to_i
+            @total = @admin_user.claims_received.count
 
-            @results = WillPaginate::Collection.create(@page, @search_size, occurrences.length) do |pager|
-              pager.replace occurrences[pager.offset, pager.per_page]
+            if @page*search_size > @total
+              @page = @total/search_size.to_i + 1
             end
+
+            @results = @admin_user.claims_received
+                                  .paginate(page: @page, per_page: search_size)
             haml :admin_support
           end
 
@@ -108,18 +140,17 @@ module Sinatra
 
           app.get '/admin/user/:orcid/ignored' do
             admin_protected!
-
-            @page = (params[:page] || 1).to_i
-            @search_size = (params[:per] || 25).to_i
-            
             @admin_user = User.find_by_orcid(params[:orcid])
+            @page = (params[:page] || 1).to_i
+            search_size = (params[:per] || 25).to_i
+            @total = @admin_user.hidden_occurrences.count
 
-            occurrences = @admin_user.hidden_user_occurrence_occurrences
-            @total = occurrences.length
-
-            @results = WillPaginate::Collection.create(@page, @search_size, occurrences.length) do |pager|
-              pager.replace occurrences[pager.offset, pager.per_page]
+            if @page*search_size > @total
+              @page = @total/search_size.to_i + 1
             end
+
+            @results = @admin_user.hidden_occurrences
+                                  .paginate(page: @page, per_page: search_size)
             haml :admin_ignored
           end
 

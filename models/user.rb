@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   has_many :user_occurrences
-  has_many :occurrences, through: :user_occurrences, source: :occurrence
+  has_many :occurrences, -> { distinct }, through: :user_occurrences, source: :occurrence
   has_many :claims, foreign_key: :created_by, class_name: "UserOccurrence"
   has_many :claimed_occurrences, through: :claims, source: :occurrence
 
@@ -36,49 +36,24 @@ class User < ActiveRecord::Base
     end
   end
 
-  def visible_occurrences
-    occurrences.joins(:user_occurrences)
-               .where(user_occurrences: { visible: true })
-  end
-
   def visible_user_occurrences
     user_occurrences.where(visible: true)
   end
 
-  def visible_user_occurrence_occurrences
-    Occurrence.select('occurrences.*', 'user_occurrences.id as user_occurrence_id', 'user_occurrences.action')
-              .joins(:user_occurrences)
-              .where(user_occurrences: { visible: true })
-              .where(user_occurrences: { user_id: self })
+  def visible_occurrences
+    visible_user_occurrences.includes(:occurrence)
   end
 
   def hidden_occurrences
-    occurrences.joins(:user_occurrences)
-               .where(user_occurrences: { visible: false })
+    hidden_user_occurrences.includes(:occurrence)
   end
 
   def hidden_user_occurrences
     user_occurrences.where(visible: false)
   end
 
-  def hidden_user_occurrence_occurrences
-    hidden_user_occurrences.map{|u| { user_occurrence_id: u.id, action: u.action }
-                           .merge(u.occurrence.attributes.symbolize_keys) }
-  end
-
   def claims_received_claimants
-    claims_received.map{ |u|
-                      { 
-                        user_occurrence_id: u.id,
-                        action: u.action,
-                        claimant: u.claimant,
-                      }.merge(u.occurrence.attributes.symbolize_keys)
-                    }
-  end
-
-  def user_occurrence_downloadable
-    visible_user_occurrences.map{|u| { action: u.action }
-                            .merge(u.occurrence.attributes.symbolize_keys) }
+    claims_received.includes(:user_occurrence)
   end
 
   def identifications
@@ -89,10 +64,13 @@ class User < ActiveRecord::Base
     visible_occurrences.where(qry_recorded)
   end
 
+  def identifications_recordings
+    visible_occurrences.where(qry_identified_recorded)
+  end
+
   def identified_families
-    taxon_ids = visible_user_occurrences.where(qry_identified)
-                                        .joins(:taxon_occurrence)
-                                        .pluck(:taxon_id)
+    taxon_ids = identifications.joins(:taxon_occurrence)
+                               .pluck(:taxon_id)
     Hash.new(0).tap{ |h| taxon_ids.each { |f| h[f] += 1 } }
                .transform_keys{ |key| Taxon.find(key).family }
                .sort_by {|_key, value| value}
@@ -105,9 +83,8 @@ class User < ActiveRecord::Base
   end
 
   def recorded_families
-    taxon_ids = visible_user_occurrences.where(qry_recorded)
-                                        .joins(:taxon_occurrence)
-                                        .pluck(:taxon_id)
+    taxon_ids = recordings.joins(:taxon_occurrence)
+                          .pluck(:taxon_id)
     Hash.new(0).tap{ |h| taxon_ids.each { |f| h[f] += 1 } }
                .transform_keys{ |key| Taxon.find(key).family }
                .sort_by {|_key, value| value}
@@ -117,10 +94,6 @@ class User < ActiveRecord::Base
 
   def top_family_recorded
     recorded_families.first[0] if !recorded_families.empty?
-  end
-
-  def identifications_recordings
-    visible_occurrences.where(qry_identified_recorded)
   end
 
   def identified_count
@@ -180,7 +153,7 @@ class User < ActiveRecord::Base
   end
 
   def claims_received
-    visible_user_occurrences.where.not(created_by: self)
+    visible_occurrences.where.not(created_by: self)
   end
 
   def helped_by

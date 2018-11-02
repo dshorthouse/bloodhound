@@ -7,6 +7,8 @@ class UserOccurrence < ActiveRecord::Base
 
    before_update :set_update_time
 
+   alias_attribute :user_occurrence_id, :id
+
    private
 
    def set_update_time

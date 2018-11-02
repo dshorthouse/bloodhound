@@ -66,9 +66,9 @@
       %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
       identified, or Both.
     %div{class: "col-3 text-right"}
-      %a{href: "/profile/download.csv"}
+      %a{href: "/admin/user/#{@admin_user.orcid}/specimens.csv"}
         %img{src: "/images/csv-icon.png", width:24, alt: "CSV download"}
-      %a{href: "/profile/download.json"}
+      %a{href: "/admin/user/#{@admin_user.orcid}/specimens.json"}
         %img{src: "/images/json-icon.png", width:24, alt: "JSON download"}
 
   %table{class:"table table-hover table-sm"}
@@ -96,18 +96,19 @@
         %th{scope: "col"}
 
     %tbody
-      - @results.each do |o|
+      - @results.each do |uo|
+        - o = uo.occurrence
         %tr
           %td
             %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
-              %label{class:"btn btn-choice btn-light #{active_class(o.action, "recorded")}"}
-                %input{type:"radio", class:"action-radio", name:"selection-#{o.user_occurrence_id}", "data-occurrence-id":"#{o.user_occurrence_id}", "data-action": "recorded", autocomplete:"off"}
+              %label{class:"btn btn-choice btn-light #{active_class(uo.action, "recorded")}"}
+                %input{type:"radio", class:"action-radio", name:"selection-#{uo.user_occurrence_id}", "data-occurrence-id":"#{uo.user_occurrence_id}", "data-action": "recorded", autocomplete:"off"}
                   %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
-              %label{class:"btn  btn-choice btn-light #{active_class(o.action, "identified")}"}
-                %input{type:"radio", class:"action-radio", name:"selection-#{o.user_occurrence_id}", "data-occurrence-id":"#{o.user_occurrence_id}", "data-action": "identified", autocomplete:"off"}
+              %label{class:"btn  btn-choice btn-light #{active_class(uo.action, "identified")}"}
+                %input{type:"radio", class:"action-radio", name:"selection-#{uo.user_occurrence_id}", "data-occurrence-id":"#{uo.user_occurrence_id}", "data-action": "identified", autocomplete:"off"}
                   %img{src:"/images/microscope-unselected.png", alt:"Identified", title:"Identified", width:18}
-              %label{class:"btn  btn-choice btn-light #{active_class(o.action, "recorded,identified")}"}
-                %input{type:"radio", class:"action-radio", name:"selection-#{o.user_occurrence_id}", "data-occurrence-id":"#{o.user_occurrence_id}", "data-action": "recorded,identified", autocomplete:"off"} Both
+              %label{class:"btn  btn-choice btn-light #{active_class(uo.action, "recorded,identified")}"}
+                %input{type:"radio", class:"action-radio", name:"selection-#{uo.user_occurrence_id}", "data-occurrence-id":"#{uo.user_occurrence_id}", "data-action": "recorded,identified", autocomplete:"off"} Both
           %td
             - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
             %a{href: "https://www.gbif.org/occurrence/#{o.gbifID}", target: "_blank" } #{scientific_name}
@@ -119,7 +120,7 @@
           %td #{o.catalogNumber}
           %td #{o.typeStatus}
           %td
-            %button{type:"button", class:"btn btn-sm btn-danger remove", "data-occurrence-id":"#{o.user_occurrence_id}"} Remove
+            %button{type:"button", class:"btn btn-sm btn-danger remove", "data-occurrence-id":"#{uo.user_occurrence_id}"} Remove
 
     - if @total >= 25
       %tfoot{class: "thead-light"}

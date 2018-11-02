@@ -87,28 +87,29 @@
         %th{scope: "col"} Type Status
 
     %tbody
-      - @results.each do |o|
+      - @results.each do |uo|
+        - o = uo.occurrence
         %tr
           %td
             %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
-              %label{class:"btn btn-choice btn-light #{active_class(o[:action], "recorded")}"}
-                %input{type:"radio", class:"action-radio restore-ignored", name:"selection-#{o[:user_occurrence_id]}", "data-occurrence-id":"#{o[:user_occurrence_id]}", "data-action": "recorded", autocomplete:"off"}
+              %label{class:"btn btn-choice btn-light #{active_class(uo.action, "recorded")}"}
+                %input{type:"radio", class:"action-radio restore-ignored", name:"selection-#{uo.user_occurrence_id}", "data-occurrence-id":"#{uo.user_occurrence_id}", "data-action": "recorded", autocomplete:"off"}
                   %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
-              %label{class:"btn  btn-choice btn-light #{active_class(o[:action], "identified")}"}
-                %input{type:"radio", class:"action-radio restore-ignored", name:"selection-#{o[:user_occurrence_id]}", "data-occurrence-id":"#{o[:user_occurrence_id]}", "data-action": "identified", autocomplete:"off"}
+              %label{class:"btn  btn-choice btn-light #{active_class(uo.action, "identified")}"}
+                %input{type:"radio", class:"action-radio restore-ignored", name:"selection-#{uo.user_occurrence_id}", "data-occurrence-id":"#{uo.user_occurrence_id}", "data-action": "identified", autocomplete:"off"}
                   %img{src:"/images/microscope-unselected.png", alt:"Identified", title:"Identified", width:18}
-              %label{class:"btn  btn-choice btn-light #{active_class(o[:action], "recorded,identified")}"}
-                %input{type:"radio", class:"action-radio restore-ignored", name:"selection-#{o[:user_occurrence_id]}", "data-occurrence-id":"#{o[:user_occurrence_id]}", "data-action": "recorded,identified", autocomplete:"off"} Both
+              %label{class:"btn  btn-choice btn-light #{active_class(uo.action, "recorded,identified")}"}
+                %input{type:"radio", class:"action-radio restore-ignored", name:"selection-#{uo.user_occurrence_id}", "data-occurrence-id":"#{uo.user_occurrence_id}", "data-action": "recorded,identified", autocomplete:"off"} Both
           %td
-            - scientific_name = o[:scientificName].nil? ? "not recorded" : o[:scientificName]
+            - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
             %a{href: "https://www.gbif.org/occurrence/#{o[:gbifID]}", target: "_blank" } #{scientific_name}
-          %td #{o[:recordedBy]}
-          %td #{o[:identifiedBy]}
-          %td #{o[:eventDate]}
-          %td #{o[:dateIdentified]}
-          %td #{o[:institutionCode]}
-          %td #{o[:catalogNumber]}
-          %td #{o[:typeStatus]}
+          %td #{o.recordedBy}
+          %td #{o.identifiedBy}
+          %td #{o.eventDate}
+          %td #{o.dateIdentified}
+          %td #{o.institutionCode}
+          %td #{o.catalogNumber}
+          %td #{o.typeStatus}
 
     - if @total >= 25
       %tfoot{class: "thead-light"}

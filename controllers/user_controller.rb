@@ -56,33 +56,35 @@ module Sinatra
 
           app.get '/profile/specimens' do
             protected!
-
             user = User.find(@user[:id])
 
             @page = (params[:page] || 1).to_i
             search_size = (params[:per] || 25).to_i
-            @total = user.visible_user_occurrences.count
+            @total = user.visible_occurrences.count
 
             if @page*search_size > @total
               @page = @total/search_size.to_i + 1
             end
 
-            @results = user.visible_user_occurrence_occurrences.paginate(page: @page, per_page: search_size)
+            @results = user.visible_occurrences
+                           .paginate(page: @page, per_page: search_size)
             haml :profile_specimens
           end
 
           app.get '/profile/support' do
             protected!
+            user = User.find(@user[:id])
 
             @page = (params[:page] || 1).to_i
-            @search_size = (params[:per] || 25).to_i
-            occurrences = User.find(@user[:id]).claims_received_claimants
+            search_size = (params[:per] || 25).to_i
+            @total = user.claims_received.count
 
-            @total = occurrences.length
-
-            @results = WillPaginate::Collection.create(@page, @search_size, occurrences.length) do |pager|
-              pager.replace occurrences[pager.offset, pager.per_page]
+            if @page*search_size > @total
+              @page = @total/search_size.to_i + 1
             end
+
+            @results = user.claims_received
+                           .paginate(page: @page, per_page: search_size)
             haml :profile_support
           end
 
@@ -103,7 +105,8 @@ module Sinatra
             current_user = User.find(@user[:id])
             user = {}
             user[:personal] = current_user
-            user[:occurrences] = current_user.user_occurrence_downloadable
+            user[:occurrences] = current_user.visible_occurrences
+                                             .map{|o| { action: o.action }.merge(o.occurrence.as_json) }
             user.to_json
           end
 
@@ -112,10 +115,10 @@ module Sinatra
             content_type "application/csv"
             attachment   "download.csv"
             user = User.find(@user[:id])
-            records = user.user_occurrence_downloadable
+            records = user.visible_occurrences
             CSV.generate do |csv|
-              csv << records.first.keys
-              records.each { |r| csv << r.values }
+              csv << ["action"].concat(Occurrence.attribute_names)
+              records.each { |r| csv << [r.action].concat(r.occurrence.attributes.values) }
             end
           end
 
@@ -185,16 +188,17 @@ module Sinatra
 
           app.get '/profile/ignored' do
             protected!
+            user = User.find(@user[:id])
             @page = (params[:page] || 1).to_i
-            @search_size = (params[:per] || 25).to_i
+            search_size = (params[:per] || 25).to_i
+            @total = user.hidden_occurrences.count
 
-            occurrences = User.find(@user[:id]).hidden_user_occurrence_occurrences
-
-            @total = occurrences.length
-
-            @results = WillPaginate::Collection.create(@page, @search_size, occurrences.length) do |pager|
-              pager.replace occurrences[pager.offset, pager.per_page]
+            if @page*search_size > @total
+              @page = @total/search_size.to_i + 1
             end
+
+            @results = user.hidden_occurrences
+                           .paginate(page: @page, per_page: search_size)
             haml :profile_ignored
           end
 
@@ -280,7 +284,8 @@ module Sinatra
               @viewed_user = User.find_by_orcid(params[:orcid])
               user = {}
               user[:personal] = @viewed_user
-              user[:occurrences] = @viewed_user.user_occurrence_downloadable
+              user[:occurrences] = @viewed_user.visible_occurrences
+                                               .map{|o| { action: o.action }.merge(o.occurrence.as_json) }
               user.to_json
             else
               status 404
@@ -293,10 +298,10 @@ module Sinatra
               content_type "application/csv"
               attachment   "#{params[:orcid]}.csv"
               @viewed_user = User.find_by_orcid(params[:orcid])
-              records = @viewed_user.user_occurrence_downloadable
+              records = @viewed_user.visible_occurrences
               CSV.generate do |csv|
-                csv << records.first.keys
-                records.each { |r| csv << r.values }
+                csv << ["action"].concat(Occurrence.attribute_names)
+                records.each { |r| csv << [r.action].concat(r.occurrence.attributes.values) }
               end
             else
               status 404
@@ -354,8 +359,8 @@ module Sinatra
               @viewed_user = User.find_by_orcid(params[:orcid])
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
-                visible = @viewed_user.visible_user_occurrences
-                @results = visible.paginate(page: params[:page])
+                @results = @viewed_user.visible_occurrences
+                                       .paginate(page: params[:page])
 
                 haml :user_specimens
               else
