@@ -282,11 +282,16 @@ module Sinatra
             if params[:orcid].is_orcid?
               content_type "application/json"
               @viewed_user = User.find_by_orcid(params[:orcid])
-              user = {}
-              user[:personal] = @viewed_user
-              user[:occurrences] = @viewed_user.visible_occurrences
-                                               .map{|o| { action: o.action }.merge(o.occurrence.as_json) }
-              user.to_json
+              {
+                "@context": "http://schema.org",
+                "@type": "Person",
+                "@id": "https://orcid.org/#{@viewed_user.orcid}",
+                givenName: @viewed_user.given,
+                familyName: @viewed_user.family,
+                alternateName: @viewed_user.other_names.split("|"),
+                occurrences: @viewed_user.visible_occurrences
+                                         .map{|o| { action: o.action }.merge(o.occurrence.as_json) }
+              }.to_json
             else
               status 404
               haml :oops

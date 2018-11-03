@@ -45,7 +45,7 @@
       %h2{class:"display-4 text-center"}= @viewed_user.fullname
 
       %div{class:"row justify-content-center text-center"}
-        %div{class:"col-xl-6"}
+        %div{class:"col-sm-12 col-md-10 col-xl-8"}
           %div.row
             - if !@viewed_user[:other_names].blank?
               %dl{class: "col"}
@@ -74,4 +74,6 @@
   - if @total[:number_helped] > 0
     Helped #{number_with_delimiter(@total[:number_helped])} #{'user'.pluralize(@total[:number_helped])} claim a total of #{number_with_delimiter(@total[:number_claims_given])} #{'specimen'.pluralize(@total[:number_claims_given])}.
 
-#world-map{style:"width: 80%; height: 350px"}
+%div{class:"row"}
+  %div{class:"col-sm-12 col-md-10 col-xl-8"}
+    #world-map{style:"width: 100%; height: 350px"}
