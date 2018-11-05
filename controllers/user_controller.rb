@@ -101,13 +101,37 @@ module Sinatra
 
           app.get '/profile/download.json' do
             protected!
-            content_type "application/json"
-            current_user = User.find(@user[:id])
-            user = {}
-            user[:personal] = current_user
-            user[:occurrences] = current_user.visible_occurrences
-                                             .map{|o| { action: o.action }.merge(o.occurrence.as_json) }
-            user.to_json
+            content_type "application/ld+json"
+            user = User.find(@user[:id])
+            dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
+                                        .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
+            {
+              "@context": [
+                "http://schema.org",
+                dwc_contexts,
+                { dwciri: "http://rs.tdwg.org/dwc/iri/" },
+                { Occurrence: "http://rs.tdwg.org/dwc/terms/occurrence" }
+              ],
+              "@type": "Person",
+              "@id": "https://orcid.org/#{user.orcid}",
+              givenName: user.given,
+              familyName: user.family,
+              alternateName: user.other_names.split("|"),
+              "@reverse": {
+                "dwciri:identifiedBy": user.identifications
+                                       .map{|o| {
+                                           "@type": "Occurrence",
+                                           "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
+                                         }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
+                                       },
+                "dwciri:recordedBy": user.recordings
+                                       .map{|o| {
+                                           "@type": "Occurrence",
+                                           "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
+                                         }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
+                                       }
+              }
+            }.to_json
           end
 
           app.get '/profile/download.csv' do
