@@ -33,13 +33,45 @@ module Sinatra
           end
 
           app.get '/occurrence/:id.json' do
-            content_type "application/json"
-            occurrence = Occurrence.find(params[:id])
-            response = occurrence.attributes
-                                 .symbolize_keys
-                                 .as_json(except: :lastChecked)
-            response[:actions] = occurrence.actions
-            response.to_json
+            content_type "application/ld+json"
+            begin
+              occurrence = Occurrence.find(params[:id])
+              dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
+                                          .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
+              response = {}
+              response["@context"] = {
+                  "@vocab": "http://schema.org/",
+                  identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
+                  recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
+                  Occurrence: "http://rs.tdwg.org/dwc/terms/Occurrence"
+              }.merge(dwc_contexts)
+              response["@type"] = "Occurrence"
+              response["@id"] = "https://gbif.org/occurrence/#{occurrence.id}"
+              occurrence.attributes
+                        .reject{|column| column == 'gbifID'}
+                        .map{|k,v| response[k] = v }
+
+              response["recorded"] = occurrence.user_recordings.map{|o| { 
+                    "@type": "Person",
+                    "@id": "https://orcid.org/#{o.user.orcid}",
+                    givenName: "#{o.user.given}",
+                    familyName: "#{o.user.family}",
+                    alternateName: o.user.other_names.split("|")
+                  }
+              }
+              response["identified"] = occurrence.user_identifications.map{|o| { 
+                    "@type": "Person",
+                    "@id": "https://orcid.org/#{o.user.orcid}",
+                    givenName: "#{o.user.given}",
+                    familyName: "#{o.user.family}",
+                    alternateName: o.user.other_names.split("|")
+                  }
+              }
+              response.to_json
+            rescue
+              status 404
+              {}.to_json
+            end
           end
 
           app.get '/roster' do

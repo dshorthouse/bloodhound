@@ -37,16 +37,20 @@ class Occurrence < ActiveRecord::Base
     }
   end
 
-  def actions
-    identified = user_occurrences.select(:'users.orcid', :'users.given', :'users.family', :'users.email')
-                                 .joins(:user)
-                                 .where("MATCH (user_occurrences.action) AGAINST ('+identified' IN BOOLEAN MODE)")
-                                 .as_json(except: :id)
-    recorded = user_occurrences.select(:'users.orcid', :'users.given', :'users.family', :'users.email')
-                               .joins(:user)
-                               .where("MATCH (user_occurrences.action) AGAINST ('+recorded' IN BOOLEAN MODE)")
-                               .as_json(except: :id)
-    { identified: identified, recorded: recorded }.deep_symbolize_keys
+  def user_identifications
+    user_occurrences.where(visible: true).where(qry_identified).includes(:user)
+  end
+
+  def user_recordings
+    user_occurrences.where(visible: true).where(qry_recorded).includes(:user)
+  end
+
+  def qry_identified
+    "user_occurrences.action LIKE '%identified%'"
+  end
+
+  def qry_recorded
+    "user_occurrences.action LIKE '%recorded%'"
   end
 
 end

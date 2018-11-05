@@ -8,7 +8,6 @@ module Sinatra
         def self.registered(app)
 
           #/auth/orcid is automatically added by OmniAuth
-
           app.get '/auth/orcid/callback' do
             session_data = request.env['omniauth.auth'].deep_symbolize_keys
             orcid = session_data[:uid]
@@ -303,57 +302,65 @@ module Sinatra
           end
 
           app.get '/:orcid/specimens.json' do
+            content_type "application/ld+json"
             if params[:orcid].is_orcid?
-              content_type "application/ld+json"
-              user = User.find_by_orcid(params[:orcid])
-              dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
-                                          .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
-              {
-                "@context": {
-                  "@vocab": "http://schema.org/",
-                  identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
-                  recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
-                  Occurrence: "http://rs.tdwg.org/dwc/terms/Occurrence"
-                }.merge(dwc_contexts),
-                "@type": "Person",
-                "@id": "https://orcid.org/#{user.orcid}",
-                givenName: user.given,
-                familyName: user.family,
-                alternateName: user.other_names.split("|"),
-                "@reverse": {
-                  identified: user.identifications
-                                         .map{|o| {
-                                             "@type": "Occurrence",
-                                             "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
-                                           }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
-                                         },
-                  recorded: user.recordings
-                                         .map{|o| {
-                                             "@type": "Occurrence",
-                                             "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
-                                           }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
-                                         }
-                }
-              }.to_json
+              begin
+                user = User.find_by_orcid(params[:orcid])
+                dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
+                                            .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
+                {
+                  "@context": {
+                    "@vocab": "http://schema.org/",
+                    identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
+                    recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
+                    Occurrence: "http://rs.tdwg.org/dwc/terms/Occurrence"
+                  }.merge(dwc_contexts),
+                  "@type": "Person",
+                  "@id": "https://orcid.org/#{user.orcid}",
+                  givenName: user.given,
+                  familyName: user.family,
+                  alternateName: user.other_names.split("|"),
+                  "@reverse": {
+                    identified: user.identifications
+                                           .map{|o| {
+                                               "@type": "Occurrence",
+                                               "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
+                                             }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
+                                           },
+                    recorded: user.recordings
+                                           .map{|o| {
+                                               "@type": "Occurrence",
+                                               "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
+                                             }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
+                                           }
+                  }
+                }.to_json
+            rescue
+              status 404
+              {}.to_json
+            end
             else
               status 404
-              haml :oops
+              {}.to_json
             end
           end
 
           app.get '/:orcid/specimens.csv' do
+            content_type "application/csv"
             if params[:orcid].is_orcid?
-              content_type "application/csv"
-              attachment   "#{params[:orcid]}.csv"
-              @viewed_user = User.find_by_orcid(params[:orcid])
-              records = @viewed_user.visible_occurrences
-              CSV.generate do |csv|
-                csv << ["action"].concat(Occurrence.attribute_names)
-                records.each { |r| csv << [r.action].concat(r.occurrence.attributes.values) }
+              begin
+                attachment   "#{params[:orcid]}.csv"
+                @viewed_user = User.find_by_orcid(params[:orcid])
+                records = @viewed_user.visible_occurrences
+                CSV.generate do |csv|
+                  csv << ["action"].concat(Occurrence.attribute_names)
+                  records.each { |r| csv << [r.action].concat(r.occurrence.attributes.values) }
+                end
+              rescue
+                status 404
               end
             else
               status 404
-              haml :oops
             end
           end
 
