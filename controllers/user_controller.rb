@@ -106,25 +106,25 @@ module Sinatra
             dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
                                         .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
             {
-              "@context": [
-                "http://schema.org",
-                dwc_contexts,
-                { dwciri: "http://rs.tdwg.org/dwc/iri/" },
-                { Occurrence: "http://rs.tdwg.org/dwc/terms/occurrence" }
-              ],
+              "@context": {
+                "@vocab": "http://schema.org/",
+                identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
+                recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
+                Occurrence: "http://rs.tdwg.org/dwc/terms/Occurrence"
+              }.merge(dwc_contexts),
               "@type": "Person",
               "@id": "https://orcid.org/#{user.orcid}",
               givenName: user.given,
               familyName: user.family,
               alternateName: user.other_names.split("|"),
               "@reverse": {
-                "dwciri:identifiedBy": user.identifications
+                identified: user.identifications
                                        .map{|o| {
                                            "@type": "Occurrence",
                                            "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
                                          }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
                                        },
-                "dwciri:recordedBy": user.recordings
+                recorded: user.recordings
                                        .map{|o| {
                                            "@type": "Occurrence",
                                            "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
@@ -305,29 +305,29 @@ module Sinatra
           app.get '/:orcid/specimens.json' do
             if params[:orcid].is_orcid?
               content_type "application/ld+json"
-              @viewed_user = User.find_by_orcid(params[:orcid])
+              user = User.find_by_orcid(params[:orcid])
               dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
                                           .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
               {
-                "@context": [
-                  "http://schema.org",
-                  dwc_contexts,
-                  { dwciri: "http://rs.tdwg.org/dwc/iri/" },
-                  { Occurrence: "http://rs.tdwg.org/dwc/terms/occurrence" }
-                ],
+                "@context": {
+                  "@vocab": "http://schema.org/",
+                  identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
+                  recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
+                  Occurrence: "http://rs.tdwg.org/dwc/terms/Occurrence"
+                }.merge(dwc_contexts),
                 "@type": "Person",
-                "@id": "https://orcid.org/#{@viewed_user.orcid}",
-                givenName: @viewed_user.given,
-                familyName: @viewed_user.family,
-                alternateName: @viewed_user.other_names.split("|"),
+                "@id": "https://orcid.org/#{user.orcid}",
+                givenName: user.given,
+                familyName: user.family,
+                alternateName: user.other_names.split("|"),
                 "@reverse": {
-                  "dwciri:identifiedBy": @viewed_user.identifications
+                  identified: user.identifications
                                          .map{|o| {
                                              "@type": "Occurrence",
                                              "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
                                            }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
                                          },
-                  "dwciri:recordedBy": @viewed_user.recordings
+                  recorded: user.recordings
                                          .map{|o| {
                                              "@type": "Occurrence",
                                              "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"

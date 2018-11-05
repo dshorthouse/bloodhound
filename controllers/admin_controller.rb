@@ -43,12 +43,12 @@ module Sinatra
               dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
                                           .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
               {
-                "@context": [
-                  "http://schema.org",
-                  dwc_contexts,
-                  { dwciri: "http://rs.tdwg.org/dwc/iri/" },
-                  { Occurrence: "http://rs.tdwg.org/dwc/terms/occurrence" }
-                ],
+                "@context": {
+                  "@vocab": "http://schema.org/",
+                  identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
+                  recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
+                  Occurrence: "http://rs.tdwg.org/dwc/terms/Occurrence"
+                }.merge(dwc_contexts),
                 "@type": "Person",
                 "@id": "https://orcid.org/#{@viewed_user.orcid}",
                 givenName: @viewed_user.given,
