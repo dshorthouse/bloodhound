@@ -15,7 +15,6 @@ module Sinatra
 
           app.get '/admin/user/:orcid' do
             admin_protected!
-  
             if params[:orcid].is_orcid?
               @admin_user = User.find_by_orcid(params[:orcid])
               @page = (params[:page] || 1).to_i
@@ -37,14 +36,39 @@ module Sinatra
           end
 
           app.get '/admin/user/:orcid/specimens.json' do
+            admin_protected!
             if params[:orcid].is_orcid?
-              content_type "application/json"
-              user = User.find_by_orcid(params[:orcid])
-              user = {}
-              user[:personal] = user
-              user[:occurrences] = user.visible_occurrences
-                                       .map{|o| { action: o.action }.merge(o.occurrence.as_json) }
-              user.to_json
+              content_type "application/ld+json"
+              @viewed_user = User.find_by_orcid(params[:orcid])
+              dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
+                                          .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
+              {
+                "@context": [
+                  "http://schema.org",
+                  dwc_contexts,
+                  { dwciri: "http://rs.tdwg.org/dwc/iri/" },
+                  { Occurrence: "http://rs.tdwg.org/dwc/terms/occurrence" }
+                ],
+                "@type": "Person",
+                "@id": "https://orcid.org/#{@viewed_user.orcid}",
+                givenName: @viewed_user.given,
+                familyName: @viewed_user.family,
+                alternateName: @viewed_user.other_names.split("|"),
+                "@reverse": {
+                  "dwciri:identifiedBy": @viewed_user.identifications
+                                         .map{|o| {
+                                             "@type": "Occurrence",
+                                             "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
+                                           }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
+                                         },
+                  "dwciri:recordedBy": @viewed_user.recordings
+                                         .map{|o| {
+                                             "@type": "Occurrence",
+                                             "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
+                                           }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
+                                         }
+                }
+              }.to_json
             else
               status 404
               haml :oops
@@ -52,6 +76,7 @@ module Sinatra
           end
 
           app.get '/admin/user/:orcid/specimens.csv' do
+            admin_protected!
             if params[:orcid].is_orcid?
               content_type "application/csv"
               attachment   "#{params[:orcid]}.csv"
@@ -69,7 +94,6 @@ module Sinatra
 
           app.get '/admin/user/:orcid/support' do
             admin_protected!
-
             @admin_user = User.find_by_orcid(params[:orcid])
 
             @page = (params[:page] || 1).to_i
@@ -87,7 +111,6 @@ module Sinatra
 
           app.get '/admin/user/:orcid/candidates' do
             admin_protected!
-
             if params[:orcid].is_orcid?
               occurrence_ids = []
               @page = (params[:page] || 1).to_i

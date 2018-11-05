@@ -280,17 +280,36 @@ module Sinatra
 
           app.get '/:orcid/specimens.json' do
             if params[:orcid].is_orcid?
-              content_type "application/json"
+              content_type "application/ld+json"
               @viewed_user = User.find_by_orcid(params[:orcid])
+              dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
+                                          .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
               {
-                "@context": "http://schema.org",
+                "@context": [
+                  "http://schema.org",
+                  dwc_contexts,
+                  { dwciri: "http://rs.tdwg.org/dwc/iri/" },
+                  { Occurrence: "http://rs.tdwg.org/dwc/terms/occurrence" }
+                ],
                 "@type": "Person",
                 "@id": "https://orcid.org/#{@viewed_user.orcid}",
                 givenName: @viewed_user.given,
                 familyName: @viewed_user.family,
                 alternateName: @viewed_user.other_names.split("|"),
-                occurrences: @viewed_user.visible_occurrences
-                                         .map{|o| { action: o.action }.merge(o.occurrence.as_json) }
+                "@reverse": {
+                  "dwciri:identifiedBy": @viewed_user.identifications
+                                         .map{|o| {
+                                             "@type": "Occurrence",
+                                             "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
+                                           }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
+                                         },
+                  "dwciri:recordedBy": @viewed_user.recordings
+                                         .map{|o| {
+                                             "@type": "Occurrence",
+                                             "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
+                                           }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
+                                         }
+                }
               }.to_json
             else
               status 404
