@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+require File.dirname(File.dirname(__FILE__)) + '/environment.rb'
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: update_occurrence.rb [options]"
+
+  opts.on("-i", "--identifier [identifier]", Integer, "Refresh GBIF data") do |identifier|
+    options[:identifier] = identifier
+  end
+
+  opts.on("-h", "--help", "Prints this help") do
+    puts opts
+    exit
+  end
+end.parse!
+
+if options[:identifier]
+  o = Occurrence.find(options[:identifier])
+  o.update_from_gbif
+end
