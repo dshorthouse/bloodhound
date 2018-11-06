@@ -7,7 +7,7 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: update_occurrence.rb [options]"
 
-  opts.on("-i", "--identifier [identifier]", Integer, "Refresh GBIF data") do |identifier|
+  opts.on("-g", "--gbifid [identifier]", Integer, "Refresh GBIF data for a gbifID") do |identifier|
     options[:identifier] = identifier
   end
 

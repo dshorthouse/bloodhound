@@ -11,6 +11,10 @@ module Sinatra
   module Bloodhound
     module Helpers
 
+      def base_url
+        @base_url ||= "#{request.env['rack.url_scheme']}://#{request.env['HTTP_HOST']}"
+      end
+
       def set_session
         if session[:omniauth]
           @user = session[:omniauth]
