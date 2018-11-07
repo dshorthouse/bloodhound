@@ -25,8 +25,7 @@ if options[:truncate]
   tables = [
     "agents",
     "occurrence_determiners",
-    "occurrence_recorders",
-    "taxon_determiners"
+    "occurrence_recorders"
   ]
   tables.each do |table|
     Occurrence.connection.execute("TRUNCATE TABLE #{table}")

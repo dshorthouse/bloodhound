@@ -81,6 +81,15 @@ val url = "jdbc:mysql://localhost:3306/bloodhound?serverTimezone=UTC&useSSL=fals
 //write occurrences data to the database
 occurrences.write.mode("append").jdbc(url, "occurrences", prop)
 
+//write occurrences data to 2500 csv files as alternate bulk import (eg for LOAD DATA INFILE)
+occurrences.
+    repartition(2500).
+    write.
+    mode("overwrite").
+    option("quote", "\"").
+    option("escape", "\"").
+    csv("occurrences-csv")
+
 //aggregate recordedBy
 val recordedByGroups = occurrences.
     filter(!isnull($"recordedBy")).
@@ -137,3 +146,13 @@ familyGroups.select("family", "gbifIDs_family").
     option("quote", "\"").
     option("escape", "\"").
     csv("family-csv")
+```
+
+Sample bash script for a LOAD DATA INFILE routine in MySQL:
+
+```bash
+#!/bin/bash
+for filename in /occurrences/*.csv; do
+  mysql -uusername -ppassword --local-infile scrapping -e "LOAD DATA LOCAL INFILE '"$filename"' INTO TABLE occurrences FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n'"
+done
+```
