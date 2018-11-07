@@ -87,6 +87,8 @@ var Application = (function($, window) {
           url: self.path + "/profile.json?user_id=" + self.user_id,
           dataType: "json",
           data: JSON.stringify({ is_public: $(this).prop("checked") })
+        }).done(function(data) {
+          location.reload();
         });
       });
     },
