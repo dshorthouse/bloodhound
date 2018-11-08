@@ -30,7 +30,7 @@
     %thead{class: "thead-light"}
       %tr
         %th{scope: "col"}
-          = haml :'partials/bulk_selector_top', layout: false
+          = haml :'partials/bulk_selector_top', layout: false, locals: { klass: "restore-ignored" }
         %th{scope: "col"} Scientific Name
         %th{scope: "col"} Collected By
         %th{scope: "col"} Identified By
@@ -45,7 +45,7 @@
         - o = uo.occurrence
         %tr
           %td
-            = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo }
+            = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo, klass: "restore-ignored" }
           %td
             - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
             %a{href: "https://www.gbif.org/occurrence/#{o.gbifID}", target: "_blank" } #{scientific_name}
@@ -72,7 +72,7 @@
           %th{scope: "col"} Type Status
 
   - if @total >= 25
-    = haml :'partials/page_size', layout: false
+    = haml :'partials/page_size', layout: false, locals: { klass: "restore-ignored" }
 
   = will_paginate @results, { class: "pagination" }
 

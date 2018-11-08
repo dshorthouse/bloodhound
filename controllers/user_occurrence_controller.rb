@@ -51,9 +51,11 @@ module Sinatra
             protected!
             content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
+            action = req[:action] rescue nil
+            visible = req[:visible] rescue true
             ids = req[:occurrence_ids].split(",")
             UserOccurrence.where(id: ids, user_id: @user[:id])
-                          .update_all({action: req[:action]})
+                          .update_all({action: action, visible: visible})
             { message: "ok" }.to_json
           end
 

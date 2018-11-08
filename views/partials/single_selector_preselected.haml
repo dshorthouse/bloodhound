@@ -1,9 +1,9 @@
 %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
   %label{class:"btn btn-choice btn-light #{active_class(locals[:occurrence].action, "recorded")}"}
-    %input{type:"radio", class:"action-radio", name:"selection-#{locals[:occurrence].user_occurrence_id}", "data-occurrence-id":"#{locals[:occurrence].user_occurrence_id}", "data-action": "recorded", autocomplete:"off"}
+    %input{type:"radio", class:"action-radio #{locals[:klass]}", name:"selection-#{locals[:occurrence].user_occurrence_id}", "data-occurrence-id":"#{locals[:occurrence].user_occurrence_id}", "data-action": "recorded", autocomplete:"off"}
       %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
   %label{class:"btn  btn-choice btn-light #{active_class(locals[:occurrence].action, "identified")}"}
-    %input{type:"radio", class:"action-radio", name:"selection-#{locals[:occurrence].user_occurrence_id}", "data-occurrence-id":"#{locals[:occurrence].user_occurrence_id}", "data-action": "identified", autocomplete:"off"}
+    %input{type:"radio", class:"action-radio #{locals[:klass]}", name:"selection-#{locals[:occurrence].user_occurrence_id}", "data-occurrence-id":"#{locals[:occurrence].user_occurrence_id}", "data-action": "identified", autocomplete:"off"}
       %img{src:"/images/microscope-unselected.png", alt:"Identified", title:"Identified", width:18}
   %label{class:"btn  btn-choice btn-light #{active_class(locals[:occurrence].action, "recorded,identified")}"}
-    %input{type:"radio", class:"action-radio", name:"selection-#{locals[:occurrence].user_occurrence_id}", "data-occurrence-id":"#{locals[:occurrence].user_occurrence_id}", "data-action": "recorded,identified", autocomplete:"off"} Both
+    %input{type:"radio", class:"action-radio #{locals[:klass]}", name:"selection-#{locals[:occurrence].user_occurrence_id}", "data-occurrence-id":"#{locals[:occurrence].user_occurrence_id}", "data-action": "recorded,identified", autocomplete:"off"} Both
