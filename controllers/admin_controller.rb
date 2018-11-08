@@ -10,7 +10,7 @@ module Sinatra
           app.get '/admin/users' do
             admin_protected!
             admin_roster
-            haml :admin_roster
+            haml :'admin/roster'
           end
 
           app.get '/admin/user/:orcid' do
@@ -27,7 +27,7 @@ module Sinatra
 
               @results = @admin_user.visible_occurrences
                                     .paginate(page: @page, per_page: search_size)
-              haml :admin_profile
+              haml :'admin/profile'
             else
               status 404
               haml :oops
@@ -106,7 +106,7 @@ module Sinatra
 
             @results = @admin_user.claims_received
                                   .paginate(page: @page, per_page: search_size)
-            haml :admin_support
+            haml :'admin/support'
           end
 
           app.get '/admin/user/:orcid/candidates' do
@@ -153,7 +153,7 @@ module Sinatra
                 specimen_pager(occurrence_ids)
               end
 
-              haml :admin_candidates
+              haml :'admin/candidates'
             else
               status 404
               haml :oops
@@ -174,7 +174,7 @@ module Sinatra
 
             @results = @admin_user.hidden_occurrences
                                   .paginate(page: @page, per_page: search_size)
-            haml :admin_ignored
+            haml :'admin/ignored'
           end
 
           app.post '/admin/user-occurrence/bulk.json' do

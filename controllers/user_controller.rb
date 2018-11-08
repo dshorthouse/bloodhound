@@ -50,7 +50,7 @@ module Sinatra
                 count: v
               }
             }
-            haml :profile
+            haml :'profile/overview'
           end
 
           app.get '/profile/specimens' do
@@ -67,7 +67,7 @@ module Sinatra
 
             @results = user.visible_occurrences
                            .paginate(page: @page, per_page: search_size)
-            haml :profile_specimens
+            haml :'profile/specimens'
           end
 
           app.get '/profile/support' do
@@ -84,7 +84,7 @@ module Sinatra
 
             @results = user.claims_received
                            .paginate(page: @page, per_page: search_size)
-            haml :profile_support
+            haml :'profile/support'
           end
 
           app.put '/profile.json' do
@@ -186,7 +186,7 @@ module Sinatra
               specimen_pager(occurrence_ids)
             end
 
-            haml :profile_candidates
+            haml :'profile/candidates'
           end
 
           app.get '/profile/candidates/agent/:id' do
@@ -206,7 +206,7 @@ module Sinatra
             occurrence_ids = occurrences_by_score(id_scores)
             specimen_pager(occurrence_ids)
 
-            haml :profile_candidates
+            haml :'profile/candidates'
           end
 
           app.get '/profile/ignored' do
@@ -222,7 +222,7 @@ module Sinatra
 
             @results = user.hidden_occurrences
                            .paginate(page: @page, per_page: search_size)
-            haml :profile_ignored
+            haml :'profile/ignored'
           end
 
           app.get '/logout' do
@@ -232,7 +232,7 @@ module Sinatra
 
           app.get '/help-users' do
             protected!
-            haml :help_users
+            haml :'help/users'
           end
 
           app.get '/help-user/:orcid' do
@@ -285,7 +285,7 @@ module Sinatra
                 specimen_pager(occurrence_ids)
               end
 
-              haml :help_user
+              haml :'help/user'
             else
               status 404
               haml :oops
@@ -375,7 +375,7 @@ module Sinatra
                   number_claims_given: @viewed_user.claims_given.count
                 }
                 @country_counts = @viewed_user.country_counts
-                haml :user
+                haml :'public/overview'
               else
                 status 404
                 haml :oops
@@ -398,7 +398,7 @@ module Sinatra
                 }
                 @families_identified = @viewed_user.identified_families
                 @families_recorded = @viewed_user.recorded_families
-                haml :user_specialties
+                haml :'public/specialties'
               else
                 status 404
                 haml :oops
@@ -417,7 +417,7 @@ module Sinatra
                 @results = @viewed_user.visible_occurrences
                                        .paginate(page: params[:page])
 
-                haml :user_specimens
+                haml :'public/specimens'
               else
                 status 404
                 haml :oops
