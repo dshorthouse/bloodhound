@@ -1,0 +1,11 @@
+%ul{class: "nav nav-tabs"}
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "profile" ? " active" : nil}", href: "/profile"} Overview
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "specimens" ? " active" : nil}", href: "/profile/specimens"} Your Claimed Specimens
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "candidates" ? " active" : nil}", href: "/profile/candidates"} Your Unclaimed Specimens
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "ignored" ? " active" : nil}", href: "/profile/ignored"} Ignored Specimens
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "support" ? " active" : nil}", href: "/profile/support"} Help Received

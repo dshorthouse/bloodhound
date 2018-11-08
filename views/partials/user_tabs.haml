@@ -1,0 +1,7 @@
+%ul{class: "nav nav-tabs"}
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "overview" ? " active" : nil}", href: "/#{@viewed_user[:orcid]}"} Overview
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "specialties" ? " active" : nil}", href: "/#{@viewed_user.orcid}/specialties"} Specialties
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "specimens" ? " active" : nil}", href: "/#{@viewed_user.orcid}/specimens"} Specimens

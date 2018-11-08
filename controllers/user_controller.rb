@@ -243,21 +243,21 @@ module Sinatra
               @page = (params[:page] || 1).to_i
               @search_size = (params[:per] || 25).to_i
 
-              @help_user = User.find_by_orcid(params[:orcid])
+              @viewed_user = User.find_by_orcid(params[:orcid])
               current_user = User.find(@user[:id])
 
-              if @help_user == current_user
+              if @viewed_user == current_user
                 redirect "/profile/candidates"
               end
 
-              if @help_user.family.nil?
+              if @viewed_user.family.nil?
                 @results = []
                 @total = nil
               else
-                agents = search_agents(@help_user.family, @help_user.given)
+                agents = search_agents(@viewed_user.family, @viewed_user.given)
 
-                if !@help_user.other_names.nil?
-                  @help_user.other_names.split("|").each do |other_name|
+                if !@viewed_user.other_names.nil?
+                  @viewed_user.other_names.split("|").each do |other_name|
                     parsed = Namae.parse other_name.gsub(/\./, ".\s")
                     name = DwcAgent.clean(parsed[0])
                     family = !name[:family].nil? ? name[:family] : ""
@@ -279,7 +279,7 @@ module Sinatra
                       id_scores << { id: id, score: 1 } #TODO: how to more effectively use the edge weights here?
                     end
                   end
-                  occurrence_ids = occurrences_by_score(id_scores, @help_user.id)
+                  occurrence_ids = occurrences_by_score(id_scores, @viewed_user.id)
                 end
 
                 specimen_pager(occurrence_ids)

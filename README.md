@@ -148,10 +148,12 @@ If Elasticsearch throws an error on the above, you may need to execute the follo
       '
 ## Neo4j Dump & Restore
 
-Notes to self because I never remember how to dump from my laptop and reload onto the server:
+Notes to self because I never remember how to dump from my laptop and reload onto the server.
 
       neo4j-admin dump --database=<database> --to=<destination-path>
       neo4j-admin load --from=<archive-path> --database=<database> [--force]
+
+Replacing the database through load requires that the database first be deleted [usually found in /var/lib/neo4j/data/databases on linux machine] and then its permissions be recursively set for the neo4j:adm user:group.
 
 ## License
 

@@ -1,0 +1,28 @@
+%div{class:"jumbotron jumbotron-fluid"}
+  %div{class:"container-fluid"}
+
+    %h2{class:"display-4 text-center"}= @viewed_user.fullname
+
+    %div{class:"row justify-content-center text-center"}
+      %div{class:"col-sm-12 col-md-10 col-xl-8"}
+        %div.row
+          - if !@viewed_user[:other_names].blank?
+            %dl{class: "col"}
+              %dt Also known as
+              %dd #{@viewed_user[:other_names].split("|").join("; ")}
+          - if !@viewed_user[:country].blank?
+            %dl{class: "col"}
+              %dt Country
+              %dd #{@viewed_user[:country]}
+
+    %div{class: "orcid text-center"}
+      %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"}
+        %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+      %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"} https://orcid.org/#{@viewed_user[:orcid]}
+
+    - if locals[:search]
+      %div{class: "row justify-content-center"}
+        %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline helpers"}
+          %div{class: "form-group"}
+            %label{for: "typeahead", class:"font-weight-bold", style:"margin-right:1rem"}= "Search Another User"
+            %input{class: "typeahead", id: "typeahead-user", type: :text, name: "q", placeholder: "#{@viewed_user.fullname_reverse}", value: "#{params[:q]}", size:"30"}

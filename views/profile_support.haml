@@ -9,52 +9,9 @@
     });
 
 -content_for :jumbotron do
-  %div{class:"jumbotron jumbotron-fluid"}
-    %div{class: "container-fluid"}
+  = haml :'partials/profile_jumbotron', layout: false
 
-      %h2{class:"display-4 text-center"}= @user[:fullname]
-
-      %div{class: "row justify-content-center text-center"}
-        %div{class: "col-sm-12 col-md-10 col-xl-8"}
-          %div.row
-            - if !@user[:other_names].blank?
-              %dl{class: "col"}
-                %dt Also known as
-                %dd #{@user[:other_names].split("|").join("; ")}
-            - if !@user[:country].blank?
-              %dl{class: "col"}
-                %dt Country
-                %dd #{@user[:country]}
-          %div.row
-            %div{class: "col orcid text-center"}
-              %a{href: "https://orcid.org/#{@user[:orcid]}"}
-                %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-              %a{href: "https://orcid.org/#{@user[:orcid]}"} https://orcid.org/#{@user[:orcid]}
-
-          %div.row
-            %div{id: "profile-buttons", class: "col text-center"}
-              %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: is_public?, class:"btn-claim" }
-              - if is_public?
-                %a{href: "/#{@user[:orcid]}", role: "button", class:"btn btn-sm btn-outline-success", "target": "_blank"} Public Profile
-              %a{ href:"/orcid-refresh.json?user_id=#{@user[:id]}", role: "button", class:"btn btn-sm btn-outline-success orcid-refresh"} Refresh ORCID Data
-              %a{ href:"/help-users", role: "button", class:"btn btn-sm btn-outline-success"} Help Other Users
-
-          %div{class:"alert row alert-success alert-dismissible fade show", role: "alert"}
-            ORCID Data was refreshed.
-            %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
-              %span{"aria-hidden":"true"} &times;
-
-%ul{class: "nav nav-tabs"}
-  %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/profile"} Overview
-  %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/profile/specimens"} Your Claimed Specimens
-  %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/profile/candidates"} Your Unclaimed Specimens
-  %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/profile/ignored"} Ignored Specimens
-  %li{class: "nav-item"}
-    %a{class: "nav-link active", href: "/profile/support"} Help Received
+= haml :'partials/profile_tabs', layout: false, locals: { active_page: "support" }
 
 - if @results.empty?
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
@@ -74,16 +31,7 @@
     %thead{class: "thead-light"}
       %tr
         %th{scope: "col"}
-          %div.bulk-label Bulk Reassignment
-          %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
-            %label{class:"btn btn-choice btn-dark"}
-              %input{type:"radio", class:"action-radio", name:"selection-all", "data-action": "recorded", autocomplete:"off"}
-                %img{src:"/images/net.png", alt:"Collected All", title:"Collected All", width:18}
-            %label{class:"btn  btn-choice btn-dark"}
-              %input{type:"radio", class:"action-radio", name:"selection-all", "data-action": "identified", autocomplete:"off"}
-                %img{src:"/images/microscope.png", alt:"Identified All", title: "Identified All",width:18}
-            %label{class:"btn  btn-choice btn-dark"}
-              %input{type:"radio", class:"action-radio", name:"selection-all", "data-action": "recorded,identified", autocomplete:"off"} Both
+          = haml :'partials/bulk_selector_top', layout: false
         %th{scope: "col"} Scientific Name
         %th{scope: "col"} Collected By
         %th{scope: "col"} Identified By
@@ -100,15 +48,7 @@
         - o = uo.occurrence
         %tr
           %td
-            %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
-              %label{class:"btn btn-choice btn-light #{active_class(uo.action, "recorded")}"}
-                %input{type:"radio", class:"action-radio", name:"selection-#{uo.user_occurrence_id}", "data-occurrence-id":"#{uo.user_occurrence_id}", "data-action": "recorded", autocomplete:"off"}
-                  %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
-              %label{class:"btn  btn-choice btn-light #{active_class(uo.action, "identified")}"}
-                %input{type:"radio", class:"action-radio", name:"selection-#{uo.user_occurrence_id}", "data-occurrence-id":"#{uo.user_occurrence_id}", "data-action": "identified", autocomplete:"off"}
-                  %img{src:"/images/microscope-unselected.png", alt:"Identified", title:"Identified", width:18}
-              %label{class:"btn  btn-choice btn-light #{active_class(uo.action, "recorded,identified")}"}
-                %input{type:"radio", class:"action-radio", name:"selection-#{uo.user_occurrence_id}", "data-occurrence-id":"#{uo.user_occurrence_id}", "data-action": "recorded,identified", autocomplete:"off"} Both
+            = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo }
           %td
             - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
             %a{href: "https://www.gbif.org/occurrence/#{o.gbifID}", target: "_blank" } #{scientific_name}
@@ -131,16 +71,7 @@
       %tfoot{class: "thead-light"}
         %tr
           %th{scope: "col"}
-            %div{class:"btn-group btn-group-toggle", "data-toggle":"buttons"}
-              %label{class:"btn btn-choice btn-dark"}
-                %input{type:"radio", class:"action-radio", name:"selection-all", "data-action": "recorded", autocomplete:"off"}
-                  %img{src:"/images/net.png", alt:"Collected All", title:"Collected All", width:18}
-              %label{class:"btn  btn-choice btn-dark"}
-                %input{type:"radio", class:"action-radio", name:"selection-all", "data-action": "identified", autocomplete:"off"}
-                  %img{src:"/images/microscope.png", alt:"Identified All", title: "Identified All",width:18}
-              %label{class:"btn  btn-choice btn-dark"}
-                %input{type:"radio", class:"action-radio", name:"selection-all", "data-action": "recorded,identified", autocomplete:"off"} Both
-            %div.bulk-label Bulk Reassignment
+            = haml :'partials/bulk_selector_bottom', layout: false
           %th{scope: "col"} Scientific Name
           %th{scope: "col"} Collected By
           %th{scope: "col"} Identified By
@@ -153,12 +84,7 @@
           %th{scope: "col"}
 
   - if @total >= 25
-    %div{class: "btn-group", style:"margin-bottom:3px"}
-      %button{class:"btn btn-light btn-sm dropdown-toggle", type:"button", "data-toggle":"dropdown", "aria-haspopup":"true", "aria-expanded":"false"} Per page
-      %div{class:"dropdown-menu", "aria-labelledby":"dropdownMenuButton"}
-        %a{href: "?page=#{@page}&per=25", class: "dropdown-item"} 25
-        %a{href: "?page=#{@page}&per=100", class: "dropdown-item"} 100
-        %a{href: "?page=#{@page}&per=250", class: "dropdown-item"} 250
+    = haml :'partials/page_size', layout: false
 
   = will_paginate @results, { class: "pagination" }
 

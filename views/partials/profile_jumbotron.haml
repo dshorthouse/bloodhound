@@ -1,0 +1,34 @@
+%div{class:"jumbotron jumbotron-fluid"}
+  %div{class: "container-fluid"}
+
+    %h2{class:"display-4 text-center"}= @user[:fullname]
+
+    %div{class: "row justify-content-center text-center"}
+      %div{class: "col-sm-12 col-md-10 col-xl-8"}
+        %div.row
+          - if !@user[:other_names].blank?
+            %dl{class: "col"}
+              %dt Also known as
+              %dd #{@user[:other_names].split("|").join("; ")}
+          - if !@user[:country].blank?
+            %dl{class: "col"}
+              %dt Country
+              %dd #{@user[:country]}
+        %div.row
+          %div{class: "col orcid text-center"}
+            %a{href: "https://orcid.org/#{@user[:orcid]}"}
+              %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+            %a{href: "https://orcid.org/#{@user[:orcid]}"} https://orcid.org/#{@user[:orcid]}
+
+        %div.row
+          %div{id: "profile-buttons", class: "col text-center"}
+            %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: is_public?, class:"btn-claim" }
+            - if is_public?
+              %a{href: "/#{@user[:orcid]}", role: "button", class:"btn btn-sm btn-outline-success", "target": "_blank"} Public Profile
+            %a{ href:"/orcid-refresh.json?user_id=#{@user[:id]}", role: "button", class:"btn btn-sm btn-outline-success orcid-refresh"} Refresh ORCID Data
+            %a{ href:"/help-users", role: "button", class:"btn btn-sm btn-outline-success"} Help Other Users
+
+        %div{class:"alert row alert-success alert-dismissible fade show", role: "alert"}
+          ORCID Data was refreshed.
+          %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+            %span{"aria-hidden":"true"} &times;
