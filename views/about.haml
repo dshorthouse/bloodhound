@@ -29,12 +29,12 @@
   %a{href: "https://github.com/dshorthouse/dwc_agent" } dwc_agent ruby gem 
   now available as a stand-alone utility. The similarity of people names is scored using a graph theory method outlined by 
   %a{href: "https://orcid.org/0000-0002-7101-9767"} R.D.M. Page 
-  and incorporated as a method in the dwc_agent gem. These scores are used to help expand the search for users' candidate specimens, presented in order of greatest to least probable. If you declared alternate names in your ORCID account such as a maiden name, these are also used to search for candidate specimen records. Processing 100M specimen records is a scalable, repeatable process and requires approximately 2 hours on a laptop with 16GB of RAM.
+  and incorporated as a method in the dwc_agent gem. These scores are used to help expand the search for users' candidate specimens, presented in order of greatest to least probable. If you declared alternate names in your ORCID account such as a maiden name, these are also used to search for candidate specimen records. Fully processing 100M specimen records is a scalable, repeatable process and requires approximately 2 hours on a laptop with 16GB of RAM.
 
 %h3 Rationale
 
 %p
-  Despite the world-wide importance of natural history collections, most are at risk because they are critically underfunded or undervalued. A significant contributing factor for this apparent neglect is the lack of a professional reward system; one that articulates and quantifies the breadth and depth of activities and expertise required to collect and identify specimens, maintain them, digitize their labels, mobilize the data, and enhance these data as errors and omissions are identified by stakeholders. See thoughts by 
+  Despite the world-wide importance of natural history collections, most are at risk because they are critically underfunded or undervalued. A significant contributing factor for this apparent neglect is the lack of a professional reward system that quantifies and illustrates the breadth and depth of expertise required to collect and identify specimens, maintain them, digitize their labels, mobilize the data, and enhance these data as errors and omissions are identified by stakeholders. See thoughts by 
   %a{href: "https://doi.org/10.1525/bio.2011.61.8.8"}
     McDade
     %em et al.
@@ -48,11 +48,11 @@
   %a{href: "https://www.gbif.org/document/83029/gbif-implementation-plan-2017-2021-and-annual-work-programme-2017" }Implementation Plan for 2017-2021 
   and Annual Work Programme states, "1.a.i: Develop mechanisms to support and reflect the skills, expertise and experience of individual and organizational contributions to the GBIF network, including revision of identity management system and integration of ORCID identifiers".
   %a{href: "https://www.orcid.org"} ORCID 
-  is the organization that is best positioned to capture and resolve the identity of people in academia and professional settings. However, a bottleneck that prevents the full execution of GBIF's plan is a legacy of seemingly intractable, text-based content shared from natural history museums that ambiguously record people or organizations implicated in specimen data, none of which include pre-determined links to ORCID identifiers. Typical content shared under the Darwin Core terms 
+  is the organization that is best positioned to capture and resolve the identity of people in academia and professional settings. However, a bottleneck that prevents the full execution of GBIF's plan is a legacy of intractable, text-based content shared from natural history museums that ambiguously record people or organizations implicated in specimen data, none of which include pre-determined links to ORCID identifiers. Typical content shared under the Darwin Core terms 
   %a{href: "http://rs.tdwg.org/dwc/terms/#recordedBy"} recordedBy 
   (collector) and 
   %a{href: "http://rs.tdwg.org/dwc/terms/#identifidBy"} identifiedBy 
-  (determiners) is unstructured and highly variable. They may include ordered or unorderd people names, suffer from insensitivity to cultural preferences, additionally express full or abbreviated names of organizations, or other annotations that collectively make extraction of people names from these fields extremely difficult.
+  (determiners) is unstructured and variable. They may include variously ordered or unorderd people names, suffer from insensitivity to cultural preferences, additionally express full or abbreviated names of organizations, or other annotations that collectively make extraction of people names from these fields difficult. The full solution requires multiple approaches. A progressive approach would be to associate ORCID identifiers with specimens when these are digitized. Another, retrospective approach is to engage users by giving them the freedom to declare the actions they took on previously digitized specimens.
 
 %h3 Access to Data
 %p Bloodhound data are exposed as CSV downloads or JSON-LD documents on public user profile pages. Individual occurrence records are exposed as JSON-LD documents.
