@@ -15,5 +15,4 @@ class UserOccurrence < ActiveRecord::Base
      self.updated = Time.now
    end
 
-
 end
