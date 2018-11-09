@@ -15,6 +15,10 @@ OptionParser.new do |opts|
     options[:poll] = true
   end
 
+  opts.on("-a", "--add [ORCID]", String, "Add user with an ORCID") do |orcid|
+    options[:orcid] = orcid
+  end
+
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
@@ -31,4 +35,10 @@ end
 if options[:poll]
   search = Bloodhound::OrcidSearch.new
   search.populate_new_users
+end
+
+if options[:orcid]
+  u = User.find_or_create_by({ orcid: options[:orcid] })
+  u.update_orcid_profile
+  puts "#{u.fullname_reverse} created".green
 end
