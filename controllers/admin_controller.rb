@@ -26,6 +26,7 @@ module Sinatra
               end
 
               @results = @admin_user.visible_occurrences
+                                    .order("occurrences.typeStatus desc")
                                     .paginate(page: @page, per_page: search_size)
               haml :'admin/profile'
             else
