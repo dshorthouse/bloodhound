@@ -66,6 +66,7 @@ module Sinatra
             end
 
             @results = user.visible_occurrences
+                           .order("occurrences.typeStatus desc")
                            .paginate(page: @page, per_page: search_size)
             haml :'profile/specimens'
           end
@@ -415,6 +416,7 @@ module Sinatra
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
                 @results = @viewed_user.visible_occurrences
+                                       .order("occurrences.typeStatus desc")
                                        .paginate(page: params[:page])
 
                 haml :'public/specimens'

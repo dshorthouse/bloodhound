@@ -181,14 +181,14 @@ module Sinatra
         id_scores.sort{|a,b| b[:score] <=> a[:score]}
                  .each{|a| scores[a[:id]] = a[:score] }
 
-        recorded = OccurrenceRecorder.where(agent_id: scores.keys)
+        recorded = OccurrenceRecorder.includes(:occurrence).where(agent_id: scores.keys)
                                      .where.not(occurrence_id: linked_ids)
-                                     .pluck(:agent_id, :occurrence_id)
-        determined = OccurrenceDeterminer.where(agent_id: scores.keys)
+                                     .pluck(:agent_id, :typeStatus, :occurrence_id)
+        determined = OccurrenceDeterminer.includes(:occurrence).where(agent_id: scores.keys)
                                          .where.not(occurrence_id: linked_ids)
-                                         .pluck(:agent_id, :occurrence_id)
+                                         .pluck(:agent_id, :typeStatus, :occurrence_id)
         (recorded + determined).uniq
-                               .sort_by{|o| scores.fetch(o[0])}
+                               .sort_by{|o| [ scores.fetch(o[0]), o[1].nil? ? "" : o[1] ] }
                                .reverse
                                .map(&:last)
       end
