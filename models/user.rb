@@ -175,6 +175,13 @@ class User < ActiveRecord::Base
     data
   end
 
+  def recorded_with
+    User.includes(:user_occurrences)
+        .where(user_occurrences: { occurrence_id: recordings.pluck(:occurrence_id) })
+        .where.not(user_occurrences: { user_id: id })
+        .uniq
+  end
+
   def update_orcid_profile
     response = RestClient::Request.execute(
       method: :get,
