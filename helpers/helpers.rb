@@ -217,7 +217,7 @@ module Sinatra
       end
 
       def admin_roster
-        @results = User.order(visited: :desc)
+        @results = User.order(visited: :desc, family: :asc)
                        .paginate :page => params[:page]
       end
 
