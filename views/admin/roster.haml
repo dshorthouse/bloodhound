@@ -34,7 +34,11 @@
           %a{href: "/admin/user/#{u.orcid}"} #{u.fullname_reverse}
         %td #{u.country}
         %td #{u.visited}
-        %td #{u.is_public}
+        %td
+          - if u.is_public?
+            %span{class: "text-success"} #{u.is_public}
+          - else
+            #{u.is_public}
         %td
           %a{href: "https://orcid.org/#{u.orcid}"}
             %img{src: "/images/orcid_16x16.png", alt:"ORCID iD"}
