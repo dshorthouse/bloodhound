@@ -4,6 +4,10 @@ a, .page-link{
 a:hover, .page-link:hover{
   color:#773721;
 }
+.col-3{
+  padding-right:5px;
+  padding-left:5px;
+}
 #main{
   padding-top:1rem;
 }
