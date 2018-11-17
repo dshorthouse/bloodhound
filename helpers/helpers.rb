@@ -170,7 +170,7 @@ module Sinatra
                        .distinct
                        .where(is_public: true)
                        .where('user_occurrences.id > 0')
-                       .limit(9)
+                       .limit(3)
       end
 
       def occurrences_by_score(id_scores, user_id = @user[:id])

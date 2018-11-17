@@ -6,26 +6,28 @@
     %div{class: "container-fluid"}
       %h2 Public Profiles
 
-%div{class:"container"}
-- @results.in_groups_of(3).each do |group|
-  %div{class: "row"}
-    - group.each do |u|
-      %div{class: "col-sm"}
-        - if !u.nil?
-          - if u.top_family_identified
-            - id_statement = "has identified #{u.top_family_identified}"
-          - if u.top_family_recorded
-            - recorded_statement = "has collected #{u.top_family_recorded}"
-          - statement = nil
-          - if u.top_family_identified || u.top_family_recorded
-            - statement = "#{u.given} " + [id_statement,recorded_statement].compact.join(" and ")
-          %div{class: "card", style:"margin:20px"}
-            %h5{class: "card-header"} #{u.fullname_reverse}
-            %div{class: "card-body"}
-              %div{class: "row"}
-                %div{class: "col-sm small text-left"} #{number_with_delimiter(u.all_occurrences_count)} specimens
-                %div{class: "col-sm small text-right"} #{u.country}
-              %p{class:"card-text",style:"margin-top:5px;"} #{statement}
-              %a{href:"/#{u.orcid}", class:"btn btn-success"} View
+%div{class:"container-fluid"}
+  - @results.in_groups_of(3).each do |group|
+    %div{class: "row"}
+      - group.each do |u|
+        %div{class: "col-sm"}
+          - if !u.nil?
+            - if u.top_family_identified
+              - id_statement = "has identified #{u.top_family_identified}"
+            - if u.top_family_recorded
+              - recorded_statement = "has collected #{u.top_family_recorded}"
+            - statement = nil
+            - if u.top_family_identified || u.top_family_recorded
+              - statement = "#{u.given} " + [id_statement,recorded_statement].compact.join(" and ")
+            %div{class: "card", style:"margin:20px"}
+              %h5{class: "card-header"}
+                %a{href: "/#{u.orcid}"} #{u.fullname_reverse}
+              %div{class: "card-body"}
+                %div{class: "row"}
+                  %div{class: "col-sm small text-left text-muted"} #{u.country}
+                  %div{class: "col-sm small text-right text-muted"}
+                    %span{class:"badge badge-success"} #{number_with_delimiter(u.all_occurrences_count)}
+                    specimens
+                %p{class:"card-text",style:"margin-top:5px;"} #{statement}
 
-= will_paginate @results, { class: "pagination" }
+  = will_paginate @results, { class: "pagination" }

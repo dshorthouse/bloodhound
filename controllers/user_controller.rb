@@ -43,12 +43,7 @@ module Sinatra
               number_claims_given: user.claims_given.count
             }
             @helped = user.helped_counts.map{ |u,v| 
-              helped_user = User.find(u)
-              { 
-                name: helped_user.fullname_reverse,
-                orcid: helped_user.orcid,
-                count: v
-              }
+              { user: User.find(u), count: v }
             }
             haml :'profile/overview'
           end

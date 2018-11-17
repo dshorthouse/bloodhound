@@ -22,13 +22,18 @@
 - if @total[:number_helped] > 0
   %h2 Users Helped
 
-  %div{class: "container-fluid"}
+  - @helped.in_groups_of(3).each do |group|
     %div{class: "row"}
-      %div{class: "col"}
-        %ul{class: "list-group"}
-          - @helped.each do |u|
-            %li{class: "list-group-item d-flex justify-content-between align-items-center"}
-              %a{href: "/help-user/#{u[:orcid]}"} #{u[:name]}
-              %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(u[:count])}
-      %div{class: "col"}
+      - group.each do |u|
+        %div{class: "col-sm"}
+          - if !u.nil?
+            %div{class: "card", style:"margin:20px"}
+              %h5{class: "card-header"}
+                %a{href: "/help-user/#{u[:orcid]}"} #{u[:user].fullname_reverse}
+              %div{class: "card-body"}
+                %div{class: "row"}
+                  %div{class: "col-sm small text-left text-muted"} #{u[:user].country}
+                  %div{class: "col-sm small text-right text-muted"}
+                    %span{class:"badge badge-success"} #{number_with_delimiter(u[:count])}
+                    claims
   
