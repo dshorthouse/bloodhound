@@ -29,7 +29,7 @@
           - if !u.nil?
             %div{class: "card", style:"margin:20px"}
               %h5{class: "card-header"}
-                %a{href: "/help-user/#{u[:orcid]}"} #{u[:user].fullname_reverse}
+                %a{href: "/help-user/#{u[:user].orcid}"} #{u[:user].fullname_reverse}
               %div{class: "card-body"}
                 %div{class: "row"}
                   %div{class: "col-sm small text-left text-muted"} #{u[:user].country}
