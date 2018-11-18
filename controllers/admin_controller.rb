@@ -263,6 +263,7 @@ module Sinatra
             content_type "application/json"
             user = User.find(params[:user_id].to_i)
             user.update_orcid_profile
+            cache_clear "fragments/#{user.orcid}"
             { message: "ok" }.to_json
           end
 
