@@ -9,6 +9,10 @@ class BLOODHOUND < Sinatra::Base
   register Sinatra::ConfigFile
   config_file File.join(root, 'config.yml')
 
+  register Sinatra::Cacher
+  register Sinatra::OutputBuffer
+  set :cache_enabled_in, [:development, :production]
+
   use Rack::Session::Cookie, :key => 'rack.session',
                              :path => '/',
                              :secret => settings.orcid_key

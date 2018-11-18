@@ -21,23 +21,6 @@ module Sinatra
         end
       end
 
-      def partial(template, *args)
-        byebug
-        options = args.last.is_a?(Hash) ? args.pop : { }
-        options.merge!(:layout => false)
-        if collection = options.delete(:collection) then
-            haml_concat(collection.inject([]) do |buffer, member|
-              buffer << haml(template, options.merge(
-                                      :layout => false,
-                                      :locals => {template.to_sym => member}
-                                    )
-                         )
-          end.join("\n"))
-        else
-          haml_concat(haml(template, options))
-        end
-      end
-
       def update_session
         user = User.find(@user[:id]).reload
         user_hash = user.as_json.symbolize_keys

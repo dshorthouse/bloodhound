@@ -42,6 +42,8 @@ require 'dwc_agent'
 require 'iso_country_codes'
 require 'neo4j'
 require 'colorize'
+require 'sinatra/cacher'
+require 'sinatra/outputbuffer'
 require 'byebug'
 
 register Sinatra::ConfigFile

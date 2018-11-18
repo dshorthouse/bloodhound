@@ -45,6 +45,7 @@ module Sinatra
             @helped = user.helped_counts.map{ |u,v| 
               { user: User.find(u), count: v }
             }
+            cache_clear "fragments/#{user.orcid}"
             haml :'profile/overview'
           end
 
@@ -294,6 +295,7 @@ module Sinatra
             user = User.find(@user[:id])
             user.update_orcid_profile
             update_session
+            cache_clear "fragments/#{user.orcid}"
             { message: "ok" }.to_json
           end
 

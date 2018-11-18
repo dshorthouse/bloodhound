@@ -28,6 +28,8 @@ gem 'dwc_agent'
 gem 'iso_country_codes'
 gem 'neo4j'
 gem 'colorize'
+gem 'sinatra-cacher'
+gem 'sinatra-outputbuffer'
 
 group :production do
 end
