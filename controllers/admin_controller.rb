@@ -39,37 +39,45 @@ module Sinatra
           app.get '/admin/user/:orcid/specimens.json' do
             admin_protected!
             if params[:orcid].is_orcid?
-              content_type "application/ld+json"
-              @viewed_user = User.find_by_orcid(params[:orcid])
-              dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
-                                          .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
-              {
-                "@context": {
-                  "@vocab": "http://schema.org/",
-                  identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
-                  recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
-                  Occurrence: "http://rs.tdwg.org/dwc/terms/Occurrence"
-                }.merge(dwc_contexts),
-                "@type": "Person",
-                "@id": "https://orcid.org/#{@viewed_user.orcid}",
-                givenName: @viewed_user.given,
-                familyName: @viewed_user.family,
-                alternateName: @viewed_user.other_names.split("|"),
-                "@reverse": {
-                  "dwciri:identifiedBy": @viewed_user.identifications
-                                         .map{|o| {
-                                             "@type": "Occurrence",
-                                             "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
-                                           }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
-                                         },
-                  "dwciri:recordedBy": @viewed_user.recordings
-                                         .map{|o| {
-                                             "@type": "Occurrence",
-                                             "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
-                                           }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
-                                         }
-                }
-              }.to_json
+              begin
+                user = User.find_by_orcid(params[:orcid])
+                dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
+                                            .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
+                identified = []
+                recorded = []
+                user.identifications.find_each do |o|
+                  identified << {
+                    "@type": "Occurrence", "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
+                  }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
+                end
+                user.recordings.find_each do |o|
+                  recorded << {
+                    "@type": "Occurrence",
+                    "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
+                  }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
+                end
+
+                {
+                  "@context": {
+                    "@vocab": "http://schema.org/",
+                    identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
+                    recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
+                    Occurrence: "http://rs.tdwg.org/dwc/terms/Occurrence"
+                  }.merge(dwc_contexts),
+                  "@type": "Person",
+                  "@id": "https://orcid.org/#{user.orcid}",
+                  givenName: user.given,
+                  familyName: user.family,
+                  alternateName: user.other_names.split("|"),
+                  "@reverse": {
+                    identified: identified,
+                    recorded: recorded
+                  }
+                }.to_json
+              rescue
+                status 404
+                {}.to_json
+              end
             else
               status 404
               haml :oops
@@ -85,7 +93,7 @@ module Sinatra
               records = user.visible_occurrences
               CSV.generate do |csv|
                 csv << ["action"].concat(Occurrence.attribute_names)
-                records.each { |r| csv << [r.action].concat(r.occurrence.attributes.values) }
+                records.find_each { |r| csv << [r.action].concat(r.occurrence.attributes.values) }
               end
             else
               status 404
