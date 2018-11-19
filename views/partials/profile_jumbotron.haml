@@ -24,7 +24,7 @@
           %div{id: "profile-buttons", class: "col text-center"}
             %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: is_public?, class:"btn-claim" }
             - if is_public?
-              %a{href: "/#{@user[:orcid]}", role: "button", class:"btn btn-sm btn-outline-success", "target": "_blank"} Public Profile
+              %a{href: "/#{@user[:orcid]}", role: "button", class:"btn btn-sm btn-outline-success"} Public Profile
             %a{ href:"/orcid-refresh.json?user_id=#{@user[:id]}", role: "button", class:"btn btn-sm btn-outline-success orcid-refresh"} Refresh ORCID Data
             %a{ href:"/help-users", role: "button", class:"btn btn-sm btn-outline-success"} Help Other Users
 
