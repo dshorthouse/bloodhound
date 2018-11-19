@@ -60,8 +60,28 @@ class User < ActiveRecord::Base
     visible_occurrences.where(qry_identified)
   end
 
+  def identifications_enum
+    Enumerator.new do |y|
+      identifications.find_each do |o|
+        y << { "@type": "Occurrence",
+               "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
+             }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
+      end
+    end
+  end
+
   def recordings
     visible_occurrences.where(qry_recorded)
+  end
+
+  def recordings_enum
+    Enumerator.new do |y|
+      recordings.find_each do |o|
+        y << { "@type": "Occurrence",
+               "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
+             }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
+      end
+    end
   end
 
   def identifications_recordings

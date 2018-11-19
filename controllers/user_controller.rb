@@ -306,20 +306,6 @@ module Sinatra
                 user = User.find_by_orcid(params[:orcid])
                 dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
                                             .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
-                identified = []
-                recorded = []
-                user.identifications.find_each do |o|
-                  identified << {
-                    "@type": "Occurrence", "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
-                  }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
-                end
-                user.recordings.find_each do |o|
-                  recorded << {
-                    "@type": "Occurrence",
-                    "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
-                  }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
-                end
-
                 {
                   "@context": {
                     "@vocab": "http://schema.org/",
@@ -333,8 +319,8 @@ module Sinatra
                   familyName: user.family,
                   alternateName: user.other_names.split("|"),
                   "@reverse": {
-                    identified: identified,
-                    recorded: recorded
+                    identified: user.identifications_enum,
+                    recorded: user.recordings_enum
                   }
                 }.to_json
               rescue
