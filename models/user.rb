@@ -174,7 +174,7 @@ class User < ActiveRecord::Base
   end
 
   def claims_received
-    visible_occurrences.where.not(created_by: self)
+    visible_occurrences.where.not(created_by: self).order(created: :desc)
   end
 
   def helped_by
