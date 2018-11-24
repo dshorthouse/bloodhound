@@ -29,7 +29,7 @@
   %table{class:"table table-hover table-sm"}
     %thead{class: "thead-light"}
       %tr
-        %th{scope: "col"}
+        %th{scope: "col", class:"selector"}
           = haml :'partials/bulk_selector_top', layout: false, locals: { klass: "restore-ignored" }
         %th{scope: "col"} Scientific Name
         %th{scope: "col"} Collected By
@@ -44,7 +44,7 @@
       - @results.each do |uo|
         - o = uo.occurrence
         %tr
-          %td
+          %td{class: "selector"}
             = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo, klass: "restore-ignored" }
           %td
             - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
@@ -60,7 +60,7 @@
     - if @total >= 25
       %tfoot{class: "thead-light"}
         %tr
-          %th{scope: "col"}
+          %th{scope: "col", class:"selector"}
             = haml :'partials/bulk_selector_bottom', layout: false
           %th{scope: "col"} Scientific Name
           %th{scope: "col"} Collected By
