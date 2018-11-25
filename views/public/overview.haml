@@ -44,10 +44,22 @@
 = haml :'partials/user_tabs', layout: false, locals: { active_page: 'overview' }
 
 %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-  Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])} and collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])} from at least #{@country_counts.count} #{'country'.pluralize(@country_counts.count)} with at least #{@total[:number_recorded_with]} #{'colleague'.pluralize(@total[:number_recorded_with])}.
-  - if @total[:number_helped] > 0
-    Helped #{number_with_delimiter(@total[:number_helped])} #{'user'.pluralize(@total[:number_helped])} claim a total of #{number_with_delimiter(@total[:number_claims_given])} #{'specimen'.pluralize(@total[:number_claims_given])}.
+  - if @total[:number_recorded] == 0 && @total[:number_identified] == 0
+    #{@viewed_user.fullname} is still working on their claims.
+  - else 
+    - if @total[:number_identified] > 0
+      Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}.
+    - if @total[:number_recorded] > 0
+      = succeed "." do
+        Collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])}
+        - if @country_counts.count > 0 
+          from at least #{@country_counts.count} #{'country'.pluralize(@country_counts.count)}
+        - if @total[:number_recorded_with] > 0
+          with at least #{@total[:number_recorded_with]} #{'colleague'.pluralize(@total[:number_recorded_with])}
+    - if @total[:number_helped] > 0
+      Helped #{number_with_delimiter(@total[:number_helped])} #{'user'.pluralize(@total[:number_helped])} claim a total of #{number_with_delimiter(@total[:number_claims_given])} #{'specimen'.pluralize(@total[:number_claims_given])}.
 
-%div{class:"row"}
-  %div{class:"col-sm-12 col-md-10 col-xl-8"}
-    #world-map{style:"width: 100%; height: 350px"}
+- if @total[:number_recorded] > 0
+  %div{class:"row"}
+    %div{class:"col-sm-12 col-md-10 col-xl-8"}
+      #world-map{style:"width: 100%; height: 350px"}
