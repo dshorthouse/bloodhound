@@ -121,12 +121,15 @@ module Sinatra
 
                 if !@admin_user.other_names.nil?
                   @admin_user.other_names.split("|").each do |other_name|
-                    parsed = Namae.parse other_name.gsub(/\./, ".\s")
-                    name = DwcAgent.clean(parsed[0])
-                    family = !name[:family].nil? ? name[:family] : ""
-                    given = !name[:given].nil? ? name[:given] : ""
-                    if !family.blank?
-                      agents.concat search_agents(family, given)
+                    begin
+                      parsed = Namae.parse other_name.gsub(/\./, ".\s")
+                      name = DwcAgent.clean(parsed[0])
+                      family = !name[:family].nil? ? name[:family] : ""
+                      given = !name[:given].nil? ? name[:given] : ""
+                      if !family.blank?
+                        agents.concat search_agents(family, given)
+                      end
+                    rescue
                     end
                   end
                 end
