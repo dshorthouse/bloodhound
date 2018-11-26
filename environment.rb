@@ -44,6 +44,7 @@ require 'neo4j'
 require 'colorize'
 require 'sinatra/cacher'
 require 'sinatra/outputbuffer'
+require 'ruby-progressbar'
 require 'byebug'
 
 register Sinatra::ConfigFile

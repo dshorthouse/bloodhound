@@ -30,6 +30,7 @@ gem 'neo4j'
 gem 'colorize'
 gem 'sinatra-cacher'
 gem 'sinatra-outputbuffer'
+gem 'ruby-progressbar'
 
 group :production do
 end

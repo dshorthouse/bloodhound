@@ -9,6 +9,14 @@ class UserOccurrence < ActiveRecord::Base
 
    alias_attribute :user_occurrence_id, :id
 
+   def recorded?
+     action.include? "recorded"
+   end
+
+   def identified?
+     action.include? "identified"
+   end
+
    private
 
    def set_update_time

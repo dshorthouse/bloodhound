@@ -164,6 +164,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
+    ruby-progressbar (1.10.0)
     ruby_dig (0.0.2)
     sanitize (5.0.0)
       crass (~> 1.0.2)
@@ -233,6 +234,7 @@ DEPENDENCIES
   require_all
   rest-client
   rspec
+  ruby-progressbar
   sanitize
   sidekiq
   sinatra
