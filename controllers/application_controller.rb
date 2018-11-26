@@ -17,6 +17,8 @@ module Sinatra
           end
 
           app.get '/about' do
+            file = File.join(root, "public", "data", "bloodhound-public-claims.gz")
+            @compressed_file_size = (File.size(file).to_f / 2**20).round(2)
             haml :about
           end
 

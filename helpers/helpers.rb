@@ -15,6 +15,10 @@ module Sinatra
         @base_url ||= "#{request.env['rack.url_scheme']}://#{request.env['HTTP_HOST']}"
       end
 
+      def root
+        Sinatra::Application.settings.root
+      end
+
       def set_session
         if session[:omniauth]
           @user = session[:omniauth]

@@ -84,7 +84,9 @@
 %div{class: "bd-callout bd-callout-info"}
   %h5 All Claims from Public Accounts
   %div
-    %a{href: "/data/bloodhound-public-claims.gz"} Download Daily build
+    Daily build,
+    %a{href: "/data/bloodhound-public-claims.gz"} bloodhound-public-claims.gz
+    (#{@compressed_file_size} MB)
   %p
     %small{class:"text-muted"}
       Where the above gzipped csv includes a header, "Subject, Predicate, Object" and rows are expressed as, "https://gbif.org/occurrence/1801358422, http://rs.tdwg.org/dwc/iri/identifiedBy, https://orcid.org/0000-0001-9008-0611"
