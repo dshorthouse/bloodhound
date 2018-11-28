@@ -76,6 +76,16 @@ module Sinatra
             end
           end
 
+          app.get '/organizations' do
+            organizations
+            haml :'organizations/organizations'
+          end
+
+          app.get '/organization/:id' do
+            organization
+            haml :'organizations/organization'
+          end
+
           app.get '/roster' do
             roster
             haml :roster

@@ -208,6 +208,18 @@ module Sinatra
                        .paginate :page => params[:page]
       end
 
+      def organizations
+        @results = Organization.active_user_organizations
+                               .order(:name)
+                               .paginate :page => params[:page]
+      end
+
+      def organization
+        @organization = Organization.find_by(ringgold: params[:id])
+        @results = @organization.public_users.order(:family)
+                                .paginate :page => params[:page]
+      end
+
       def build_name_query(search)
         parsed = Namae.parse search
         name = DwcAgent.clean(parsed[0])

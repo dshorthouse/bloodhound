@@ -4,9 +4,12 @@ class User < ActiveRecord::Base
   has_many :claims, foreign_key: :created_by, class_name: "UserOccurrence"
   has_many :claimed_occurrences, through: :claims, source: :occurrence
 
+  has_many :user_organizations
+  has_many :organizations, through: :user_organizations, source: :organization
+
   before_update :set_update_time
 
-  after_create :add_search
+  after_create :add_search, :update_orcid_profile
   after_update :update_search
   after_destroy :remove_search
 
@@ -219,6 +222,34 @@ class User < ActiveRecord::Base
     other_names = data[:person][:"other-names"][:"other-name"].map{|n| n[:content]}.join("|") rescue nil
     country_code = data[:person][:addresses][:address][0][:country][:value] rescue nil
     country = IsoCountryCodes.find(country_code).name rescue nil
+    UserOrganization.where(user_id: id).destroy_all
+    data[:"activities-summary"][:employments][:"employment-summary"].each do |employment|
+      ringgold = employment[:organization][:"disambiguated-organization"][:"disambiguated-organization-identifier"].to_i rescue nil
+      next if !ringgold || ringgold == 0
+      name = employment[:organization][:name]
+      address = employment[:organization][:address].values.compact.join(", ") rescue nil
+      start_year = employment[:"start-date"][:year][:value].to_i rescue nil
+      start_month = employment[:"start-date"][:month][:value].to_i rescue nil
+      start_day = employment[:"start-date"][:day][:value].to_i rescue nil
+      end_year = employment[:"end-date"][:year][:value].to_i rescue nil
+      end_month = employment[:"end-date"][:month][:value].to_i rescue nil
+      end_day = employment[:"end-date"][:day][:value].to_i rescue nil
+      organization = Organization.create_with(
+                       ringgold: ringgold,
+                       name: name,
+                       address: address
+                     ).find_or_create_by(ringgold: ringgold)
+      UserOrganization.create({
+        user_id: id,
+        organization_id: organization.id,
+        start_year: start_year,
+        start_month: start_month,
+        start_day: start_day,
+        end_year: end_year,
+        end_month: end_month,
+        end_day: end_day
+      })
+    end
     update({
       family: family,
       given: given,

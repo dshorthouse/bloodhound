@@ -1,0 +1,27 @@
+-content_for :title do
+  Bloodhound: Organizations
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid"}
+    %div{class: "container-fluid"}
+      %h2 Organizations
+
+%div{class:"container-fluid"}
+  - @results.in_groups_of(3).each do |group|
+    %div{class: "row"}
+      - group.each do |o|
+        %div{class: "col-sm"}
+          - if !o.nil?
+            %div{class: "card", style:"margin:20px"}
+              %h5{class: "card-header"}
+                %a{href: "/organization/#{o.ringgold}"} #{o.name}
+              %div{class: "card-body"}
+                %div{class: "row"}
+                  %div{class: "col small text-left text-muted"}
+                  %div{class: "col small text-right text-muted"}
+                    %span{class:"badge badge-success"} #{number_with_delimiter(o.public_users.count)}
+                    #{'member'.pluralize(o.public_users.count)}
+                %p{class:"card-text",style:"margin-top:5px;"}
+                  #{o.address}
+
+  = will_paginate @results, { class: "pagination" }

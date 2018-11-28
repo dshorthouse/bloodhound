@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 22, 2018 at 07:45 PM
+-- Generation Time: Nov 28, 2018 at 10:28 PM
 -- Server version: 5.7.22
 -- PHP Version: 5.6.36
 
@@ -46,6 +46,7 @@ CREATE TABLE `occurrences` (
   `dateIdentified` text COLLATE utf8mb4_bin,
   `decimalLatitude` text COLLATE utf8mb4_bin,
   `decimalLongitude` text COLLATE utf8mb4_bin,
+  `country` text COLLATE utf8mb4_bin,
   `eventDate` text COLLATE utf8mb4_bin,
   `family` text COLLATE utf8mb4_bin,
   `identifiedBy` text COLLATE utf8mb4_bin,
@@ -77,6 +78,20 @@ CREATE TABLE `occurrence_determiners` (
 CREATE TABLE `occurrence_recorders` (
   `occurrence_id` int(11) NOT NULL,
   `agent_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `organizations`
+--
+
+CREATE TABLE `organizations` (
+  `id` int(11) NOT NULL,
+  `isni` varchar(120) COLLATE utf8mb4_bin DEFAULT NULL,
+  `ringgold` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `address` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
@@ -138,10 +153,10 @@ CREATE TABLE `users` (
   `other_names` text,
   `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
-  `is_admin` tinyint(1) NOT NULL DEFAULT '0',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NULL DEFAULT NULL,
-  `visited` timestamp NULL DEFAULT NULL
+  `visited` timestamp NULL DEFAULT NULL,
+  `is_admin` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -156,10 +171,28 @@ CREATE TABLE `user_occurrences` (
   `occurrence_id` int(11) NOT NULL,
   `action` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `visible` tinyint(1) NOT NULL DEFAULT '1',
-  `created_by` int(11) DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated` timestamp NULL DEFAULT NULL
+  `updated` timestamp NULL DEFAULT NULL,
+  `created_by` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_organizations`
+--
+
+CREATE TABLE `user_organizations` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `organization_id` int(11) NOT NULL,
+  `start_year` int(11) DEFAULT NULL,
+  `start_month` int(11) DEFAULT NULL,
+  `start_day` int(11) DEFAULT NULL,
+  `end_year` int(11) DEFAULT NULL,
+  `end_month` int(11) DEFAULT NULL,
+  `end_day` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 --
 -- Indexes for dumped tables
@@ -189,6 +222,13 @@ ALTER TABLE `occurrence_determiners`
 --
 ALTER TABLE `occurrence_recorders`
   ADD KEY `agent_idx` (`agent_id`);
+
+--
+-- Indexes for table `organizations`
+--
+ALTER TABLE `organizations`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `ringgold_idx` (`ringgold`);
 
 --
 -- Indexes for table `schema_migrations`
@@ -232,6 +272,14 @@ ALTER TABLE `user_occurrences`
   ADD KEY `created_by_idx` (`created_by`);
 
 --
+-- Indexes for table `user_organizations`
+--
+ALTER TABLE `user_organizations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_idx` (`user_id`),
+  ADD KEY `organization_idx` (`organization_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -239,25 +287,37 @@ ALTER TABLE `user_occurrences`
 -- AUTO_INCREMENT for table `agents`
 --
 ALTER TABLE `agents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1048066;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1058833;
+
+--
+-- AUTO_INCREMENT for table `organizations`
+--
+ALTER TABLE `organizations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `taxa`
 --
 ALTER TABLE `taxa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23445;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23138;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5646;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9232;
 
 --
 -- AUTO_INCREMENT for table `user_occurrences`
 --
 ALTER TABLE `user_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2549953;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3281172;
+
+--
+-- AUTO_INCREMENT for table `user_organizations`
+--
+ALTER TABLE `user_organizations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
