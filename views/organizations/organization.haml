@@ -5,6 +5,7 @@
   %div{class:"jumbotron jumbotron-fluid"}
     %div{class: "container-fluid"}
       %h2 #{@organization.name}
+      %p{class:"text-muted"} #{@organization.address}
 
 %div{class:"container-fluid"}
   - @results.in_groups_of(3).each do |group|
