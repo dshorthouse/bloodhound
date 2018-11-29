@@ -15,6 +15,9 @@ a:hover, .page-link:hover{
   margin-bottom:0;
   padding:1rem;
 }
+.jumbotron .text-muted{
+  margin-bottom:0.5rem;
+}
 .profile-examples {
   margin-bottom:1rem;
 }
