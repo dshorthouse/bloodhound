@@ -25,13 +25,13 @@ module Bloodhound
             data = gbifIDs_recordedBy.map{|r| {
               occurrence_id: r,
               agent_id: agent.id }}
-            OccurrenceRecorder.import data
+            OccurrenceRecorder.import data, batch_size: 100, validate: false
           end
           if !gbifIDs_identifiedBy.empty?
             data = gbifIDs_identifiedBy.map{|r| {
               occurrence_id: r,
               agent_id: agent.id }}
-            OccurrenceDeterminer.import data
+            OccurrenceDeterminer.import data, batch_size: 100, validate: false
           end
         end
       end

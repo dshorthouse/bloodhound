@@ -195,7 +195,7 @@ module Sinatra
                 visible: visible
               }
             }
-            UserOccurrence.import(data)
+            UserOccurrence.import data, batch_size: 100, validate: false
             { message: "ok" }.to_json
           end
 

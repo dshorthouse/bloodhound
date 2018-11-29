@@ -14,7 +14,7 @@ module Bloodhound
         end
         occurrence_ids = row["gbifIDs_family"].tr('[]', '').split(',').map(&:to_i)
         data = occurrence_ids.map{|r| { occurrence_id: r, taxon_id: taxon.id}}
-        TaxonOccurrence.import data
+        TaxonOccurrence.import data, batch_size: 100, validate: false
       end
     end
 

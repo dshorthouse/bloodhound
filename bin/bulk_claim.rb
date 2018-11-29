@@ -52,14 +52,14 @@ else
     both = (recordings & determinations) - claimed
 
     puts "Claiming unique recordings...".yellow
-    UserOccurrence.import uniq_recordings.map{|o| { user_id: user.id, occurrence_id: o, action: "recorded", created_by: user.id} }
+    UserOccurrence.import uniq_recordings.map{|o| { user_id: user.id, occurrence_id: o, action: "recorded", created_by: user.id} }, batch_size: 100, validate: false
 
     puts "Claiming unique determinations...".yellow
-    UserOccurrence.import uniq_determinations.map{|o| { user_id: user.id, occurrence_id: o, action: "identified", created_by: user.id} }
+    UserOccurrence.import uniq_determinations.map{|o| { user_id: user.id, occurrence_id: o, action: "identified", created_by: user.id} }, batch_size: 100, validate: false
 
     puts "Claiming recordings and determinations...".yellow
-    UserOccurrence.import both.map{|o| { user_id: user.id, occurrence_id: o, action: "recorded,identified", created_by: user.id} }
-    
+    UserOccurrence.import both.map{|o| { user_id: user.id, occurrence_id: o, action: "recorded,identified", created_by: user.id} }, batch_size: 100, validate: false
+
     puts "#{agent.fullname} data claimed by #{user.fullname}".green
   end
 
