@@ -53,20 +53,20 @@ module Sinatra
                         .reject{|column| column == 'gbifID'}
                         .map{|k,v| response[k] = v }
 
-              response["recorded"] = occurrence.user_recordings.map{|o| { 
+              response["recorded"] = occurrence.user_recordings.map{|o| {
                     "@type": "Person",
                     "@id": "https://orcid.org/#{o.user.orcid}",
                     givenName: "#{o.user.given}",
                     familyName: "#{o.user.family}",
-                    alternateName: o.user.other_names.split("|")
+                    alternateName: o.user.other_names.present? ? o.user.other_names.split("|") : []
                   }
               }
-              response["identified"] = occurrence.user_identifications.map{|o| { 
+              response["identified"] = occurrence.user_identifications.map{|o| {
                     "@type": "Person",
                     "@id": "https://orcid.org/#{o.user.orcid}",
                     givenName: "#{o.user.given}",
                     familyName: "#{o.user.family}",
-                    alternateName: o.user.other_names.split("|")
+                    alternateName: o.user.other_names.present? ? o.user.other_names.split("|") : []
                   }
               }
               response.to_json
