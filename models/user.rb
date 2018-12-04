@@ -190,7 +190,7 @@ class User < ActiveRecord::Base
                        .inject(Hash.new(0)) { |h, e| h[e] += 1 ; h }
     data = {}
     counts.each do |k,v|
-      if k.length > 2
+      if k.length > 2 && k.length < 40
         country = IsoCountryCodes.search_by_name(k) rescue nil
         if country && country.length > 0
           data[country.first.alpha2] = {name: country.first.name, count: v}
