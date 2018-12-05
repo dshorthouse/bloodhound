@@ -58,7 +58,12 @@ var Application = (function($, window) {
           display : "name"
         }
         ).on("typeahead:select", function(obj, datum) {
-          window.location.href = "/profile/candidates/agent/" + datum.id;
+          if (self.path === "/admin") {
+            var orcid = window.location.pathname.split('/')[3];
+            window.location.href = "/admin/user/" + orcid + "/candidates/agent/" + datum.id;
+          } else {
+            window.location.href = "/profile/candidates/agent/" + datum.id;
+          }
         });
 
       $("#typeahead-user").typeahead({

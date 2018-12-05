@@ -159,6 +159,28 @@ module Sinatra
 
           end
 
+          app.get '/admin/user/:orcid/candidates/agent/:id' do
+            admin_protected!
+            @admin_user = User.find_by_orcid(params[:orcid])
+
+            occurrence_ids = []
+            @page = (params[:page] || 1).to_i
+            @search_size = (params[:per] || 25).to_i
+
+            @searched_user = Agent.find(params[:id])
+            id_scores = [{ id: @searched_user.id, score: 3 }]
+
+            node = AgentNode.find_by(agent_id: @searched_user.id)
+            if !node.nil?
+              id_scores.concat(node.agent_nodes_weights.map{|a| { id: a[0], score: a[1] }})
+            end
+
+            occurrence_ids = occurrences_by_score(id_scores)
+            specimen_pager(occurrence_ids)
+
+            haml :'admin/candidates'
+          end
+
           app.get '/admin/user/:orcid/ignored' do
             admin_protected!
             @admin_user = User.find_by_orcid(params[:orcid])
