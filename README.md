@@ -54,7 +54,7 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
 
 ### Step 5: Populate Search in Elasticsearch
 
-     $ ./bin/populate_search.rb --rebuild-agents
+     $ ./bin/populate_search.rb --rebuild
 
 ## Elasticsearch Snapshot & Restore
 
@@ -148,10 +148,21 @@ If Elasticsearch throws an error on the above, you may need to execute the follo
       '
 ## Neo4j Dump & Restore
 
-Notes to self because I never remember how to dump from my laptop and reload onto the server.
+Notes to self because I never remember how to dump from my laptop and reload onto the server. Must stop Neo4j before this can be executed.
 
       neo4j-admin dump --database=<database> --to=<destination-path>
       neo4j-admin load --from=<archive-path> --database=<database> [--force]
+
+Example:
+
+      brew services stop neo4j
+      neo4j-admin dump --database=graph.db --to=/Users/dshorthouse/Documents/neo4j_backup/
+      brew services start neo4j
+
+      service neo4j stop
+      rm /var/lib/neo4j/data/databases/graph.db
+      neo4j-admin load --from=/home/dshorthouse/neo4j_backup/graph.db.dump --database=graph.db
+      service neo4j start
 
 Replacing the database through load requires that the database first be deleted [usually found in /var/lib/neo4j/data/databases on linux machine] and then its permissions be recursively set for the neo4j:adm user:group.
 

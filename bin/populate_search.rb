@@ -34,11 +34,13 @@ end
 if options[:rebuild]
   index.delete_agent_index
   index.create_agent_index
+  puts "Importing agents..."
   index.import_agents
   index.refresh_agent_index
 
   index.delete_user_index
   index.create_user_index
+  puts "Importing users..."
   index.import_users
   index.refresh_user_index
 end
