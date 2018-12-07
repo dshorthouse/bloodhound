@@ -81,9 +81,9 @@ val url = "jdbc:mysql://localhost:3306/bloodhound?serverTimezone=UTC&useSSL=fals
 //write occurrences data to the database
 occurrences.write.mode("append").jdbc(url, "occurrences", prop)
 
-//write occurrences data to 2500 csv files as alternate bulk import (eg for LOAD DATA INFILE)
+//write occurrences data to 1000 csv files as alternate bulk import (eg for LOAD DATA INFILE)
 occurrences.
-    repartition(2500).
+    repartition(1000).
     write.
     mode("overwrite").
     option("quote", "\"").
@@ -153,6 +153,6 @@ Sample bash script for a LOAD DATA INFILE routine in MySQL:
 ```bash
 #!/bin/bash
 for filename in /occurrences/*.csv; do
-  mysql -uusername -ppassword --local-infile scrapping -e "LOAD DATA LOCAL INFILE '"$filename"' INTO TABLE occurrences FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n'"
+  mysql -uusername -ppassword --local-infile bloodhound -e "SET FOREIGN_KEY_CHECKS = 0; SET UNIQUE_CHECKS = 0; SET SESSION tx_isolation='READ-UNCOMMITTED'; SET sql_log_bin = 0; LOAD DATA LOCAL INFILE '"$filename"' INTO TABLE occurrences FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n'"
 done
 ```

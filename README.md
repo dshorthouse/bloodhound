@@ -162,6 +162,8 @@ Example:
       service neo4j stop
       rm /var/lib/neo4j/data/databases/graph.db
       neo4j-admin load --from=/home/dshorthouse/neo4j_backup/graph.db.dump --database=graph.db
+      #reset permissions
+      chown neo4j:neo4j -R /var/lib/neo4j/data/databases/graph.db
       service neo4j start
 
 Replacing the database through load requires that the database first be deleted [usually found in /var/lib/neo4j/data/databases on linux machine] and then its permissions be recursively set for the neo4j:adm user:group.
