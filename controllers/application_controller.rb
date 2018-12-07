@@ -22,6 +22,10 @@ module Sinatra
             haml :about
           end
 
+          app.get '/integrations' do
+            haml :integrations
+          end
+
           app.get '/agent.json' do
             content_type "application/json"
             search_agent

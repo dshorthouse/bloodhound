@@ -1,0 +1,82 @@
+-content_for :title do
+  Bloodhound: Integrations
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid"}
+    %div{class: "container-fluid"}
+      %h2 Integrations
+
+
+%h3 Browser Add-ons
+
+%div{class:"bd-callout bd-callout-info"}
+  %h5 Google Chrome Extension
+  %div
+    %a{href: "https://chrome.google.com/webstore/detail/bloodhound-attributor/hggdpifgaginephccebghdenkgpaikgg"}
+      %img{src: "/images/chrome_extension_screenshot.png", alt: "Bloodhound Google Chrome Extension"}
+  %p
+    %small{class:"text-muted"}
+      %a{href: "https://chrome.google.com/webstore/detail/bloodhound-attributor/hggdpifgaginephccebghdenkgpaikgg"}
+        Bloodhound Attributor Google Chrome Extension
+      modifies Global Biodiversity Information Facility (GBIF) occurrence pages.
+
+%h3 Web Services
+
+%p Bloodhound data are exposed as CSV downloads or JSON-LD documents on public user profile pages. Individual occurrence records are exposed as JSON-LD documents.
+
+%div{class:"bd-callout bd-callout-info"}
+  %h5 User Data from a Public Account
+  %div
+    %a{href: "/0000-0001-7618-5230/specimens.csv"} #{base_url}/0000-0001-7618-5230/specimens.csv
+  %div
+    %a{href: "/0000-0001-7618-5230/specimens.json"} #{base_url}/0000-0001-7618-5230/specimens.json
+  %p
+    %small{class:"text-muted"}
+      Where 
+      %em 0000-0001-7618-5230
+      is a user's ORCID identifier,
+      %a{href: "https://orcid.org/0000-0001-7618-5230"} https://orcid.org/0000-0001-7618-5230
+
+%div{class:"bd-callout bd-callout-info"}
+  %h5 Occurrence Record
+  %div
+    %a{href: "/occurrence/477976412.json"} #{base_url}/occurrence/477976412.json
+  %p
+    %small{class:"text-muted"}
+      Where 
+      %em /occurrence/477976412
+      is that provided by GBIF,
+      %a{href: "https://gbif.org/occurrence/477976412"} https://gbif.org/occurrence/477976412
+
+%h3 Raw Data
+
+%div{class: "bd-callout bd-callout-info"}
+  %h5 All Claims from Public Accounts
+  %div
+    Daily build,
+    %a{href: "/data/bloodhound-public-claims.gz"} bloodhound-public-claims.gz
+    (#{@compressed_file_size} MB)
+  %p
+    %small{class:"text-muted"}
+      Where the above gzipped csv includes a header, "Subject, Predicate, Object" and rows are expressed as, "https://gbif.org/occurrence/1801358422, http://rs.tdwg.org/dwc/iri/identifiedBy, https://orcid.org/0000-0001-9008-0611"
+
+%div{class: "bd-callout bd-callout-info"}
+  %h5 Unique GBIF Agent Strings
+  %div
+    %a{href: "https://github.com/dshorthouse/bloodhound/blob/master/public/data/bloodhound-agents.gz"} bloodhound-agents.gz
+    (474 MB)
+    
+  %p
+    %small{class:"text-muted"}
+      The above gzipped csv includes a header, "agents, gbifIDs_recordedBy, gbifIDs_identifiedBy", was constructed from
+      %a{href: "https://doi.org/10.15468/dl.rohj3n"} https://doi.org/10.15468/dl.rohj3n
+      using a 
+      %a{href: "https://github.com/dshorthouse/bloodhound/blob/master/spark.md"} Scala / Apache Spark script
+      where the gbifIDs_recordedBy and gbifIDs_identifiedBy columns each contain an array of GBIF IDs. The "agents" column is as presented on GBIF and will require additional parsing.
+
+%h3 Code
+%p
+  The MIT-licensed code is available on 
+  = succeed "." do
+    %a{href: "https://github.com/dshorthouse/bloodhound" } GitHub
+  Technologies at play include Apache Spark to group occurrence records by raw entries in recordedBy and identifiedBy and to import into MySQL, Neo4j to store the scores between similarly structured people names, Elasticsearch to aid in the searching of people names once parsed and cleaned, Redis to coordinate the processing queues, and Sinatra/ruby for the application layer.
