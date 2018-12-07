@@ -175,7 +175,7 @@ module Sinatra
               id_scores.concat(node.agent_nodes_weights.map{|a| { id: a[0], score: a[1] }})
             end
 
-            occurrence_ids = occurrences_by_score(id_scores)
+            occurrence_ids = occurrences_by_score(id_scores, @admin_user.id)
             specimen_pager(occurrence_ids)
 
             haml :'admin/candidates'
