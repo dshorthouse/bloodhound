@@ -35,48 +35,12 @@
       %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
       identified, or Both.
 
-  %table{class:"table table-hover table-sm"}
-    %thead{class: "thead-light"}
-      %tr
-        %th{scope: "col", class:"selector"}
-          = haml :'partials/bulk_selector_top', layout: false
-        %th{scope: "col"} Scientific Name
-        %th{scope: "col"} Collected By
-        %th{scope: "col"} Identified By
-        %th{scope: "col"} Date Collected
-        %th{scope: "col"} Date Identified
-        %th{scope: "col"} Institution
-        %th{scope: "col"} Catalog Number
-        %th{scope: "col"} Type Status
-        %th{scope: "col"} Helper
-
-    %tbody
-      - @results.each do |uo|
-        - o = uo.occurrence
-        %tr
-          %td{class: "selector"}
-            = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo }
-          %td
-            - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
-            %a{href: "https://www.gbif.org/occurrence/#{o.gbifID}", target: "_blank" } #{scientific_name}
-          %td #{o.recordedBy}
-          %td #{o.identifiedBy}
-          %td #{o.eventDate}
-          %td #{o.dateIdentified}
-          %td #{o.institutionCode}
-          %td #{o.catalogNumber}
-          %td #{o.typeStatus}
-          %td
-            - if uo.claimant.is_public?
-              %a{href: "/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
-            - else
-              %a{href: "https://orcid.org/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
-
-    - if @total >= 25
-      %tfoot{class: "thead-light"}
+  %div{class:"table-responsive-lg"}
+    %table{class:"table table-hover table-sm"}
+      %thead{class: "thead-light"}
         %tr
           %th{scope: "col", class:"selector"}
-            = haml :'partials/bulk_selector_bottom', layout: false
+            = haml :'partials/bulk_selector_top', layout: false
           %th{scope: "col"} Scientific Name
           %th{scope: "col"} Collected By
           %th{scope: "col"} Identified By
@@ -86,6 +50,43 @@
           %th{scope: "col"} Catalog Number
           %th{scope: "col"} Type Status
           %th{scope: "col"} Helper
+
+      %tbody
+        - @results.each do |uo|
+          - o = uo.occurrence
+          %tr
+            %td{class: "selector"}
+              = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo }
+            %td
+              - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
+              %a{href: "https://www.gbif.org/occurrence/#{o.gbifID}", target: "_blank" } #{scientific_name}
+            %td #{o.recordedBy}
+            %td #{o.identifiedBy}
+            %td #{o.eventDate}
+            %td #{o.dateIdentified}
+            %td #{o.institutionCode}
+            %td #{o.catalogNumber}
+            %td #{o.typeStatus}
+            %td
+              - if uo.claimant.is_public?
+                %a{href: "/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
+              - else
+                %a{href: "https://orcid.org/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
+
+      - if @total >= 25
+        %tfoot{class: "thead-light"}
+          %tr
+            %th{scope: "col", class:"selector"}
+              = haml :'partials/bulk_selector_bottom', layout: false
+            %th{scope: "col"} Scientific Name
+            %th{scope: "col"} Collected By
+            %th{scope: "col"} Identified By
+            %th{scope: "col"} Date Collected
+            %th{scope: "col"} Date Identified
+            %th{scope: "col"} Institution
+            %th{scope: "col"} Catalog Number
+            %th{scope: "col"} Type Status
+            %th{scope: "col"} Helper
 
   - if @total >= 25
     = haml :'partials/page_size', layout: false

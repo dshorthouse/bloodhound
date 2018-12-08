@@ -17,31 +17,32 @@
         %div{class: "form-group"}
           %label{for: "typeahead", class:"font-weight-bold", style:"margin-right:1rem"}= "Search User"
           %input{class: "typeahead", id: "typeahead-user", type: :text, name: "q", placeholder: "Mary Smith", value: "#{params[:q]}", size:"30"}
-                
-%table{class:"table table-hover table-sm"}
-  %thead{class: "thead-light"}
-    %tr
-      %th{scope: "col"} Users
-      %th{scope: "col"} Country
-      %th{scope: "col"} Last Login
-      %th{scope: "col"} Is Public?
-      %th{scope: "col"} ORCID
 
-  %tbody
-    - @results.each do |u|
+%div{class:"table-responsive-lg"}
+  %table{class:"table table-hover table-sm"}
+    %thead{class: "thead-light"}
       %tr
-        %td 
-          %a{href: "/admin/user/#{u.orcid}"} #{u.fullname_reverse}
-        %td #{u.country}
-        %td #{u.visited}
-        %td
-          - if u.is_public?
-            %span{class: "text-success"} #{u.is_public}
-          - else
-            #{u.is_public}
-        %td
-          %a{href: "https://orcid.org/#{u.orcid}"}
-            %img{src: "/images/orcid_16x16.png", alt:"ORCID iD"}
-          %a{href: "https://orcid.org/#{u.orcid}"} https://orcid.org/#{u.orcid}
+        %th{scope: "col"} Users
+        %th{scope: "col"} Country
+        %th{scope: "col"} Last Login
+        %th{scope: "col"} Is Public?
+        %th{scope: "col"} ORCID
+
+    %tbody
+      - @results.each do |u|
+        %tr
+          %td 
+            %a{href: "/admin/user/#{u.orcid}"} #{u.fullname_reverse}
+          %td #{u.country}
+          %td #{u.visited}
+          %td
+            - if u.is_public?
+              %span{class: "text-success"} #{u.is_public}
+            - else
+              #{u.is_public}
+          %td
+            %a{href: "https://orcid.org/#{u.orcid}"}
+              %img{src: "/images/orcid_16x16.png", alt:"ORCID iD"}
+            %a{href: "https://orcid.org/#{u.orcid}"} https://orcid.org/#{u.orcid}
 
 = will_paginate @results, { class: "pagination" }

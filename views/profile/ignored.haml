@@ -26,42 +26,12 @@
     %span{class:"font-weight-bold"} you may have mistakenly marked as "Not me".
 
 - if !@results.empty?
-  %table{class:"table table-hover table-sm"}
-    %thead{class: "thead-light"}
-      %tr
-        %th{scope: "col", class:"selector"}
-          = haml :'partials/bulk_selector_top', layout: false, locals: { klass: "restore-ignored" }
-        %th{scope: "col"} Scientific Name
-        %th{scope: "col"} Collected By
-        %th{scope: "col"} Identified By
-        %th{scope: "col"} Date Collected
-        %th{scope: "col"} Date Identified
-        %th{scope: "col"} Institution
-        %th{scope: "col"} Catalog Number
-        %th{scope: "col"} Type Status
-
-    %tbody
-      - @results.each do |uo|
-        - o = uo.occurrence
-        %tr
-          %td{class: "selector"}
-            = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo, klass: "restore-ignored" }
-          %td
-            - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
-            %a{href: "https://www.gbif.org/occurrence/#{o.gbifID}", target: "_blank" } #{scientific_name}
-          %td #{o.recordedBy}
-          %td #{o.identifiedBy}
-          %td #{o.eventDate}
-          %td #{o.dateIdentified}
-          %td #{o.institutionCode}
-          %td #{o.catalogNumber}
-          %td #{o.typeStatus}
-
-    - if @total >= 25
-      %tfoot{class: "thead-light"}
+  %div{class:"table-responsive-lg"}
+    %table{class:"table table-hover table-sm"}
+      %thead{class: "thead-light"}
         %tr
           %th{scope: "col", class:"selector"}
-            = haml :'partials/bulk_selector_bottom', layout: false
+            = haml :'partials/bulk_selector_top', layout: false, locals: { klass: "restore-ignored" }
           %th{scope: "col"} Scientific Name
           %th{scope: "col"} Collected By
           %th{scope: "col"} Identified By
@@ -70,6 +40,37 @@
           %th{scope: "col"} Institution
           %th{scope: "col"} Catalog Number
           %th{scope: "col"} Type Status
+
+      %tbody
+        - @results.each do |uo|
+          - o = uo.occurrence
+          %tr
+            %td{class: "selector"}
+              = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo, klass: "restore-ignored" }
+            %td
+              - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
+              %a{href: "https://www.gbif.org/occurrence/#{o.gbifID}", target: "_blank" } #{scientific_name}
+            %td #{o.recordedBy}
+            %td #{o.identifiedBy}
+            %td #{o.eventDate}
+            %td #{o.dateIdentified}
+            %td #{o.institutionCode}
+            %td #{o.catalogNumber}
+            %td #{o.typeStatus}
+
+      - if @total >= 25
+        %tfoot{class: "thead-light"}
+          %tr
+            %th{scope: "col", class:"selector"}
+              = haml :'partials/bulk_selector_bottom', layout: false
+            %th{scope: "col"} Scientific Name
+            %th{scope: "col"} Collected By
+            %th{scope: "col"} Identified By
+            %th{scope: "col"} Date Collected
+            %th{scope: "col"} Date Identified
+            %th{scope: "col"} Institution
+            %th{scope: "col"} Catalog Number
+            %th{scope: "col"} Type Status
 
   - if @total >= 25
     = haml :'partials/page_size', layout: false, locals: { klass: "restore-ignored" }
