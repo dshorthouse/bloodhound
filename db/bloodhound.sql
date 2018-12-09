@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 28, 2018 at 10:28 PM
+-- Generation Time: Dec 09, 2018 at 03:55 PM
 -- Server version: 5.7.22
 -- PHP Version: 5.6.36
 
@@ -89,7 +89,8 @@ CREATE TABLE `occurrence_recorders` (
 CREATE TABLE `organizations` (
   `id` int(11) NOT NULL,
   `isni` varchar(120) COLLATE utf8mb4_bin DEFAULT NULL,
-  `ringgold` int(11) NOT NULL,
+  `ringgold` int(11) DEFAULT NULL,
+  `grid` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
   `name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
   `address` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -228,7 +229,8 @@ ALTER TABLE `occurrence_recorders`
 --
 ALTER TABLE `organizations`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `ringgold_idx` (`ringgold`);
+  ADD KEY `grid_idx` (`grid`),
+  ADD KEY `ringgold_idx` (`ringgold`) USING BTREE;
 
 --
 -- Indexes for table `schema_migrations`
@@ -287,37 +289,37 @@ ALTER TABLE `user_organizations`
 -- AUTO_INCREMENT for table `agents`
 --
 ALTER TABLE `agents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1058833;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1141758;
 
 --
 -- AUTO_INCREMENT for table `organizations`
 --
 ALTER TABLE `organizations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT for table `taxa`
 --
 ALTER TABLE `taxa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23138;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23379;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9232;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9267;
 
 --
 -- AUTO_INCREMENT for table `user_occurrences`
 --
 ALTER TABLE `user_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3281172;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3324212;
 
 --
 -- AUTO_INCREMENT for table `user_organizations`
 --
 ALTER TABLE `user_organizations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
