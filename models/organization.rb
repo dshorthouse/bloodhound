@@ -7,11 +7,15 @@ class Organization < ActiveRecord::Base
   def self.active_user_organizations
     self.includes(:user_organizations, :users)
         .where(user_organizations: { end_year: nil })
-        .where(users: {is_public: true})
+        .where(users: { is_public: true })
   end
 
   def public_users
     users.where(is_public: true).distinct
+  end
+
+  def identifier
+    ringgold || grid
   end
 
 end

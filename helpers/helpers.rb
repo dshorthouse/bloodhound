@@ -214,9 +214,15 @@ module Sinatra
       end
 
       def organization
-        @organization = Organization.find_by(ringgold: params[:id])
-        @results = @organization.public_users.order(:family)
-                                .paginate :page => params[:page]
+        organizations = Organization.where(ringgold: params[:id]).or(Organization.where(grid: params[:id]))
+        if !organizations.empty?
+          @organization = organizations.first
+          @results = @organization.public_users.order(:family)
+                                  .paginate :page => params[:page]
+        else
+          status 404
+          haml :oops
+        end
       end
 
       def build_name_query(search)

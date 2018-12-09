@@ -226,8 +226,17 @@ class User < ActiveRecord::Base
     country = IsoCountryCodes.find(country_code).name rescue nil
     UserOrganization.where(user_id: id).destroy_all
     data[:"activities-summary"][:employments][:"employment-summary"].each do |employment|
-      ringgold = employment[:organization][:"disambiguated-organization"][:"disambiguated-organization-identifier"].to_i rescue nil
-      next if !ringgold || ringgold == 0
+      ringgold = nil
+      grid = nil
+      if employment[:organization][:"disambiguated-organization"]
+        if employment[:organization][:"disambiguated-organization"][:"disambiguation-source"] == "RINGGOLD"
+          ringgold = employment[:organization][:"disambiguated-organization"][:"disambiguated-organization-identifier"] rescue nil
+        end
+        if employment[:organization][:"disambiguated-organization"][:"disambiguation-source"] == "GRID"
+          grid = employment[:organization][:"disambiguated-organization"][:"disambiguated-organization-identifier"] rescue nil
+        end
+      end
+      next if ringgold.nil? && grid.nil?
       name = employment[:organization][:name]
       address = employment[:organization][:address].values.compact.join(", ") rescue nil
       start_year = employment[:"start-date"][:year][:value].to_i rescue nil
@@ -238,9 +247,10 @@ class User < ActiveRecord::Base
       end_day = employment[:"end-date"][:day][:value].to_i rescue nil
       organization = Organization.create_with(
                        ringgold: ringgold,
+                       grid: grid,
                        name: name,
                        address: address
-                     ).find_or_create_by(ringgold: ringgold)
+                     ).find_or_create_by(ringgold: ringgold, grid: grid)
       UserOrganization.create({
         user_id: id,
         organization_id: organization.id,
