@@ -49,6 +49,6 @@ end
 if options[:public]
   User.where(is_public: true).find_each do |u|
     u.update_orcid_profile
-    puts "#{u.fullname_reverse} updated".green
+    puts "#{u.fullname_reverse}".green
   end
 end
