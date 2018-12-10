@@ -93,5 +93,82 @@ module Bloodhound
       puts "#{u.fullname_reverse}".green
     end
 
+    def account_data(orcid)
+      response = RestClient::Request.execute(
+        method: :get,
+        url: "#{@settings.orcid_api_url}#{orcid}",
+        headers: { accept: 'application/orcid+json' }
+      )
+      data = JSON.parse(response, :symbolize_names => true)
+
+      family = data[:person][:name][:"family-name"][:value] rescue nil
+      given = data[:person][:name][:"given-names"][:value] rescue nil
+      other_names = data[:person][:"other-names"][:"other-name"].map{|n| n[:content]}.join("|") rescue nil
+      email = nil
+      data[:person][:emails][:email].each do |mail|
+        next if !mail[:primary]
+        email = mail[:email]
+      end
+      country_code = data[:person][:addresses][:address][0][:country][:value] rescue nil
+      country = IsoCountryCodes.find(country_code).name rescue nil
+
+      organizations = []
+      data[:"activities-summary"][:educations][:"education-summary"].each do |place|
+        org = orcid_place(place)
+        if !org.nil?
+          organizations << org
+        end 
+      end
+      data[:"activities-summary"][:employments][:"employment-summary"].each do |place|
+        org = orcid_place(place)
+        if !org.nil?
+          organizations << org
+        end 
+      end
+      {
+        family: family,
+        given: given,
+        other_names: other_names,
+        email: email,
+        country_code: country_code,
+        country: country,
+        organizations: organizations.compact
+      }
+    end
+
+    def orcid_place(place)
+      ringgold = nil
+      grid = nil
+      if place[:organization][:"disambiguated-organization"]
+        if place[:organization][:"disambiguated-organization"][:"disambiguation-source"] == "RINGGOLD"
+          ringgold = place[:organization][:"disambiguated-organization"][:"disambiguated-organization-identifier"] rescue nil
+        end
+        if place[:organization][:"disambiguated-organization"][:"disambiguation-source"] == "GRID"
+          grid = place[:organization][:"disambiguated-organization"][:"disambiguated-organization-identifier"] rescue nil
+        end
+      end
+      return {} if ringgold.nil? && grid.nil?
+      name = place[:organization][:name]
+      address = place[:organization][:address].values.compact.join(", ") rescue nil
+      start_year = place[:"start-date"][:year][:value].to_i rescue nil
+      start_month = place[:"start-date"][:month][:value].to_i rescue nil
+      start_day = place[:"start-date"][:day][:value].to_i rescue nil
+      end_year = place[:"end-date"][:year][:value].to_i rescue nil
+      end_month = place[:"end-date"][:month][:value].to_i rescue nil
+      end_day = place[:"end-date"][:day][:value].to_i rescue nil
+      { 
+        name: name,
+        address: address,
+        ringgold: ringgold,
+        grid: grid,
+        start_year: start_year,
+        start_month: start_month,
+        start_day: start_day,
+        end_year: end_year,
+        end_month: end_month,
+        end_day: end_day
+      }
+    end
+
   end
 end

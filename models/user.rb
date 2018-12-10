@@ -208,66 +208,36 @@ class User < ActiveRecord::Base
   end
 
   def update_orcid_profile
-    response = RestClient::Request.execute(
-      method: :get,
-      url: Sinatra::Application.settings.orcid_api_url + orcid,
-      headers: { accept: 'application/orcid+json' }
-    )
-    data = JSON.parse(response, :symbolize_names => true)
-    given = data[:person][:name][:"given-names"][:value] rescue nil
-    family = data[:person][:name][:"family-name"][:value] rescue nil
-    email = nil
-    data[:person][:emails][:email].each do |mail|
-      next if !mail[:primary]
-      email = mail[:email]
-    end
-    other_names = data[:person][:"other-names"][:"other-name"].map{|n| n[:content]}.join("|") rescue nil
-    country_code = data[:person][:addresses][:address][0][:country][:value] rescue nil
-    country = IsoCountryCodes.find(country_code).name rescue nil
     UserOrganization.where(user_id: id).destroy_all
-    data[:"activities-summary"][:employments][:"employment-summary"].each do |employment|
-      ringgold = nil
-      grid = nil
-      if employment[:organization][:"disambiguated-organization"]
-        if employment[:organization][:"disambiguated-organization"][:"disambiguation-source"] == "RINGGOLD"
-          ringgold = employment[:organization][:"disambiguated-organization"][:"disambiguated-organization-identifier"] rescue nil
-        end
-        if employment[:organization][:"disambiguated-organization"][:"disambiguation-source"] == "GRID"
-          grid = employment[:organization][:"disambiguated-organization"][:"disambiguated-organization-identifier"] rescue nil
-        end
-      end
-      next if ringgold.nil? && grid.nil?
-      name = employment[:organization][:name]
-      address = employment[:organization][:address].values.compact.join(", ") rescue nil
-      start_year = employment[:"start-date"][:year][:value].to_i rescue nil
-      start_month = employment[:"start-date"][:month][:value].to_i rescue nil
-      start_day = employment[:"start-date"][:day][:value].to_i rescue nil
-      end_year = employment[:"end-date"][:year][:value].to_i rescue nil
-      end_month = employment[:"end-date"][:month][:value].to_i rescue nil
-      end_day = employment[:"end-date"][:day][:value].to_i rescue nil
+
+    orcid_lib = Bloodhound::OrcidSearch.new
+    data = orcid_lib.account_data(orcid)
+    data[:organizations].each do |org|
+      next if org[:grid].nil? && org[:ringgold].nil?
       organization = Organization.create_with(
-                       ringgold: ringgold,
-                       grid: grid,
-                       name: name,
-                       address: address
-                     ).find_or_create_by(ringgold: ringgold, grid: grid)
+                       ringgold: org[:ringgold],
+                       grid: org[:grid],
+                       name: org[:name],
+                       address: org[:address]
+                     ).find_or_create_by(ringgold: org[:ringgold], grid: org[:grid])
       UserOrganization.create({
         user_id: id,
         organization_id: organization.id,
-        start_year: start_year,
-        start_month: start_month,
-        start_day: start_day,
-        end_year: end_year,
-        end_month: end_month,
-        end_day: end_day
+        start_year: org[:start_year],
+        start_month: org[:start_month],
+        start_day: org[:start_day],
+        end_year: org[:end_year],
+        end_month: org[:end_month],
+        end_day: org[:end_day]
       })
     end
+
     update({
-      family: family,
-      given: given,
-      email: email,
-      other_names: other_names,
-      country: country
+      family: data[:family],
+      given: data[:given],
+      email: data[:email],
+      other_names: data[:other_names],
+      country: data[:country]
     })
   end
 
