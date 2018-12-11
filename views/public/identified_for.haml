@@ -7,7 +7,7 @@
 
 - if @results.empty?
   %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-    Identifications have not yet beed made for others.
+    Identifications have not yet been made for others.
 - else
   %div{class:"container-fluid"}
     - @results.in_groups_of(3).each do |group|
