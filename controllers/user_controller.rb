@@ -26,9 +26,11 @@ module Sinatra
                           country: country
                         )
                        .find_or_create_by(orcid: orcid)
+            organization = user.current_organization.as_json.symbolize_keys rescue nil
             user.update(visited: Time.now)
             user_hash = user.as_json.symbolize_keys
             user_hash[:fullname] = user.fullname
+            user_hash[:current_organization] = organization
             session[:omniauth] = user_hash
             redirect '/profile'
           end
