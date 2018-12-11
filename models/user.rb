@@ -203,9 +203,10 @@ class User < ActiveRecord::Base
   def recorded_with
     User.includes(:user_occurrences)
         .where(user_occurrences: { occurrence_id: recordings.pluck(:occurrence_id) })
+        .where(qry_recorded)
         .where.not(user_occurrences: { user_id: id })
+        .distinct
         .order(:family)
-        .uniq
   end
 
   def current_organization
