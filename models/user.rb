@@ -211,8 +211,8 @@ class User < ActiveRecord::Base
 
   def identified_for
     User.includes(:user_occurrences)
-        .where(user_occurrences: { occurrence_id: recordings.pluck(:occurrence_id) })
-        .where(qry_identified)
+        .where(user_occurrences: { occurrence_id: identifications.pluck(:occurrence_id) })
+        .where(qry_recorded)
         .where.not(user_occurrences: { user_id: id })
         .distinct
         .order(:family)
