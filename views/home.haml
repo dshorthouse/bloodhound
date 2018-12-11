@@ -25,20 +25,4 @@
         %div{class: "col-sm"}
           - if !u.nil?
             - cache_fragment(u.orcid) do
-              - if u.top_family_identified
-                - id_statement = "has identified #{u.top_family_identified}"
-              - if u.top_family_recorded
-                - recorded_statement = "has collected #{u.top_family_recorded}"
-              - statement = nil
-              - if u.top_family_identified || u.top_family_recorded
-                - statement = "#{u.given} " + [id_statement,recorded_statement].compact.join(" and ")
-              %div{class: "card", style:"margin:20px"}
-                %h5{class: "card-header"}
-                  %a{href: "/#{u.orcid}"} #{u.fullname_reverse}
-                %div{class: "card-body"}
-                  %div{class: "row"}
-                    %div{class: "col small text-left text-muted"} #{u.country}
-                    %div{class: "col small text-right text-muted"}
-                      %span{class:"badge badge-success"} #{number_with_delimiter(u.all_occurrences_count)}
-                      specimens
-                  %p{class:"card-text",style:"margin-top:5px;"} #{statement}
+              = haml :'partials/user_card', layout: false, locals: { user: u }

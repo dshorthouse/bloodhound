@@ -1,0 +1,20 @@
+- if locals[:user].top_family_identified
+  - id_statement = "identified #{locals[:user].top_family_identified}"
+- if locals[:user].top_family_recorded
+  - recorded_statement = "collected #{locals[:user].top_family_recorded}"
+- statement = nil
+- if locals[:user].top_family_identified || locals[:user].top_family_recorded
+  - statement = "#{locals[:user].given} " + [id_statement,recorded_statement].compact.join(" and ")
+%div{class: "card", style:"margin:20px"}
+  %h5{class: "card-header"}
+    - if locals[:user].is_public?
+      %a{href: "/#{locals[:user].orcid}"} #{locals[:user].fullname_reverse}
+    - else
+      #{locals[:user].fullname_reverse}
+  %div{class: "card-body"}
+    %div{class: "row"}
+      %div{class: "col small text-left text-muted"} #{locals[:user].country}
+      %div{class: "col small text-right text-muted"}
+        %span{class:"badge badge-success"} #{number_with_delimiter(locals[:user].all_occurrences_count)}
+        specimens
+    %p{class:"card-text",style:"margin-top:5px;"} #{statement}
