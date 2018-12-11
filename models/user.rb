@@ -207,6 +207,11 @@ class User < ActiveRecord::Base
         .uniq
   end
 
+  def current_organization
+    organizations.includes(:user_organizations)
+                 .where(user_organizations: { end_year: nil }).first
+  end
+
   def update_orcid_profile
     UserOrganization.where(user_id: id).destroy_all
 
