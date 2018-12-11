@@ -204,6 +204,7 @@ class User < ActiveRecord::Base
     User.includes(:user_occurrences)
         .where(user_occurrences: { occurrence_id: recordings.pluck(:occurrence_id) })
         .where.not(user_occurrences: { user_id: id })
+        .order(:family)
         .uniq
   end
 

@@ -94,6 +94,7 @@ module Sinatra
             user.is_public = req[:is_public]
             user.save
             update_session
+            cache_clear "fragments/#{user.orcid}"
             { message: "ok"}.to_json
           end
 
@@ -416,6 +417,25 @@ module Sinatra
                                        .paginate(page: params[:page])
 
                 haml :'public/specimens'
+              else
+                status 404
+                haml :oops
+              end
+            else
+              status 404
+              haml :oops
+            end
+          end
+
+          app.get '/:orcid/co-collectors' do
+            if params[:orcid].is_orcid?
+              @viewed_user = User.find_by_orcid(params[:orcid])
+              if @viewed_user && @viewed_user.is_public?
+                page = (params[:page] || 1).to_i
+                @results = @viewed_user.recorded_with
+                                       .paginate(page: params[:page])
+
+                haml :'public/co_collectors'
               else
                 status 404
                 haml :oops

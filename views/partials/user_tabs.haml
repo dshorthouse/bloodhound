@@ -4,4 +4,6 @@
   %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_page] == "specialties" ? " active" : nil}", href: "/#{@viewed_user.orcid}/specialties"} Specialties
   %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "co_collectors" ? " active" : nil}", href: "/#{@viewed_user.orcid}/co-collectors"} Co-collectors
+  %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_page] == "specimens" ? " active" : nil}", href: "/#{@viewed_user.orcid}/specimens"} Specimens
