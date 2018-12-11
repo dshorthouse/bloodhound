@@ -1,0 +1,21 @@
+- content_for(:title, "#{@viewed_user.fullname} : Bloodhound")
+
+- content_for :jumbotron do
+  = haml :'partials/user_jumbotron', layout: false
+
+= haml :'partials/user_tabs', layout: false, locals: { active_page: 'identified_for' }
+
+- if @results.empty?
+  %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    Identifications have not yet beed made for others.
+- else
+  %div{class:"container-fluid"}
+    - @results.in_groups_of(3).each do |group|
+      %div{class: "row"}
+        - group.each do |u|
+          %div{class: "col-sm"}
+            - if !u.nil?
+              - cache_fragment(u.orcid) do
+                = haml :'partials/user_card', layout: false, locals: { user: u }
+
+  = will_paginate @results, { class: "pagination" }

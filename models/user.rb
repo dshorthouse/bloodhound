@@ -209,6 +209,15 @@ class User < ActiveRecord::Base
         .order(:family)
   end
 
+  def identified_for
+    User.includes(:user_occurrences)
+        .where(user_occurrences: { occurrence_id: recordings.pluck(:occurrence_id) })
+        .where(qry_identified)
+        .where.not(user_occurrences: { user_id: id })
+        .distinct
+        .order(:family)
+  end
+
   def current_organization
     organizations.includes(:user_organizations)
                  .where(user_organizations: { end_year: nil }).first

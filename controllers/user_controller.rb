@@ -446,6 +446,25 @@ module Sinatra
             end
           end
 
+          app.get '/:orcid/identified-for' do
+            if params[:orcid].is_orcid?
+              @viewed_user = User.find_by_orcid(params[:orcid])
+              if @viewed_user && @viewed_user.is_public?
+                page = (params[:page] || 1).to_i
+                @results = @viewed_user.identified_for
+                                       .paginate(page: params[:page])
+
+                haml :'public/identified_for'
+              else
+                status 404
+                haml :oops
+              end
+            else
+              status 404
+              haml :oops
+            end
+          end
+
         end
 
       end
