@@ -14,6 +14,14 @@
             %dl{class: "col"}
               %dt Country
               %dd #{@user[:country]}
+          - if !@user[:current_organization].nil?
+            %dl{class: "col"}
+              %dt Organization
+              %dd
+                - path = @user[:current_organization][:ringgold] || @user[:current_organization][:grid]
+                = succeed "," do
+                  %a{href: "/organization/#{path}"} #{@user[:current_organization][:name]}
+                #{@user[:current_organization][:address]}
         %div.row
           %div{class: "col orcid text-center"}
             %a{href: "https://orcid.org/#{@user[:orcid]}"}

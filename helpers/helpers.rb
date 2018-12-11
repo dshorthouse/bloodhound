@@ -29,6 +29,7 @@ module Sinatra
         user = User.find(@user[:id]).reload
         user_hash = user.as_json.symbolize_keys
         user_hash[:fullname] = user.fullname
+        user_hash[:current_organization] = user.current_organization.as_json.symbolize_keys rescue nil
         session[:omniauth] = user_hash
         set_session
       end
