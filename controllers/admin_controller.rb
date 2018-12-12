@@ -9,8 +9,20 @@ module Sinatra
 
           app.get '/admin/users' do
             admin_protected!
+            @new_user = session[:new_user]
+            session[:new_user] = nil
             admin_roster
             haml :'admin/roster'
+          end
+
+          app.post '/admin/user/add' do
+            admin_protected!
+            if params[:orcid] && params[:orcid].is_orcid?
+              new_user = User.find_or_create_by({ orcid: params[:orcid] })
+              new_user.update_orcid_profile
+              session[:new_user] = new_user.fullname
+            end
+            redirect '/admin/users'
           end
 
           app.get '/admin/user/:orcid' do

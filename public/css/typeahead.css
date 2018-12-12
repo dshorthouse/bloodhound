@@ -3,7 +3,7 @@
   width:80%;
 }
 
-.typeahead,
+.typeahead, .orcid-add,
 .tt-query,
 .tt-hint {
   width: 100%;
@@ -116,7 +116,7 @@
 .helpers {
   margin-top:0.5rem;
 }
-.helpers input{
+.helpers input[type="text"]{
   height:1.5em;
   font-size: 1.7em;
   line-height: 1.2em;
@@ -129,6 +129,10 @@
 .helpers .twitter-typeahead{
   width:70%;
 }
+.orcid-add{
+  width:85%;
+  margin-right:0.25rem;
+}
 #profile-buttons input, #profile-buttons a{
   margin:0.25rem 0;
 }
@@ -137,4 +141,7 @@
 }
 dl.col{
   margin-bottom:0;
+}
+#form-orcid{
+  margin-top: 0.5rem;
 }
