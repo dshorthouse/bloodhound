@@ -20,7 +20,7 @@ module Sinatra
             if params[:orcid] && params[:orcid].is_orcid?
               new_user = User.find_or_create_by({ orcid: params[:orcid] })
               new_user.update_orcid_profile
-              session[:new_user] = new_user.fullname
+              session[:new_user] = { fullname: new_user.fullname, orcid: new_user.orcid }
             end
             redirect '/admin/users'
           end
