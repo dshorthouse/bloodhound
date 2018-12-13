@@ -21,7 +21,7 @@
         %div{class: "form-group row"}
           %label{for: "orcid-add", class:"font-weight-bold col-form-label", style:"margin-right:1rem"}= "Add ORCID"
           %div{class:"col"}
-            %input{class: "orcid-add form-control", type: :text, name: "orcid", placeholder: "0000-0001-7618-5230", size:"25"}
+            %input{class: "orcid-add", type: :text, name: "orcid", placeholder: "0000-0001-7618-5230", size:"22"}
           %input{type: :submit, class:"btn btn-success orcid-submit", value: "Submit"}
 
       - if !@new_user.nil?

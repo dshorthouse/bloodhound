@@ -130,8 +130,12 @@
   width:70%;
 }
 .orcid-add{
-  width:85%;
+  width:100%;
   margin-right:0.25rem;
+  background-color: #fff;
+}
+.orcid-add:focus {
+  border: 2px solid #D3633C;;
 }
 #profile-buttons input, #profile-buttons a{
   margin:0.25rem 0;
