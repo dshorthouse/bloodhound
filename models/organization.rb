@@ -8,7 +8,6 @@ class Organization < ActiveRecord::Base
     self.includes(:user_organizations, :users)
         .where(user_organizations: { end_year: nil })
         .where(users: { is_public: true })
-        .distinct
   end
 
   def public_users
