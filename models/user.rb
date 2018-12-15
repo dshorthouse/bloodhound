@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   end
 
   def hidden_occurrences
-    hidden_user_occurrences.includes(:occurrence)
+    hidden_user_occurrences.includes(:occurrence).order(created: :desc)
   end
 
   def hidden_user_occurrences
