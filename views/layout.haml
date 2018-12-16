@@ -44,20 +44,20 @@
       %div{class: "collapse navbar-collapse", id:"navbarSupportedContent"}
         %ul{class: "navbar-nav mr-auto"}
           %li{class: "nav-item"}
-            %a{ href: "/", class:"nav-link" } Home
+            %a{ href: "/", class:"nav-link#{locals[:active_page] == "home" ? " active" : nil}" } Home
           - if admin_authorized?
             %li{class: "nav-item"}
-              %a{ href: "/admin/users", class:"nav-link" } Administration
+              %a{ href: "/admin/users", class:"nav-link#{locals[:active_page] == "administration" ? " active" : nil}" } Administration
           %li{class: "nav-item"}
-            %a{ href: "/roster", class:"nav-link" } Profiles
+            %a{ href: "/roster", class:"nav-link#{locals[:active_page] == "roster" ? " active" : nil}" } Profiles
           %li{class: "nav-item"}
-            %a{ href: "/organizations", class:"nav-link" } Organizations
+            %a{ href: "/organizations", class:"nav-link#{locals[:active_page] == "organizations" ? " active" : nil}" } Organizations
           %li{class: "nav-item"}
-            %a{ href: '/integrations', class: "nav-link" } Integrations
+            %a{ href: '/integrations', class: "nav-link#{locals[:active_page] == "integrations" ? " active" : nil}" } Integrations
           %li{class: "nav-item"}
             %a{ href: "https://github.com/dshorthouse/bloodhound/issues", class: "nav-link" } Feedback
           %li{class: "nav-item"}
-            %a{ href: '/about', class: "nav-link" } About
+            %a{ href: '/about', class: "nav-link#{locals[:active_page] == "about" ? " active" : nil}" } About
         %ul{class: "navbar-nav"}
           - if authorized?
             %li{class: "nav-item"}

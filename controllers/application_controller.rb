@@ -13,17 +13,17 @@ module Sinatra
 
           app.get '/' do
             example_profiles
-            haml :home
+            haml :home, locals: { active_page: "home" }
           end
 
           app.get '/about' do
-            haml :about
+            haml :about, locals: { active_page: "about" }
           end
 
           app.get '/integrations' do
             file = File.join(root, "public", "data", "bloodhound-public-claims.gz")
             @compressed_file_size = (File.size(file).to_f / 2**20).round(2)
-            haml :integrations
+            haml :integrations, locals: { active_page: "integrations" }
           end
 
           app.get '/agent.json' do
@@ -82,17 +82,17 @@ module Sinatra
 
           app.get '/organizations' do
             organizations
-            haml :'organizations/organizations'
+            haml :'organizations/organizations', locals: { active_page: "organizations" }
           end
 
           app.get '/organization/:id' do
             organization
-            haml :'organizations/organization'
+            haml :'organizations/organization', locals: { active_page: "organizations" }
           end
 
           app.get '/roster' do
             roster
-            haml :roster
+            haml :roster, locals: { active_page: "roster" }
           end
 
         end

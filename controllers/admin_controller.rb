@@ -12,7 +12,7 @@ module Sinatra
             @new_user = session[:new_user]
             session[:new_user] = nil
             admin_roster
-            haml :'admin/roster'
+            haml :'admin/roster', locals: { active_page: "administration" }
           end
 
           app.post '/admin/user/add' do
@@ -40,7 +40,7 @@ module Sinatra
               @results = @admin_user.visible_occurrences
                                     .order("occurrences.typeStatus desc")
                                     .paginate(page: @page, per_page: search_size)
-              haml :'admin/profile'
+              haml :'admin/profile', locals: { active_page: "administration" }
             else
               status 404
               haml :oops
@@ -113,7 +113,7 @@ module Sinatra
 
             @results = @admin_user.claims_received
                                   .paginate(page: @page, per_page: search_size)
-            haml :'admin/support'
+            haml :'admin/support', locals: { active_page: "administration" }
           end
 
           app.get '/admin/user/:orcid/candidates' do
@@ -163,7 +163,7 @@ module Sinatra
                 specimen_pager(occurrence_ids)
               end
 
-              haml :'admin/candidates'
+              haml :'admin/candidates', locals: { active_page: "administration" }
             else
               status 404
               haml :oops
@@ -190,7 +190,7 @@ module Sinatra
             occurrence_ids = occurrences_by_score(id_scores, @admin_user.id)
             specimen_pager(occurrence_ids)
 
-            haml :'admin/candidates'
+            haml :'admin/candidates', locals: { active_page: "administration" }
           end
 
           app.get '/admin/user/:orcid/ignored' do
@@ -206,7 +206,7 @@ module Sinatra
 
             @results = @admin_user.hidden_occurrences
                                   .paginate(page: @page, per_page: search_size)
-            haml :'admin/ignored'
+            haml :'admin/ignored', locals: { active_page: "administration" }
           end
 
           app.post '/admin/user-occurrence/bulk.json' do

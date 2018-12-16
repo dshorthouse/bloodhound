@@ -373,7 +373,7 @@ module Sinatra
                   number_recorded_with: @viewed_user.recorded_with.count
                 }
                 @country_counts = @viewed_user.country_counts
-                haml :'public/overview'
+                haml :'public/overview', locals: { active_page: "roster" }
               else
                 status 404
                 haml :oops
@@ -396,7 +396,7 @@ module Sinatra
                 }
                 @families_identified = @viewed_user.identified_families
                 @families_recorded = @viewed_user.recorded_families
-                haml :'public/specialties'
+                haml :'public/specialties', locals: { active_page: "roster" }
               else
                 status 404
                 haml :oops
@@ -416,7 +416,7 @@ module Sinatra
                                        .order("occurrences.typeStatus desc")
                                        .paginate(page: params[:page])
 
-                haml :'public/specimens'
+                haml :'public/specimens', locals: { active_page: "roster" }
               else
                 status 404
                 haml :oops
@@ -435,7 +435,7 @@ module Sinatra
                 @results = @viewed_user.recorded_with
                                        .paginate(page: params[:page])
 
-                haml :'public/co_collectors'
+                haml :'public/co_collectors', locals: { active_page: "roster" }
               else
                 status 404
                 haml :oops
@@ -454,7 +454,7 @@ module Sinatra
                 @results = @viewed_user.identified_for
                                        .paginate(page: params[:page])
 
-                haml :'public/identified_for'
+                haml :'public/identified_for', locals: { active_page: "roster" }
               else
                 status 404
                 haml :oops
