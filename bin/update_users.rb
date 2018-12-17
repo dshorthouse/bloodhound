@@ -19,8 +19,8 @@ OptionParser.new do |opts|
     options[:orcid] = orcid
   end
 
-  opts.on("-u", "--update", "Update ORCID data for public user accounts") do
-    options[:public] = true
+  opts.on("-l", "--logged-in", "Update ORCID data for user accounts that have logged in.") do
+    options[:logged] = true
   end
 
   opts.on("-h", "--help", "Prints this help") do
@@ -46,8 +46,8 @@ if options[:orcid]
   puts "#{u.fullname_reverse} created".green
 end
 
-if options[:public]
-  User.where(is_public: true).find_each do |u|
+if options[:logged]
+  User.where.not(visited: nil).find_each do |u|
     u.update_orcid_profile
     puts "#{u.fullname_reverse}".green
   end
