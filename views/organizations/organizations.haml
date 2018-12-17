@@ -19,8 +19,8 @@
                 %div{class: "row"}
                   %div{class: "col small text-left text-muted"}
                   %div{class: "col small text-right text-muted"}
-                    %span{class:"badge badge-success"} #{number_with_delimiter(o.public_users.count)}
-                    #{'member'.pluralize(o.public_users.count)}
+                    %span{class:"badge badge-success"} #{number_with_delimiter(o.active_users.count)}
+                    #{'member'.pluralize(o.active_users.count)}
                 %p{class:"card-text",style:"margin-top:5px;"}
                   #{o.address}
 

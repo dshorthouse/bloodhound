@@ -5,9 +5,15 @@ class Organization < ActiveRecord::Base
   self.per_page = 30
 
   def self.active_user_organizations
-    self.includes(:user_organizations, :users)
+    self.includes(:user_organizations)
         .where(user_organizations: { end_year: nil })
-        .where(users: { is_public: true })
+        .distinct
+  end
+
+  def active_users
+    users.includes(:user_organizations)
+         .where(user_organizations: { end_year: nil })
+         .distinct
   end
 
   def public_users
