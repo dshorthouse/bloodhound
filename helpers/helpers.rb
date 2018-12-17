@@ -226,6 +226,18 @@ module Sinatra
         end
       end
 
+      def past_organization
+        organizations = Organization.where(ringgold: params[:id]).or(Organization.where(grid: params[:id]))
+        if !organizations.empty?
+          @organization = organizations.first
+          @results = @organization.inactive_users.order(:family)
+                                  .paginate :page => params[:page]
+        else
+          status 404
+          haml :oops
+        end
+      end
+
       def build_name_query(search)
         parsed = Namae.parse search
         name = DwcAgent.clean(parsed[0])

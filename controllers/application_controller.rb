@@ -87,7 +87,12 @@ module Sinatra
 
           app.get '/organization/:id' do
             organization
-            haml :'organizations/organization', locals: { active_page: "organizations" }
+            haml :'organizations/organization', locals: { active_page: "organizations", active_tab: "organization-current" }
+          end
+
+          app.get '/organization/:id/past' do
+            past_organization
+            haml :'organizations/organization', locals: { active_page: "organizations", active_tab: "organization-past" }
           end
 
           app.get '/roster' do
