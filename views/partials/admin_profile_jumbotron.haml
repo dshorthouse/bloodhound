@@ -33,7 +33,7 @@
           %div{id: "profile-buttons", class: "col text-center"}
             %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: is_user_public?, class:"btn-claim" }
             - if is_user_public?
-              %a{href: "/#{@admin_user.orcid}", role: "button", class:"btn btn-sm btn-outline-success"} Public Profile
+              %a{href: "/#{@admin_user.orcid}", target: "_blank", role: "button", class:"btn btn-sm btn-outline-success"} Public Profile
             %a{ href:"/orcid-refresh.json?user_id=#{@admin_user.id}", role: "button", class:"btn btn-sm btn-outline-success orcid-refresh"} Refresh ORCID Data
 
         %div{class:"alert row alert-success alert-dismissible fade show", role: "alert"}
