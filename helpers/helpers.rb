@@ -179,8 +179,11 @@ module Sinatra
       end
 
       def search_size
-        per = (params[:per] || 25).to_i
-        (per > 250) ? 250 : per
+        if [25,100,250].include?(params[:per].to_i)
+          params[:per].to_i
+        else
+          25
+        end
       end
 
       def specimen_pager(occurrence_ids)
