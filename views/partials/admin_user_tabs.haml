@@ -1,0 +1,9 @@
+%ul{class: "nav nav-tabs"}
+  %li{class: "nav-item "}
+    %a{class: "nav-link#{locals[:active_page] == "overview" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}"} Claimed
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "candidates" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/candidates"} Discovered
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "ignored" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/ignored"} Ignored
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "help" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/support"} Help Received

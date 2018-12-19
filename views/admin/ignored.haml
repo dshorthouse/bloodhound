@@ -11,15 +11,7 @@
 -content_for :jumbotron do
   = haml :'partials/admin_profile_jumbotron', layout: false
 
-%ul{class: "nav nav-tabs"}
-  %li{class: "nav-item "}
-    %a{class: "nav-link", href: "/admin/user/#{@admin_user.orcid}"} Claimed
-  %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/admin/user/#{@admin_user.orcid}/candidates"} Discovered
-  %li{class: "nav-item"}
-    %a{class: "nav-link active", href: "/admin/user/#{@admin_user.orcid}/ignored"} Ignored
-  %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/admin/user/#{@admin_user.orcid}/support"} Help Received
+= haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "ignored" }
 
 %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
   - if @results.empty?

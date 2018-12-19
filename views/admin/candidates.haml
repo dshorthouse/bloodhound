@@ -17,15 +17,7 @@
   - alert_class = "warning"
   - placeholder = @searched_user.fullname
 
-%ul{class: "nav nav-tabs"}
-  %li{class: "nav-item "}
-    %a{class: "nav-link", href: "/admin/user/#{@admin_user.orcid}"} Claimed
-  %li{class: "nav-item"}
-    %a{class: "nav-link active", href: "/admin/user/#{@admin_user.orcid}/candidates"} Discovered
-  %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/admin/user/#{@admin_user.orcid}/ignored"} Ignored
-  %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/admin/user/#{@admin_user.orcid}/support"} Help Received
+= haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "candidates" }
 
 - if @results.empty?
   %div{class: "alert alert-warning row", role:"alert", style:"margin-left:0.1em;margin-right:0.1em"}
