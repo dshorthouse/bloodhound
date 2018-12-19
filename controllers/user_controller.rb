@@ -56,7 +56,6 @@ module Sinatra
             user = User.find(@user[:id])
 
             @page = (params[:page] || 1).to_i
-            search_size = (params[:per] || 25).to_i
             @total = user.visible_occurrences.count
 
             if @page*search_size > @total
@@ -74,7 +73,6 @@ module Sinatra
             user = User.find(@user[:id])
 
             @page = (params[:page] || 1).to_i
-            search_size = (params[:per] || 25).to_i
             @total = user.claims_received.count
 
             if @page*search_size > @total
@@ -149,7 +147,6 @@ module Sinatra
             protected!
             occurrence_ids = []
             @page = (params[:page] || 1).to_i
-            @search_size = (params[:per] || 25).to_i
 
             if @user[:family].nil?
               @results = []
@@ -196,7 +193,6 @@ module Sinatra
             protected!
             occurrence_ids = []
             @page = (params[:page] || 1).to_i
-            @search_size = (params[:per] || 25).to_i
 
             @searched_user = Agent.find(params[:id])
             id_scores = [{ id: @searched_user.id, score: 3 }]
@@ -216,7 +212,6 @@ module Sinatra
             protected!
             user = User.find(@user[:id])
             @page = (params[:page] || 1).to_i
-            search_size = (params[:per] || 25).to_i
             @total = user.hidden_occurrences.count
 
             if @page*search_size > @total
@@ -244,7 +239,6 @@ module Sinatra
             if params[:orcid].is_orcid?
               occurrence_ids = []
               @page = (params[:page] || 1).to_i
-              @search_size = (params[:per] || 25).to_i
 
               @viewed_user = User.find_by_orcid(params[:orcid])
               current_user = User.find(@user[:id])

@@ -80,7 +80,6 @@ module Sinatra
         return if !searched_term.present?
 
         page = (params[:page] || 1).to_i
-        search_size = (params[:per] || 20).to_i
 
         client = Elasticsearch::Client.new
         body = build_name_query(searched_term)
@@ -120,7 +119,6 @@ module Sinatra
         return if !searched_term.present?
 
         page = (params[:page] || 1).to_i
-        search_size = (params[:per] || 20).to_i
 
         client = Elasticsearch::Client.new
         body = build_name_query(searched_term)
@@ -180,17 +178,22 @@ module Sinatra
                                .map(&:last)
       end
 
+      def search_size
+        per = (params[:per] || 25).to_i
+        (per > 250) ? 250 : per
+      end
+
       def specimen_pager(occurrence_ids)
         @total = occurrence_ids.length
-        if @page*@search_size > @total
-          @page = @total/@search_size.to_i + 1
+        if @page*search_size > @total
+          @page = @total/search_size.to_i + 1
         end
-        @results = WillPaginate::Collection.create(@page, @search_size, occurrence_ids.length) do |pager|
+        @results = WillPaginate::Collection.create(@page, search_size, occurrence_ids.length) do |pager|
           pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
         end
         if @total > 0 && @results.empty?
           @page -= 1
-          @results = WillPaginate::Collection.create(@page, @search_size, occurrence_ids.length) do |pager|
+          @results = WillPaginate::Collection.create(@page, search_size, occurrence_ids.length) do |pager|
             pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
           end
         end

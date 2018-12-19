@@ -30,7 +30,6 @@ module Sinatra
             if params[:orcid].is_orcid?
               @admin_user = User.find_by_orcid(params[:orcid])
               @page = (params[:page] || 1).to_i
-              search_size = (params[:per] || 25).to_i
               @total = @admin_user.visible_occurrences.count
 
               if @page*search_size > @total
@@ -104,7 +103,6 @@ module Sinatra
             @admin_user = User.find_by_orcid(params[:orcid])
 
             @page = (params[:page] || 1).to_i
-            search_size = (params[:per] || 25).to_i
             @total = @admin_user.claims_received.count
 
             if @page*search_size > @total
@@ -121,7 +119,6 @@ module Sinatra
             if params[:orcid].is_orcid?
               occurrence_ids = []
               @page = (params[:page] || 1).to_i
-              @search_size = (params[:per] || 25).to_i
 
               @admin_user = User.find_by_orcid(params[:orcid])
 
@@ -177,7 +174,6 @@ module Sinatra
 
             occurrence_ids = []
             @page = (params[:page] || 1).to_i
-            @search_size = (params[:per] || 25).to_i
 
             @searched_user = Agent.find(params[:id])
             id_scores = [{ id: @searched_user.id, score: 3 }]
@@ -197,7 +193,6 @@ module Sinatra
             admin_protected!
             @admin_user = User.find_by_orcid(params[:orcid])
             @page = (params[:page] || 1).to_i
-            search_size = (params[:per] || 25).to_i
             @total = @admin_user.hidden_occurrences.count
 
             if @page*search_size > @total

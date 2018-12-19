@@ -193,7 +193,7 @@ class User < ActiveRecord::Base
       if k.length > 2 && k.length < 40
         country = IsoCountryCodes.search_by_name(k) rescue nil
         if country && country.length > 0
-          data[country.first.alpha2] = {name: country.first.name, count: v}
+          data[country.first.alpha2] = { name: country.first.name, count: v }
         end
       end
     end
