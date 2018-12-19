@@ -15,6 +15,10 @@ OptionParser.new do |opts|
     options[:where] = where
   end
 
+  opts.on("-i", "--ignore", "Ignore all selections") do
+    options[:ignore] = true
+  end
+
   opts.on("-o", "--orcid [orcid]", String, "ORCID identifier for user") do |orcid|
     options[:orcid] = orcid
   end
@@ -51,16 +55,23 @@ else
     uniq_determinations = (determinations - recordings) - claimed
     both = (recordings & determinations) - claimed
 
-    puts "Claiming unique recordings...".yellow
-    UserOccurrence.import uniq_recordings.map{|o| { user_id: user.id, occurrence_id: o, action: "recorded", created_by: user.id} }, batch_size: 100, validate: false
+    if !options[:ignore]
+      puts "Claiming unique recordings...".yellow
+      UserOccurrence.import uniq_recordings.map{|o| { user_id: user.id, occurrence_id: o, action: "recorded", created_by: user.id} }, batch_size: 100, validate: false
 
-    puts "Claiming unique determinations...".yellow
-    UserOccurrence.import uniq_determinations.map{|o| { user_id: user.id, occurrence_id: o, action: "identified", created_by: user.id} }, batch_size: 100, validate: false
+      puts "Claiming unique determinations...".yellow
+      UserOccurrence.import uniq_determinations.map{|o| { user_id: user.id, occurrence_id: o, action: "identified", created_by: user.id } }, batch_size: 100, validate: false
 
-    puts "Claiming recordings and determinations...".yellow
-    UserOccurrence.import both.map{|o| { user_id: user.id, occurrence_id: o, action: "recorded,identified", created_by: user.id} }, batch_size: 100, validate: false
+      puts "Claiming recordings and determinations...".yellow
+      UserOccurrence.import both.map{|o| { user_id: user.id, occurrence_id: o, action: "recorded,identified", created_by: user.id } }, batch_size: 100, validate: false
 
-    puts "#{agent.fullname} data claimed by #{user.fullname}".green
+      puts "#{agent.fullname} data claimed for #{user.fullname}".green
+    else
+      all = (recordings + determinations).uniq - claimed
+      puts "Ignoring occurrences...".yellow
+      UserOccurrence.import all.map{|o| { user_id: user.id, occurrence_id: o, action: nil, visible: 0, created_by: user.id } }, batch_size: 100, validate: false
+      puts "#{agent.fullname} data ignored for #{user.fullname}".red
+    end
   end
 
 end
