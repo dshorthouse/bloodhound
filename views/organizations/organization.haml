@@ -14,7 +14,7 @@
     %li{class: "nav-item"}
       %a{class: "nav-link#{locals[:active_tab] == "organization-past" ? " active" : nil}", href: "/organization/#{@organization.identifier}/past"} Previous
 
-  - @results.empty?
+  - if @results.empty?
     %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
       Previous members of #{@organization.name} have not yet been recorded.
   - else
