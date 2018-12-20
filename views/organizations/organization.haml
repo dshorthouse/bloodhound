@@ -12,7 +12,7 @@
     %li{class: "nav-item"}
       %a{class: "nav-link#{locals[:active_tab] == "organization-current" ? " active" : nil}", href: "/organization/#{@organization.identifier}"} Current
     %li{class: "nav-item"}
-      %a{class: "nav-link#{locals[:active_tab] == "organization-past" ? " active" : nil}", href: "/organization/#{@organization.identifier}/past"} Past
+      %a{class: "nav-link#{locals[:active_tab] == "organization-past" ? " active" : nil}", href: "/organization/#{@organization.identifier}/past"} Previous
 
   - @results.in_groups_of(3).each do |group|
     %div{class: "row"}
