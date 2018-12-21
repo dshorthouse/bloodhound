@@ -15,12 +15,16 @@ OptionParser.new do |opts|
     options[:poll] = true
   end
 
-  opts.on("-a", "--add [ORCID]", String, "Add user with an ORCID") do |orcid|
+  opts.on("-o", "--orcid [ORCID]", String, "Add user with an ORCID") do |orcid|
     options[:orcid] = orcid
   end
 
   opts.on("-l", "--logged-in", "Update ORCID data for user accounts that have logged in.") do
     options[:logged] = true
+  end
+
+  opts.on("-a", "--all", "Update all user accounts.") do
+    options[:all] = true
   end
 
   opts.on("-h", "--help", "Prints this help") do
@@ -48,6 +52,13 @@ end
 
 if options[:logged]
   User.where.not(visited: nil).find_each do |u|
+    u.update_orcid_profile
+    puts "#{u.fullname_reverse}".green
+  end
+end
+
+if options[:all]
+  User.find_each do |u|
     u.update_orcid_profile
     puts "#{u.fullname_reverse}".green
   end
