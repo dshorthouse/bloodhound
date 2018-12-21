@@ -9,8 +9,4 @@ class Taxon < ActiveRecord::Base
     Sidekiq::Client.enqueue(Bloodhound::TaxonWorker, file_path)
   end
 
-  def self.enqueue_kingdoms(id)
-    Sidekiq::Client.enqueue(Bloodhound::KingdomWorker, id)
-  end
-
 end

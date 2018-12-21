@@ -15,10 +15,6 @@ OptionParser.new do |opts|
     options[:directory] = directory
   end
 
-  opts.on("-k", "--kingdoms", "Populate kingdoms") do
-    options[:kingdoms] = true
-  end
-
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
@@ -46,12 +42,6 @@ if options[:directory]
   files.each do |file|
     file_path = File.join(options[:directory], file)
     Taxon.enqueue(file_path)
-  end
-end
-
-if options[:kingdoms]
-  Taxon.where(kingdom: nil).find_each do |t|
-    Taxon.enqueue_kingdoms(t.id)
   end
 end
 

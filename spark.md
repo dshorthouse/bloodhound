@@ -10,7 +10,7 @@ On a Mac with Homebrew:
 
 ```bash
 $ brew install apache-spark
-$ spark-shell --jars /usr/local/opt/mysql-connector-java/libexec/mysql-connector-java-8.0.12.jar --driver-memory 8G
+$ spark-shell --jars /usr/local/opt/mysql-connector-java/libexec/mysql-connector-java-8.0.12.jar --driver-memory 12G
 ```
 
 ```scala
@@ -25,7 +25,6 @@ val sqlContext = new org.apache.spark.sql.SQLContext(sc)
 val df = spark.
     read.
     format("csv").
-    option("inferSchema", "true").
     option("header", "true").
     option("mode", "DROPMALFORMED").
     option("delimiter", "\t").
@@ -119,11 +118,10 @@ val unioned = spark.
 //concatenate arrays into strings
 def stringify(c: Column) = concat(lit("["), concat_ws(",", c), lit("]"))
 
-//write aggregated agents to 2000 csv files for the Populate Agents script, /bin/populate_agents.rb
+//write aggregated agents to csv files for the Populate Agents script, /bin/populate_agents.rb
 unioned.select("agents", "gbifIDs_recordedBy", "gbifIDs_identifiedBy").
     withColumn("gbifIDs_recordedBy", stringify($"gbifIDs_recordedBy")).
     withColumn("gbifIDs_identifiedBy", stringify($"gbifIDs_identifiedBy")).
-    repartition(2000).
     write.
     mode("overwrite").
     option("header", "true").

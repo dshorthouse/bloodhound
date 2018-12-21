@@ -44,9 +44,6 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
      $ ./bin/populate_taxa.rb --truncate --directory /directory-to-spark-csv-files/
      $ sidekiq -c 40 -q taxon -r ./environment.rb
 
-     $ ./bin/populate_taxa.rb --kingdoms
-     $ sidekiq -c 40 kingdom -r ./environment.rb
-
 ### Step 4: Cluster Agents & Store in Neo4j
 
      $ ./bin/cluster_agents.rb --truncate --cluster
@@ -167,6 +164,12 @@ Example:
       service neo4j start
 
 Replacing the database through load requires that the database first be deleted [usually found in /var/lib/neo4j/data/databases on linux machine] and then its permissions be recursively set for the neo4j:adm user:group.
+
+## Successive Data Migrations
+
+Unfortunately, gbifIDs are not persistent. These occasionally disappear through processing at GBIF's end. As a result, claims may no longer point to an existing occurrence record and these must then be purged from the user_occurrences table. The following SQL statement can remove these with successive data imports from GBIF:
+
+      DELETE uo FROM user_occurrences uo LEFT JOIN occurrences o ON uo.occurrence_id = o.gbifID WHERE o.gbifID IS NULL
 
 ## License
 
