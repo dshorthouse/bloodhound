@@ -157,7 +157,7 @@ Example:
       brew services start neo4j
 
       service neo4j stop
-      rm /var/lib/neo4j/data/databases/graph.db
+      rm -rf /var/lib/neo4j/data/databases/graph.db
       neo4j-admin load --from=/home/dshorthouse/neo4j_backup/graph.db.dump --database=graph.db
       #reset permissions
       chown neo4j:neo4j -R /var/lib/neo4j/data/databases/graph.db
@@ -170,6 +170,13 @@ Replacing the database through load requires that the database first be deleted 
 Unfortunately, gbifIDs are not persistent. These occasionally disappear through processing at GBIF's end. As a result, claims may no longer point to an existing occurrence record and these must then be purged from the user_occurrences table. The following SQL statement can remove these with successive data imports from GBIF:
 
       DELETE uo FROM user_occurrences uo LEFT JOIN occurrences o ON uo.occurrence_id = o.gbifID WHERE o.gbifID IS NULL
+
+Other considerations are how to get MySQL dump files back on the server. For fastest execution, dump separate tables into each dump file.
+
+      mysqlcheck -u root -o bloodhound
+      mysqldump --user root --opt bloodhound agents | gzip > agents.sql.gz
+      mysqldump --user root --opt bloodhound occurrences | gzip > occurrences.sql.gz
+      etc...
 
 ## License
 
