@@ -21,6 +21,12 @@ module Bloodhound
       end
     end
 
+    def delete_organization_index
+      if @client.indices.exists index: @settings.elastic_organization_index
+        @client.indices.delete index: @settings.elastic_organization_index
+      end
+    end
+
     def create_agent_index
       config = {
         settings: {
@@ -120,6 +126,45 @@ module Bloodhound
       @client.indices.create index: @settings.elastic_user_index, body: config
     end
 
+    def create_organization_index
+      config = {
+        settings: {
+          analysis: {
+            filter: {
+              autocomplete: {
+                type: "edgeNGram",
+                side: "front",
+                min_gram: 1,
+                max_gram: 50
+              },
+            },
+            analyzer: {
+              organization_index: {
+                type: "custom",
+                tokenizer: "standard",
+                filter: ["lowercase", "asciifolding", :autocomplete]
+              },
+              organization_search: {
+                type: "custom",
+                tokenizer: "standard",
+                filter: ["lowercase", "asciifolding", :autocomplete]
+              }
+            }
+          }
+        },
+        mappings: {
+          organization: {
+            properties: {
+              id: { type: 'text', index: false },
+              name: { type: 'text', fielddata: true, search_analyzer: :organization_search, analyzer: :organization_index, omit_norms: true },
+              address: { type: 'text', search_analyzer: :organization_search, analyzer: :organization_index, omit_norms: true }
+            }
+          }
+        }
+      }
+      @client.indices.create index: @settings.elastic_organization_index, body: config
+    end
+
     def import_agents
       Agent.find_in_batches do |batch|
         bulk_agent(batch)
@@ -160,6 +205,24 @@ module Bloodhound
       }
     end
 
+    def organization_document(org)
+      {
+        id: org.identifier,
+        name: org.name,
+        address: org.address
+      }
+    end
+
+    def import_organizations
+      Organization.find_in_batches do |batch|
+        bulk_organization(batch)
+      end
+    end
+
+    def add_organization(org)
+      @client.index index: @settings.elastic_organization_index, type: 'organization', id: org.id, body: organization_document(org)
+    end
+
     def refresh_agent_index
       @client.indices.refresh index: @settings.elastic_agent_index
     end
@@ -167,6 +230,12 @@ module Bloodhound
     def import_users
       User.where.not(family: [nil, ""]).find_in_batches do |batch|
         bulk_user(batch)
+      end
+    end
+
+    def import_organizations
+      Organization.find_each do |org|
+        add_organization(org)
       end
     end
 
@@ -215,6 +284,31 @@ module Bloodhound
 
     def refresh_user_index
       @client.indices.refresh index: @settings.elastic_user_index
+    end
+
+    def organization_document(o)
+      {
+        id: o.identifier,
+        name: o.name,
+        address: o.address
+      }
+    end
+
+    def bulk_organization(batch)
+      organizations = []
+      batch.each do |o|
+        organizations << {
+          index: {
+            _id: o.identifier,
+            data: organization_document(o)
+          }
+        }
+      end
+      @client.bulk index: @settings.elastic_organization_index, type: 'organization', refresh: false, body: organizations
+    end
+
+    def refresh_organization_index
+      @client.indices.refresh index: @settings.elastic_organization_index
     end
 
   end

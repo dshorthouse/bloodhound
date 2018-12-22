@@ -106,10 +106,10 @@
 .candidates-alert .col-12{
   margin-top:0.2rem;
 }
-.search-agent {
+.search-agent, .search-organization {
   width:100%;
 }
-.search-agent label{
+.search-agent label, .search-organization label{
   margin-right:0.2rem;
   margin-bottom:0rem;
 }

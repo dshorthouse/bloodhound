@@ -15,7 +15,7 @@ var Application = (function($, window) {
     user_id: "",
     path: "",
     method: "POST",
-    data_sources: { agent: {}, user : {} },
+    data_sources: { agent: {}, user : {}, organization : {} },
     init: function(user_id = "", method = "POST", path = "") {
       this.user_id = user_id;
       this.method = method;
@@ -31,6 +31,8 @@ var Application = (function($, window) {
       this.data_sources.agent.initialize();
       this.data_sources.user = this.create_bloodhound("user");
       this.data_sources.user.initialize();
+      this.data_sources.organization = this.create_bloodhound("organization");
+      this.data_sources.organization.initialize();
     },
     create_bloodhound: function(type) {
       return new Bloodhound({
@@ -82,6 +84,19 @@ var Application = (function($, window) {
             window.location.href = "/help-user/" + datum.orcid;
           }
         });
+
+        $("#typeahead-organization").typeahead({
+            minLength: 3,
+            highlight: true
+          },
+          {
+            name: "user",
+            source : this.data_sources.organization.ttAdapter(),
+            display : "name"
+          }
+          ).on("typeahead:select", function(obj, datum) {
+            window.location.href = "/organization/" + datum.id;
+          });
 
     },
     activate_switch: function() {

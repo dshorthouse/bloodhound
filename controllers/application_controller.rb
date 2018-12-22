@@ -38,6 +38,12 @@ module Sinatra
             format_users.to_json
           end
 
+          app.get '/organization.json' do
+            content_type "application/json"
+            search_organization
+            format_organizations.to_json
+          end
+
           app.get '/occurrence/:id.json' do
             content_type "application/ld+json"
             begin

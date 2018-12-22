@@ -1,11 +1,24 @@
 -content_for :title do
   #{@organization.name}: Bloodhound
 
+-content_for :scripts do
+  %script{src: "/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init();
+    });
+
 -content_for :jumbotron do
-  %div{class:"jumbotron jumbotron-fluid"}
-    %div{class: "container-fluid"}
+  %div{class:"jumbotron jumbotron-fluid row"}
+    %div{class: "container-fluid col"}
       %h2 #{@organization.name}
       %p{class:"text-muted"} #{@organization.address}
+
+    %div{class:"col col-12 col-sm-8 col-m-6 col-lg-4"}
+      %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
+        %div{class: "inputs search-organization form-group"}
+          %label{for: "typeahead"}= "Search"
+          %input.typeahead{id: "typeahead-organization", type: :text, name: "q", placeholder: "#{@organization.name}", value: "#{params[:q]}"}
 
 %div{class:"container-fluid"}
   %ul{class: "nav nav-tabs"}

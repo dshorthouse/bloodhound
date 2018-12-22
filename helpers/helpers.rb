@@ -151,6 +151,26 @@ module Sinatra
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) } rescue []
       end
 
+      def search_organization
+        @results = []
+        filters = []
+        searched_term = params[:q]
+        return if !searched_term.present?
+
+        page = (params[:page] || 1).to_i
+
+        client = Elasticsearch::Client.new
+        body = build_organization_query(searched_term)
+        from = (page -1) * search_size
+
+        response = client.search index: settings.elastic_organization_index, type: "organization", from: from, size: search_size, body: body
+        results = response["hits"].deep_symbolize_keys
+
+        @results = WillPaginate::Collection.create(page, search_size, results[:total]) do |pager|
+          pager.replace results[:hits]
+        end
+      end
+
       def example_profiles
         count = User.where(is_public: true).count
         random_offset = rand(count)
@@ -264,6 +284,22 @@ module Sinatra
         }
       end
 
+      def build_organization_query(search)
+        {
+          query: {
+            bool: {
+              must: [
+                match: { "name" => search }
+              ],
+              should: [
+                { match: { "name" => search } },
+                { match: { "address" => search } }
+              ]
+            }
+          }
+        }
+      end
+
       def format_agent(n)
         { id: n[:_source][:id],
           name: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", ")
@@ -285,6 +321,15 @@ module Sinatra
             orcid: n[:_source][:orcid],
             name: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", "),
             fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(" ")
+          }
+        }
+      end
+
+      def format_organizations
+        @results.map{ |n|
+          { id: n[:_source][:id],
+            name: n[:_source][:name],
+            address: n[:_source][:address]
           }
         }
       end
