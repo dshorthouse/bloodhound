@@ -16,7 +16,7 @@
     %div{class:"col col-12 col-sm-8 col-m-6 col-lg-4"}
       %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
         %div{class: "inputs search-organization form-group"}
-          %label{for: "typeahead"}= "Search"
+          %label{for: "typeahead", class:"font-weight-bold col-form-label", style:"margin-right:1rem"}= "Search"
           %input.typeahead{id: "typeahead-organization", type: :text, name: "q", placeholder: "Canadian Museum of Nature", value: "#{params[:q]}"}
 
 
