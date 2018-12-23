@@ -1,10 +1,4 @@
-User-agent: Googlebot
+User-agent: *
 Disallow: /*.csv$
 Disallow: /*.json$
 Crawl-delay: 120
-
-User-agent: Twitterbot
-Disallow:
-
-User-agent: *
-Disallow: /
