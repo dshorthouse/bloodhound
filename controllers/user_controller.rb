@@ -169,6 +169,10 @@ module Sinatra
                 end
               end
 
+              agents.delete_if do |key,value|
+                !@user[:given].nil? && !key[:given].nil? && DwcAgent.similarity_score(key[:given], @user[:given]) == 0
+              end
+
               id_scores = agents.compact.uniq
                                         .map{|a| { id: a[:id], score: a[:score] }}
 
