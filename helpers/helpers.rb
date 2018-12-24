@@ -287,14 +287,10 @@ module Sinatra
       def build_organization_query(search)
         {
           query: {
-            bool: {
-              must: [
-                match: { "name" => search }
-              ],
-              should: [
-                { match: { "name" => search } },
-                { match: { "address" => search } }
-              ]
+            multi_match: {
+              query: search,
+              type: :best_fields,
+              fields: ["name^3", "address"]
             }
           }
         }

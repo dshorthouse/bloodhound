@@ -141,12 +141,12 @@ module Bloodhound
             analyzer: {
               organization_index: {
                 type: "custom",
-                tokenizer: "standard",
+                tokenizer: "whitespace",
                 filter: ["lowercase", "asciifolding", :autocomplete]
               },
               organization_search: {
                 type: "custom",
-                tokenizer: "standard",
+                tokenizer: "whitespace",
                 filter: ["lowercase", "asciifolding", :autocomplete]
               }
             }
