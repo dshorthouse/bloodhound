@@ -137,3 +137,9 @@ h3 {
 .bd-callout-danger {
     border-left-color: #d9534f
 }
+
+@media (max-width: 400px) {
+  .display-3 {
+    font-size:4rem;
+  }
+}
