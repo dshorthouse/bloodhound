@@ -91,6 +91,11 @@ module Sinatra
             haml :'organizations/organizations', locals: { active_page: "organizations" }
           end
 
+          app.get '/organizations/search' do
+            search_organization
+            haml :'organizations/search', locals: { active_page: "organizations" }
+          end
+
           app.get '/organization/:id' do
             organization
             haml :'organizations/organization', locals: { active_page: "organizations", active_tab: "organization-current" }

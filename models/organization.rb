@@ -10,6 +10,10 @@ class Organization < ActiveRecord::Base
         .distinct
   end
 
+  def self.find_by_identifier(id)
+    self.find_by_ringgold(id) || self.find_by_grid(id)
+  end
+
   def active_users
     users.includes(:user_organizations)
          .where(user_organizations: { end_year: nil })
