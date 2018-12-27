@@ -274,6 +274,12 @@ module Sinatra
                   end
                 end
 
+                if !params.has_key?(:relaxed) || params[:relaxed] == "0"
+                  agents.delete_if do |key,value|
+                    !@viewed_user.given.nil? && !key[:given].nil? && DwcAgent.similarity_score(key[:given], @viewed_user.given) == 0
+                  end
+                end
+
                 id_scores = agents.compact.uniq
                                           .map{|a| { id: a[:id], score: a[:score] }}
 
