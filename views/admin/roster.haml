@@ -14,7 +14,7 @@
       %h2 All Users
 
       %form{id:"form-wrapper", method: "post", action: "/admin/user/add", "accept-charset" => "UTF-8", class: "form-inline helpers"}
-        %div{class: "form-group row"}
+        %div{class:"form-group row"}
           %label{for: "typeahead", class:"font-weight-bold col-form-label", style:"margin-right:1rem"}= "Search User"
           %div{class:"col"}
             %input{class: "typeahead", id: "typeahead-user", type: :text, name: "q", placeholder: "Mary Smith", value: "#{params[:q]}", size:"30"}

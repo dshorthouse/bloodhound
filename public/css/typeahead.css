@@ -4,6 +4,7 @@
 }
 
 .typeahead, .orcid-add,
+.organization-search,
 .tt-query,
 .tt-hint {
   width: 100%;
@@ -129,13 +130,13 @@
 .helpers .twitter-typeahead{
   width:70%;
 }
-.orcid-add{
+.orcid-add, .organization-search{
   width:100%;
   margin-right:0.25rem;
   background-color: #fff;
 }
-.orcid-add:focus {
-  border: 2px solid #D3633C;;
+.orcid-add:focus, .organization-search:focus {
+  border: 2px solid #D3633C;
 }
 #profile-buttons input, #profile-buttons a{
   margin:0.25rem 0;
@@ -148,4 +149,7 @@ dl.col{
 }
 #form-orcid{
   margin-top: 0.5rem;
+}
+#form-wrapper .twitter-typeahead {
+  width:100%;
 }

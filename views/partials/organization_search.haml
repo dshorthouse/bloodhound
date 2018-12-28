@@ -1,5 +1,5 @@
-%div{class:"col-12 col-sm-8 col-md-8 col-lg-6 col-xl-4"}
-  %form{id:"#form-wrapper", method: "get", action: "/organizations/search", "accept-charset" => "UTF-8", class: "form-inline"}
-    %div{class: "inputs search-organization form-group"}
-      %input.typeahead{id: "typeahead-organization", type: :text, name: "q", placeholder: "Canadian Museum of Nature", value: "#{params[:q]}"}
-      %input{class:"btn btn-success", style:"margin-left:0.25rem", type:"submit", value:"Search"}
+%form{id:"form-wrapper", method: "get", action: "/organizations/search", "accept-charset" => "UTF-8", class: "form-inline helpers"}
+  %div{class: "form-group row"}
+    %div{class:"col-8"}
+      %input{class:"typeahead organization-search", id:"typeahead-organization", type: :text, name: "q", placeholder: "Canadian Museum of Nature", value: "#{params[:q]}", size:"32"}
+    %input{type: :submit, class:"btn btn-success", value:"Search"}
