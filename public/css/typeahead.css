@@ -130,11 +130,12 @@
 .helpers .twitter-typeahead{
   width:70%;
 }
-.orcid-add, .organization-search{
+.orcid-add, .organization-search {
   width:100%;
   margin-right:0.25rem;
   background-color: #fff;
 }
+
 .orcid-add:focus, .organization-search:focus {
   border: 2px solid #D3633C;
 }
