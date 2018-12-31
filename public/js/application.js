@@ -115,6 +115,14 @@ var Application = (function($, window) {
     activate_radios: function(){
       var self = this;
 
+      $("#relaxed").change(function() {
+        if ($(this).prop("checked")) {
+          window.location.href = "/profile/candidates?relaxed=true";
+        } else {
+          window.location.href = "/profile/candidates";
+        }
+      });
+
       $("input.action-radio").change(function() {
           var row = $(this).parents("tr"),
               action = $(this).attr("data-action"),

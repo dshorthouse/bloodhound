@@ -37,6 +37,12 @@
         = succeed "." do
           Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for 
           %span{class:"font-weight-bold"} #{placeholder}
+        - if @searched_user.nil?
+          %div{class:"form-check d-inline-flex"}
+            - checked = params[:relaxed] == "true" ? "checked" : nil
+            %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
+            %label{for:"relaxed", class:"relaxed"} Relax constraints
+        %br
         Choose
         %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
         collected, 

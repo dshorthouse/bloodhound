@@ -137,6 +137,7 @@ h3 {
 .bd-callout-danger {
     border-left-color: #d9534f
 }
+.relaxed{margin-bottom:0px;}
 
 @media (max-width: 400px) {
   .display-3 {
