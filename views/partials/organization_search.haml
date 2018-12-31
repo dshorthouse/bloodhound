@@ -1,4 +1,4 @@
-%div{class:"col-xs-12 col-md-8 d-flex justify-content-end"}
+%div{class:"p-2"}
   %form{id:"form-org-wrapper", method: "get", action: "/organizations/search", "accept-charset" => "UTF-8", class: "form-inline helpers"}
     %div{class: "form-group"}
       %input{class:"typeahead organization-search", id:"typeahead-organization", type: :text, name: "q", placeholder: "Canadian Museum of Nature", value: "#{params[:q]}", size:"25"}
