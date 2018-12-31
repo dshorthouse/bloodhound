@@ -117,7 +117,7 @@ var Application = (function($, window) {
 
       $("#relaxed").change(function() {
         if ($(this).prop("checked")) {
-          window.location.href = "/profile/candidates?relaxed=true";
+          window.location.href = "/profile/candidates?relaxed=1";
         } else {
           window.location.href = "/profile/candidates";
         }
