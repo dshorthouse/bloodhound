@@ -41,7 +41,7 @@
           %div{class:"form-check d-inline-flex"}
             - checked = params[:relaxed] == "1" ? "checked" : nil
             %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
-            %label{for:"relaxed", class:"relaxed"} Relax constraints
+            %label{for:"relaxed", class:"relaxed"} Make less exact
         %br
         Choose
         %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
