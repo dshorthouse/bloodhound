@@ -236,6 +236,10 @@ module Sinatra
 
           app.get '/help-users' do
             protected!
+            @results = []
+            if params[:q]
+              search_user
+            end
             haml :'help/users'
           end
 

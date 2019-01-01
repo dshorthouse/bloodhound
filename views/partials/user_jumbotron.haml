@@ -29,8 +29,4 @@
       %a{href: "https://orcid.org/#{@viewed_user[:orcid]}"} https://orcid.org/#{@viewed_user[:orcid]}
 
     - if locals[:search]
-      %div{class: "row justify-content-center"}
-        %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline helpers"}
-          %div{class: "form-group"}
-            %label{for: "typeahead", class:"font-weight-bold", style:"margin-right:1rem"}= "Search Another User"
-            %input{class: "typeahead", id: "typeahead-user", type: :text, name: "q", placeholder: "#{@viewed_user.fullname_reverse}", value: "#{params[:q]}", size:"30"}
+      = haml :'partials/help_user_search', layout: false

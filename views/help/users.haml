@@ -12,17 +12,30 @@
   %div{class:"jumbotron jumbotron-fluid"}
     %div{class: "container-fluid"}
 
-      %h2{class:"display-4 text-center"} Help Other Users Claim Their Specimens
+      %h2{class:"display-4 text-center"} Help Others Claim Specimens
+      = haml :'partials/help_user_search', layout: false
 
-      %div{class: "row justify-content-center text-center"}
-        %div{class: "col-sm-12 col-m-8 col-l-6 col-xl-8"}
-          %div{class: "row justify-content-center"}
-            %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline helpers"}
-              %div{class: "form-group"}
-                %label{for: "typeahead", class:"font-weight-bold", style:"margin-right:1rem"}= "Search User"
-                %input{class: "typeahead", id: "typeahead-user", type: :text, name: "q", placeholder: "Mary Smith", value: "#{params[:q]}", size:"30"}
+- if @results.empty? || params[:q].nil?
+  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    Is the person you're looking for not here? Ask them to create an ORCID account and make their name publicly available. If they additionally assign one of the keywords 
+    %span{class: "font-italic"} #{Sinatra::Application.settings.orcid_keywords.join(", ")},
+    to their ORCID account, Bloodhound will find them and add them by the following day.
+- else
+  %div{class:"container-fluid"}
+    - @results.in_groups_of(3).each do |group|
+      %div{class: "row"}
+        - group.each do |user|
+          %div{class: "col-sm"}
+            - if !user.nil?
+              - u = User.find(user[:_id])
+              %div{class: "card", style:"margin:20px"}
+                %h5{class: "card-header"}
+                  %a{href: "/help-user/#{u.orcid}"} #{u.fullname_reverse}
+                %div{class: "card-body"}
+                  %div{class: "row"}
+                    %div{class: "col small text-left text-muted"} #{u.country}
+                    %div{class: "col small text-right text-muted"}
+                      %span{class:"badge badge-success"} #{number_with_delimiter(u.all_occurrences_count)}
+                      specimens
 
-%div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-  Is the person you're looking for not here? Ask them to create an ORCID account and make their name publicly available. If they additionally assign one of the keywords 
-  %span{class: "font-italic"} #{Sinatra::Application.settings.orcid_keywords.join(", ")},
-  to their ORCID account, Bloodhound will find them and add them by the following day.
+    = will_paginate @results, { class: "pagination" }
