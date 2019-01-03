@@ -26,6 +26,10 @@
         Bloodhound did not sniff any specimens indexed by the 
         %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
         (GBIF) that you may have collected or identified.
+        %div{class:"form-check d-inline-flex"}
+          - checked = params[:relaxed] == "1" ? "checked" : nil
+          %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
+          %label{for:"relaxed", class:"relaxed"} Make less exact
       %div{class:"col col-12 col-sm-8 col-m-6 col-lg-4"}
         %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
           %div{class: "inputs search-agent form-group"}
