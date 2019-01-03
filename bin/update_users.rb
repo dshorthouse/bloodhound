@@ -15,7 +15,7 @@ OptionParser.new do |opts|
     options[:poll] = true
   end
 
-  opts.on("-o", "--orcid [ORCID]", String, "Add user with an ORCID") do |orcid|
+  opts.on("-o", "--orcid [ORCID]", String, "Add/update user with an ORCID") do |orcid|
     options[:orcid] = orcid
   end
 
@@ -47,7 +47,8 @@ end
 
 if options[:orcid]
   u = User.find_or_create_by({ orcid: options[:orcid] })
-  puts "#{u.fullname_reverse} created".green
+  u.update_orcid_profile
+  puts "#{u.fullname_reverse} created/updated".green
 end
 
 if options[:logged]
