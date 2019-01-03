@@ -4,6 +4,8 @@ class Organization < ActiveRecord::Base
 
   self.per_page = 30
 
+  after_create :add_search
+
   def self.active_user_organizations
     self.includes(:user_organizations)
         .where(user_organizations: { end_year: nil })
@@ -34,6 +36,15 @@ class Organization < ActiveRecord::Base
 
   def identifier
     ringgold || grid
+  end
+
+  private
+
+  def add_search
+    es = Bloodhound::ElasticIndexer.new
+    if !es.get_organization(self)
+      es.add_organization(self)
+    end
   end
 
 end

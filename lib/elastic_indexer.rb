@@ -307,6 +307,14 @@ module Bloodhound
       @client.bulk index: @settings.elastic_organization_index, type: 'organization', refresh: false, body: organizations
     end
 
+    def get_organization(o)
+      begin
+        @client.get index: @settings.elastic_user_index, type: 'organization', id: o.id
+      rescue Elasticsearch::Transport::Transport::Errors::NotFound
+        nil
+      end
+    end
+
     def refresh_organization_index
       @client.indices.refresh index: @settings.elastic_organization_index
     end
