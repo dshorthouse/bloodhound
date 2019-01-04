@@ -42,6 +42,7 @@
           %th{scope: "col"} Catalog Number
           %th{scope: "col"} Type Status
           %th{scope: "col"} Helper
+          %th
 
       %tbody
         - @results.each do |uo|
@@ -64,6 +65,8 @@
                 %a{href: "/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
               - else
                 %a{href: "https://orcid.org/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
+            %td
+              %button{type:"button", class:"btn btn-sm btn-danger remove", "data-occurrence-id":"#{uo.user_occurrence_id}"} Remove
 
       - if @total >= 25
         %tfoot{class: "thead-light"}
@@ -79,6 +82,7 @@
             %th{scope: "col"} Catalog Number
             %th{scope: "col"} Type Status
             %th{scope: "col"} Helper
+            %th
 
   - if @total >= 25
     = haml :'partials/page_size', layout: false
