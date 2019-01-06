@@ -86,12 +86,11 @@ module Sinatra
             if params[:orcid].is_orcid?
               content_type "application/csv"
               attachment   "#{params[:orcid]}.csv"
+              cache_control :no_cache
+              headers.delete("Content-Length")
               user = User.find_by_orcid(params[:orcid])
               records = user.visible_occurrences
-              CSV.generate do |csv|
-                csv << ["action"].concat(Occurrence.attribute_names)
-                records.find_each { |r| csv << [r.action].concat(r.occurrence.attributes.values) }
-              end
+              body stream_occurrences_csv(records)
             else
               status 404
               haml :oops

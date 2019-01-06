@@ -135,12 +135,11 @@ module Sinatra
             protected!
             content_type "application/csv"
             attachment   "download.csv"
+            cache_control :no_cache
+            headers.delete("Content-Length")
             user = User.find(@user[:id])
             records = user.visible_occurrences
-            CSV.generate do |csv|
-              csv << ["action"].concat(Occurrence.attribute_names)
-              records.find_each { |r| csv << [r.action].concat(r.occurrence.attributes.values) }
-            end
+            body stream_occurrences_csv(records)
           end
 
           app.get '/profile/candidates' do
@@ -353,16 +352,15 @@ module Sinatra
           end
 
           app.get '/:orcid/specimens.csv' do
-            content_type "application/csv"
             if params[:orcid].is_orcid?
               begin
+                content_type "application/csv"
                 attachment   "#{params[:orcid]}.csv"
+                cache_control :no_cache
+                headers.delete("Content-Length")
                 @viewed_user = User.find_by_orcid(params[:orcid])
                 records = @viewed_user.visible_occurrences
-                CSV.generate do |csv|
-                  csv << ["action"].concat(Occurrence.attribute_names)
-                  records.find_each { |r| csv << [r.action].concat(r.occurrence.attributes.values) }
-                end
+                body stream_occurrences_csv(records)
               rescue
                 status 404
               end

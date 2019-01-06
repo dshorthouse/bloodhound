@@ -361,6 +361,17 @@ module Sinatra
         end
       end
 
+      def stream_occurrences_csv(occurrences)
+        Enumerator.new do |y|
+          header = ["action"].concat(Occurrence.attribute_names)
+          y << CSV::Row.new(header, header, true).to_s
+          occurrences.find_each do |o|
+            data = [o.action].concat(o.occurrence.attributes.values)
+            y << CSV::Row.new(header, data).to_s
+          end
+        end
+      end
+
     end
   end
 end
