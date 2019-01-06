@@ -139,7 +139,7 @@ module Sinatra
             records = user.visible_occurrences
             CSV.generate do |csv|
               csv << ["action"].concat(Occurrence.attribute_names)
-              records.each { |r| csv << [r.action].concat(r.occurrence.attributes.values) }
+              records.find_each { |r| csv << [r.action].concat(r.occurrence.attributes.values) }
             end
           end
 
