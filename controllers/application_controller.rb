@@ -21,7 +21,7 @@ module Sinatra
           end
 
           app.get '/integrations' do
-            file = File.join(root, "public", "data", "bloodhound-public-claims.gz")
+            file = File.join(root, "public", "data", "bloodhound-public-claims.csv.gz")
             @compressed_file_size = (File.size(file).to_f / 2**20).round(2)
             haml :integrations, locals: { active_page: "integrations" }
           end

@@ -43,11 +43,15 @@ if options[:directory]
   pbar.finish
 
   puts "Compressing...".green
-  zipped = File.join(directory, "#{File.basename(csv_file, ".csv")}.gz")
+  zipped = File.join(directory, "#{File.basename(csv_file, ".csv")}.csv.gz")
   Zlib::GzipWriter.open(zipped) do |gz|
     gz.mtime = File.mtime(csv_file)
     gz.orig_name = csv_file
-    gz.write IO.binread(csv_file)
+    File.open(csv_file) do |file|
+      while chunk = file.read(16*1024) do
+        gz.write(chunk)
+      end
+    end
   end
   File.delete(csv_file)
 
