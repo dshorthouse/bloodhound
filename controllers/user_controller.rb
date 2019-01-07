@@ -133,13 +133,10 @@ module Sinatra
 
           app.get '/profile/download.csv' do
             protected!
-            content_type "application/csv"
-            attachment   "download.csv"
-            cache_control :no_cache
-            headers.delete("Content-Length")
             user = User.find(@user[:id])
             records = user.visible_occurrences
-            body stream_occurrences_csv(records)
+            csv_stream_headers
+            body csv_stream_occurrences(records)
           end
 
           app.get '/profile/candidates' do
@@ -354,13 +351,10 @@ module Sinatra
           app.get '/:orcid/specimens.csv' do
             if params[:orcid].is_orcid?
               begin
-                content_type "application/csv"
-                attachment   "#{params[:orcid]}.csv"
-                cache_control :no_cache
-                headers.delete("Content-Length")
                 @viewed_user = User.find_by_orcid(params[:orcid])
                 records = @viewed_user.visible_occurrences
-                body stream_occurrences_csv(records)
+                csv_stream_headers
+                body csv_stream_occurrences(records)
               rescue
                 status 404
               end

@@ -361,7 +361,14 @@ module Sinatra
         end
       end
 
-      def stream_occurrences_csv(occurrences)
+      def csv_stream_headers
+        content_type "application/csv"
+        attachment !params[:orcid].nil? ? "#{params[:orcid]}.csv" : "download.csv"
+        cache_control :no_cache
+        headers.delete("Content-Length")
+      end
+
+      def csv_stream_occurrences(occurrences)
         Enumerator.new do |y|
           header = ["action"].concat(Occurrence.attribute_names)
           y << CSV::Row.new(header, header, true).to_s

@@ -84,13 +84,10 @@ module Sinatra
           app.get '/admin/user/:orcid/specimens.csv' do
             admin_protected!
             if params[:orcid].is_orcid?
-              content_type "application/csv"
-              attachment   "#{params[:orcid]}.csv"
-              cache_control :no_cache
-              headers.delete("Content-Length")
               user = User.find_by_orcid(params[:orcid])
               records = user.visible_occurrences
-              body stream_occurrences_csv(records)
+              csv_stream_headers
+              body csv_stream_occurrences(records)
             else
               status 404
               haml :oops
