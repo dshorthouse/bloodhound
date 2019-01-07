@@ -36,29 +36,70 @@ val df = spark.
 
 df.registerTempTable("occurrences")
 
+val df2 = spark.
+    read.
+    format("csv").
+    option("header", "true").
+    option("mode", "DROPMALFORMED").
+    option("delimiter", "\t").
+    option("quote", "\"").
+    option("escape", "\"").
+    option("treatEmptyValuesAsNulls", "true").
+    option("ignoreLeadingWhiteSpace", "true").
+    load("/Users/dshorthouse/Downloads/GBIF Data/occurrence.txt")
+
+df2.registerTempTable("processed")
+
 //select columns & skip rows if both identifiedBy and recordedBy are empty
 val occurrences = sqlContext.
     sql("""
       SELECT 
-        gbifID,
-        occurrenceID,
-        dateIdentified,
-        decimalLatitude,
-        decimalLongitude,
-        country,
-        eventDate,
-        family,
-        identifiedBy,
-        institutionCode,
-        collectionCode,
-        catalogNumber,
-        recordedBy,
-        scientificName,
-        typeStatus 
+        o.gbifID,
+        o.occurrenceID,
+        o.dateIdentified,
+        o.decimalLatitude,
+        o.decimalLongitude,
+        o.country,
+        p.countryCode,
+        o.eventDate,
+        o.family,
+        o.identifiedBy,
+        o.institutionCode,
+        o.collectionCode,
+        o.catalogNumber,
+        o.recordedBy,
+        o.scientificName,
+        o.typeStatus 
       FROM 
-        occurrences 
+        occurrences o 
+      INNER JOIN 
+        processed p ON o.gbifID = p.gbifID 
       WHERE 
-        COALESCE(recordedBy, identifiedBy) IS NOT NULL""")
+        COALESCE(o.recordedBy, o.identifiedBy) IS NOT NULL""")
+
+//alternate query
+val occurrences = sqlContext.
+    sql("""
+      SELECT 
+        o.gbifID,
+        o.occurrenceID,
+        o.dateIdentified,
+        o.decimalLatitude,
+        o.decimalLongitude,
+        o.country,
+        o.eventDate,
+        o.family,
+        o.identifiedBy,
+        o.institutionCode,
+        o.collectionCode,
+        o.catalogNumber,
+        o.recordedBy,
+        o.scientificName,
+        o.typeStatus 
+      FROM 
+        occurrences o 
+      WHERE 
+        COALESCE(o.recordedBy, o.identifiedBy) IS NOT NULL""")
 
 //optionally save the DataFrame to disk so we don't have to do the above again
 occurrences.write.mode("overwrite").save("occurrences")
