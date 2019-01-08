@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 09, 2018 at 03:55 PM
+-- Generation Time: Jan 08, 2019 at 06:53 PM
 -- Server version: 5.7.22
 -- PHP Version: 5.6.36
 
@@ -47,6 +47,7 @@ CREATE TABLE `occurrences` (
   `decimalLatitude` text COLLATE utf8mb4_bin,
   `decimalLongitude` text COLLATE utf8mb4_bin,
   `country` text COLLATE utf8mb4_bin,
+  `countryCode` varchar(4) COLLATE utf8mb4_bin DEFAULT NULL,
   `eventDate` text COLLATE utf8mb4_bin,
   `family` text COLLATE utf8mb4_bin,
   `identifiedBy` text COLLATE utf8mb4_bin,
@@ -90,9 +91,9 @@ CREATE TABLE `organizations` (
   `id` int(11) NOT NULL,
   `isni` varchar(120) COLLATE utf8mb4_bin DEFAULT NULL,
   `ringgold` int(11) DEFAULT NULL,
-  `grid` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
   `name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `address` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL
+  `address` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `grid` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
@@ -113,7 +114,6 @@ CREATE TABLE `schema_migrations` (
 
 CREATE TABLE `taxa` (
   `id` int(11) NOT NULL,
-  `kingdom` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
   `family` varchar(255) COLLATE utf8mb4_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -147,11 +147,11 @@ CREATE TABLE `taxon_occurrences` (
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `family` varchar(255) DEFAULT NULL,
-  `given` varchar(255) DEFAULT NULL,
+  `family` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `given` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `orcid` varchar(25) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `other_names` text,
+  `other_names` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -210,7 +210,8 @@ ALTER TABLE `agents`
 -- Indexes for table `occurrences`
 --
 ALTER TABLE `occurrences`
-  ADD PRIMARY KEY (`gbifID`) USING BTREE;
+  ADD PRIMARY KEY (`gbifID`) USING BTREE,
+  ADD KEY `typeStatus_idx` (`typeStatus`(256));
 
 --
 -- Indexes for table `occurrence_determiners`
@@ -229,8 +230,8 @@ ALTER TABLE `occurrence_recorders`
 --
 ALTER TABLE `organizations`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `grid_idx` (`grid`),
-  ADD KEY `ringgold_idx` (`ringgold`) USING BTREE;
+  ADD KEY `ringgold_idx` (`ringgold`),
+  ADD KEY `grid_idx` (`grid`);
 
 --
 -- Indexes for table `schema_migrations`
@@ -289,37 +290,37 @@ ALTER TABLE `user_organizations`
 -- AUTO_INCREMENT for table `agents`
 --
 ALTER TABLE `agents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1141758;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1667317;
 
 --
 -- AUTO_INCREMENT for table `organizations`
 --
 ALTER TABLE `organizations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4456;
 
 --
 -- AUTO_INCREMENT for table `taxa`
 --
 ALTER TABLE `taxa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23379;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34036;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9267;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9364;
 
 --
 -- AUTO_INCREMENT for table `user_occurrences`
 --
 ALTER TABLE `user_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3324212;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3939100;
 
 --
 -- AUTO_INCREMENT for table `user_organizations`
 --
 ALTER TABLE `user_organizations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36311;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

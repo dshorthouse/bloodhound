@@ -185,16 +185,14 @@ class User < ActiveRecord::Base
   end
 
   def country_counts
-    counts = recordings.pluck(:country)
+    counts = recordings.pluck(:countryCode)
                        .compact
                        .inject(Hash.new(0)) { |h, e| h[e] += 1 ; h }
     data = {}
     counts.each do |k,v|
-      if k.length > 2 && k.length < 40
-        country = IsoCountryCodes.search_by_name(k) rescue nil
-        if country && country.length > 0
-          data[country.first.alpha2] = { name: country.first.name, count: v }
-        end
+      country = IsoCountryCodes.find(k) rescue nil
+      if country
+        data[country.alpha2] = { name: country.name, count: v }
       end
     end
     data
