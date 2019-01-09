@@ -298,7 +298,8 @@ module Sinatra
             user = User.find(params[:user_id].to_i)
             user.is_public = req[:is_public]
             user.save
-            update_session
+            user.update_orcid_profile
+            cache_clear "fragments/#{user.orcid}"
             { message: "ok"}.to_json
           end
 
