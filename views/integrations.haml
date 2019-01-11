@@ -65,16 +65,16 @@
       %a{href: "https://gbif.org/occurrence/477976412"} https://gbif.org/occurrence/477976412
 
 %h3 Raw Data
-
-%div{class: "bd-callout bd-callout-info"}
-  %h5 All Claims from Public Accounts
-  %div
-    Daily build,
-    %a{href: "/data/bloodhound-public-claims.csv.gz"} bloodhound-public-claims.csv.gz
-    (#{@compressed_file_size} MB)
-  %p
-    %small{class:"text-muted"}
-      Where the above gzipped csv includes a header, "Subject, Predicate, Object" and rows are expressed as, "https://gbif.org/occurrence/1801358422, http://rs.tdwg.org/dwc/iri/identifiedBy, https://orcid.org/0000-0001-9008-0611"
+- if @compressed_file_size
+  %div{class: "bd-callout bd-callout-info"}
+    %h5 All Claims from Public Accounts
+    %div
+      Daily build,
+      %a{href: "/data/bloodhound-public-claims.csv.gz"} bloodhound-public-claims.csv.gz
+      (#{@compressed_file_size} MB)
+    %p
+      %small{class:"text-muted"}
+        Where the above gzipped csv includes a header, "Subject, Predicate, Object" and rows are expressed as, "https://gbif.org/occurrence/1801358422, http://rs.tdwg.org/dwc/iri/identifiedBy, https://orcid.org/0000-0001-9008-0611"
 
 %div{class: "bd-callout bd-callout-info"}
   %h5 Unique GBIF Agent Strings
