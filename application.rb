@@ -45,7 +45,5 @@ class BLOODHOUND < Sinatra::Base
 
   register Sinatra::Bloodhound::Model::Initialize
 
-  ActiveRecord::Base.connection.enable_query_cache!
-
   run! if app_file == $0
 end

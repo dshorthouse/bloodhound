@@ -50,7 +50,7 @@ register Sinatra::ConfigFile
 config_file File.join(File.dirname(__FILE__), 'config.yml')
 
 require_all File.join(File.dirname(__FILE__), 'lib')
-require_all File.join(File.dirname(__FILE__),'helpers')
+require_all File.join(File.dirname(__FILE__), 'helpers')
 require_all File.join(File.dirname(__FILE__), 'controllers')
 require_all File.join(File.dirname(__FILE__), 'models')
 

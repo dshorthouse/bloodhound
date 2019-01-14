@@ -18,6 +18,10 @@ module Sinatra
             timeout: app.settings.timeout
           )
 
+          if app.settings.environment == :development
+            ActiveRecord::Base.logger = Logger.new(STDOUT)
+          end
+
           ActiveSupport::Inflector.inflections do |inflect|
             inflect.irregular 'taxon', 'taxa'
             inflect.irregular 'specimen', 'specimens'
