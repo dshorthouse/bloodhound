@@ -112,7 +112,7 @@ GEM
       typhoeus (>= 1.1.2)
     net_tcp_client (2.0.1)
     netrc (0.11.0)
-    nokogiri (1.10.0)
+    nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
     nokogumbo (2.0.1)
       nokogiri (~> 1.8, >= 1.8.4)

@@ -44,7 +44,7 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
      $ ./bin/populate_taxa.rb --truncate --directory /directory-to-spark-csv-files/
      $ sidekiq -c 40 -q taxon -r ./environment.rb
 
-Also execute SQL statement and end of [/bin/populate_taxa.rb script](bin/populate_taxa.rb) once queue is finished.
+Also execute SQL statement at end of [/bin/populate_taxa.rb script](bin/populate_taxa.rb) once queue is finished.
 
 ### Step 4: Cluster Agents & Store in Neo4j
 
