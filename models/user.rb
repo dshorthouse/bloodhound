@@ -121,15 +121,11 @@ class User < ActiveRecord::Base
   end
 
   def identified_count
-    User.cache do
-      visible_user_occurrences.where(qry_identified).count
-    end
+    visible_user_occurrences.where(qry_identified).count
   end
 
   def recorded_count
-    User.cache do
-      visible_user_occurrences.where(qry_recorded).count
-    end
+    visible_user_occurrences.where(qry_recorded).count
   end
 
   def all_occurrences_count
