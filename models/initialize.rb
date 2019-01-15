@@ -19,7 +19,6 @@ module Sinatra
           )
 
           if app.settings.environment == :development
-            ActiveRecord::Base.connection.enable_query_cache!
             ActiveRecord::Base.logger = Logger.new(STDOUT)
           end
 
