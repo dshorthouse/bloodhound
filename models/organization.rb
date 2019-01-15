@@ -38,6 +38,32 @@ class Organization < ActiveRecord::Base
     ringgold || grid
   end
 
+  def update_isni
+    base_url = "https://orcid.org/orgs/disambiguated/"
+    if !ringgold.nil?
+      path = "RINGGOLD?value=#{ringgold}"
+    elsif !grid.nil?
+      path = "GRID?value=#{grid}"
+    end
+    response = RestClient::Request.execute(
+      method: :get,
+      url: "#{base_url}#{path}",
+      headers: { accept: 'application/json' }
+    )
+    isni = nil
+    begin
+      data = JSON.parse(response, :symbolize_names => true)
+      data[:orgDisambiguatedExternalIdentifiers].each do |ids|
+        next if ids[:identifierType] != "ISNI"
+        isni = ids[:all][0].delete(' ')
+        self.isni = isni
+        save
+      end
+    rescue
+    end
+    isni
+  end
+
   private
 
   def add_search

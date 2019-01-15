@@ -121,11 +121,15 @@ class User < ActiveRecord::Base
   end
 
   def identified_count
-    visible_user_occurrences.where(qry_identified).count
+    User.cache do
+      visible_user_occurrences.where(qry_identified).count
+    end
   end
 
   def recorded_count
-    visible_user_occurrences.where(qry_recorded).count
+    User.cache do
+      visible_user_occurrences.where(qry_recorded).count
+    end
   end
 
   def all_occurrences_count
@@ -228,12 +232,20 @@ class User < ActiveRecord::Base
     data = orcid_lib.account_data(orcid)
     data[:organizations].each do |org|
       next if org[:grid].nil? && org[:ringgold].nil?
-      organization = Organization.create_with(
-                       ringgold: org[:ringgold],
-                       grid: org[:grid],
-                       name: org[:name],
-                       address: org[:address]
-                     ).find_or_create_by(ringgold: org[:ringgold], grid: org[:grid])
+      if !org[:grid].nil?
+        organization = Organization.find_by_grid(org[:grid])
+      end
+      if !org[:ringgold].nil?
+        organization = Organization.find_by_ringgold(org[:ringgold])
+      end
+      if organization.nil?
+        organization = Organization.create_with(
+                         ringgold: org[:ringgold],
+                         grid: org[:grid],
+                         name: org[:name],
+                         address: org[:address]
+                       )
+      end
       UserOrganization.create({
         user_id: id,
         organization_id: organization.id,
