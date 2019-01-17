@@ -62,11 +62,11 @@
         %ul{class: "navbar-nav"}
           - if authorized?
             %li{class: "nav-item"}
-              %a{ href: "/profile", id: "linked-button", role: "button", class: "btn btn-success" }= @user[:fullname]
+              %a{ href: "/profile", id: "linked-button", role: "button", class: "btn btn-outline-light" }= @user[:fullname]
             %li{class: "nav-item"}
               %a{ href: "/logout", class: "nav-link" } Logout
           - else
-            %a{ href:"/auth/orcid", id: "connect-orcid-button", role: "button", class: "btn btn-success" }
+            %a{ href:"/auth/orcid", id: "connect-orcid-button", role: "button", class: "btn btn-outline-light" }
               %img{ alt: "ORCID logo", height:24, width:24, id:"orcid-id-logo", src:"/images/orcid_24x24.png"}
               Log in with your ORCID Account
 

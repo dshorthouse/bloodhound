@@ -1,3 +1,6 @@
+.btn-outline-light:hover{
+  color:#212529 !important;
+}
 a, .page-link{
   color:#D3633C;
 }
@@ -141,9 +144,12 @@ h3.list-header {
     border-left-color: #d9534f
 }
 .relaxed{margin-bottom:0px;}
-
+.button-login{display:none;}
 @media (max-width: 400px) {
   .display-3 {
     font-size:3.5rem;
   }
+}
+@media (max-width: 767px) {
+  .button-login{display:block;}
 }

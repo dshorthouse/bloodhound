@@ -15,7 +15,7 @@
       %p.lead.text-muted
         An 
         %em agent
-        is a name as found in specimen data for you to explore
+        is a person's name as found in specimen data for you to explore
     = haml :'partials/agent_search', layout: false
 
 %div{class:"container-fluid"}
@@ -32,4 +32,4 @@
     = will_paginate @results, { class: "pagination" }
   - else
     %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-      Search the #{number_with_delimiter(@count)} names Bloodhound has discovered
+      Search the #{number_with_delimiter(@count)} agents Bloodhound has discovered
