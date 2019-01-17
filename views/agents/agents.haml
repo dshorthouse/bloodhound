@@ -19,7 +19,10 @@
     = haml :'partials/agent_search', layout: false
 
 %div{class:"container-fluid"}
-  - if !@formatted_results.empty?
+  - if @formatted_results.empty?
+    %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+      No agents found.
+  - elsif !@formatted_results.empty?
     %ul{class: "list-unstyled"}
       - @formatted_results.each do |o|
         %li
