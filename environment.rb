@@ -3,6 +3,7 @@ require 'ostruct'
 require 'logger'
 require 'mysql2'
 require 'active_record'
+require 'active_record_union'
 require 'activerecord-import'
 require 'active_support/all'
 require 'rest_client'
@@ -45,6 +46,7 @@ require 'colorize'
 require 'sinatra/cacher'
 require 'sinatra/outputbuffer'
 require 'ruby-progressbar'
+require 'byebug'
 
 register Sinatra::ConfigFile
 config_file File.join(File.dirname(__FILE__), 'config.yml')

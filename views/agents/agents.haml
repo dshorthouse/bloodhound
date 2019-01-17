@@ -1,0 +1,29 @@
+-content_for :title do
+  Bloodhound: Agents
+
+-content_for :scripts do
+  %script{src: "/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init("", "GET", "/agents");
+    });
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
+    %div{class:"mr-auto p-2"}
+      %h2 Agent Search
+      %p.lead.text-muted
+        An 
+        %em agent
+        is a name as found in specimen data for you to explore
+    = haml :'partials/agent_search', layout: false
+
+%div{class:"container-fluid"}
+  - if !@formatted_results.empty?
+    %ul{class: "list-unstyled"}
+      - @formatted_results.each do |o|
+        %li
+          %a{href: "/agent/#{o[:id]}"} #{o[:name]}
+          %small{class: "text-muted"} [Score: #{o[:score]}]
+
+    = will_paginate @results, { class: "pagination" }

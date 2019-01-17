@@ -266,7 +266,7 @@ module Sinatra
 
       def build_name_query(search)
         parsed = Namae.parse search
-        name = DwcAgent.clean(parsed[0])
+        name = DwcAgent.clean(parsed[0]) rescue { family: nil, given: nil }
         family = !name[:family].nil? ? name[:family] : ""
         given = !name[:given].nil? ? name[:given] : ""
         {
@@ -298,6 +298,7 @@ module Sinatra
 
       def format_agent(n)
         { id: n[:_source][:id],
+          score: n[:_score],
           name: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", ")
         }
       end
@@ -305,6 +306,7 @@ module Sinatra
       def format_agents
         @results.map{ |n|
           { id: n[:_source][:id],
+            score: n[:_score],
             name: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", "),
             fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(" ")
           }
@@ -314,6 +316,7 @@ module Sinatra
       def format_users
         @results.map{ |n|
           { id: n[:_source][:id],
+            score: n[:_score],
             orcid: n[:_source][:orcid],
             name: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", "),
             fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(" ")
@@ -324,6 +327,7 @@ module Sinatra
       def format_organizations
         @results.map{ |n|
           { id: n[:_source][:id],
+            score: n[:_score],
             name: n[:_source][:name],
             address: n[:_source][:address]
           }

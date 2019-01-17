@@ -1,0 +1,37 @@
+-content_for :title do
+  Bloodhound: #{@agent.fullname} Specimens
+
+-content_for :jumbotron do
+  = haml :'partials/agent_jumbotron', layout: false
+
+%div{class: "alert alert-warning", role:"alert", style:"margin-left:0.1em;margin-right:0.1em;margin-top:0px;"}
+  Bloodhound is always looking for ways to improve its ability to find people who have collected or identified specimens. This URL is unreliable for linking.
+    
+%div{class:"table-responsive-lg"}
+  %table{class:"table table-hover table-sm"}
+    %thead{class: "thead-light"}
+      %tr
+        %th{scope: "col"} Scientific Name
+        %th{scope: "col"} Collected By
+        %th{scope: "col"} Identified By
+        %th{scope: "col"} Date Collected
+        %th{scope: "col"} Date Identified
+        %th{scope: "col"} Institution
+        %th{scope: "col"} Catalog Number
+        %th{scope: "col"} Type Status
+
+    %tbody
+      - @results.each do |o|
+        %tr
+          %td
+            - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
+            %a{href: "https://www.gbif.org/occurrence/#{o.id}", target: "_blank" } #{scientific_name}
+          %td #{o.recordedBy}
+          %td #{o.identifiedBy}
+          %td #{o.eventDate}
+          %td #{o.dateIdentified}
+          %td #{o.institutionCode}
+          %td #{o.catalogNumber}
+          %td #{o.typeStatus}
+
+= will_paginate @results, { class: "pagination" }

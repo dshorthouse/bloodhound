@@ -2,9 +2,11 @@
   Bloodhound: Profiles
 
 -content_for :jumbotron do
-  %div{class:"jumbotron jumbotron-fluid"}
-    %div{class: "container-fluid"}
+  %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
+    %div{class:"mr-auto p-2"}
       %h2 Public Profiles
+      %p.lead.text-muted
+        Users who have claimed their specimens and have made their profiles accessible to all
 
 %div{class:"container-fluid"}
   - @results.in_groups_of(3).each do |group|

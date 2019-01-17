@@ -410,7 +410,7 @@ module Sinatra
                 page = (params[:page] || 1).to_i
                 @results = @viewed_user.visible_occurrences
                                        .order("occurrences.typeStatus desc")
-                                       .paginate(page: params[:page])
+                                       .paginate(page: page)
 
                 haml :'public/specimens', locals: { active_page: "roster" }
               else
@@ -429,7 +429,7 @@ module Sinatra
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
                 @results = @viewed_user.recorded_with
-                                       .paginate(page: params[:page])
+                                       .paginate(page: page)
 
                 haml :'public/co_collectors', locals: { active_page: "roster" }
               else
@@ -448,7 +448,7 @@ module Sinatra
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
                 @results = @viewed_user.identified_for
-                                       .paginate(page: params[:page])
+                                       .paginate(page: page)
 
                 haml :'public/identified_for', locals: { active_page: "roster" }
               else

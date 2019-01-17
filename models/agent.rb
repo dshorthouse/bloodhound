@@ -86,7 +86,7 @@ class Agent < ActiveRecord::Base
   end
 
   def occurrences
-    recordings | determinations
+    recordings.union_all(determinations)
   end
 
   def aka

@@ -63,6 +63,8 @@ var Application = (function($, window) {
           if (self.path === "/admin") {
             var orcid = window.location.pathname.split('/')[3];
             window.location.href = "/admin/user/" + orcid + "/candidates/agent/" + datum.id;
+          } else if (self.path === "/agents") {
+            window.location.href = "/agents?q=" + encodeURI(datum.name);
           } else {
             window.location.href = "/profile/candidates/agent/" + datum.id;
           }

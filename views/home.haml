@@ -1,19 +1,18 @@
 -content_for :title do
   Bloodhound
 
+-content_for :scripts do
+  %script{src: "/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init("", "GET", "/agents");
+    });
+
 -content_for :jumbotron do
-  %div{class: "jumbotron"}
-    %div{class: "container-fluid"}
+  %div{class: "jumbotron jumbotron-fluid d-flex flex-wrap"}
+    %div{class: "mr-auto p-2"}
       %h1{class: "display-3"} Bloodhound
       %p.lead Claim the natural history specimens you collected or identified
-      %p{id: "profile-buttons"}
-        - if !authorized?
-          %a{ href:"/auth/orcid", id: "connect-orcid-button", role: "button", class: "btn btn-outline-success" }
-            %img{ alt: "ORCID logo", height:24, width:24, id:"orcid-id-logo", src:"/images/orcid_24x24.png"}
-            Log in with your ORCID Account
-        - else
-          %a{ href:"/profile/candidates", id: "candidates-button", role: "button", class: "btn btn-outline-success" } Claim Your Specimens
-          %a{ href:"/help-users", role: "button", class:"btn btn-outline-success" } Help Other Users
 
 - if !@results.empty?
   %h2{class: "text-center"} Sample Profiles

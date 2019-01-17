@@ -52,6 +52,8 @@
           %li{class: "nav-item"}
             %a{ href: "/organizations", class:"nav-link#{locals[:active_page] == "organizations" ? " active" : nil}" } Organizations
           %li{class: "nav-item"}
+            %a{ href: '/agents', class: "nav-link#{locals[:active_page] == "agents" ? " active" : nil}" } Agents
+          %li{class: "nav-item"}
             %a{ href: '/integrations', class: "nav-link#{locals[:active_page] == "integrations" ? " active" : nil}" } Integrations
           %li{class: "nav-item"}
             %a{ href: "https://github.com/dshorthouse/bloodhound/issues", class: "nav-link" } Feedback
@@ -63,6 +65,10 @@
               %a{ href: "/profile", id: "linked-button", role: "button", class: "btn btn-success" }= @user[:fullname]
             %li{class: "nav-item"}
               %a{ href: "/logout", class: "nav-link" } Logout
+          - else
+            %a{ href:"/auth/orcid", id: "connect-orcid-button", role: "button", class: "btn btn-success" }
+              %img{ alt: "ORCID logo", height:24, width:24, id:"orcid-id-logo", src:"/images/orcid_24x24.png"}
+              Log in with your ORCID Account
 
     = yield_content :jumbotron
 

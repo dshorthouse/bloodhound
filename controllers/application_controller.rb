@@ -20,6 +20,27 @@ module Sinatra
             haml :about, locals: { active_page: "about" }
           end
 
+          app.get '/agent/:id' do
+            id = params[:id].to_i
+            page = (params[:page] || 1).to_i
+            begin
+              @agent = Agent.find(id)
+              @results = @agent.occurrences
+                               .order("occurrences.typeStatus desc")
+                               .paginate(page: page)
+              haml :'agents/agent', locals: { active_page: "agents" }
+            rescue
+              status 404
+              haml :oops, locals: { active_page: "agents" }
+            end
+          end
+
+          app.get '/agents' do
+            search_agent
+            @formatted_results = format_agents
+            haml :'agents/agents', locals: { active_page: "agents" }
+          end
+
           app.get '/integrations' do
             file = File.join(root, "public", "data", "bloodhound-public-claims.csv.gz")
             @compressed_file_size = (File.size(file).to_f / 2**20).round(2) rescue nil
