@@ -8,4 +8,6 @@
   %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_page] == "identified_for" ? " active" : nil}", href: "/#{@viewed_user.orcid}/identified-for"} Identified For
   %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "deposits" ? " active" : nil}", href: "/#{@viewed_user.orcid}/deposited-at"} Deposited At
+  %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_page] == "specimens" ? " active" : nil}", href: "/#{@viewed_user.orcid}/specimens"} Specimens

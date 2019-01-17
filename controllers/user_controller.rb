@@ -467,6 +467,23 @@ module Sinatra
             end
           end
 
+          app.get '/:orcid/deposited-at' do
+            if params[:orcid].is_orcid?
+              @viewed_user = User.find_by_orcid(params[:orcid])
+              if @viewed_user && @viewed_user.is_public?
+                @recordings_at = @viewed_user.recordings_deposited_at
+                @identifications_at = @viewed_user.identifications_deposited_at
+                haml :'public/deposited_at', locals: { active_page: "roster" }
+              else
+                status 404
+                haml :oops
+              end
+            else
+              status 404
+              haml :oops
+            end
+          end
+
         end
 
       end

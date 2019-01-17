@@ -216,6 +216,14 @@ class User < ActiveRecord::Base
         .order(:family)
   end
 
+  def recordings_deposited_at
+    recordings.pluck(:institutionCode).compact.uniq.sort
+  end
+
+  def identifications_deposited_at
+    identifications.pluck(:institutionCode).compact.uniq.sort
+  end
+
   def current_organization
     organizations.includes(:user_organizations)
                  .where(user_organizations: { end_year: nil }).first

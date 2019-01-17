@@ -1,0 +1,41 @@
+- content_for(:title, "#{@viewed_user.fullname} : Bloodhound")
+
+- content_for :jumbotron do
+  = haml :'partials/user_jumbotron', layout: false
+
+= haml :'partials/user_tabs', layout: false, locals: { active_page: 'deposits' }
+
+- if @recordings_at.empty? && @identifications_at.empty? 
+  %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    #{@viewed_user.fullname} is still working on their claims.
+
+- if !@recordings_at.empty? || !@identifications_at.empty?
+
+  %div{class: "container-fluid"}
+    %div{class: "row"}
+      %div{class: "col"}
+        - if @recordings_at.empty? && !@identifications_at.empty?
+          %h3
+            Identified Specimens Deposited At
+            %span{class: "badge badge-light badge-secondary"}
+          %ul{class: "list-group"}
+            - @identifications_at.each do |k|
+              %li{class: "list-group-item d-flex justify-content-between align-items-center"}
+                #{k}
+        - elsif !@recordings_at.empty?
+          %h3
+            Collected Specimens Deposted At
+            %span{class: "badge badge-light badge-secondary"}
+          %ul{class: "list-group"}
+            - @recordings_at.each do |k|
+              %li{class: "list-group-item d-flex justify-content-between align-items-center"}
+                #{k}
+      %div{class: "col"}
+        - if !@recordings_at.empty? && !@identifications_at.empty?
+          %h3
+            Identified Specimens Deposited At
+            %span{class: "badge badge-light badge-secondary"}
+          %ul{class: "list-group"}
+            - @identifications_at.each do |k|
+              %li{class: "list-group-item d-flex justify-content-between align-items-center"}
+                #{k}
