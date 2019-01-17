@@ -217,11 +217,19 @@ class User < ActiveRecord::Base
   end
 
   def recordings_deposited_at
-    recordings.pluck(:institutionCode).compact.uniq.sort
+    codes = recordings.pluck(:institutionCode).compact
+    Hash.new(0).tap{ |h| codes.each { |f| h[f] += 1 } }
+               .sort_by {|_key, value| value}
+               .reverse
+               .to_h
   end
 
   def identifications_deposited_at
-    identifications.pluck(:institutionCode).compact.uniq.sort
+    codes = identifications.pluck(:institutionCode).compact
+    Hash.new(0).tap{ |h| codes.each { |f| h[f] += 1 } }
+               .sort_by {|_key, value| value}
+               .reverse
+               .to_h
   end
 
   def current_organization

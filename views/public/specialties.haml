@@ -15,7 +15,7 @@
     %div{class: "row"}
       %div{class: "col"}
         - if @families_recorded.empty? && !@families_identified.empty?
-          %h3
+          %h3{class: "d-flex justify-content-between list-header"}
             Families Identified
             %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@families_identified.count)}
           %ul{class: "list-group"}
@@ -24,7 +24,7 @@
                 #{k}
                 %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
         - elsif !@families_recorded.empty?
-          %h3
+          %h3{class: "d-flex justify-content-between list-header"}
             Families Collected
             %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@families_recorded.count)}
           %ul{class: "list-group"}
@@ -34,7 +34,7 @@
                 %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
       %div{class: "col"}
         - if !@families_recorded.empty? && !@families_identified.empty?
-          %h3
+          %h3{class: "d-flex justify-content-between list-header"}
             Families Identified
             %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@families_identified.count)}
           %ul{class: "list-group"}

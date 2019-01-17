@@ -390,12 +390,6 @@ module Sinatra
             if params[:orcid].is_orcid?
               @viewed_user = User.find_by_orcid(params[:orcid])
               if @viewed_user && @viewed_user.is_public?
-                @total = {
-                  number_identified: @viewed_user.identified_count,
-                  number_recorded: @viewed_user.recorded_count,
-                  number_helped: @viewed_user.helped_count,
-                  number_claims_given: @viewed_user.claims_given.count
-                }
                 @families_identified = @viewed_user.identified_families
                 @families_recorded = @viewed_user.recorded_families
                 haml :'public/specialties', locals: { active_page: "roster" }
