@@ -15,6 +15,7 @@ var Application = (function($, window) {
     user_id: "",
     path: "",
     method: "POST",
+    spinner: "<div class=\"spinner-grow\" role=\"status\"><span class=\"sr-only\">Loading...</span></div>",
     data_sources: { agent: {}, user : {}, organization : {} },
     init: function(user_id = "", method = "POST", path = "") {
       this.user_id = user_id;
@@ -153,7 +154,7 @@ var Application = (function($, window) {
                 if (self.method === "POST" || input.hasClass("restore-ignored")) {
                   $(".table tbody tr").fadeOut(250).promise().done(function() {
                     $(this).remove();
-                    $(".table tbody").append("<tr><td colspan=\"10\"><i class=\"fas fa-spinner fa-spin\" style=\"font-size:24px;color:#d1ecf1\"></i></td></tr>");
+                    $(".table tbody").append("<tr><td colspan=\"10\">" + self.spinner + "</td></tr>");
                     location.reload();
                   });
                 } else {
@@ -186,7 +187,7 @@ var Application = (function($, window) {
                   input.parents("tr").fadeOut(250).promise().done(function() {
                     $(this).remove();
                     if ($("input.action-radio").length <= 6) {
-                      $(".table tbody").append("<tr><td colspan=\"10\"><i class=\"fas fa-spinner fa-spin\" style=\"font-size:24px;color:#d1ecf1\"></i></td></tr>");
+                      $(".table tbody").append("<tr><td colspan=\"10\">" + self.spinner + "</td></tr>");
                       location.reload();
                     }
                   });
@@ -239,7 +240,7 @@ var Application = (function($, window) {
           $(".table tfoot").fadeOut(250);
           $(".table tbody tr").fadeOut(250).promise().done(function() {
             $(this).remove();
-            $(".table tbody").append("<tr><td colspan=\"10\"><i class=\"fas fa-spinner fa-spin\" style=\"font-size:24px;color:#d1ecf1\"></i></td></tr>");
+            $(".table tbody").append("<tr><td colspan=\"10\">" + self.spinner + "</td></tr>");
             location.reload();
           });
         });
