@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 
   before_update :set_update_time
 
-  after_create :add_search, :update_orcid_profile
+  after_create :update_orcid_profile, :add_search
   after_update :update_search
   after_destroy :remove_search
 
