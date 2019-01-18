@@ -38,10 +38,10 @@
 
 %h3 Web Services
 
-%p Bloodhound data are exposed as CSV downloads or JSON-LD documents on public user profile pages. Individual occurrence records are exposed as JSON-LD documents.
+%p Bloodhound data are exposed as CSV downloads or JSON-LD documents on publicly shared profile pages. Individual occurrence records are exposed as JSON-LD documents.
 
 %div{class:"bd-callout bd-callout-info"}
-  %h5 User Data from a Public Account
+  %h5 User Data from a Public Profile
   %div
     %a{href: "/0000-0001-7618-5230/specimens.csv"} #{base_url}/0000-0001-7618-5230/specimens.csv
   %div
@@ -61,13 +61,13 @@
     %small{class:"text-muted"}
       Where 
       %em /occurrence/477976412
-      is that provided by GBIF,
+      is that provided by the Global Biodiversity Information Facility (GBIF),
       %a{href: "https://gbif.org/occurrence/477976412"} https://gbif.org/occurrence/477976412
 
 %h3 Raw Data
 - if @compressed_file_size
   %div{class: "bd-callout bd-callout-info"}
-    %h5 All Claims from Public Accounts
+    %h5 All Claims from Public, Authenticated Profiles
     %div
       Daily build,
       %a{href: "/data/bloodhound-public-claims.csv.gz"} bloodhound-public-claims.csv.gz
@@ -77,7 +77,7 @@
         Where the above gzipped csv includes a header, "Subject, Predicate, Object" and rows are expressed as, "https://gbif.org/occurrence/1801358422, http://rs.tdwg.org/dwc/iri/identifiedBy, https://orcid.org/0000-0001-9008-0611"
 
 %div{class: "bd-callout bd-callout-info"}
-  %h5 Unique GBIF Agent Strings
+  %h5 Unverified, Unauthenticated Agents
   %div
     %a{href: "https://github.com/dshorthouse/bloodhound/blob/d6605b8b3771a42bc62e613fc6622af0bd5cb278/public/data/bloodhound-agents.gz"} bloodhound-agents.gz
     (474 MB)
