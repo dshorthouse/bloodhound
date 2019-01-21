@@ -36,24 +36,24 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
 
 ### Step 2:  Parse & Populate Agents
 
-     $ ./bin/populate_agents.rb --truncate --directory /directory-to-spark-csv-files/
-     $ sidekiq -c 40 -q agent -r ./environment.rb
+     $ RACK_ENV=production ./bin/populate_agents.rb --truncate --directory /directory-to-spark-csv-files/
+     $ RACK_ENV=production sidekiq -c 40 -q agent -r ./environment.rb
 
 ### Step 3: Populate Taxa
 
-     $ ./bin/populate_taxa.rb --truncate --directory /directory-to-spark-csv-files/
-     $ sidekiq -c 40 -q taxon -r ./environment.rb
+     $ RACK_ENV=production ./bin/populate_taxa.rb --truncate --directory /directory-to-spark-csv-files/
+     $ RACK_ENV=production sidekiq -c 40 -q taxon -r ./environment.rb
 
 Also execute SQL statement at end of [/bin/populate_taxa.rb script](bin/populate_taxa.rb) once queue is finished.
 
 ### Step 4: Cluster Agents & Store in Neo4j
 
-     $ ./bin/cluster_agents.rb --truncate --cluster
-     $ sidekiq -c 40 -q cluster -r ./environment.rb
+     $ RACK_ENV=production ./bin/cluster_agents.rb --truncate --cluster
+     $ RACK_ENV=production sidekiq -c 40 -q cluster -r ./environment.rb
 
 ### Step 5: Populate Search in Elasticsearch
 
-     $ ./bin/populate_search.rb --rebuild
+     $ RACK_ENV=production ./bin/populate_search.rb --rebuild
 
 ## Neo4j Dump & Restore
 

@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-# momkey patch Sinatra::Cacher because loading html fragment throws error
+# monkey patch Sinatra::Cacher because loading html fragment throws error
 # Encoding::CompatibilityError - incompatible character encodings: ASCII-8BIT and UTF-8
 module Sinatra
   module Cacher

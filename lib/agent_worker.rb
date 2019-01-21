@@ -16,22 +16,24 @@ module Bloodhound
                                                           .map(&:to_i)
 
         agents.each do |a|
-          begin
-            agent = Agent.find_or_create_by({family: a[:family].to_s, given: a[:given].to_s})
-          rescue
-            retry
-          end
-          if !gbifIDs_recordedBy.empty?
-            data = gbifIDs_recordedBy.map{|r| {
-              occurrence_id: r,
-              agent_id: agent.id }}
-            OccurrenceRecorder.import data, batch_size: 100, validate: false
-          end
-          if !gbifIDs_identifiedBy.empty?
-            data = gbifIDs_identifiedBy.map{|r| {
-              occurrence_id: r,
-              agent_id: agent.id }}
-            OccurrenceDeterminer.import data, batch_size: 100, validate: false
+          Agent.transaction do
+            begin
+              agent = Agent.find_or_create_by({family: a[:family].to_s, given: a[:given].to_s})
+            rescue
+              retry
+            end
+            if !gbifIDs_recordedBy.empty?
+              data = gbifIDs_recordedBy.map{|r| {
+                occurrence_id: r,
+                agent_id: agent.id }}
+              OccurrenceRecorder.import data, batch_size: 500, validate: false
+            end
+            if !gbifIDs_identifiedBy.empty?
+              data = gbifIDs_identifiedBy.map{|r| {
+                occurrence_id: r,
+                agent_id: agent.id }}
+              OccurrenceDeterminer.import data, batch_size: 500, validate: false
+            end
           end
         end
       end
