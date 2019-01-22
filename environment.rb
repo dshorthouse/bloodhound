@@ -46,7 +46,6 @@ require 'colorize'
 require 'sinatra/cacher'
 require 'sinatra/outputbuffer'
 require 'ruby-progressbar'
-require 'byebug'
 
 register Sinatra::ConfigFile
 config_file File.join(File.dirname(__FILE__), 'config.yml')

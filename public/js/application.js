@@ -237,7 +237,6 @@ var Application = (function($, window) {
               $(".table button").addClass("disabled");
             }
         }).done(function(data) {
-          $(".table tfoot").fadeOut(250);
           $(".table tbody tr").fadeOut(250).promise().done(function() {
             $(this).remove();
             $(".table tbody").append("<tr><td colspan=\"10\">" + self.spinner + "</td></tr>");

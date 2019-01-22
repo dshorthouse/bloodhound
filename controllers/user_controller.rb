@@ -370,11 +370,8 @@ module Sinatra
                 @total = {
                   number_identified: @viewed_user.identified_count,
                   number_recorded: @viewed_user.recorded_count,
-                  number_helped: @viewed_user.helped_count,
-                  number_claims_given: @viewed_user.claims_given.count,
-                  number_recorded_with: @viewed_user.recorded_with.count
+                  country_counts: @viewed_user.country_counts
                 }
-                @country_counts = @viewed_user.country_counts
                 haml :'public/overview', locals: { active_page: "roster" }
               else
                 status 404

@@ -233,8 +233,7 @@ class User < ActiveRecord::Base
   end
 
   def current_organization
-    organizations.includes(:user_organizations)
-                 .where(user_organizations: { end_year: nil }).first
+    organizations.where(user_organizations: { end_year: nil }).first
   end
 
   def update_orcid_profile

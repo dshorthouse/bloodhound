@@ -44,6 +44,7 @@ class BLOODHOUND < Sinatra::Base
   register Sinatra::Bloodhound::Controller::UserOccurrenceController
 
   register Sinatra::Bloodhound::Model::Initialize
+  use Sinatra::Bloodhound::Model::QueryCache
 
   run! if app_file == $0
 end
