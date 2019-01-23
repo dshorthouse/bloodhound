@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 08, 2019 at 06:53 PM
+-- Generation Time: Jan 23, 2019 at 04:39 AM
 -- Server version: 5.7.22
 -- PHP Version: 5.6.36
 
@@ -91,9 +91,9 @@ CREATE TABLE `organizations` (
   `id` int(11) NOT NULL,
   `isni` varchar(120) COLLATE utf8mb4_bin DEFAULT NULL,
   `ringgold` int(11) DEFAULT NULL,
+  `grid` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
   `name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `address` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `grid` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL
+  `address` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
@@ -231,7 +231,8 @@ ALTER TABLE `occurrence_recorders`
 ALTER TABLE `organizations`
   ADD PRIMARY KEY (`id`),
   ADD KEY `ringgold_idx` (`ringgold`),
-  ADD KEY `grid_idx` (`grid`);
+  ADD KEY `grid_idx` (`grid`),
+  ADD KEY `isni_idx` (`isni`);
 
 --
 -- Indexes for table `schema_migrations`
@@ -270,7 +271,7 @@ ALTER TABLE `users`
 --
 ALTER TABLE `user_occurrences`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `user_occurrence_idx` (`user_id`,`occurrence_id`),
+  ADD UNIQUE KEY `user_occurrence_idx` (`occurrence_id`,`user_id`),
   ADD KEY `action_idx` (`action`) USING BTREE,
   ADD KEY `created_by_idx` (`created_by`);
 
@@ -290,13 +291,13 @@ ALTER TABLE `user_organizations`
 -- AUTO_INCREMENT for table `agents`
 --
 ALTER TABLE `agents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1667317;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1644766;
 
 --
 -- AUTO_INCREMENT for table `organizations`
 --
 ALTER TABLE `organizations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4456;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4466;
 
 --
 -- AUTO_INCREMENT for table `taxa`
@@ -308,19 +309,19 @@ ALTER TABLE `taxa`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9364;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9420;
 
 --
 -- AUTO_INCREMENT for table `user_occurrences`
 --
 ALTER TABLE `user_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3939100;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3985380;
 
 --
 -- AUTO_INCREMENT for table `user_organizations`
 --
 ALTER TABLE `user_organizations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36311;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36549;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
