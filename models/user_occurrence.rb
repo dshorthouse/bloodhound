@@ -5,6 +5,8 @@ class UserOccurrence < ActiveRecord::Base
 
    has_one :taxon_occurrence, foreign_key: :occurrence_id, primary_key: :occurrence_id
 
+   has_many :shared_user_occurrences, -> (object){ where("id != ? AND visible = true", object.id) }, class_name: "UserOccurrence", foreign_key: :occurrence_id, primary_key: :occurrence_id
+
    before_update :set_update_time
 
    alias_attribute :user_occurrence_id, :id
@@ -15,6 +17,10 @@ class UserOccurrence < ActiveRecord::Base
 
    def identified?
      action.include? "identified"
+   end
+
+   def shared?
+     !shared_user_occurrences.empty?
    end
 
    private

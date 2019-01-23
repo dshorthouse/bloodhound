@@ -199,22 +199,29 @@ class User < ActiveRecord::Base
   end
 
   def recorded_with
-    User.includes(:user_occurrences)
-        .where(user_occurrences: { occurrence_id: recordings.pluck(:occurrence_id) })
-        .where(qry_recorded)
-        .where.not(user_occurrences: { user_id: id })
+    User.joins("JOIN user_occurrences as a ON a.user_id = users.id JOIN user_occurrences b ON a.occurrence_id = b.occurrence_id")
+        .where("b.user_id = #{id}")
+        .where("b.action LIKE '%recorded%'")
+        .where("b.visible = true")
+        .where("a.user_id != #{id}")
+        .where("a.action LIKE '%recorded%'")
+        .where("a.visible = true")
         .distinct
         .order(:family)
   end
 
   def identified_for
-    User.includes(:user_occurrences)
-        .where(user_occurrences: { occurrence_id: identifications.pluck(:occurrence_id) })
-        .where(qry_recorded)
-        .where.not(user_occurrences: { user_id: id })
+    User.joins("JOIN user_occurrences as a ON a.user_id = users.id JOIN user_occurrences b ON a.occurrence_id = b.occurrence_id")
+        .where("b.user_id = #{id}")
+        .where("b.action LIKE '%identified%'")
+        .where("b.visible = true")
+        .where("a.user_id != #{id}")
+        .where("a.action LIKE '%recorded%'")
+        .where("a.visible = true")
         .distinct
         .order(:family)
   end
+
 
   def recordings_deposited_at
     codes = recordings.pluck(:institutionCode).compact
