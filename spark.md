@@ -19,10 +19,26 @@ import org.apache.spark.sql.Column
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions._
 
-val sqlContext = new org.apache.spark.sql.SQLContext(sc)
+val verbatimTerms = List(
+  "gbifID",
+  "occurrenceID",
+  "dateIdentified",
+  "decimalLatitude",
+  "decimalLongitude",
+  "country",
+  "eventDate",
+  "family",
+  "identifiedBy",
+  "institutionCode",
+  "collectionCode",
+  "catalogNumber",
+  "recordedBy",
+  "scientificName",
+  "typeStatus"
+)
 
 //load a big, verbatim tsv file from a DwC-A download
-val df = spark.
+val df1 = spark.
     read.
     format("csv").
     option("header", "true").
@@ -32,9 +48,22 @@ val df = spark.
     option("escape", "\"").
     option("treatEmptyValuesAsNulls", "true").
     option("ignoreLeadingWhiteSpace", "true").
-    load("/Users/dshorthouse/Downloads/GBIF Data/verbatim.txt")
+    load("/Users/dshorthouse/Downloads/GBIF Data/verbatim.txt").
+    select(verbatimTerms.map(col): _*).
+    filter(coalesce($"identifiedBy",$"recordedBy").isNotNull)
 
-df.registerTempTable("occurrences")
+//optionally save the DataFrame to disk so we don't have to do the above again
+df1.write.mode("overwrite").parquet("verbatim")
+
+//load the saved DataFrame, can later skip the above processes and start from here
+val df1 = spark.
+    read.
+    parquet("verbatim")
+
+val processedTerms = List(
+  "gbifID",
+  "countryCode"
+)
 
 val df2 = spark.
     read.
@@ -46,60 +75,19 @@ val df2 = spark.
     option("escape", "\"").
     option("treatEmptyValuesAsNulls", "true").
     option("ignoreLeadingWhiteSpace", "true").
-    load("/Users/dshorthouse/Downloads/GBIF Data/occurrence.txt")
+    load("/Users/dshorthouse/Downloads/GBIF Data/occurrence.txt").
+    select(processedTerms.map(col): _*).
+    filter($"countryCode".isNotNull)
 
-df2.registerTempTable("processed")
+//optionally save the DataFrame to disk so we don't have to do the above again
+df2.write.mode("overwrite").parquet("processed")
 
-//select columns & skip rows if both identifiedBy and recordedBy are empty
-val occurrences = sqlContext.
-    sql("""
-      SELECT 
-        o.gbifID,
-        o.occurrenceID,
-        o.dateIdentified,
-        o.decimalLatitude,
-        o.decimalLongitude,
-        o.country,
-        p.countryCode,
-        o.eventDate,
-        o.family,
-        o.identifiedBy,
-        o.institutionCode,
-        o.collectionCode,
-        o.catalogNumber,
-        o.recordedBy,
-        o.scientificName,
-        o.typeStatus 
-      FROM 
-        occurrences o 
-      INNER JOIN 
-        processed p ON o.gbifID = p.gbifID 
-      WHERE 
-        COALESCE(o.recordedBy, o.identifiedBy) IS NOT NULL""")
+//load the saved DataFrame, can later skip the above processes and start from here
+val df2 = spark.
+    read.
+    parquet("processed")
 
-//alternate query
-val occurrences = sqlContext.
-    sql("""
-      SELECT 
-        o.gbifID,
-        o.occurrenceID,
-        o.dateIdentified,
-        o.decimalLatitude,
-        o.decimalLongitude,
-        o.country,
-        o.eventDate,
-        o.family,
-        o.identifiedBy,
-        o.institutionCode,
-        o.collectionCode,
-        o.catalogNumber,
-        o.recordedBy,
-        o.scientificName,
-        o.typeStatus 
-      FROM 
-        occurrences o 
-      WHERE 
-        COALESCE(o.recordedBy, o.identifiedBy) IS NOT NULL""")
+val occurrences = df1.join(df2, Seq("gbifID"), "left_outer")
 
 //optionally save the DataFrame to disk so we don't have to do the above again
 occurrences.write.mode("overwrite").save("occurrences")
@@ -132,13 +120,13 @@ occurrences.
 
 //aggregate recordedBy
 val recordedByGroups = occurrences.
-    filter(!isnull($"recordedBy")).
+    filter($"recordedBy".isNotNull).
     groupBy($"recordedBy" as "agents").
     agg(collect_set($"gbifID") as "gbifIDs_recordedBy")
 
 //aggregate identifiedBy
 val identifiedByGroups = occurrences.
-    filter(!isnull($"identifiedBy")).
+    filter($"identifiedBy".isNotNull).
     groupBy($"identifiedBy" as "agents").
     agg(collect_set($"gbifID") as "gbifIDs_identifiedBy")
 
@@ -172,7 +160,7 @@ unioned.select("agents", "gbifIDs_recordedBy", "gbifIDs_identifiedBy").
 
 //aggregate families (Taxa)
 val familyGroups = occurrences.
-    filter(!isnull($"family")).
+    filter($"family".isNotNull).
     groupBy($"family").
     agg(collect_set($"gbifID") as "gbifIDs_family")
 

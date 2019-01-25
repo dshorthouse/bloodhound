@@ -285,6 +285,17 @@ class User < ActiveRecord::Base
     })
   end
 
+  def articles_citing_specimens
+    Article.joins(article_occurrences: :user_occurrences)
+           .where(user_occurrences: { user_id: id, visible: true })
+           .order(created: :desc)
+           .distinct
+  end
+
+  def cited_specimens(article_id)
+    visible_occurrences.joins(:article_occurrences).where(article_occurrences: { article_id: article_id })
+  end
+
   private
 
   def set_update_time

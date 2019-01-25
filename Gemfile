@@ -31,6 +31,9 @@ gem 'colorize'
 gem 'sinatra-cacher'
 gem 'sinatra-outputbuffer'
 gem 'ruby-progressbar'
+gem 'dwc-archive'
+gem 'rubyzip'
+gem 'biodiversity'
 
 group :production do
 end

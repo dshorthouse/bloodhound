@@ -1,4 +1,4 @@
-%ul{class: "nav nav-tabs"}
+%ul{class: "nav nav-tabs justify-content-center"}
   %li{class: "nav-item "}
     %a{class: "nav-link#{locals[:active_page] == "overview" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}"} Claimed
   %li{class: "nav-item"}
@@ -7,3 +7,5 @@
     %a{class: "nav-link#{locals[:active_page] == "ignored" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/ignored"} Ignored
   %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_page] == "help" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/support"} Help Received
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "citations" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/citations"} Citations

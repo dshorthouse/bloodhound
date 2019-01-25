@@ -75,10 +75,10 @@ module Bloodhound
           results = JSON.parse(response, :symbolize_names => true)[:result] rescue []
           if results.size > 0
             results.map { |item| yielder << item[:"orcid-identifier"][:path] }
-            start += 200
           else
             raise StopIteration
           end
+          start += 200
         end
       end.lazy
     end

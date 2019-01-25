@@ -225,6 +225,31 @@ module Sinatra
             haml :'profile/ignored'
           end
 
+          app.get '/profile/citations' do
+            protected!
+            user = User.find(@user[:id])
+            page = (params[:page] || 1).to_i
+            @results = user.articles_citing_specimens
+                           .paginate(page: page)
+            haml :'profile/citations'
+          end
+
+          app.get '/profile/citation/:article_id' do
+            protected!
+            user = User.find(@user[:id])
+            @article = Article.find(params[:article_id])
+            if @article
+              page = (params[:page] || 1).to_i
+              @total = user.cited_specimens(@article.id).count
+              @results = user.cited_specimens(@article.id)
+                             .paginate(page: page)
+              haml :'profile/citation'
+            else
+              status 404
+              haml :oops
+            end
+          end
+
           app.get '/logout' do
             session.clear
             redirect '/'
@@ -410,6 +435,43 @@ module Sinatra
                                        .paginate(page: page)
 
                 haml :'public/specimens', locals: { active_page: "roster" }
+              else
+                status 404
+                haml :oops
+              end
+            else
+              status 404
+              haml :oops
+            end
+          end
+
+          app.get '/:orcid/citations' do
+            if params[:orcid].is_orcid?
+              @viewed_user = User.find_by_orcid(params[:orcid])
+              if @viewed_user && @viewed_user.is_public?
+                page = (params[:page] || 1).to_i
+                @results = @viewed_user.articles_citing_specimens
+                                       .paginate(page: page)
+                haml :'public/citations', locals: { active_page: "roster" }
+              else
+                status 404
+                haml :oops
+              end
+            else
+              status 404
+              haml :oops
+            end
+          end
+
+          app.get '/:orcid/citation/:article_id' do
+            if params[:orcid].is_orcid?
+              @viewed_user = User.find_by_orcid(params[:orcid])
+              @article= Article.find(params[:article_id])
+              if @article && @viewed_user && @viewed_user.is_public?
+                page = (params[:page] || 1).to_i
+                @results = @viewed_user.cited_specimens(@article.id)
+                                       .paginate(page: page)
+                haml :'public/citation', locals: { active_page: "roster" }
               else
                 status 404
                 haml :oops

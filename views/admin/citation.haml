@@ -1,0 +1,88 @@
+-content_for :title do
+  Bloodhound: #{@admin_user.fullname} Cited Specimens
+
+-content_for :scripts do
+  %script{src:"/js/application.js"}
+  :javascript
+    $(function() {
+        Application.init(#{@admin_user.id}, "PUT", "/admin");
+    });
+
+-content_for :jumbotron do
+  = haml :'partials/admin_profile_jumbotron', layout: false
+
+= haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "citations" }
+
+- if @results.empty?
+  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    Specimens were not used for this study.
+
+- else
+  %h3 Specimens Used In
+  %p{class: "citation"}
+    #{@article.citation}
+    %a{href: "https://doi.org/#{@article.doi}", class: "badge badge-light citation-correction"} doi: #{@article.doi}
+
+  %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    %div{class: "col col-12"}
+      Choose 
+      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
+      collected, 
+      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+      identified, or Both to 
+      %span{class:"font-weight-bold"} adjust claims.
+
+  %div{class:"table-responsive-lg"}
+    %table{class:"table table-hover table-sm"}
+      %thead{class: "thead-light"}
+        %tr
+          %th{scope: "col", class:"selector"}
+            = haml :'partials/bulk_selector_top', layout: false
+          %th{scope: "col"} Scientific Name
+          %th{scope: "col"} Collected By
+          %th{scope: "col"} Identified By
+          %th{scope: "col"} Date Collected
+          %th{scope: "col"} Date Identified
+          %th{scope: "col"} Institution
+          %th{scope: "col"} Catalog Number
+          %th{scope: "col"} Type Status
+          %th{scope: "col"}
+
+      %tbody
+        - @results.each do |uo|
+          - o = uo.occurrence
+          %tr
+            %td{class: "selector"}
+              = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo }
+            %td
+              - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
+              %a{href: "https://www.gbif.org/occurrence/#{o.gbifID}", target: "_blank" } #{scientific_name}
+            %td #{o.recordedBy}
+            %td #{o.identifiedBy}
+            %td #{o.eventDate}
+            %td #{o.dateIdentified}
+            %td #{o.institutionCode}
+            %td #{o.catalogNumber}
+            %td #{o.typeStatus}
+            %td
+              %button{type:"button", class:"btn btn-sm btn-danger remove", "data-occurrence-id":"#{uo.user_occurrence_id}"} Remove
+
+      - if @total >= 25
+        %tfoot{class: "thead-light"}
+          %tr
+            %th{scope: "col", class:"selector"}
+              = haml :'partials/bulk_selector_bottom', layout: false
+            %th{scope: "col"} Scientific Name
+            %th{scope: "col"} Collected By
+            %th{scope: "col"} Identified By
+            %th{scope: "col"} Date Collected
+            %th{scope: "col"} Date Identified
+            %th{scope: "col"} Institution
+            %th{scope: "col"} Catalog Number
+            %th{scope: "col"} Type Status
+            %th{scope: "col"}
+
+  - if @total >= 25
+    = haml :'partials/page_size', layout: false
+
+  = will_paginate @results, { class: "pagination" }

@@ -145,6 +145,19 @@ h3.list-header {
 }
 .relaxed{margin-bottom:0px;}
 .button-login{display:none;}
+.citation-wrapper .card {
+  margin-top:1.5rem;
+}
+p.citation{
+  text-indent: -2em;
+  padding-left: 2em;
+}
+dl.citation{
+  padding-left: 2em;
+}
+.citation-correction{
+  text-indent: 0em;
+}
 @media (max-width: 400px) {
   .display-3 {
     font-size:3.5rem;

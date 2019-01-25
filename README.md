@@ -51,6 +51,15 @@ Also execute SQL statement at end of [/bin/populate_taxa.rb script](bin/populate
      $ RACK_ENV=production ./bin/cluster_agents.rb --truncate --cluster
      $ RACK_ENV=production sidekiq -c 40 -q cluster -r ./environment.rb
 
+Truncating a large Neo4j graph.db usually does not work. Instead, it is best to entirely delete the graph.db directory then recreate it.
+
+Example on Mac with homebrew:
+
+     $ brew services stop neo4j
+     $ sudo rm -rf /usr/local/opt/neo4j/libexec/data/databases/graph.db
+     $ brew services start neo4j # recreates graph.db
+     $ rake neo4j:migrate # recreate the constraint on graph.db
+
 ### Step 5: Populate Search in Elasticsearch
 
      $ RACK_ENV=production ./bin/populate_search.rb --rebuild
