@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 23, 2019 at 04:39 AM
+-- Generation Time: Jan 25, 2019 at 09:03 PM
 -- Server version: 5.7.22
 -- PHP Version: 5.6.36
 
@@ -32,6 +32,33 @@ CREATE TABLE `agents` (
   `id` int(11) NOT NULL,
   `family` varchar(255) COLLATE utf8mb4_bin NOT NULL DEFAULT '',
   `given` varchar(255) COLLATE utf8mb4_bin NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `articles`
+--
+
+CREATE TABLE `articles` (
+  `id` int(11) NOT NULL,
+  `doi` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `citation` text COLLATE utf8mb4_bin,
+  `gbif_dois` text COLLATE utf8mb4_bin NOT NULL,
+  `gbif_downloadkeys` text COLLATE utf8mb4_bin NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `article_occurrences`
+--
+
+CREATE TABLE `article_occurrences` (
+  `id` int(11) NOT NULL,
+  `article_id` int(11) NOT NULL,
+  `occurrence_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
@@ -207,6 +234,21 @@ ALTER TABLE `agents`
   ADD UNIQUE KEY `full_name` (`family`,`given`) USING BTREE;
 
 --
+-- Indexes for table `articles`
+--
+ALTER TABLE `articles`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `doi_idx` (`doi`);
+
+--
+-- Indexes for table `article_occurrences`
+--
+ALTER TABLE `article_occurrences`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `article_idx` (`article_id`),
+  ADD KEY `occurrence_idx` (`occurrence_id`);
+
+--
 -- Indexes for table `occurrences`
 --
 ALTER TABLE `occurrences`
@@ -273,7 +315,8 @@ ALTER TABLE `user_occurrences`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `user_occurrence_idx` (`occurrence_id`,`user_id`),
   ADD KEY `action_idx` (`action`) USING BTREE,
-  ADD KEY `created_by_idx` (`created_by`);
+  ADD KEY `created_by_idx` (`created_by`),
+  ADD KEY `user_idx` (`user_id`);
 
 --
 -- Indexes for table `user_organizations`
@@ -291,7 +334,19 @@ ALTER TABLE `user_organizations`
 -- AUTO_INCREMENT for table `agents`
 --
 ALTER TABLE `agents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1644766;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1636943;
+
+--
+-- AUTO_INCREMENT for table `articles`
+--
+ALTER TABLE `articles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=289;
+
+--
+-- AUTO_INCREMENT for table `article_occurrences`
+--
+ALTER TABLE `article_occurrences`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45015305;
 
 --
 -- AUTO_INCREMENT for table `organizations`
@@ -303,7 +358,7 @@ ALTER TABLE `organizations`
 -- AUTO_INCREMENT for table `taxa`
 --
 ALTER TABLE `taxa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34036;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34095;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -315,7 +370,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_occurrences`
 --
 ALTER TABLE `user_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3985380;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3985411;
 
 --
 -- AUTO_INCREMENT for table `user_organizations`
