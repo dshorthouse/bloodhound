@@ -1,6 +1,13 @@
 -content_for :title do
   Bloodhound: Citations
 
+-content_for :scripts do
+  %script{src: "/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init(#{@user[:id]});
+    });
+
 -content_for :jumbotron do
   = haml :'partials/profile_jumbotron', layout: false
 
