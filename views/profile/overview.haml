@@ -13,7 +13,7 @@
 
 = haml :'partials/profile_tabs', layout: false, locals: { active_page: "profile" }
 
-%div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+%div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
   = succeed "." do
     Collected #{number_with_delimiter(@total[:number_recorded])} and identified #{number_with_delimiter(@total[:number_identified])} specimens
     - if @total[:number_helped] > 0

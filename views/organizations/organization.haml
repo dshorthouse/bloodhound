@@ -23,7 +23,7 @@
       %a{class: "nav-link#{locals[:active_tab] == "organization-past" ? " active" : nil}", href: "/organization/#{@organization.identifier}/past"} Previous
 
   - if @results.empty?
-    %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
       - prefix = locals[:active_tab] == "organization-current" ? "Current" : "Previous"
       #{prefix} members of #{@organization.name} have not yet been recorded.
   - else
