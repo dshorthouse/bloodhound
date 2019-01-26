@@ -29,4 +29,4 @@
               - article.gbif_dois.each do |doi|
                 %a{href: "https://doi.org/#{doi}", class: "badge badge-light citation-correction"} doi: #{doi}
 
-  = will_paginate @results, { class: "pagination" }
+    = will_paginate @results, { class: "pagination" }

@@ -146,7 +146,8 @@ h3.list-header {
 .relaxed{margin-bottom:0px;}
 .button-login{display:none;}
 .citation-wrapper .card {
-  margin-top:1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 p.citation{
   text-indent: -2em;
