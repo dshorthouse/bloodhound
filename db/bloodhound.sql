@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 25, 2019 at 09:03 PM
+-- Generation Time: Jan 26, 2019 at 12:37 AM
 -- Server version: 5.7.22
 -- PHP Version: 5.6.36
 
@@ -46,6 +46,7 @@ CREATE TABLE `articles` (
   `citation` text COLLATE utf8mb4_bin,
   `gbif_dois` text COLLATE utf8mb4_bin NOT NULL,
   `gbif_downloadkeys` text COLLATE utf8mb4_bin NOT NULL,
+  `processed` tinyint(1) DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -340,13 +341,13 @@ ALTER TABLE `agents`
 -- AUTO_INCREMENT for table `articles`
 --
 ALTER TABLE `articles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=289;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3097;
 
 --
 -- AUTO_INCREMENT for table `article_occurrences`
 --
 ALTER TABLE `article_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45015305;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45116274;
 
 --
 -- AUTO_INCREMENT for table `organizations`
@@ -364,19 +365,19 @@ ALTER TABLE `taxa`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9420;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9430;
 
 --
 -- AUTO_INCREMENT for table `user_occurrences`
 --
 ALTER TABLE `user_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3985411;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3990026;
 
 --
 -- AUTO_INCREMENT for table `user_organizations`
 --
 ALTER TABLE `user_organizations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36549;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36580;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
