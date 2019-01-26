@@ -11,7 +11,7 @@ class Article < ActiveRecord::Base
   self.per_page = 30
 
   def user_specimen_count(user_id)
-    article_occurrences.joins(:user_occurrences).where(user_occurrences: {user_id: user_id} ).count
+    article_occurrences.joins(:user_occurrences).where(user_occurrences: { user_id: user_id, visible: true } ).count
   end
 
   private
