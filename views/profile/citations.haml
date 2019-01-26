@@ -11,7 +11,9 @@
     Citations have not yet been recorded.
 - else
   %div{class:"container-fluid citation-wrapper"}
-    %h3 My Specimen Data Used in Published Research
+    %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+      At least #{number_with_delimiter(@total)} #{'publication'.pluralize(@total)} featured your specimen records, included in downloaded data  from the Global Biodiversity Information Facility.
+    %h2 My Specimen Data Used in Publications
     - @results.each do |article|
       %div{class: "card"}
         %div{class: "card-header"}

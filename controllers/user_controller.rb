@@ -229,6 +229,7 @@ module Sinatra
             protected!
             user = User.find(@user[:id])
             page = (params[:page] || 1).to_i
+            @total = user.articles_citing_specimens.count
             @results = user.articles_citing_specimens
                            .paginate(page: page)
             haml :'profile/citations'

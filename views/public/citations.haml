@@ -18,14 +18,10 @@
             #{article.citation}
             %a{href: "https://doi.org/#{article.doi}", class: "badge badge-light citation-correction"} doi: #{article.doi}
         %div{class: "card-body"}
-          %dl{class: "row"}
+          %dl{class: "row", style:"margin-bottom:0rem"}
             %dt{class: "col-sm-2 text-right"} Specimens used:
             %dd{class: "col-sm-10"}
               %span{class: "badge badge-success badge-pill citation-correction"} #{number_with_delimiter(article.user_specimen_count(@viewed_user.id))}
               %a{href: "/#{@viewed_user.orcid}/citation/#{article.id}"} View
-            %dt{class: "col-sm-2 text-right"} All data used:
-            %dd{class: "col-sm-10"}
-              - article.gbif_dois.each do |doi|
-                %a{href: "https://doi.org/#{doi}", class: "badge badge-light citation-correction"} doi: #{doi}
 
   = will_paginate @results, { class: "pagination" }
