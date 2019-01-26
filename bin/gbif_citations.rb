@@ -15,6 +15,10 @@ OptionParser.new do |opts|
     options[:all] = true
   end
 
+  opts.on("-p", "--process", "Process all data packages by downloading and importing") do
+    options[:process] = true
+  end
+
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
@@ -28,4 +32,8 @@ if options[:first]
 elsif options[:all]
   tracker = Bloodhound::GbifTracker.new
   tracker.create_package_records
+end
+
+if options[:process]
+  tracker.process_data_packages
 end

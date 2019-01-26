@@ -36,7 +36,7 @@ module Bloodhound
 
     def process_data_packages
       url = "http://api.gbif.org/v1/occurrence/download/request/"
-      Article.find_each do |article|
+      Article.where(processed: false).find_each do |article|
         article.gbif_downloadkeys.each do |key|
           if datapackage_file_size(key) < @max_size
             tmp_file = Tempfile.new('gbif')
@@ -71,6 +71,8 @@ module Bloodhound
             tmp_file.unlink
           end
         end
+        article.processed = true
+        article.save
       end
     end
 
@@ -100,7 +102,8 @@ module Bloodhound
           else
             raise StopIteration
           end
-          offset += 200 if !@first_page_only
+          break if @first_page_only
+          offset += 200
         end
       end.lazy
     end
