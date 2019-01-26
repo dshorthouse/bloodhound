@@ -3,7 +3,7 @@
 module Bloodhound
   class GbifTracker
 
-    def initialize(args)
+    def initialize(args = {})
       @url = "https://www.gbif.org/api/resource/search?contentType=literature&limit=200&offset="
       args = defaults.merge(args)
       @first_page_only = args[:first_page_only]
@@ -91,6 +91,7 @@ module Bloodhound
                 if result[:identifiers][:doi] && !result[:gbifDownloadKey].empty?
                   yielder << { 
                     doi: result[:identifiers][:doi],
+                    abstract: result[:abstract],
                     gbif_dois: result[:_gbifDOIs].map{ |d| d.sub("doi:","") },
                     gbif_downloadkeys: result[:gbifDownloadKey],
                     created: result[:created]

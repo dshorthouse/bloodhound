@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 26, 2019 at 12:37 AM
+-- Generation Time: Jan 26, 2019 at 09:10 PM
 -- Server version: 5.7.22
 -- PHP Version: 5.6.36
 
@@ -44,6 +44,7 @@ CREATE TABLE `articles` (
   `id` int(11) NOT NULL,
   `doi` varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `citation` text COLLATE utf8mb4_bin,
+  `abstract` text COLLATE utf8mb4_bin,
   `gbif_dois` text COLLATE utf8mb4_bin NOT NULL,
   `gbif_downloadkeys` text COLLATE utf8mb4_bin NOT NULL,
   `processed` tinyint(1) DEFAULT NULL,
@@ -377,7 +378,7 @@ ALTER TABLE `user_occurrences`
 -- AUTO_INCREMENT for table `user_organizations`
 --
 ALTER TABLE `user_organizations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36580;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36591;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
