@@ -230,7 +230,7 @@ module Sinatra
               @total = @admin_user.cited_specimens(@article.id).count
               @results = @admin_user.cited_specimens(@article.id)
                                     .paginate(page: page)
-              haml :'admin/citation'
+              haml :'admin/citation', locals: { active_page: "administration" }
             else
               status 404
               haml :oops
