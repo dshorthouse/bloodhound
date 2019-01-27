@@ -4,7 +4,7 @@ module Bloodhound
   class GbifTracker
 
     def initialize(args = {})
-      @url = "https://www.gbif.org/api/resource/search?contentType=literature&limit=200&offset="
+      @url = "https://www.gbif.org/api/resource/search?contentType=literature&relevance=GBIF_USED&limit=200&offset="
       args = defaults.merge(args)
       @first_page_only = args[:first_page_only]
       @max_size = args[:max_size]
