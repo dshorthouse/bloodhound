@@ -14,6 +14,8 @@
 = haml :'partials/profile_tabs', layout: false, locals: { active_page: "profile" }
 
 %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  - if @total[:number_identified] == 0 && @total[:number_recorded] == 0
+    Claim your specimens under the "Discovered" tab to build your profile and start tracking your citations.
   %ul
     - if @total[:number_identified] > 0
       %li Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}
