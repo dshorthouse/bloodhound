@@ -27,6 +27,21 @@ module Sinatra
 
           app.get '/admin/user/:orcid' do
             admin_protected!
+            @admin_user = User.find_by_orcid(params[:orcid])
+            @total = {
+              number_identified: @admin_user.identified_count,
+              number_recorded: @admin_user.recorded_count,
+              number_helped: @admin_user.helped_count,
+              number_claims_given: @admin_user.claims_given.count,
+              number_countries: @admin_user.country_counts,
+              number_specimens_cited: @admin_user.cited_specimens.count,
+              number_articles: @admin_user.cited_specimens.select(:article_id).distinct.count
+            }
+            haml :'admin/overview', locals: { active_page: "administration" }
+          end
+
+          app.get '/admin/user/:orcid/specimens' do
+            admin_protected!
             if params[:orcid].is_orcid?
               @admin_user = User.find_by_orcid(params[:orcid])
               @page = (params[:page] || 1).to_i
@@ -39,7 +54,7 @@ module Sinatra
               @results = @admin_user.visible_occurrences
                                     .order("occurrences.typeStatus desc")
                                     .paginate(page: @page, per_page: search_size)
-              haml :'admin/profile', locals: { active_page: "administration" }
+              haml :'admin/specimens', locals: { active_page: "administration" }
             else
               status 404
               haml :oops
@@ -228,7 +243,7 @@ module Sinatra
             @article = Article.find(params[:article_id])
             if @article
               page = (params[:page] || 1).to_i
-              @total = @admin_user.cited_specimens(@article.id).count
+              @total = @admin_user.cited_specimens_by_article(@article.id).count
               @results = @admin_user.cited_specimens(@article.id)
                                     .paginate(page: page)
               haml :'admin/citation', locals: { active_page: "administration" }

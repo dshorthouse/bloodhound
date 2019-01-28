@@ -1,6 +1,8 @@
 %ul{class: "nav nav-tabs justify-content-center"}
   %li{class: "nav-item "}
-    %a{class: "nav-link#{locals[:active_page] == "overview" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}"} Claimed
+    %a{class: "nav-link#{locals[:active_page] == "overview" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}"} Overview
+  %li{class: "nav-item "}
+    %a{class: "nav-link#{locals[:active_page] == "specimens" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/specimens"} Claimed
   %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_page] == "candidates" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/candidates"} Discovered
   %li{class: "nav-item"}

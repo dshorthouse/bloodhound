@@ -1,5 +1,5 @@
 -content_for :title do
-  Bloodhound: #{@admin_user.fullname}
+  Bloodhound: #{@admin_user.fullname} Specimens
 
 -content_for :scripts do
   %script{src:"/js/application.js"}
@@ -11,7 +11,7 @@
 -content_for :jumbotron do
   = haml :'partials/admin_profile_jumbotron', layout: false
 
-= haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "overview" }
+= haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "specimens" }
 
 - if @results.empty?
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
@@ -47,7 +47,7 @@
           %th{scope: "col"} Institution
           %th{scope: "col"} Catalog Number
           %th{scope: "col"} Type Status
-          %th{scope: "col"}
+          %th{scope: "col", class:"btn-selector"}
 
       %tbody
         - @results.each do |uo|

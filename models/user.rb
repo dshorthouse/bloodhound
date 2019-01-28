@@ -291,8 +291,12 @@ class User < ActiveRecord::Base
            .distinct
   end
 
-  def cited_specimens(article_id)
-    visible_occurrences.joins(:article_occurrences).where(article_occurrences: { article_id: article_id })
+  def cited_specimens
+    visible_occurrences.joins(:article_occurrences)
+  end
+
+  def cited_specimens_by_article(article_id)
+    cited_specimens.where(article_occurrences: { article_id: article_id })
   end
 
   private

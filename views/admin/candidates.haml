@@ -62,7 +62,7 @@
           %th{scope: "col"} Institution
           %th{scope: "col"} Catalog Number
           %th{scope: "col"} Type Status
-          %th{scope: "col"}
+          %th{scope: "col", class:"btn-selector"}
             - if @searched_user.nil?
               %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"} Not me
 

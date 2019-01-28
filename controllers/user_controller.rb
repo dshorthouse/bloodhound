@@ -42,10 +42,10 @@ module Sinatra
               number_identified: user.identified_count,
               number_recorded: user.recorded_count,
               number_helped: user.helped_count,
-              number_claims_given: user.claims_given.count
-            }
-            @helped = user.helped_counts.map{ |u,v| 
-              { user: User.find(u), count: v }
+              number_claims_given: user.claims_given.count,
+              number_countries: user.country_counts,
+              number_specimens_cited: user.cited_specimens.count,
+              number_articles: user.cited_specimens.select(:article_id).distinct.count
             }
             cache_clear "fragments/#{user.orcid}"
             haml :'profile/overview'
@@ -242,8 +242,8 @@ module Sinatra
             @article = Article.find(params[:article_id])
             if @article
               page = (params[:page] || 1).to_i
-              @total = user.cited_specimens(@article.id).count
-              @results = user.cited_specimens(@article.id)
+              @total = user.cited_specimens_by_article(@article.id).count
+              @results = user.cited_specimens_by_article(@article.id)
                              .paginate(page: page)
               haml :'profile/citation'
             else

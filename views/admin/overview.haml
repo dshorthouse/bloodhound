@@ -1,0 +1,21 @@
+-content_for :title do
+  Bloodhound: #{@admin_user.fullname} Overview
+
+-content_for :jumbotron do
+  = haml :'partials/admin_profile_jumbotron', layout: false
+
+= haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "overview" }
+
+%div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  - if @total[:number_identified] == 0 && @total[:number_recorded] == 0
+    Specimens have not yet been claimed
+  - else
+    %ul
+      - if @total[:number_identified] > 0
+        %li Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}
+      - if @total[:number_recorded] > 0
+        %li Collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])} from at least #{number_with_delimiter(@total[:number_countries].count)} #{'country'.pluralize(@total[:number_countries].count)}
+      - if @total[:number_specimens_cited] > 0
+        %li #{number_with_delimiter(@total[:number_specimens_cited])} #{'specimen'.pluralize(@total[:number_specimens_cited])} cited in #{number_with_delimiter(@total[:number_articles])} published #{'work'.pluralize(@total[:number_articles])}
+      - if @total[:number_helped] > 0
+        %li Helped #{number_with_delimiter(@total[:number_helped])} #{'user'.pluralize(@total[:number_helped])} claim a total of #{number_with_delimiter(@total[:number_claims_given])} #{'specimen'.pluralize(@total[:number_claims_given])}

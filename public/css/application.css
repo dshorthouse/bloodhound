@@ -60,6 +60,12 @@ table th.selector{
   text-align:center;
 }
 
+table th.btn-selector{
+  width:75px;
+  min-width:75px;
+  max-width:75px;
+}
+
 table td.selector{
   text-align:center;
 }
