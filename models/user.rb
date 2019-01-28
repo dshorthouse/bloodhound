@@ -252,12 +252,11 @@ class User < ActiveRecord::Base
       next if org[:grid].nil? && org[:ringgold].nil?
       if !org[:grid].nil?
         organization = Organization.find_by_grid(org[:grid])
-      end
-      if !org[:ringgold].nil?
-        organization = Organization.find_by_ringgold(org[:ringgold])
+      elsif !org[:ringgold].nil?
+        organization = Organization.find_by_ringgold(org[:ringgold].to_i)
       end
       if organization.nil?
-        organization = Organization.create_with(
+        organization = Organization.create(
                          ringgold: org[:ringgold],
                          grid: org[:grid],
                          name: org[:name],
