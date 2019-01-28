@@ -171,8 +171,9 @@ module Sinatra
                 end
               end
 
-              id_scores = agents.compact.uniq
-                                        .map{|a| { id: a[:id], score: a[:score] }}
+              id_scores = agents.compact
+                                .uniq
+                                .map{|a| { id: a[:id], score: a[:score] }}
 
               if !id_scores.empty?
                 ids = id_scores.map{|a| a[:id]}

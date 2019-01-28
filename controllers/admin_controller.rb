@@ -112,6 +112,7 @@ module Sinatra
 
           app.get '/admin/user/:orcid/candidates' do
             admin_protected!
+            occurrence_ids = []
             if params[:orcid].is_orcid?
               @page = (params[:page] || 1).to_i
 
