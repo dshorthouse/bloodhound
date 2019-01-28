@@ -26,6 +26,7 @@ var Application = (function($, window) {
       this.activate_radios();
       this.activate_switch();
       this.activate_orcid_refresh();
+      this.candidate_counter();
     },
     bloodhound: function() {
       this.data_sources.agent = this.create_bloodhound("agent");
@@ -107,7 +108,7 @@ var Application = (function($, window) {
       $("#toggle-public").change(function() {
         $.ajax({
           method: "PUT",
-          url: self.path + "/profile.json?user_id=" + self.user_id,
+          url: self.path + "/visibility.json?user_id=" + self.user_id,
           dataType: "json",
           data: JSON.stringify({ is_public: $(this).prop("checked") })
         }).done(function(data) {
@@ -280,6 +281,21 @@ var Application = (function($, window) {
         });
         return false;
       });
+    },
+    candidate_counter: function() {
+      var self = this;
+      if (self.path === "/profile") {
+        $.ajax({
+          method: "GET",
+          url: self.path + "/candidate-count.json"
+        }).done(function(data) {
+          if (data.count > 0 && data.count <= 50) {
+            $(".badge-notify").text(data.count).show();
+          } else if (data.count > 50) {
+            $(".badge-notify").text("50+").show();
+          }
+        });
+      }
     }
   };
 

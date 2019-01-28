@@ -5,7 +5,7 @@
   %script{src: "/js/application.js"}
   :javascript
     $(function() {
-      Application.init(#{@user[:id]});
+      Application.init(#{@user[:id]}, "POST", "/profile");
     });
 
 -content_for :jumbotron do

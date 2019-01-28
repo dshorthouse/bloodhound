@@ -344,7 +344,7 @@ module Sinatra
             { message: "ok" }.to_json
           end
 
-          app.put '/admin/profile.json' do
+          app.put '/admin/visibility.json' do
             admin_protected!
             content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys

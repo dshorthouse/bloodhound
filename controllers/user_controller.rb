@@ -84,7 +84,7 @@ module Sinatra
             haml :'profile/support'
           end
 
-          app.put '/profile.json' do
+          app.put '/profile/visibility.json' do
             protected!
             content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
@@ -137,6 +137,39 @@ module Sinatra
             records = user.visible_occurrences
             csv_stream_headers
             body csv_stream_occurrences(records)
+          end
+
+          app.get '/profile/candidate-count.json' do
+            protected!
+            content_type "application/json"
+            user = User.find(@user[:id])
+            agents = search_agents(@user[:family], @user[:given])
+            if !@user[:other_names].nil?
+              @user[:other_names].split("|").each do |other_name|
+                begin
+                  parsed = Namae.parse other_name.gsub(/\./, ".\s")
+                  name = DwcAgent.clean(parsed[0])
+                  family = !name[:family].nil? ? name[:family] : nil
+                  given = !name[:given].nil? ? name[:given] : nil
+                  if !family.nil?
+                    agents.concat search_agents(family, given)
+                  end
+                rescue
+                end
+              end
+            end
+            if !params.has_key?(:relaxed) || params[:relaxed] == "0"
+              agents.delete_if do |key,value|
+                !@user[:given].nil? && !key[:given].nil? && DwcAgent.similarity_score(key[:given], @user[:given]) == 0
+              end
+            end
+            agent_ids = agents.compact.uniq.pluck(:id)
+            linked_ids = user.user_occurrences.pluck(:occurrence_id)
+            count = OccurrenceRecorder.where(agent_id: agent_ids)
+                                      .union_all(OccurrenceDeterminer.where(agent_id: agent_ids))
+                                      .where.not(occurrence_id: linked_ids)
+                                      .count
+            { count: count }.to_json
           end
 
           app.get '/profile/candidates' do
@@ -331,7 +364,7 @@ module Sinatra
             end
           end
 
-          app.get '/orcid-refresh.json' do
+          app.get '/profile/orcid-refresh.json' do
             protected!
             content_type "application/json"
             user = User.find(@user[:id])

@@ -107,6 +107,18 @@ h3.list-header {
   background-color: #D3633C;
 }
 
+/* BUTTON OVERLAY */
+.badge-item {
+    position:relative;
+    display:inline-block;
+}
+.badge-notify{
+    display:none;
+    position: absolute;
+    right:-5px;
+    top:-5px;
+}
+
 /* CARDS */
 .card-body {
   padding:0.8rem;

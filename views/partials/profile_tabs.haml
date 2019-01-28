@@ -3,8 +3,10 @@
     %a{class: "nav-link#{locals[:active_page] == "profile" ? " active" : nil}", href: "/profile"} Overview
   %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_page] == "specimens" ? " active" : nil}", href: "/profile/specimens"} My Specimens
-  %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "candidates" ? " active" : nil}", href: "/profile/candidates"} Discovered
+  %li{class: "nav-item badge-item"}
+    %a{class: "nav-link#{locals[:active_page] == "candidates" ? " active" : nil}", href: "/profile/candidates"}
+      Discovered
+    %span{class: "badge-notify badge badge-danger badge-pill"}
   %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_page] == "ignored" ? " active" : nil}", href: "/profile/ignored"} Ignored
   %li{class: "nav-item"}

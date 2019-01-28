@@ -7,7 +7,7 @@ module Sinatra
 
         def self.registered(app)
 
-          app.post '/user-occurrence/bulk.json' do
+          app.post '/profile/user-occurrence/bulk.json' do
             protected!
             content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
@@ -33,7 +33,7 @@ module Sinatra
             { message: "ok" }.to_json
           end
 
-          app.post '/user-occurrence/:occurrence_id.json' do
+          app.post '/profile/user-occurrence/:occurrence_id.json' do
             protected!
             content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
@@ -49,7 +49,7 @@ module Sinatra
             { message: "ok", id: uo.id }.to_json
           end
 
-          app.put '/user-occurrence/bulk.json' do
+          app.put '/profile/user-occurrence/bulk.json' do
             protected!
             content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
@@ -61,7 +61,7 @@ module Sinatra
             { message: "ok" }.to_json
           end
 
-          app.put '/user-occurrence/:id.json' do
+          app.put '/profile/user-occurrence/:id.json' do
             protected!
             content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
@@ -72,7 +72,7 @@ module Sinatra
             { message: "ok" }.to_json
           end
 
-          app.delete '/user-occurrence/bulk.json' do
+          app.delete '/profile/user-occurrence/bulk.json' do
             protected!
             content_type "application/json"
             req = JSON.parse(request.body.read).symbolize_keys
@@ -82,7 +82,7 @@ module Sinatra
             { message: "ok" }.to_json
           end
 
-          app.delete '/user-occurrence/:id.json' do
+          app.delete '/profile/user-occurrence/:id.json' do
             protected!
             content_type "application/json"
             UserOccurrence.where(id: params[:id], user_id: @user[:id])
