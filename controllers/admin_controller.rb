@@ -244,7 +244,7 @@ module Sinatra
             if @article
               page = (params[:page] || 1).to_i
               @total = @admin_user.cited_specimens_by_article(@article.id).count
-              @results = @admin_user.cited_specimens(@article.id)
+              @results = @admin_user.cited_specimens_by_article(@article.id)
                                     .paginate(page: page)
               haml :'admin/citation', locals: { active_page: "administration" }
             else
