@@ -65,6 +65,7 @@ module Sinatra
           app.get '/admin/user/:orcid/specimens.json' do
             admin_protected!
             if params[:orcid].is_orcid?
+              content_type "application/ld+json", charset: 'utf-8'
               begin
                 user = User.find_by_orcid(params[:orcid])
                 dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
@@ -181,7 +182,7 @@ module Sinatra
 
           app.get '/admin/candidate-count.json' do
             admin_protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             @admin_user = User.find(params[:user_id].to_i)
             return { count: 0}.to_json if @admin_user.family.nil?
 
@@ -271,7 +272,7 @@ module Sinatra
 
           app.post '/admin/user-occurrence/bulk.json' do
             admin_protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
             action = req[:action] rescue nil
             visible = req[:visible] rescue true
@@ -297,7 +298,7 @@ module Sinatra
 
           app.post '/admin/user-occurrence/:occurrence_id.json' do
             admin_protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
             action = req[:action] rescue nil
             visible = req[:visible] rescue true
@@ -313,7 +314,7 @@ module Sinatra
 
           app.put '/admin/user-occurrence/bulk.json' do
             admin_protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
             occurrence_ids = req[:occurrence_ids].split(",")
             UserOccurrence.where(id: occurrence_ids, user_id: req[:user_id].to_i)
@@ -323,7 +324,7 @@ module Sinatra
 
           app.put '/admin/user-occurrence/:id.json' do
             admin_protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
             uo = UserOccurrence.find_by(id: params[:id].to_i, user_id: req[:user_id].to_i)
             uo.action = req[:action]
@@ -334,7 +335,7 @@ module Sinatra
 
           app.delete '/admin/user-occurrence/bulk.json' do
             admin_protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
             ids = req[:ids].split(",")
             UserOccurrence.where(id: ids, user_id: req[:user_id].to_i)
@@ -344,7 +345,7 @@ module Sinatra
 
           app.delete '/admin/user-occurrence/:id.json' do
             admin_protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
             UserOccurrence.where(id: params[:id].to_i, user_id: req[:user_id].to_i)
                           .delete_all
@@ -353,7 +354,7 @@ module Sinatra
 
           app.get '/admin/orcid-refresh.json' do
             admin_protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             user = User.find(params[:user_id].to_i)
             user.update_orcid_profile
             cache_clear "fragments/#{user.orcid}"
@@ -362,10 +363,13 @@ module Sinatra
 
           app.put '/admin/visibility.json' do
             admin_protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
             user = User.find(params[:user_id].to_i)
             user.is_public = req[:is_public]
+            if req[:is_public]
+              user.made_public = Time.now
+            end
             user.save
             user.update_orcid_profile
             cache_clear "fragments/#{user.orcid}"

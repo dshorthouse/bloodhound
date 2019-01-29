@@ -49,7 +49,7 @@ module Sinatra
           end
 
           app.get '/agent.json' do
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             search_agent
             format_agents.to_json
           end
@@ -60,14 +60,48 @@ module Sinatra
             format_users.to_json
           end
 
+          app.get '/user.rss' do
+            content_type "application/rss+xml", charset: 'utf-8'
+            rss = RSS::Maker.make("2.0") do |maker|
+              maker.channel.language = "en"
+              maker.channel.author = "Bloodhound"
+              maker.channel.updated = Time.now.to_s
+              maker.channel.link = "https://bloodhound.shorthouse.net/user.rss"
+              maker.channel.title = "Bloodhound New User Feed"
+              maker.channel.description = "New User Feed on https://bloodhound.shorthouse.net"
+
+              User.where(is_public: true).where("made_public >= ?", 2.days.ago).find_each do |user|
+                id_statement = nil
+                recorded_statement = nil
+                statement = nil
+                if !user.top_family_identified.nil?
+                  id_statement = "identified #{user.top_family_identified}"
+                end
+                if !user.top_family_recorded.nil?
+                  recorded_statement = "collected #{user.top_family_recorded}"
+                end
+                if !user.top_family_identified.nil? || !user.top_family_recorded.nil?
+                  statement = [id_statement,recorded_statement].compact.join(" and ")
+                end
+                maker.items.new_item do |item|
+                  item.link = "https://bloodhound.shorthouse.net/#{user.orcid}"
+                  item.title = "Welcome #{user.fullname}!"
+                  item.description = "#{user.fullname} #{statement}"
+                  item.updated = user.updated
+                end
+              end
+            end
+            rss.to_s
+          end
+
           app.get '/organization.json' do
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             search_organization
             format_organizations.to_json
           end
 
           app.get '/occurrence/:id.json' do
-            content_type "application/ld+json"
+            content_type "application/ld+json", charset: 'utf-8'
             begin
               occurrence = Occurrence.find(params[:id])
               dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}

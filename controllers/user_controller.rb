@@ -86,10 +86,13 @@ module Sinatra
 
           app.put '/profile/visibility.json' do
             protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
             user = User.find(@user[:id])
             user.is_public = req[:is_public]
+            if req[:is_public]
+              user.made_public = Time.now
+            end
             user.save
             update_session
             cache_clear "fragments/#{user.orcid}"
@@ -98,7 +101,7 @@ module Sinatra
 
           app.get '/profile/download.json' do
             protected!
-            content_type "application/ld+json"
+            content_type "application/ld+json", charset: 'utf-8'
             user = User.find(@user[:id])
             dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
                                         .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
@@ -367,7 +370,7 @@ module Sinatra
 
           app.get '/profile/orcid-refresh.json' do
             protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             user = User.find(@user[:id])
             user.update_orcid_profile
             update_session
@@ -376,7 +379,7 @@ module Sinatra
           end
 
           app.get '/:orcid/specimens.json' do
-            content_type "application/ld+json"
+            content_type "application/ld+json", charset: 'utf-8'
             if params[:orcid].is_orcid?
               begin
                 user = User.find_by_orcid(params[:orcid])

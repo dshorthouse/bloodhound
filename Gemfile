@@ -34,6 +34,7 @@ gem 'ruby-progressbar'
 gem 'dwc-archive'
 gem 'rubyzip'
 gem 'biodiversity'
+gem 'rss'
 
 group :production do
 end

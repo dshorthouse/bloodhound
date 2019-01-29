@@ -9,7 +9,7 @@ module Sinatra
 
           app.post '/profile/user-occurrence/bulk.json' do
             protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
             action = req[:action] rescue nil
             visible = req[:visible] rescue true
@@ -35,7 +35,7 @@ module Sinatra
 
           app.post '/profile/user-occurrence/:occurrence_id.json' do
             protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
             action = req[:action] rescue nil
             visible = req[:visible] rescue true
@@ -51,7 +51,7 @@ module Sinatra
 
           app.put '/profile/user-occurrence/bulk.json' do
             protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
             action = req[:action] rescue nil
             visible = req[:visible] rescue true
@@ -63,7 +63,7 @@ module Sinatra
 
           app.put '/profile/user-occurrence/:id.json' do
             protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
             uo = UserOccurrence.find_by(id: params[:id], user_id: @user[:id])
             uo.action = req[:action] ||= nil
@@ -74,7 +74,7 @@ module Sinatra
 
           app.delete '/profile/user-occurrence/bulk.json' do
             protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
             ids = req[:ids].split(",")
             UserOccurrence.where(id: ids, user_id: @user[:id])
@@ -84,7 +84,7 @@ module Sinatra
 
           app.delete '/profile/user-occurrence/:id.json' do
             protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             UserOccurrence.where(id: params[:id], user_id: @user[:id])
                           .delete_all
             { message: "ok" }.to_json
