@@ -198,6 +198,10 @@ class User < ActiveRecord::Base
     data
   end
 
+  def quick_country_counts
+    visible_user_occurrences.joins(:occurrence).where(qry_recorded).select(:countryCode).distinct.count
+  end
+
   def recorded_with
     User.joins("JOIN user_occurrences as a ON a.user_id = users.id JOIN user_occurrences b ON a.occurrence_id = b.occurrence_id")
         .where("b.user_id = #{id}")

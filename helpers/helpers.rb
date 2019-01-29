@@ -180,22 +180,20 @@ module Sinatra
 
       def occurrences_by_score(id_scores, user_id = @user[:id])
         user = User.find(user_id)
-        linked_ids = user.user_occurrences.pluck(:occurrence_id)
 
         scores = {}
         id_scores.sort{|a,b| b[:score] <=> a[:score]}
                  .each{|a| scores[a[:id]] = a[:score] }
 
-        recorded = OccurrenceRecorder.includes(:occurrence).where(agent_id: scores.keys)
-                                     .where.not(occurrence_id: linked_ids)
-                                     .pluck(:agent_id, :typeStatus, :occurrence_id)
-        determined = OccurrenceDeterminer.includes(:occurrence).where(agent_id: scores.keys)
-                                         .where.not(occurrence_id: linked_ids)
-                                         .pluck(:agent_id, :typeStatus, :occurrence_id)
-        (recorded + determined).uniq
-                               .sort_by{|o| [ scores.fetch(o[0]), o[1].nil? ? "" : o[1] ] }
-                               .reverse
-                               .map(&:last)
+        OccurrenceRecorder.where(agent_id: scores.keys)
+                          .where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
+                          .union_all(OccurrenceDeterminer.where(agent_id: scores.keys)
+                                                         .where.not(occurrence_id: user.user_occurrences.select(:occurrence_id)))
+                          .includes(:occurrence)
+                          .pluck(:agent_id, :typeStatus, :occurrence_id)
+                          .sort_by{|o| [ scores.fetch(o[0]), o[1].nil? ? "" : o[1] ] }
+                          .reverse
+                          .map(&:last)
       end
 
       def search_size

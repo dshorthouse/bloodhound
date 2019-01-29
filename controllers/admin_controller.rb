@@ -33,7 +33,7 @@ module Sinatra
               number_recorded: @admin_user.recorded_count,
               number_helped: @admin_user.helped_count,
               number_claims_given: @admin_user.claims_given.count,
-              number_countries: @admin_user.country_counts,
+              number_countries: @admin_user.quick_country_counts,
               number_specimens_cited: @admin_user.cited_specimens.count,
               number_articles: @admin_user.cited_specimens.select(:article_id).distinct.count
             }

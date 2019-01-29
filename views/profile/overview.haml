@@ -20,7 +20,7 @@
     - if @total[:number_identified] > 0
       %li Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}
     - if @total[:number_recorded] > 0
-      %li Collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])} from at least #{number_with_delimiter(@total[:number_countries].count)} #{'country'.pluralize(@total[:number_countries].count)}
+      %li Collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])} from at least #{number_with_delimiter(@total[:number_countries])} #{'country'.pluralize(@total[:number_countries])}
     - if @total[:number_specimens_cited] > 0
       %li #{number_with_delimiter(@total[:number_specimens_cited])} #{'specimen'.pluralize(@total[:number_specimens_cited])} cited in #{number_with_delimiter(@total[:number_articles])} published #{'work'.pluralize(@total[:number_articles])}
     - if @total[:number_helped] > 0

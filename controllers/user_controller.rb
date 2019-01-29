@@ -43,7 +43,7 @@ module Sinatra
               number_recorded: user.recorded_count,
               number_helped: user.helped_count,
               number_claims_given: user.claims_given.count,
-              number_countries: user.country_counts,
+              number_countries: user.quick_country_counts,
               number_specimens_cited: user.cited_specimens.count,
               number_articles: user.cited_specimens.select(:article_id).distinct.count
             }
@@ -164,10 +164,9 @@ module Sinatra
               end
             end
             agent_ids = agents.compact.uniq.pluck(:id)
-            linked_ids = user.user_occurrences.pluck(:occurrence_id)
             count = OccurrenceRecorder.where(agent_id: agent_ids)
                                       .union_all(OccurrenceDeterminer.where(agent_id: agent_ids))
-                                      .where.not(occurrence_id: linked_ids)
+                                      .where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
                                       .count
             { count: count }.to_json
           end
