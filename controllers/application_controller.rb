@@ -70,7 +70,7 @@ module Sinatra
               maker.channel.title = "Bloodhound New User Feed"
               maker.channel.description = "New User Feed on https://bloodhound.shorthouse.net"
 
-              User.where(is_public: true).where("made_public >= ?", 2.days.ago).find_each do |user|
+              User.where(is_public: true).where("made_public >= ?", 2.days.ago).order(made_public: :desc).find_each do |user|
                 id_statement = nil
                 recorded_statement = nil
                 statement = nil
