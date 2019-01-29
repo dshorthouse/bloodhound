@@ -3,8 +3,10 @@
     %a{class: "nav-link#{locals[:active_page] == "overview" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}"} Overview
   %li{class: "nav-item "}
     %a{class: "nav-link#{locals[:active_page] == "specimens" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/specimens"} Claimed
-  %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "candidates" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/candidates"} Discovered
+  %li{class: "nav-item badge-item"}
+    %a{class: "nav-link#{locals[:active_page] == "candidates" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/candidates"}
+      Discovered
+    %span{class: "badge-notify badge badge-danger badge-pill"}
   %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_page] == "ignored" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/ignored"} Ignored
   %li{class: "nav-item"}

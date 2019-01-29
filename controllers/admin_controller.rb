@@ -157,19 +157,6 @@ module Sinatra
                 id_scores = agents.compact.uniq
                                           .map{|a| { id: a[:id], score: a[:score] }}
 
-                # MIGHT get away with something like the following, left here as a placeholder
-                # scores = {}
-                # id_scores.sort{|a,b| b[:score] <=> a[:score]}
-                #         .each{|a| scores[a[:id]] = a[:score] }
-                # @results = OccurrenceRecorder.where(agent_id: scores.keys)
-                #                   .union(OccurrenceDeterminer.where(agent_id: scores.keys))
-                #                   .includes(:occurrence)
-                #                   .joins("LEFT JOIN user_occurrences ON occurrence_recorders.occurrence_id = user_occurrences.occurrence_id")
-                #                   .where("user_occurrences.id IS NULL")
-                #                   .order("field(occurrence_recorders.agent_id, #{scores.keys.join(',')})")
-                #                   .paginate(page: @page, per_page: search_size)
-                #@total = @results.total_entries
-
                 if !id_scores.empty?
                   ids = id_scores.map{|a| a[:id]}
                   nodes = AgentNode.where(agent_id: ids)
@@ -190,6 +177,33 @@ module Sinatra
               haml :oops
             end
 
+          end
+
+          app.get '/admin/candidate-count.json' do
+            admin_protected!
+            content_type "application/json"
+            @admin_user = User.find(params[:user_id].to_i)
+            agents = search_agents(@admin_user.family, @admin_user.given)
+            if !@admin_user.other_names.nil?
+              @admin_user.other_names.split("|").each do |other_name|
+                begin
+                  parsed = Namae.parse other_name.gsub(/\./, ".\s")
+                  name = DwcAgent.clean(parsed[0])
+                  family = !name[:family].nil? ? name[:family] : nil
+                  given = !name[:given].nil? ? name[:given] : nil
+                  if !family.nil?
+                    agents.concat search_agents(family, given)
+                  end
+                rescue
+                end
+              end
+            end
+            agent_ids = agents.compact.uniq.pluck(:id)
+            count = OccurrenceRecorder.where(agent_id: agent_ids)
+                                      .union_all(OccurrenceDeterminer.where(agent_id: agent_ids))
+                                      .where.not(occurrence_id: @admin_user.user_occurrences.select(:occurrence_id))
+                                      .count
+            { count: count }.to_json
           end
 
           app.get '/admin/user/:orcid/candidates/agent/:id' do

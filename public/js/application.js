@@ -284,10 +284,10 @@ var Application = (function($, window) {
     },
     candidate_counter: function() {
       var self = this;
-      if (self.path === "/profile") {
+      if (self.path === "/profile" || (self.path === "/admin" && self.user_id)) {
         $.ajax({
           method: "GET",
-          url: self.path + "/candidate-count.json"
+          url: self.path + "/candidate-count.json?user_id=" + self.user_id
         }).done(function(data) {
           if (data.count > 0 && data.count <= 50) {
             $(".badge-notify").text(data.count).show();
