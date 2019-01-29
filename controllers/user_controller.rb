@@ -142,6 +142,8 @@ module Sinatra
           app.get '/profile/candidate-count.json' do
             protected!
             content_type "application/json"
+            return { count: 0}.to_json if @user[:family].nil?
+
             user = User.find(@user[:id])
             agents = search_agents(@user[:family], @user[:given])
             if !@user[:other_names].nil?

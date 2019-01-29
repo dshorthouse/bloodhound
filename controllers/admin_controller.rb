@@ -183,6 +183,8 @@ module Sinatra
             admin_protected!
             content_type "application/json"
             @admin_user = User.find(params[:user_id].to_i)
+            return { count: 0}.to_json if @admin_user.family.nil?
+
             agents = search_agents(@admin_user.family, @admin_user.given)
             if !@admin_user.other_names.nil?
               @admin_user.other_names.split("|").each do |other_name|
