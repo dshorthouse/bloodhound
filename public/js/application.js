@@ -17,10 +17,10 @@ var Application = (function($, window) {
     method: "POST",
     spinner: "<div class=\"spinner-grow\" role=\"status\"><span class=\"sr-only\">Loading...</span></div>",
     data_sources: { agent: {}, user : {}, organization : {} },
-    init: function(user_id = "", method = "POST", path = "") {
-      this.user_id = user_id;
-      this.method = method;
-      this.path = path;
+    init: function(user_id, method, path) {
+      this.user_id = typeof user_id !== 'undefined' ? user_id : "";
+      this.method = typeof method !== 'undefined' ? method : "POST";
+      this.path = typeof path !== 'undefined' ? path : "";
       this.bloodhound();
       this.typeahead();
       this.activate_radios();
@@ -63,7 +63,7 @@ var Application = (function($, window) {
         }
         ).on("typeahead:select", function(obj, datum) {
           if (self.path === "/admin") {
-            var orcid = window.location.pathname.split('/')[3];
+            var orcid = window.location.pathname.split("/")[3];
             window.location.href = "/admin/user/" + orcid + "/candidates/agent/" + datum.id;
           } else if (self.path === "/agents") {
             window.location.href = "/agents?q=" + encodeURI(datum.name);
@@ -105,7 +105,7 @@ var Application = (function($, window) {
     },
     activate_switch: function() {
       var self = this;
-      $("#toggle-public").change(function() {
+      $("#toggle-public").on("change", function() {
         $.ajax({
           method: "PUT",
           url: self.path + "/visibility.json?user_id=" + self.user_id,
@@ -114,20 +114,22 @@ var Application = (function($, window) {
         }).done(function(data) {
           location.reload();
         });
+        return false;
       });
     },
     activate_radios: function(){
       var self = this;
 
-      $("#relaxed").change(function() {
+      $("#relaxed").on("change", function() {
         if ($(this).prop("checked")) {
           window.location.href = "/profile/candidates?relaxed=1";
         } else {
           window.location.href = "/profile/candidates";
         }
+        return false;
       });
 
-      $("input.action-radio").change(function() {
+      $("input.action-radio").on("change", function() {
           var row = $(this).parents("tr"),
               action = $(this).attr("data-action"),
               label = $(this).parent(),
@@ -199,6 +201,7 @@ var Application = (function($, window) {
                 }
               });
           }
+          return false;
       });
       $("button.remove").on("click", function() {
         var occurrence_id = $(this).attr("data-occurrence-id"),
@@ -219,6 +222,7 @@ var Application = (function($, window) {
             }
           });
         });
+        return false;
       });
       $("button.hide-all").on("click", function() {
         var occurrence_ids = $.map($("[data-occurrence-id]"), function(e) {
@@ -244,27 +248,29 @@ var Application = (function($, window) {
             location.reload();
           });
         });
+        return false;
       });
       $("button.hide").on("click", function() {
-          var occurrence_id = $(this).attr("data-occurrence-id"),
-              row = $(this).parents("tr");
-          $.ajax({
-              method: self.method,
-              url: self.path + "/user-occurrence/" + occurrence_id + ".json",
-              dataType: "json",
-              data: JSON.stringify({ user_id: self.user_id, visible: 0}),
-              beforeSend: function(xhr) {
-                $("label", row).addClass("disabled");
-                $("button", row).addClass("disabled");
-              }
-          }).done(function(data) {
-            row.fadeOut(250, function() {
-              row.remove();
-              if ($("button.hide").length === 0) {
-                location.reload();
-              }
-            });
+        var occurrence_id = $(this).attr("data-occurrence-id"),
+            row = $(this).parents("tr");
+        $.ajax({
+            method: self.method,
+            url: self.path + "/user-occurrence/" + occurrence_id + ".json",
+            dataType: "json",
+            data: JSON.stringify({ user_id: self.user_id, visible: 0}),
+            beforeSend: function(xhr) {
+              $("label", row).addClass("disabled");
+              $("button", row).addClass("disabled");
+            }
+        }).done(function(data) {
+          row.fadeOut(250, function() {
+            row.remove();
+            if ($("button.hide").length === 0) {
+              location.reload();
+            }
           });
+        });
+        return false;
       });
     },
     activate_orcid_refresh: function(){
@@ -300,7 +306,7 @@ var Application = (function($, window) {
   };
 
   return {
-    init: function(user_id = "", method = "POST", path = "") {
+    init: function(user_id, method, path) {
       _private.init(user_id, method, path);
     }
   };
