@@ -13,13 +13,13 @@
     %div{class: "container-fluid"}
       %h2 All Users
 
-      %form{id:"form-wrapper", method: "post", action: "/admin/user/add", "accept-charset" => "UTF-8", class: "form-inline helpers"}
+      %form{id:"form-wrapper", method: "post", action: "/admin/user/add", "accept-charset" => "UTF-8", class: "helpers"}
         %div{class:"row"}
-          %div{class:"col-6 form-group"}
+          %div{class:"col form-group form-inline"}
             %label{for: "typeahead", class:"font-weight-bold col-form-label", style:"margin-right:1rem"}= "Search User"
             %div{class:"col"}
               %input{class: "typeahead", id: "typeahead-user", type: :text, name: "q", placeholder: "Mary Smith", value: "#{params[:q]}", size:"30"}
-          %div{class:"col-6 form-group"}
+          %div{class:"col form-group form-inline"}
             %label{for: "orcid-add", class:"font-weight-bold col-form-label", style:"margin-right:1rem"}= "Add ORCID"
             %div{class:"col"}
               %input{class: "orcid-add", type: :text, name: "orcid", placeholder: "0000-0001-7618-5230", size:"22"}
