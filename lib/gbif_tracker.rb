@@ -46,7 +46,7 @@ module Bloodhound
               output.write zip
             end
             begin
-              dwc = DarwinCore.new(tmp_file)
+              dwc = DarwinCore.new(tmp_file.path)
               gbifID = dwc.core.fields.select{|term| term[:term] == "http://rs.gbif.org/terms/1.0/gbifID"}[0][:index]
               dwc.core.read(1000) do |data, errors|
                 ArticleOccurrence.import data.map{|a| { article_id: article.id, occurrence_id: a[gbifID].to_i } }, validate: false
