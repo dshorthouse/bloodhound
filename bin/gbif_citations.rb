@@ -19,6 +19,10 @@ OptionParser.new do |opts|
     options[:process] = true
   end
 
+  opts.on("-d", "--delete", "Delete irrelevant article_occurrences entries") do
+    options[:delete] = true
+  end
+
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
@@ -26,17 +30,17 @@ OptionParser.new do |opts|
 
 end.parse!
 
-if options[:first]
-  tracker = Bloodhound::GbifTracker.new({ first_page_only: true })
-  tracker.create_package_records
-elsif options[:all]
-  tracker = Bloodhound::GbifTracker.new
+first_page = (options[:first]) ? { first_page_only: true } : { first_page_only: false }
+tracker = Bloodhound::GbifTracker.new(first_page)
+
+if options[:first] || options[:all]
   tracker.create_package_records
 end
 
 if options[:process]
-  if !options[:first] && !options[:all]
-    tracker = Bloodhound::GbifTracker.new
-  end
   tracker.process_data_packages
+end
+
+if options[:delete]
+  tracker.flush_irrelevant_entries
 end

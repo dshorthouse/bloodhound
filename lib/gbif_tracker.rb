@@ -36,7 +36,7 @@ module Bloodhound
 
     def process_data_packages
       url = "http://api.gbif.org/v1/occurrence/download/request/"
-      Article.where(processed: false).find_each do |article|
+      Article.where(processed: [false, nil]).find_each do |article|
         article.gbif_downloadkeys.each do |key|
           if datapackage_file_size(key) < @max_size
             tmp_file = Tempfile.new('gbif')
@@ -107,6 +107,11 @@ module Bloodhound
           offset += 200
         end
       end.lazy
+    end
+
+    def flush_irrelevant_entries
+      sql = "DELETE article_occurrences FROM article_occurrences LEFT JOIN occurrences ON article_occurrences.occurrence_id = occurrences.gbifID WHERE occurrences.gbifID IS NULL"
+      ActiveRecord::Base.connection.execute(sql)
     end
 
     private
