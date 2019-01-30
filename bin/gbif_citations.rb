@@ -35,5 +35,8 @@ elsif options[:all]
 end
 
 if options[:process]
+  if !options[:first] && !options[:all]
+    tracker = Bloodhound::GbifTracker.new
+  end
   tracker.process_data_packages
 end
