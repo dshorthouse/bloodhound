@@ -26,7 +26,6 @@ module Sinatra
             begin
               @agent = Agent.find(id)
               @results = @agent.occurrences
-                               .order("occurrences.typeStatus desc")
                                .paginate(page: page)
               haml :'agents/agent', locals: { active_page: "agents" }
             rescue
