@@ -148,32 +148,19 @@ module Sinatra
             return { count: 0}.to_json if @user[:family].nil?
 
             user = User.find(@user[:id])
-            agents = search_agents(@user[:family], @user[:given])
-            if !@user[:other_names].nil?
-              @user[:other_names].split("|").each do |other_name|
-                begin
-                  parsed = Namae.parse other_name.gsub(/\./, ".\s")
-                  name = DwcAgent.clean(parsed[0])
-                  family = !name[:family].nil? ? name[:family] : nil
-                  given = !name[:given].nil? ? name[:given] : nil
-                  if !family.nil?
-                    agents.concat search_agents(family, given)
-                  end
-                rescue
-                end
-              end
-            end
-            if !params.has_key?(:relaxed) || params[:relaxed] == "0"
-              agents.delete_if do |key,value|
-                !@user[:given].nil? && !key[:given].nil? && DwcAgent.similarity_score(key[:given], @user[:given]) == 0
-              end
-            end
-            agent_ids = agents.compact.uniq.pluck(:id)
-            count = OccurrenceRecorder.where(agent_id: agent_ids)
-                                      .union_all(OccurrenceDeterminer.where(agent_id: agent_ids))
-                                      .where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
-                                      .count
+            agent_ids = candidate_agents.pluck(:id)
+            count = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
+                                                       .count
             { count: count }.to_json
+          end
+
+          app.get '/profile/candidates.csv' do
+            protected!
+            user = User.find(@user[:id])
+            agent_ids = candidate_agents.pluck(:id)
+            records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
+            csv_stream_headers("bloodhound-candidates")
+            body csv_stream_candidates(records)
           end
 
           app.get '/profile/candidates' do
@@ -185,32 +172,7 @@ module Sinatra
               @results = []
               @total = nil
             else
-              agents = search_agents(@user[:family], @user[:given])
-
-              if !@user[:other_names].nil?
-                @user[:other_names].split("|").each do |other_name|
-                  begin
-                    parsed = Namae.parse other_name.gsub(/\./, ".\s")
-                    name = DwcAgent.clean(parsed[0])
-                    family = !name[:family].nil? ? name[:family] : nil
-                    given = !name[:given].nil? ? name[:given] : nil
-                    if !family.nil?
-                      agents.concat search_agents(family, given)
-                    end
-                  rescue
-                  end
-                end
-              end
-
-              if !params.has_key?(:relaxed) || params[:relaxed] == "0"
-                agents.delete_if do |key,value|
-                  !@user[:given].nil? && !key[:given].nil? && DwcAgent.similarity_score(key[:given], @user[:given]) == 0
-                end
-              end
-
-              id_scores = agents.compact
-                                .uniq
-                                .map{|a| { id: a[:id], score: a[:score] }}
+              id_scores = candidate_agents.map{|a| { id: a[:id], score: a[:score] } if a[:score] >= 10 }.compact
 
               if !id_scores.empty?
                 ids = id_scores.map{|a| a[:id]}
@@ -220,7 +182,7 @@ module Sinatra
                     id_scores << { id: id, score: 1 } #TODO: how to more effectively use the edge weights here?
                   end
                 end
-                occurrence_ids = occurrences_by_score(id_scores)
+                occurrence_ids = occurrences_by_score(id_scores, User.find(@user[:id]))
               end
 
               specimen_pager(occurrence_ids)
@@ -242,7 +204,7 @@ module Sinatra
               id_scores.concat(node.agent_nodes_weights.map{|a| { id: a[0], score: a[1] }})
             end
 
-            occurrence_ids = occurrences_by_score(id_scores)
+            occurrence_ids = occurrences_by_score(id_scores, User.find(@user[:id]))
             specimen_pager(occurrence_ids)
 
             haml :'profile/candidates'
@@ -355,7 +317,7 @@ module Sinatra
                       id_scores << { id: id, score: 1 } #TODO: how to more effectively use the edge weights here?
                     end
                   end
-                  occurrence_ids = occurrences_by_score(id_scores, @viewed_user.id)
+                  occurrence_ids = occurrences_by_score(id_scores, @viewed_user)
                 end
 
                 specimen_pager(occurrence_ids)

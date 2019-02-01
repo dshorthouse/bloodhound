@@ -107,7 +107,7 @@ module Sinatra
             }
           }
         }
-        response = client.search index: settings.elastic_agent_index, type: "agent", body: body
+        response = client.search index: settings.elastic_agent_index, type: "agent", size: 25, body: body
         results = response["hits"].deep_symbolize_keys
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) } rescue []
       end
@@ -178,22 +178,48 @@ module Sinatra
                        .offset(random_offset).limit(3)
       end
 
-      def occurrences_by_score(id_scores, user_id = @user[:id])
-        user = User.find(user_id)
+      def candidate_agents
+        agents = search_agents(@user[:family], @user[:given])
 
+        if !@user[:other_names].nil?
+          @user[:other_names].split("|").each do |other_name|
+            begin
+              parsed = Namae.parse other_name.gsub(/\./, ".\s")
+              name = DwcAgent.clean(parsed[0])
+              family = !name[:family].nil? ? name[:family] : nil
+              given = !name[:given].nil? ? name[:given] : nil
+              if !family.nil?
+                agents.concat search_agents(family, given)
+              end
+            rescue
+            end
+          end
+        end
+
+        if !params.has_key?(:relaxed) || params[:relaxed] == "0"
+          agents.delete_if do |key,value|
+            !@user[:given].nil? && !key[:given].nil? && DwcAgent.similarity_score(key[:given], @user[:given]) == 0
+          end
+        end
+        agents.compact.uniq
+      end
+
+      def occurrences_by_score(id_scores, user)
         scores = {}
         id_scores.sort{|a,b| b[:score] <=> a[:score]}
                  .each{|a| scores[a[:id]] = a[:score] }
 
-        OccurrenceRecorder.where(agent_id: scores.keys)
-                          .where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
-                          .union_all(OccurrenceDeterminer.where(agent_id: scores.keys)
-                                                         .where.not(occurrence_id: user.user_occurrences.select(:occurrence_id)))
+        occurrences_by_agent_ids(scores.keys).where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
+                                          .pluck(:agent_id, :typeStatus, :occurrence_id)
+                                          .sort_by{|o| [ scores.fetch(o[0]), o[1].nil? ? "" : o[1] ] }
+                                          .reverse
+                                          .map(&:last)
+      end
+
+      def occurrences_by_agent_ids(agent_ids = [])
+        OccurrenceRecorder.where(agent_id: agent_ids)
+                          .union_all(OccurrenceDeterminer.where(agent_id: agent_ids))
                           .includes(:occurrence)
-                          .pluck(:agent_id, :typeStatus, :occurrence_id)
-                          .sort_by{|o| [ scores.fetch(o[0]), o[1].nil? ? "" : o[1] ] }
-                          .reverse
-                          .map(&:last)
       end
 
       def search_size
@@ -363,9 +389,9 @@ module Sinatra
         end
       end
 
-      def csv_stream_headers
+      def csv_stream_headers(file_name = "download")
         content_type "application/csv"
-        attachment !params[:orcid].nil? ? "#{params[:orcid]}.csv" : "download.csv"
+        attachment !params[:orcid].nil? ? "#{params[:orcid]}.csv" : "#{file_name}.csv"
         cache_control :no_cache
         headers.delete("Content-Length")
       end
@@ -377,6 +403,19 @@ module Sinatra
           occurrences.find_each do |o|
             data = [o.action].concat(o.occurrence.attributes.values)
             y << CSV::Row.new(header, data).to_s
+          end
+        end
+      end
+
+      def csv_stream_candidates(occurrences)
+        Enumerator.new do |y|
+          header = ["action"].concat(Occurrence.attribute_names)
+          y << CSV::Row.new(header, header, true).to_s
+          if !occurrences.empty?
+            occurrences.each do |o|
+              data = [""].concat(o.occurrence.attributes.values)
+              y << CSV::Row.new(header, data).to_s
+            end
           end
         end
       end

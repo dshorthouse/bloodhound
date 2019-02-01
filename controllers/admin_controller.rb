@@ -156,7 +156,8 @@ module Sinatra
                 end
 
                 id_scores = agents.compact.uniq
-                                          .map{|a| { id: a[:id], score: a[:score] }}
+                                          .map{|a| { id: a[:id], score: a[:score] } if a[:score] >= 10 }
+                                          .compact
 
                 if !id_scores.empty?
                   ids = id_scores.map{|a| a[:id]}
@@ -166,7 +167,7 @@ module Sinatra
                       id_scores << { id: id, score: 1 }
                     end
                   end
-                  occurrence_ids = occurrences_by_score(id_scores, @admin_user.id)
+                  occurrence_ids = occurrences_by_score(id_scores, @admin_user)
                 end
 
                 specimen_pager(occurrence_ids)
@@ -202,10 +203,7 @@ module Sinatra
               end
             end
             agent_ids = agents.compact.uniq.pluck(:id)
-            count = OccurrenceRecorder.where(agent_id: agent_ids)
-                                      .union_all(OccurrenceDeterminer.where(agent_id: agent_ids))
-                                      .where.not(occurrence_id: @admin_user.user_occurrences.select(:occurrence_id))
-                                      .count
+            count = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @admin_user.user_occurrences.select(:occurrence_id)).count
             { count: count }.to_json
           end
 
@@ -224,7 +222,7 @@ module Sinatra
               id_scores.concat(node.agent_nodes_weights.map{|a| { id: a[0], score: a[1] }})
             end
 
-            occurrence_ids = occurrences_by_score(id_scores, @admin_user.id)
+            occurrence_ids = occurrences_by_score(id_scores, @admin_user)
             specimen_pager(occurrence_ids)
 
             haml :'admin/candidates', locals: { active_page: "administration" }
