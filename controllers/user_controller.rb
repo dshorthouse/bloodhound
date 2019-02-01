@@ -470,7 +470,7 @@ module Sinatra
               @article= Article.find(params[:article_id])
               if @article && @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
-                @results = @viewed_user.cited_specimens(@article.id)
+                @results = @viewed_user.cited_specimens_by_article(@article.id)
                                        .paginate(page: page)
                 haml :'public/citation', locals: { active_page: "roster" }
               else
