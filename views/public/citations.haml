@@ -9,6 +9,9 @@
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
     Citations have not yet been recorded.
 - else
+  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    A total of #{number_with_delimiter(@results.total_entries)} publications made use of #{@viewed_user.fullname}'s data downloaded from the Global Biodiversity Information Facility (GBIF).
+
   %div{class:"container-fluid citation-wrapper"}
     %h3 Specimen Data Used in Published Research
     - @results.each do |article|
