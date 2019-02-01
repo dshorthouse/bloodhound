@@ -257,10 +257,15 @@ module Sinatra
             @admin_user = User.find_by_orcid(params[:orcid])
             @article = Article.find(params[:article_id])
             if @article
-              page = (params[:page] || 1).to_i
+              @page = (params[:page] || 1).to_i
               @total = @admin_user.cited_specimens_by_article(@article.id).count
+
+              if @page*search_size > @total
+                @page = @total/search_size.to_i + 1
+              end
+
               @results = @admin_user.cited_specimens_by_article(@article.id)
-                                    .paginate(page: page)
+                                    .paginate(page: @page, per_page: search_size)
               haml :'admin/citation', locals: { active_page: "administration" }
             else
               status 404

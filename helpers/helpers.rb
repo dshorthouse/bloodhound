@@ -250,18 +250,18 @@ module Sinatra
       def roster
         @results = User.where(is_public: true)
                        .order(:family)
-                       .paginate :page => params[:page]
+                       .paginate(page: params[:page])
       end
 
       def admin_roster
         @results = User.order(visited: :desc, family: :asc)
-                       .paginate :page => params[:page]
+                       .paginate(page: params[:page])
       end
 
       def organizations
         @results = Organization.active_user_organizations
                                .order(:name)
-                               .paginate :page => params[:page]
+                               .paginate(page: params[:page])
       end
 
       def organization
@@ -269,7 +269,7 @@ module Sinatra
         if !organizations.empty?
           @organization = organizations.first
           @results = @organization.active_users.order(:family)
-                                  .paginate :page => params[:page]
+                                  .paginate(page: params[:page])
         else
           status 404
           haml :oops
@@ -281,7 +281,7 @@ module Sinatra
         if !organizations.empty?
           @organization = organizations.first
           @results = @organization.inactive_users.order(:family)
-                                  .paginate :page => params[:page]
+                                  .paginate(page: params[:page])
         else
           status 404
           haml :oops
