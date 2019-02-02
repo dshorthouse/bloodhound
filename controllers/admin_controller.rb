@@ -156,9 +156,8 @@ module Sinatra
                 end
 
                 id_scores = agents.compact.uniq
-                                          .map{|a| { id: a[:id], score: a[:score] } if a[:score] >= 10 }
+                                          .map{|a| { id: a[:id], score: a[:score] } }
                                           .compact
-
                 if !id_scores.empty?
                   ids = id_scores.map{|a| a[:id]}
                   nodes = AgentNode.where(agent_id: ids)
