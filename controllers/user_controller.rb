@@ -233,17 +233,17 @@ module Sinatra
                       @record_count += 1
                     end
                   end
-                  UserOccurrence.import items, batch_size: 100, validate: false
+                  UserOccurrence.import items, batch_size: 100, validate: false, on_duplicate_key_ignore: true
                 rescue
                   tempfile.unlink
                   @error = "There was an error in your file. Did it contain the headers, action and gbifID?"
                 end
               else
                 tempfile.unlink
-                @error = "Only files of type tex/csv less than 5MB are accepted"
+                @error = "Only files of type tex/csv less than 5MB are accepted."
               end
             else
-              @error = "No file was uploaded"
+              @error = "No file was uploaded."
             end
             haml :'profile/upload'
           end

@@ -7,20 +7,20 @@
           %span{"aria-hidden":"true"} &times;
       %div{class:"modal-body"}
         %p
-          Download discovered specimen records, work offline to make claims, then upload your claims as a csv. Only csv files of 
+          Download discovered specimen records, work offline, then upload new claims as a csv. Only csv files of 
           %span{class:"font-weight-bold"} 5MB or less
           with a single header row minimally containing
           %span{class:"font-weight-bold"} action
           and
           %span{class:"font-weight-bold"} gbifID
-          are accepted.
+          are accepted. This routine does not update underlying specimen data nor does it update existing claims; if existing claims are present in the upload, these will be skipped.
         %p{class:"text-center"}
           %img{src: "/images/candidates-instructions.png", width:450, alt: "Instructions for offline claims"}
         %form{id:"#form-wrapper", method: :post, action: "/profile/upload-claims", enctype: "multipart/form-data", "accept-charset" => "UTF-8", class: "form"}
           - relaxed = params["relaxed"] == "1" ? "?relaxed=1" : nil
           %div{class:"container-fluid"}
             %div{class:"row mt-3"}
-              %div{class:"col-sm-4 text-right"} Download csv
+              %div{class:"col-sm-4 text-right"} Download discovered records
               %div{class:"col-sm-8"}
                 %a{href: "/profile/candidates.csv#{relaxed}"}
                   %img{src: "/images/csv-icon.png", width:24, alt: "CSV download"}
