@@ -13,6 +13,8 @@
 
 = haml :'partials/profile_tabs', layout: false, locals: { active_page: "candidates" }
 
+= haml :'partials/profile_claim_modal', layout: false
+
 - alert_class = "info"
 - placeholder = @user[:fullname]
 - if !@searched_user.nil?
@@ -39,7 +41,7 @@
     %div{class: "alert alert-#{alert_class} row candidates-alert", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
       %div{class: "col col-12 col-sm-12 col-m-6 col-lg-8"}
         = succeed "." do
-          Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for 
+          Sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for 
           %span{class:"font-weight-bold"} #{placeholder}
         - if @searched_user.nil?
           %div{class:"form-check d-inline-flex"}
@@ -51,19 +53,17 @@
         %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
         collected, 
         %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-        identified, or Both to 
-        %span{class:"font-weight-bold"} claim them as your own.
+        identified, or Both.
+        - if @searched_user.nil?
+          Or 
+          %a{href: "#", "data-toggle":"modal", "data-target":"#modal_claims"} work offline then upload 
+          your claims.
 
       %div{class:"col col-12 col-sm-8 col-m-6 col-lg-4"}
         %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
-          - candidates = @searched_user.nil? ? " candidates" : nil
-          %div{class: "inputs search-agent form-group#{candidates}"}
+          %div{class: "inputs search-agent form-group"}
             %label{for: "typeahead", class:"font-weight-bold col-form-label", style:"margin-right:1rem"}= "Search"
             %input.typeahead{id: "typeahead-agent", type: :text, name: "q", placeholder: "#{placeholder}", value: "#{params[:q]}"}
-            - if @searched_user.nil?
-              - relaxed = params["relaxed"] == "1" ? "?relaxed=1" : nil
-              %a{href: "/profile/candidates.csv#{relaxed}"}
-                %img{src: "/images/csv-icon.png", width:24, alt: "CSV download"}
 
     %div{class:"table-responsive-lg"}
       %table{class:"table table-hover table-sm"}

@@ -1,0 +1,25 @@
+-content_for :title do
+  Bloodhound: Upload
+
+-content_for :scripts do
+  %script{src:"/js/application.js"}
+  :javascript
+    $(function() {
+        Application.init(#{@user[:id]}, "POST", "/profile");
+    });
+
+-content_for :jumbotron do
+  = haml :'partials/profile_jumbotron', layout: false
+
+= haml :'partials/profile_tabs', layout: false, locals: { active_page: "candidates" }
+
+- if !@error.nil?
+  %div{class: "alert alert-danger", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    #{@error}
+
+- else
+  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    A total of #{number_with_delimiter(@record_count)} #{'record'.pluralize(@record_count)} were created.
+    %a{href: "/profile/specimens"}
+      View
+    all your claims.

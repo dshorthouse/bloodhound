@@ -1,0 +1,38 @@
+%div{class:"modal fade", id:"modal_claims", tabindex:"-1", role:"dialog", "aria-labelledby":"modal_claims_title", "aria-hidden":"true"}
+  %div{class:"modal-dialog modal-dialog-centered modal-lg", role:"document"}
+    %div{class:"modal-content"}
+      %div{class:"modal-header"}
+        %h4{class:"modal-title", id:"modal_claims_longtitle"} Work offline
+        %button{type:"button", class:"close", "data-dismiss":"modal", "aria-label":"Close"}
+          %span{"aria-hidden":"true"} &times;
+      %div{class:"modal-body"}
+        %p
+          Download discovered specimen records, work offline to make claims, then upload your claims as a csv. Only csv files of 
+          %span{class:"font-weight-bold"} 5MB or less
+          with a single header row minimally containing
+          %span{class:"font-weight-bold"} action
+          and
+          %span{class:"font-weight-bold"} gbifID
+          are accepted.
+        %p{class:"text-center"}
+          %img{src: "/images/candidates-instructions.png", width:450, alt: "Instructions for offline claims"}
+        %form{id:"#form-wrapper", method: :post, action: "/profile/upload-claims", enctype: "multipart/form-data", "accept-charset" => "UTF-8", class: "form"}
+          - relaxed = params["relaxed"] == "1" ? "?relaxed=1" : nil
+          %div{class:"container-fluid"}
+            %div{class:"row mt-3"}
+              %div{class:"col-sm-4 text-right"} Download csv
+              %div{class:"col-sm-8"}
+                %a{href: "/profile/candidates.csv#{relaxed}"}
+                  %img{src: "/images/csv-icon.png", width:24, alt: "CSV download"}
+            %div{class:"row mt-3"}
+              %div{class:"col-sm-4 text-right"}
+                %label{for:"candidate-file", class:"text-right"} Upload csv with claims
+              %div{class:"col-sm-8"}
+                %input{type:"file", class:"form-control-file", id:"candidate-file", name: "file"}
+            %div{class:"row mt-3"}
+              %div{class:"col-sm-4"}
+              %div{class:"col-sm-8"}
+                %button{type:"submit", class:"btn btn-success"} Submit
+            
+      %div{class:"modal-footer"}
+        %button{type:"button", class:"btn btn-secondary", "data-dismiss":"modal"} Close

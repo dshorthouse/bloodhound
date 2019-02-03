@@ -210,6 +210,44 @@ module Sinatra
             haml :'profile/candidates'
           end
 
+          app.post '/profile/upload-claims' do
+            protected!
+            @error = nil
+            @record_count = 0
+            accepted_actions = ["identified","recorded","identified,recorded","recorded,identified"]
+            if params[:file] && params[:file][:tempfile]
+              tempfile = params[:file][:tempfile]
+              filename = params[:file][:filename]
+              if params[:file][:type] == "text/csv" && params[:file][:tempfile].size <= 5_000_000
+                begin
+                  items = []
+                  CSV.foreach(tempfile, headers: true) do |row|
+                    action = row["action"].gsub(/\s+/, "")
+                    if accepted_actions.include?(action) && row.include?("gbifID")
+                      items << UserOccurrence.new({
+                        occurrence_id: row["gbifID"],
+                        user_id: @user[:id],
+                        created_by: @user[:id],
+                        action: action
+                      })
+                      @record_count += 1
+                    end
+                  end
+                  UserOccurrence.import items, batch_size: 100, validate: false
+                rescue
+                  tempfile.unlink
+                  @error = "There was an error in your file. Did it contain the headers, action and gbifID?"
+                end
+              else
+                tempfile.unlink
+                @error = "Only files of type tex/csv less than 5MB are accepted"
+              end
+            else
+              @error = "No file was uploaded"
+            end
+            haml :'profile/upload'
+          end
+
           app.get '/profile/ignored' do
             protected!
             user = User.find(@user[:id])
