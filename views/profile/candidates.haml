@@ -37,7 +37,7 @@
             %input.typeahead{id: "typeahead-agent", type: :text, name: "q", placeholder: "#{placeholder}", value: "#{params[:q]}"}
   - else
     %div{class: "alert alert-#{alert_class} row candidates-alert", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-      %div{class: "col col-12 col-sm-12 col-m-8 col-lg-8"}
+      %div{class: "col col-12 col-sm-12 col-m-6 col-lg-8"}
         = succeed "." do
           Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for 
           %span{class:"font-weight-bold"} #{placeholder}
@@ -56,9 +56,14 @@
 
       %div{class:"col col-12 col-sm-8 col-m-6 col-lg-4"}
         %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
-          %div{class: "inputs search-agent form-group"}
+          - candidates = @searched_user.nil? ? " candidates" : nil
+          %div{class: "inputs search-agent form-group#{candidates}"}
             %label{for: "typeahead", class:"font-weight-bold col-form-label", style:"margin-right:1rem"}= "Search"
             %input.typeahead{id: "typeahead-agent", type: :text, name: "q", placeholder: "#{placeholder}", value: "#{params[:q]}"}
+            - if @searched_user.nil?
+              - relaxed = params["relaxed"] == "1" ? "?relaxed=1" : nil
+              %a{href: "/profile/candidates.csv#{relaxed}"}
+                %img{src: "/images/csv-icon.png", width:24, alt: "CSV download"}
 
     %div{class:"table-responsive-lg"}
       %table{class:"table table-hover table-sm"}
