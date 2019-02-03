@@ -234,6 +234,7 @@ module Sinatra
                     end
                   end
                   UserOccurrence.import items, batch_size: 100, validate: false, on_duplicate_key_ignore: true
+                  tempfile.unlink
                 rescue
                   tempfile.unlink
                   @error = "There was an error in your file. Did it contain the headers, action and gbifID?"
