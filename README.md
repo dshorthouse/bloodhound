@@ -5,9 +5,10 @@ Sinatra app to parse people names from structured biodiversity occurrence data, 
 
 ## Recent Updates
 
-- **September 29, 2018**: The core, parsing component of this project has been split off into a stand-alone ruby gem, [dwc_agent](https://rubygems.org/gems/dwc_agent).
+- **February 3, 2019**: Allow download of candidate specimen records then upload of claims.
+- **January 26, 2019**: Present citations of user specimens based on contents of GBIF data packages.
 - **October 12, 2018**: Used Neo4j to store weighted graphs of similarly structured people names as a quick mechanism to expand the list of users' candidate specimens & then present them in greatest to least probable.
-- **January 26, 2018**: Present citations of user specimens based on contents of GBIF data packages.
+- **September 29, 2018**: The core, parsing component of this project has been split off into a stand-alone ruby gem, [dwc_agent](https://rubygems.org/gems/dwc_agent).
 
 ## Requirements
 
