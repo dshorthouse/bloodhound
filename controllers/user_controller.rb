@@ -222,7 +222,8 @@ module Sinatra
                 begin
                   items = []
                   CSV.foreach(tempfile, headers: true) do |row|
-                    action = row["action"].gsub(/\s+/, "")
+                    action = row["action"].gsub(/\s+/, "") rescue nil
+                    next if action.blank?
                     if accepted_actions.include?(action) && row.include?("gbifID")
                       items << UserOccurrence.new({
                         occurrence_id: row["gbifID"],
@@ -237,7 +238,7 @@ module Sinatra
                   tempfile.unlink
                 rescue
                   tempfile.unlink
-                  @error = "There was an error in your file. Did it contain the headers, action and gbifID?"
+                  @error = "There was an error in your file. Did it at least contain the headers, action and gbifID?"
                 end
               else
                 tempfile.unlink
