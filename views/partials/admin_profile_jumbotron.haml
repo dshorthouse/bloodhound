@@ -6,22 +6,24 @@
     %div{class: "row justify-content-center text-center"}
       %div{class: "col-sm-12 col-md-10 col-xl-10"}
         %div.row
+          - org = @admin_user.current_organization
           - if !@admin_user.other_names.blank?
             %dl{class: "col"}
               %dt Also known as
               %dd #{@admin_user.other_names.split("|").join("; ")}
-          - if !@admin_user.country.blank?
+          - if !org.blank?
             %dl{class: "col"}
               %dt Country
               %dd #{@admin_user.country}
-          - if !@admin_user.current_organization.nil?
+          
+          - if !org.nil?
             %dl{class: "col"}
-              - path = @admin_user.current_organization.ringgold || @admin_user.current_organization.grid
+              - path = org.ringgold || org.grid
               %dt Organization
               %dd
                 = succeed "," do
-                  %a{href: "/organization/#{path}"} #{@admin_user.current_organization.name}
-                #{@admin_user.current_organization.address}
+                  %a{href: "/organization/#{path}"} #{org.name}
+                #{org.address}
 
         %div.row
           %div{class: "col orcid text-center"}

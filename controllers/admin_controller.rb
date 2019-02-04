@@ -246,6 +246,7 @@ module Sinatra
             admin_protected!
             @admin_user = User.find_by_orcid(params[:orcid])
             page = (params[:page] || 1).to_i
+            @total = @admin_user.articles_citing_specimens.count
             @results = @admin_user.articles_citing_specimens
                                   .paginate(page: page)
             haml :'admin/citations', locals: { active_page: "administration" }
