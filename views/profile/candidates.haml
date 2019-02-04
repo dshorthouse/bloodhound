@@ -58,6 +58,10 @@
         Or 
         %a{href: "#", "data-toggle":"modal", "data-target":"#modal_claims"} work offline then upload 
         your claims.
+      - else
+        Claim the following specimen records
+        %span{class:"font-weight-bold"}
+          as your own.
 
     %div{class:"col col-12 col-sm-8 col-m-6 col-lg-4"}
       %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
