@@ -258,6 +258,11 @@ module Sinatra
                        .paginate(page: params[:page])
       end
 
+      def articles
+        @results = Article.order(created: :desc)
+                          .paginate(page: params[:page])
+      end
+
       def organizations
         @results = Organization.active_user_organizations
                                .order(:name)

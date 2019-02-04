@@ -46,7 +46,7 @@
             %a{ href: "/", class:"nav-link#{locals[:active_page] == "home" ? " active" : nil}" } Home
           - if admin_authorized?
             %li{class: "nav-item"}
-              %a{ href: "/admin/users", class:"nav-link#{locals[:active_page] == "administration" ? " active" : nil}" } Administration
+              %a{ href: "/admin", class:"nav-link#{locals[:active_page] == "administration" ? " active" : nil}" } Administration
           %li{class: "nav-item"}
             %a{ href: "/roster", class:"nav-link#{locals[:active_page] == "roster" ? " active" : nil}" } Profiles
           %li{class: "nav-item"}

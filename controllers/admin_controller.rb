@@ -7,6 +7,17 @@ module Sinatra
 
         def self.registered(app)
 
+          app.get '/admin' do
+            admin_protected!
+            haml :'admin/welcome', locals: { active_page: "administration" }
+          end
+
+          app.get '/admin/articles' do
+            admin_protected!
+            articles
+            haml :'admin/articles', locals: { active_page: "administration" }
+          end
+
           app.get '/admin/users' do
             admin_protected!
             @new_user = session[:new_user]
