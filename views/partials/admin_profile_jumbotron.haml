@@ -11,7 +11,7 @@
             %dl{class: "col"}
               %dt Also known as
               %dd #{@admin_user.other_names.split("|").join("; ")}
-          - if !org.blank?
+          - if !@admin_user.country.blank?
             %dl{class: "col"}
               %dt Country
               %dd #{@admin_user.country}
