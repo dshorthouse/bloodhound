@@ -17,13 +17,12 @@
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
     Citations have not yet been recorded.
 - else
-  %div{class:"container-fluid citation-wrapper"}
-    %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-      At least #{number_with_delimiter(@total)} #{'publication'.pluralize(@total)} used specimen records within downloads from the 
-      %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility 
-      (GBIF).
+  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    At least #{number_with_delimiter(@total)} #{'publication'.pluralize(@total)} used specimen records within downloads from the 
+    %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility 
+    (GBIF).
 
-  %div{class:"container-fluid citation-wrapper"}
+  %div{class:"citation-wrapper"}
     %h3 Specimen Data Used in Published Research
     - @results.each do |article|
       %div{class: "card"}

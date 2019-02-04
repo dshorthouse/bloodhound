@@ -21,56 +21,92 @@
   - alert_class = "warning"
   - placeholder = @searched_user.fullname
 
-%div{class: "container-fluid"}
-  - if @results.empty?
-    %div{class: "alert alert-warning row", role:"alert", style:"margin-left:0.1em;margin-right:0.1em"}
-      %div{class: "col col-12 col-sm-12 col-m-8 col-lg-8"}
-        Bloodhound did not sniff any specimens indexed by the 
-        %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
-        (GBIF) that you may have collected or identified.
+- if @results.empty?
+  %div{class: "alert alert-warning row", role:"alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    %div{class: "col col-12 col-sm-12 col-m-8 col-lg-8"}
+      Bloodhound did not sniff any specimens indexed by the 
+      %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
+      (GBIF) that you may have collected or identified.
+
+      %div{class:"form-check d-inline-flex"}
+        - checked = params[:relaxed] == "1" ? "checked" : nil
+        %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
+        %label{for:"relaxed", class:"relaxed"} Make less exact
+    %div{class:"col col-12 col-sm-8 col-m-6 col-lg-4"}
+      %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
+        %div{class: "inputs search-agent form-group"}
+          %label{for: "typeahead", class:"font-weight-bold col-form-label", style:"margin-right:1rem"}= "Search"
+          %input.typeahead{id: "typeahead-agent", type: :text, name: "q", placeholder: "#{placeholder}", value: "#{params[:q]}"}
+- else
+  %div{class: "alert alert-#{alert_class} row candidates-alert", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    %div{class: "col col-12 col-sm-12 col-m-6 col-lg-8"}
+      = succeed "." do
+        Sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for 
+        %span{class:"font-weight-bold"} #{placeholder}
+      - if @searched_user.nil?
         %div{class:"form-check d-inline-flex"}
           - checked = params[:relaxed] == "1" ? "checked" : nil
           %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
           %label{for:"relaxed", class:"relaxed"} Make less exact
-      %div{class:"col col-12 col-sm-8 col-m-6 col-lg-4"}
-        %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
-          %div{class: "inputs search-agent form-group"}
-            %label{for: "typeahead", class:"font-weight-bold col-form-label", style:"margin-right:1rem"}= "Search"
-            %input.typeahead{id: "typeahead-agent", type: :text, name: "q", placeholder: "#{placeholder}", value: "#{params[:q]}"}
-  - else
-    %div{class: "alert alert-#{alert_class} row candidates-alert", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-      %div{class: "col col-12 col-sm-12 col-m-6 col-lg-8"}
-        = succeed "." do
-          Sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for 
-          %span{class:"font-weight-bold"} #{placeholder}
-        - if @searched_user.nil?
-          %div{class:"form-check d-inline-flex"}
-            - checked = params[:relaxed] == "1" ? "checked" : nil
-            %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
-            %label{for:"relaxed", class:"relaxed"} Make less exact
-        %br
-        Choose
-        %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
-        collected, 
-        %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-        identified, or Both.
-        - if @searched_user.nil?
-          Or 
-          %a{href: "#", "data-toggle":"modal", "data-target":"#modal_claims"} work offline then upload 
-          your claims.
+      %br
+      Choose
+      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
+      collected, 
+      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+      identified, or Both.
+      - if @searched_user.nil?
+        Or 
+        %a{href: "#", "data-toggle":"modal", "data-target":"#modal_claims"} work offline then upload 
+        your claims.
 
-      %div{class:"col col-12 col-sm-8 col-m-6 col-lg-4"}
-        %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
-          %div{class: "inputs search-agent form-group"}
-            %label{for: "typeahead", class:"font-weight-bold col-form-label", style:"margin-right:1rem"}= "Search"
-            %input.typeahead{id: "typeahead-agent", type: :text, name: "q", placeholder: "#{placeholder}", value: "#{params[:q]}"}
+    %div{class:"col col-12 col-sm-8 col-m-6 col-lg-4"}
+      %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
+        %div{class: "inputs search-agent form-group"}
+          %label{for: "typeahead", class:"font-weight-bold col-form-label", style:"margin-right:1rem"}= "Search"
+          %input.typeahead{id: "typeahead-agent", type: :text, name: "q", placeholder: "#{placeholder}", value: "#{params[:q]}"}
 
-    %div{class:"table-responsive-lg"}
-      %table{class:"table table-hover table-sm"}
-        %thead{class: "thead-light"}
+  %div{class:"table-responsive-lg"}
+    %table{class:"table table-hover table-sm"}
+      %thead{class: "thead-light"}
+        %tr
+          %th{scope: "col", class:"selector"}
+            = haml :'partials/bulk_selector_top', layout: false
+          %th{scope: "col"} Scientific Name
+          %th{scope: "col"} Collected By
+          %th{scope: "col"} Identified By
+          %th{scope: "col"} Date Collected
+          %th{scope: "col"} Date Identified
+          %th{scope: "col"} Institution
+          %th{scope: "col"} Catalog Number
+          %th{scope: "col"} Type Status
+          %th{scope: "col", class:"btn-selector"}
+            - if @searched_user.nil?
+              %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"} Not me
+
+      %tbody
+        - @results.each do |o|
+          %tr
+            %td{class: "selector"}
+              = haml :'partials/single_selector', layout: false, locals: { occurrence: o }
+            %td
+              - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
+              %a{href: "https://www.gbif.org/occurrence/#{o.id}", target: "_blank" } #{scientific_name}
+            %td #{o.recordedBy}
+            %td #{o.identifiedBy}
+            %td #{o.eventDate}
+            %td #{o.dateIdentified}
+            %td #{o.institutionCode}
+            %td #{o.catalogNumber}
+            %td #{o.typeStatus}
+            %td
+              - if @searched_user.nil?
+                %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{o.id}"} Not me
+
+      - if @total >= 25
+        %tfoot{class: "thead-light"}
           %tr
             %th{scope: "col", class:"selector"}
-              = haml :'partials/bulk_selector_top', layout: false
+              = haml :'partials/bulk_selector_bottom', layout: false
             %th{scope: "col"} Scientific Name
             %th{scope: "col"} Collected By
             %th{scope: "col"} Identified By
@@ -79,47 +115,11 @@
             %th{scope: "col"} Institution
             %th{scope: "col"} Catalog Number
             %th{scope: "col"} Type Status
-            %th{scope: "col", class:"btn-selector"}
+            %th{scope: "col"}
               - if @searched_user.nil?
                 %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"} Not me
 
-        %tbody
-          - @results.each do |o|
-            %tr
-              %td{class: "selector"}
-                = haml :'partials/single_selector', layout: false, locals: { occurrence: o }
-              %td
-                - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
-                %a{href: "https://www.gbif.org/occurrence/#{o.id}", target: "_blank" } #{scientific_name}
-              %td #{o.recordedBy}
-              %td #{o.identifiedBy}
-              %td #{o.eventDate}
-              %td #{o.dateIdentified}
-              %td #{o.institutionCode}
-              %td #{o.catalogNumber}
-              %td #{o.typeStatus}
-              %td
-                - if @searched_user.nil?
-                  %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{o.id}"} Not me
-
-        - if @total >= 25
-          %tfoot{class: "thead-light"}
-            %tr
-              %th{scope: "col", class:"selector"}
-                = haml :'partials/bulk_selector_bottom', layout: false
-              %th{scope: "col"} Scientific Name
-              %th{scope: "col"} Collected By
-              %th{scope: "col"} Identified By
-              %th{scope: "col"} Date Collected
-              %th{scope: "col"} Date Identified
-              %th{scope: "col"} Institution
-              %th{scope: "col"} Catalog Number
-              %th{scope: "col"} Type Status
-              %th{scope: "col"}
-                - if @searched_user.nil?
-                  %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"} Not me
-
-    - if @total >= 25
-      = haml :'partials/page_size', layout: false
-                
-    = will_paginate @results, { class: "pagination" }
+  - if @total >= 25
+    = haml :'partials/page_size', layout: false
+              
+  = will_paginate @results, { class: "pagination" }
