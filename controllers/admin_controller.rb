@@ -191,6 +191,42 @@ module Sinatra
 
           end
 
+          app.post '/admin/upload-claims' do
+            admin_protected!
+            @admin_user = User.find(params[:user_id].to_i)
+            @error = nil
+            @record_count = 0
+            accepted_actions = ["identified","recorded","identified,recorded","recorded,identified"]
+            if params[:file] && params[:file][:tempfile]
+              tempfile = params[:file][:tempfile]
+              filename = params[:file][:filename]
+              if params[:file][:type] == "text/csv" && params[:file][:tempfile].size <= 5_000_000
+                items = []
+                CSV.foreach(tempfile, headers: true) do |row|
+                  action = row["action"].gsub(/\s+/, "") rescue nil
+                  next if action.blank?
+                  if accepted_actions.include?(action) && row.include?("gbifID")
+                    items << UserOccurrence.new({
+                      occurrence_id: row["gbifID"],
+                      user_id: @admin_user.id,
+                      created_by: @admin_user.id,
+                      action: action
+                    })
+                    @record_count += 1
+                  end
+                end
+                UserOccurrence.import items, batch_size: 100, validate: false, on_duplicate_key_ignore: true
+                tempfile.unlink
+              else
+                tempfile.unlink
+                @error = "Only files of type tex/csv less than 5MB are accepted."
+              end
+            else
+              @error = "No file was uploaded."
+            end
+            haml :'admin/upload'
+          end
+
           app.get '/admin/candidate-count.json' do
             admin_protected!
             content_type "application/json", charset: 'utf-8'

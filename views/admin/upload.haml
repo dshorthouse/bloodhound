@@ -1,0 +1,28 @@
+-content_for :title do
+  Bloodhound: #{@admin_user.fullname} Upload
+
+-content_for :scripts do
+  %script{src:"/js/application.js"}
+  :javascript
+    $(function() {
+        Application.init(#{@admin_user.id}, "PUT", "/admin");
+    });
+
+-content_for :jumbotron do
+  = haml :'partials/admin_profile_jumbotron', layout: false
+
+= haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "help" }
+
+- if !@error.nil?
+  %div{class: "alert alert-danger", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    #{@error}
+    %a{href: "/admin/user/#{@admin_user.orcid}/candidates"} Try again.
+
+- else
+  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    A total of 
+    %span{class:"font-weight-bold"} #{number_with_delimiter(@record_count)} #{'record'.pluralize(@record_count)} 
+    were handled. Existing claims, if present, were skipped.
+    %a{href: "/admin/user/#{@admin_user.orcid}/specimens"}
+      View
+    all claims.
