@@ -153,6 +153,7 @@ module Sinatra
 
                 if !@admin_user.other_names.nil?
                   @admin_user.other_names.split("|").each do |other_name|
+                    next if !other_name.include?(" ")
                     begin
                       parsed = Namae.parse other_name.gsub(/\./, ".\s")
                       name = DwcAgent.clean(parsed[0])
