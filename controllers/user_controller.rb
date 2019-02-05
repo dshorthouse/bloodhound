@@ -238,7 +238,7 @@ module Sinatra
                   tempfile.unlink
                 rescue
                   tempfile.unlink
-                  @error = "There was an error in your file. Did it at least contain the headers, action and gbifID?"
+                  @error = "There was an error in your file. Did it at least contain the headers, action and gbifID and were columns separated by commas?"
                 end
               else
                 tempfile.unlink
