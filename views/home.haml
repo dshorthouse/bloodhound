@@ -15,8 +15,8 @@
       %p.lead Claim the natural history specimens you collected or identified and track their use in new science
       %p{id: "profile-buttons"}
         - if !authorized?
-          %a{ href:"/auth/orcid", id: "connect-orcid-button", role: "button", class: "btn btn-outline-success button-login" }
-            %img{ alt: "ORCID logo", height:24, width:24, id:"orcid-id-logo", src:"/images/orcid_24x24.png"}
+          %a{ href:"/auth/orcid", role: "button", class: "btn btn-outline-success button-login connect-orcid-button" }
+            %img{ alt: "ORCID logo", height:24, width:24, class:"orcid-id-logo", src:"/images/orcid_24x24.png"}
             Log in with your ORCID Account
         - else
           %a{ href:"/profile/candidates", id: "candidates-button", role: "button", class: "btn btn-outline-success" } Claim Your Specimens

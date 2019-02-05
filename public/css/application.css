@@ -39,11 +39,11 @@ a:hover, .page-link:hover{
 .alt-name{
   display:block;
 }
-#connect-orcid-button:hover {
+.connect-orcid-button:hover {
   color: #fff;
   text-decoration:none;
 }
-#connect-orcid-button a:hover{
+.connect-orcid-button a:hover{
   color: #fff;
   text-decoration:none;
 }

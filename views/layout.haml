@@ -68,9 +68,10 @@
             %li{class: "nav-item"}
               %a{ href: "/logout", class: "nav-link" } Logout
           - else
-            %a{ href:"/auth/orcid", id: "connect-orcid-button", role: "button", class: "btn btn-outline-light" }
-              %img{ alt: "ORCID logo", height:24, width:24, id:"orcid-id-logo", src:"/images/orcid_24x24.png"}
-              Log in with your ORCID Account
+            %li
+              %a{ href:"/auth/orcid", role: "button", class: "btn btn-outline-light connect-orcid-button" }
+                %img{ alt: "ORCID logo", height:24, width:24, class:"orcid-id-logo", src:"/images/orcid_24x24.png"}
+                Log in with your ORCID Account
 
     = yield_content :jumbotron
 
