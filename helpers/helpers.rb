@@ -205,6 +205,27 @@ module Sinatra
         agents.compact.uniq
       end
 
+      def admin_candidate_agents
+        agents = search_agents(@admin_user.family, @admin_user.given)
+
+        if !@admin_user.other_names.nil?
+          @admin_user.other_names.split("|").each do |other_name|
+            next if !other_name.include?(" ")
+            begin
+              parsed = Namae.parse other_name.gsub(/\./, ".\s")
+              name = DwcAgent.clean(parsed[0])
+              family = !name[:family].nil? ? name[:family] : ""
+              given = !name[:given].nil? ? name[:given] : ""
+              if !family.blank?
+                agents.concat search_agents(family, given)
+              end
+            rescue
+            end
+          end
+        end
+        agents.compact.uniq
+      end
+
       def occurrences_by_score(id_scores, user)
         scores = {}
         id_scores.sort{|a,b| b[:score] <=> a[:score]}

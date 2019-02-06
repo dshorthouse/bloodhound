@@ -137,6 +137,15 @@ module Sinatra
             haml :'admin/support', locals: { active_page: "administration" }
           end
 
+          app.get '/admin/user/:orcid/candidates.csv' do
+            protected!
+            @admin_user = User.find_by_orcid(params[:orcid])
+            agent_ids = admin_candidate_agents.pluck(:id)
+            records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @admin_user.user_occurrences.select(:occurrence_id))
+            csv_stream_headers("bloodhound-candidates")
+            body csv_stream_candidates(records)
+          end
+
           app.get '/admin/user/:orcid/candidates' do
             admin_protected!
             occurrence_ids = []
@@ -149,27 +158,8 @@ module Sinatra
                 @results = []
                 @total = nil
               else
-                agents = search_agents(@admin_user.family, @admin_user.given)
-
-                if !@admin_user.other_names.nil?
-                  @admin_user.other_names.split("|").each do |other_name|
-                    next if !other_name.include?(" ")
-                    begin
-                      parsed = Namae.parse other_name.gsub(/\./, ".\s")
-                      name = DwcAgent.clean(parsed[0])
-                      family = !name[:family].nil? ? name[:family] : ""
-                      given = !name[:given].nil? ? name[:given] : ""
-                      if !family.blank?
-                        agents.concat search_agents(family, given)
-                      end
-                    rescue
-                    end
-                  end
-                end
-
-                id_scores = agents.compact.uniq
-                                          .map{|a| { id: a[:id], score: a[:score] } }
-                                          .compact
+                id_scores = admin_candidate_agents.map{|a| { id: a[:id], score: a[:score] } }
+                                                  .compact
                 if !id_scores.empty?
                   ids = id_scores.map{|a| a[:id]}
                   nodes = AgentNode.where(agent_id: ids)
@@ -234,22 +224,7 @@ module Sinatra
             @admin_user = User.find(params[:user_id].to_i)
             return { count: 0}.to_json if @admin_user.family.nil?
 
-            agents = search_agents(@admin_user.family, @admin_user.given)
-            if !@admin_user.other_names.nil?
-              @admin_user.other_names.split("|").each do |other_name|
-                begin
-                  parsed = Namae.parse other_name.gsub(/\./, ".\s")
-                  name = DwcAgent.clean(parsed[0])
-                  family = !name[:family].nil? ? name[:family] : nil
-                  given = !name[:given].nil? ? name[:given] : nil
-                  if !family.nil?
-                    agents.concat search_agents(family, given)
-                  end
-                rescue
-                end
-              end
-            end
-            agent_ids = agents.compact.uniq.pluck(:id)
+            agent_ids = admin_candidate_agents.pluck(:id)
             count = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @admin_user.user_occurrences.select(:occurrence_id)).count
             { count: count }.to_json
           end
