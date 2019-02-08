@@ -14,22 +14,20 @@ module Sinatra
             action = req[:action] rescue nil
             visible = req[:visible] rescue true
             occurrence_ids = req[:occurrence_ids].split(",")
-            UserOccurrence.transaction do
-              if !visible
-                UserOccurrence.where(occurrence_id: occurrence_ids)
-                              .where(user_id: @user[:id])
-                              .destroy_all
-              end
-              data = occurrence_ids.map{|o| { 
-                  user_id: req[:user_id] ||= @user[:id],
-                  occurrence_id: o.to_i,
-                  created_by: @user[:id],
-                  action: action,
-                  visible: visible
-                }
-              }
-              UserOccurrence.import data, batch_size: 100, validate: false
+            if !visible
+              UserOccurrence.where(occurrence_id: occurrence_ids)
+                            .where(user_id: @user[:id])
+                            .destroy_all
             end
+            data = occurrence_ids.map{|o| { 
+                user_id: req[:user_id] ||= @user[:id],
+                occurrence_id: o.to_i,
+                created_by: @user[:id],
+                action: action,
+                visible: visible
+              }
+            }
+            UserOccurrence.import data, batch_size: 500, validate: false
             { message: "ok" }.to_json
           end
 
