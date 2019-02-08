@@ -316,7 +316,7 @@ module Sinatra
                 visible: visible
               }
             }
-            UserOccurrence.import data, batch_size: 500, validate: false
+            UserOccurrence.import data, batch_size: 500, validate: false, on_duplicate_key_ignore: true
             { message: "ok" }.to_json
           end
 
