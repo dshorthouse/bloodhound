@@ -18,6 +18,24 @@ module Sinatra
             haml :'admin/articles', locals: { active_page: "administration" }
           end
 
+          app.get '/admin/organizations' do
+            admin_protected!
+            organizations
+            haml :'admin/organizations', locals: { active_page: "administration" }
+          end
+
+          app.get '/admin/organization/:id' do
+            admin_protected!
+            organizations = Organization.where(ringgold: params[:id]).or(Organization.where(grid: params[:id]))
+            if !organizations.empty?
+              @organization = organizations.first
+            else
+              status 404
+              haml :oops
+            end
+            haml :'admin/organization', locals: { active_page: "administration" }
+          end
+
           app.get '/admin/users' do
             admin_protected!
             @new_user = session[:new_user]

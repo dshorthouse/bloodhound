@@ -99,7 +99,11 @@ var Application = (function($, window) {
             display : "name"
           }
           ).on("typeahead:select", function(obj, datum) {
-            window.location.href = "/organization/" + datum.id;
+            if (self.path === "/admin") {
+              window.location.href = "/admin/organization/" + datum.id;
+            } else {
+              window.location.href = "/organization/" + datum.id;
+            }
           });
 
     },

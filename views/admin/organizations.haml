@@ -1,0 +1,42 @@
+-content_for :title do
+  Bloodhound: Organizations
+
+-content_for :scripts do
+  %script{src: "/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init("", "POST", "/admin");
+    });
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid alert-warning d-flex flex-wrap"}
+    %div{class:"mr-auto p-2"}
+      %h2 Organizations
+    = haml :'partials/organization_search', layout: false
+
+%div{class:"table-responsive-lg"}
+  %table{class:"table table-hover table-sm"}
+    %thead{class: "thead-light"}
+      %tr
+        %th{scope: "col"} Name
+        %th{scope: "col"} Address
+        %th{scope: "col"} isni
+        %th{scope: "col"} ringgold
+        %th{scope: "col"} grid
+
+    %tbody
+      - @results.each do |o|
+        %tr
+          %td 
+            %a{href: "/admin/organization/#{o.identifier}"} #{o.name}
+          %td #{o.address}
+          %td
+            - if !o.isni.blank?
+              %a{href:"http://www.isni.org/isni/#{o.isni}"} #{o.isni}
+          %td #{o.ringgold}
+          %td
+            - if !o.grid.blank?
+              %a{href: "https://www.grid.ac/institutes/#{o.grid}"} #{o.grid}
+
+
+= will_paginate @results, { class: "pagination" }
