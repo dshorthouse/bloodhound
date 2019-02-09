@@ -65,9 +65,9 @@ module Sinatra
               maker.channel.language = "en"
               maker.channel.author = "Bloodhound"
               maker.channel.updated = Time.now.to_s
-              maker.channel.link = "https://bloodhound.shorthouse.net/user.rss"
+              maker.channel.link = "https://bloodhound-tracker.net/user.rss"
               maker.channel.title = "Bloodhound New User Feed"
-              maker.channel.description = "New User Feed on https://bloodhound.shorthouse.net"
+              maker.channel.description = "New User Feed on https://bloodhound-tracker.net"
 
               User.where(is_public: true).where.not(made_public: nil)
                   .where("made_public >= ?", 2.days.ago)
