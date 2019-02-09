@@ -50,6 +50,7 @@ require 'dwc_archive'
 require 'zip'
 require 'biodiversity'
 require 'rss'
+require 'xml-sitemap'
 
 register Sinatra::ConfigFile
 config_file File.join(File.dirname(__FILE__), 'config.yml')

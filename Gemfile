@@ -35,6 +35,7 @@ gem 'dwc-archive'
 gem 'rubyzip'
 gem 'biodiversity'
 gem 'rss'
+gem 'xml-sitemap'
 
 group :production do
 end
