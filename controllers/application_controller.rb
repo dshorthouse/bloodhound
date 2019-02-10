@@ -112,7 +112,8 @@ module Sinatra
                   "@vocab": "http://schema.org/",
                   identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
                   recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
-                  Occurrence: "http://rs.tdwg.org/dwc/terms/Occurrence"
+                  associatedReferences: "http://rs.tdwg.org/dwc/terms/associatedReferences",
+                  Occurrence: "http://rs.tdwg.org/dwc/terms/Occurrence",
               }.merge(dwc_contexts)
               response["@type"] = "Occurrence"
               response["@id"] = "https://gbif.org/occurrence/#{occurrence.id}"
@@ -134,6 +135,11 @@ module Sinatra
                     givenName: "#{o.user.given}",
                     familyName: "#{o.user.family}",
                     alternateName: o.user.other_names.present? ? o.user.other_names.split("|") : []
+                  }
+              }
+              response["associatedReferences"] = occurrence.articles.map{|a| {
+                    "@type": "ScholarlyArticle",
+                    "@id": "https://doi.org/#{a.doi}"
                   }
               }
               response.to_json
