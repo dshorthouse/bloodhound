@@ -5,3 +5,29 @@
   %div{class:"jumbotron jumbotron-fluid alert-warning"}
     %div{class: "container-fluid"}
       %h2 #{@organization.name}
+
+%p{class:"text-right"}
+  %a{href: "https://www.grid.ac/disambiguate"}
+    Search
+  for organization on GRID
+
+%form{id:"form-org-wrapper", method: "post", action: "/admin/organization/#{@organization.id}", "accept-charset" => "UTF-8", class: "helpers"}
+
+  %div{class:"form-group"}
+    %label{for:"isni"} ISNI
+    %input{type:"text", class:"form-control", id:"isni", placeholder:"#{@organization.isni}", value:"#{@organization.isni}", name:"isni"}
+    - if !@organization.isni.blank?
+      %small{id:"isni-link", class:"form-text text-muted"}
+        View known
+        %a{href: "http://www.isni.org/isni/#{@organization.isni}", target:"_blank"} ISNI
+  %div{class:"form-group"}
+    %label{for:"ringgold"} Ringgold
+    %input{type:"text", class:"form-control", id:"ringgold", placeholder:"#{@organization.ringgold}", value:"#{@organization.ringgold}", name:"ringgold"}
+  %div{class:"form-group"}
+    %label{for:"ringgold"} GRID
+    %input{type:"text", class:"form-control", id:"ringgold", placeholder:"#{@organization.grid}", value:"#{@organization.grid}", name:"grid"}
+    - if !@organization.grid.blank?
+      %small{id:"ringgold-link", class:"form-text text-muted"}
+        View known
+        %a{href: "https://www.grid.ac/institutes/#{@organization.grid}", target:"_blank"} GRID
+  %button{type:"submit", class:"btn btn-success"} Submit

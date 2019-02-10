@@ -36,6 +36,16 @@ module Sinatra
             haml :'admin/organization', locals: { active_page: "administration" }
           end
 
+          app.post '/admin/organization/:id' do
+            admin_protected!
+            @organization = Organization.find(params[:id])
+            @organization.isni = params[:isni]
+            @organization.grid = params[:grid]
+            @organization.ringgold = params[:ringgold]
+            @organization.save
+            haml :'admin/organization', locals: { active_page: "administration" }
+          end
+
           app.get '/admin/users' do
             admin_protected!
             @new_user = session[:new_user]
