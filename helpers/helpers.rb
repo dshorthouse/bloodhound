@@ -380,7 +380,11 @@ module Sinatra
           { id: n[:_source][:id],
             score: n[:_score],
             name: n[:_source][:name],
-            address: n[:_source][:address]
+            address: n[:_source][:address],
+            isni: n[:_source][:isni],
+            ringgold: n[:_source][:ringgold],
+            grid: n[:_source][:grid],
+            preferred: n[:_source][:preferred]
           }
         }
       end

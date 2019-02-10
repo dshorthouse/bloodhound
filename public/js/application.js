@@ -102,7 +102,7 @@ var Application = (function($, window) {
             if (self.path === "/admin") {
               window.location.href = "/admin/organization/" + datum.id;
             } else {
-              window.location.href = "/organization/" + datum.id;
+              window.location.href = "/organization/" + datum.preferred;
             }
           });
 

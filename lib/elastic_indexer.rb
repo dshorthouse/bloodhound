@@ -157,7 +157,11 @@ module Bloodhound
             properties: {
               id: { type: 'text', index: false },
               name: { type: 'text', fielddata: true, search_analyzer: :organization_search, analyzer: :organization_index, omit_norms: true },
-              address: { type: 'text', search_analyzer: :organization_search, analyzer: :organization_index, omit_norms: true }
+              address: { type: 'text', search_analyzer: :organization_search, analyzer: :organization_index, omit_norms: true },
+              isni: { type: 'text', index: false },
+              ringgold: { type: 'text', index: false },
+              grid: { type: 'text', index: false },
+              preferred: { type: 'text', index: false }
             }
           }
         }
@@ -288,9 +292,13 @@ module Bloodhound
 
     def organization_document(o)
       {
-        id: o.identifier,
+        id: o.id,
         name: o.name,
-        address: o.address
+        address: o.address,
+        isni: o.isni,
+        grid: o.grid,
+        ringgold: o.ringgold,
+        preferred: o.identifier
       }
     end
 
@@ -299,7 +307,7 @@ module Bloodhound
       batch.each do |o|
         organizations << {
           index: {
-            _id: o.identifier,
+            _id: o.id,
             data: organization_document(o)
           }
         }
