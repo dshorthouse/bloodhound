@@ -28,7 +28,7 @@
       - @results.each do |o|
         %tr
           %td 
-            %a{href: "/admin/organization/#{o.identifier}"} #{o.name}
+            %a{href: "/admin/organization/#{o.id}"} #{o.name}
           %td #{o.address}
           %td
             - if !o.isni.blank?

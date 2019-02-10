@@ -26,13 +26,7 @@ module Sinatra
 
           app.get '/admin/organization/:id' do
             admin_protected!
-            organizations = Organization.where(ringgold: params[:id]).or(Organization.where(grid: params[:id]))
-            if !organizations.empty?
-              @organization = organizations.first
-            else
-              status 404
-              haml :oops
-            end
+            @organization = Organization.find(params[:id])
             haml :'admin/organization', locals: { active_page: "administration" }
           end
 
