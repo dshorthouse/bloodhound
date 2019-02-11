@@ -117,6 +117,7 @@ module Sinatra
               }.merge(dwc_contexts)
               response["@type"] = "Occurrence"
               response["@id"] = "https://gbif.org/occurrence/#{occurrence.id}"
+              response["sameAs"] = "https://gbif.org/occurrence/#{occurrence.id}"
               occurrence.attributes
                         .reject{|column| column == 'gbifID'}
                         .map{|k,v| response[k] = v }
@@ -124,6 +125,7 @@ module Sinatra
               response["recorded"] = occurrence.user_recordings.map{|o| {
                     "@type": "Person",
                     "@id": "https://orcid.org/#{o.user.orcid}",
+                    sameAs: "https://orcid.org/#{o.user.orcid}",
                     givenName: "#{o.user.given}",
                     familyName: "#{o.user.family}",
                     alternateName: o.user.other_names.present? ? o.user.other_names.split("|") : []
@@ -132,6 +134,7 @@ module Sinatra
               response["identified"] = occurrence.user_identifications.map{|o| {
                     "@type": "Person",
                     "@id": "https://orcid.org/#{o.user.orcid}",
+                    sameAs: "https://orcid.org/#{o.user.orcid}",
                     givenName: "#{o.user.given}",
                     familyName: "#{o.user.family}",
                     alternateName: o.user.other_names.present? ? o.user.other_names.split("|") : []
@@ -139,7 +142,9 @@ module Sinatra
               }
               response["associatedReferences"] = occurrence.articles.map{|a| {
                     "@type": "ScholarlyArticle",
-                    "@id": "https://doi.org/#{a.doi}"
+                    "@id": "https://doi.org/#{a.doi}",
+                    sameAs: "https://doi.org/#{a.doi}",
+                    description: a.citation
                   }
               }
               response.to_json

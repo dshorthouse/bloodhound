@@ -114,6 +114,7 @@ module Sinatra
               }.merge(dwc_contexts),
               "@type": "Person",
               "@id": "https://orcid.org/#{user.orcid}",
+              sameAs: "https://orcid.org/#{user.orcid}",
               givenName: user.given,
               familyName: user.family,
               alternateName: user.other_names.split("|"),
@@ -121,13 +122,15 @@ module Sinatra
                 identified: user.identifications
                                        .map{|o| {
                                            "@type": "Occurrence",
-                                           "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
+                                           "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
+                                           sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
                                          }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
                                        },
                 recorded: user.recordings
                                        .map{|o| {
                                            "@type": "Occurrence",
-                                           "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
+                                           "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
+                                           sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
                                          }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
                                        }
               }
