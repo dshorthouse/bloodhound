@@ -57,19 +57,19 @@ else
 
     if !options[:ignore]
       puts "Claiming unique recordings...".yellow
-      UserOccurrence.import uniq_recordings.map{|o| { user_id: user.id, occurrence_id: o, action: "recorded", created_by: user.id} }, batch_size: 100, validate: false
+      UserOccurrence.import uniq_recordings.map{|o| { user_id: user.id, occurrence_id: o, action: "recorded", created_by: user.id} }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
 
       puts "Claiming unique determinations...".yellow
-      UserOccurrence.import uniq_determinations.map{|o| { user_id: user.id, occurrence_id: o, action: "identified", created_by: user.id } }, batch_size: 100, validate: false
+      UserOccurrence.import uniq_determinations.map{|o| { user_id: user.id, occurrence_id: o, action: "identified", created_by: user.id } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
 
       puts "Claiming recordings and determinations...".yellow
-      UserOccurrence.import both.map{|o| { user_id: user.id, occurrence_id: o, action: "recorded,identified", created_by: user.id } }, batch_size: 100, validate: false
+      UserOccurrence.import both.map{|o| { user_id: user.id, occurrence_id: o, action: "recorded,identified", created_by: user.id } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
 
       puts "#{agent.fullname} data claimed for #{user.fullname}".green
     else
       all = (recordings + determinations).uniq - claimed
       puts "Ignoring occurrences...".yellow
-      UserOccurrence.import all.map{|o| { user_id: user.id, occurrence_id: o, action: nil, visible: 0, created_by: user.id } }, batch_size: 100, validate: false
+      UserOccurrence.import all.map{|o| { user_id: user.id, occurrence_id: o, action: nil, visible: 0, created_by: user.id } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
       puts "#{agent.fullname} data ignored for #{user.fullname}".red
     end
   end
