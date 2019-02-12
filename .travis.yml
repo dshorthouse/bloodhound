@@ -9,6 +9,8 @@ branches:
 bundler_args: --without development
 services:
   - mysql
+before_install:
+  - gem install bundler
 before_script:
   - cp config.yml.sample config.yml
   - RACK_ENV=test
