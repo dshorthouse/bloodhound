@@ -8,9 +8,10 @@ branches:
       - master
 services:
   - mysql
-before_script:
+install:
   - gem install bundler
   - bundle install
+before_script:
   - cp config.yml.sample config.yml
   - RACK_ENV=test
   - rake db:create:all
