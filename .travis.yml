@@ -9,7 +9,7 @@ branches:
 services:
   - mysql
 install:
-  - gem install bundler -v 1.16.1
+  - gem install bundler -v 1.16.6
   - bundle install
 before_script:
   - cp config.yml.sample config.yml
