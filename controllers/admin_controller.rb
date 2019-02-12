@@ -228,11 +228,11 @@ module Sinatra
                     @record_count += 1
                   end
                 end
-                UserOccurrence.import items, batch_size: 100, validate: false, on_duplicate_key_ignore: true
+                UserOccurrence.import items, batch_size: 250, validate: false, on_duplicate_key_ignore: true
                 tempfile.unlink
               else
                 tempfile.unlink
-                @error = "Only files of type tex/csv less than 5MB are accepted."
+                @error = "Only files of type text/csv less than 5MB are accepted."
               end
             else
               @error = "No file was uploaded."
@@ -338,7 +338,7 @@ module Sinatra
                 visible: visible
               }
             }
-            UserOccurrence.import data, batch_size: 500, validate: false, on_duplicate_key_ignore: true
+            UserOccurrence.import data, batch_size: 250, validate: false, on_duplicate_key_ignore: true
             { message: "ok" }.to_json
           end
 

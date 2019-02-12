@@ -237,7 +237,7 @@ module Sinatra
                       @record_count += 1
                     end
                   end
-                  UserOccurrence.import items, batch_size: 100, validate: false, on_duplicate_key_ignore: true
+                  UserOccurrence.import items, batch_size: 250, validate: false, on_duplicate_key_ignore: true
                   tempfile.unlink
                 rescue
                   tempfile.unlink
