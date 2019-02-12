@@ -72,4 +72,22 @@ namespace :db do
       end
     end
   end
+
+  namespace :schema do
+    task(:load) do
+      if ['0.0.0.0', '127.0.0.1', 'localhost'].include?(conf[env][:host].strip)
+        script = open(File.join(File.expand_path(File.dirname(__FILE__)), 'db', 'bloodhound.sql')).read
+
+        # this needs to match the delimiter of your queries
+        STATEMENT_SEPARATOR = ";\n"
+
+        ActiveRecord::Base.establish_connection(conf[env])
+        script.split(STATEMENT_SEPARATOR).each do |stmt|
+          ActiveRecord::Base.connection.execute(stmt)
+        end
+
+      end
+    end
+  end
+
 end

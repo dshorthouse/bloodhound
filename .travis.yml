@@ -10,4 +10,5 @@ before_script:
   - cp config.yml.sample config.yml
   - RACK_ENV=test
   - rake db:create:all
+  - rake db:schema:load
   - rake db:migrate
