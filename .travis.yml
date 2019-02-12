@@ -2,14 +2,15 @@ sudo: false
 dist: xenial
 language: ruby
 rvm:
-  - 2.5.3
+  - 2.5.1
 branches:
   only:
       - master
-bundler_args: --without development
 services:
   - mysql
 before_script:
+  - gem install bundler
+  - bundle install
   - cp config.yml.sample config.yml
   - RACK_ENV=test
   - rake db:create:all
