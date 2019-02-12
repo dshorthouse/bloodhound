@@ -10,7 +10,6 @@ services:
   - mysql
 install:
   - gem install bundler -v 1.16.1
-after_install:
   - bundle install
 before_script:
   - cp config.yml.sample config.yml
