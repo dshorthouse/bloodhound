@@ -108,7 +108,7 @@ module Sinatra
                     "@vocab": "http://schema.org/",
                     identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
                     recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
-                    Occurrence: "http://rs.tdwg.org/dwc/terms/Occurrence"
+                    PreservedSpecimen: "http://rs.tdwg.org/dwc/terms/PreservedSpecimen"
                   }.merge(dwc_contexts),
                   "@type": "Person",
                   "@id": "https://orcid.org/#{user.orcid}",

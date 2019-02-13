@@ -113,7 +113,7 @@ module Sinatra
                   identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
                   recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
                   associatedReferences: "http://rs.tdwg.org/dwc/terms/associatedReferences",
-                  Occurrence: "http://rs.tdwg.org/dwc/terms/Occurrence",
+                  PreservedSpecimen: "http://rs.tdwg.org/dwc/terms/PreservedSpecimen",
               }.merge(dwc_contexts)
               response["@type"] = "Occurrence"
               response["@id"] = "https://gbif.org/occurrence/#{occurrence.id}"

@@ -110,7 +110,7 @@ module Sinatra
                 "@vocab": "http://schema.org/",
                 identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
                 recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
-                Occurrence: "http://rs.tdwg.org/dwc/terms/Occurrence"
+                PreservedSpecimen: "http://rs.tdwg.org/dwc/terms/PreservedSpecimen"
               }.merge(dwc_contexts),
               "@type": "Person",
               "@id": "https://orcid.org/#{user.orcid}",
@@ -121,14 +121,14 @@ module Sinatra
               "@reverse": {
                 identified: user.identifications
                                        .map{|o| {
-                                           "@type": "Occurrence",
+                                           "@type": "PreservedSpecimen",
                                            "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
                                            sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
                                          }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
                                        },
                 recorded: user.recordings
                                        .map{|o| {
-                                           "@type": "Occurrence",
+                                           "@type": "PreservedSpecimen",
                                            "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
                                            sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
                                          }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
@@ -400,7 +400,7 @@ module Sinatra
                     "@vocab": "http://schema.org/",
                     identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
                     recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
-                    Occurrence: "http://rs.tdwg.org/dwc/terms/Occurrence"
+                    PreservedSpecimen: "http://rs.tdwg.org/dwc/terms/PreservedSpecimen"
                   }.merge(dwc_contexts),
                   "@type": "Person",
                   "@id": "https://orcid.org/#{user.orcid}",

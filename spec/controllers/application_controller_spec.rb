@@ -1,5 +1,4 @@
 
-
 describe "Bloodhound Application" do
 
   it "should allow accessing the home page" do
