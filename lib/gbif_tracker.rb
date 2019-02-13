@@ -34,43 +34,17 @@ module Bloodhound
       end
     end
 
-    def process_data_packages
+    def process_article(article_id)
+      article = Article.find(article_id)
+      process_data_packages(article)
+      article.processed = true
+      article.save
+    end
+
+    def process_articles
       url = "http://api.gbif.org/v1/occurrence/download/request/"
       Article.where(processed: [false, nil]).find_each do |article|
-        article.gbif_downloadkeys.each do |key|
-          if datapackage_file_size(key) < @max_size
-            tmp_file = Tempfile.new('gbif')
-            zip = RestClient.get("#{url}#{key}.zip") rescue nil
-            next if zip.nil?
-            File.open(tmp_file, 'wb') do |output|
-              output.write zip
-            end
-            begin
-              dwc = DarwinCore.new(tmp_file.path)
-              gbifID = dwc.core.fields.select{|term| term[:term] == "http://rs.gbif.org/terms/1.0/gbifID"}[0][:index]
-              dwc.core.read(1000) do |data, errors|
-                ArticleOccurrence.import data.map{|a| { article_id: article.id, occurrence_id: a[gbifID].to_i } }, batch_size: 1_000, on_duplicate_key_ignore: true, validate: false
-              end
-            rescue
-              tmp_csv = Tempfile.new('gbif_csv')
-              Zip::File.open(tmp_file) do |zip_file|
-                entry = zip_file.glob('*.csv').first
-                if entry
-                  entry.extract(tmp_csv)
-                  items = []
-                  CSV.foreach(tmp_csv, headers: :first_row, col_sep: "\t", liberal_parsing: true, quote_char: "\x00") do |row|
-                    occurrence_id = row["gbifid"] || row["gbifID"]
-                    next if occurrence_id.nil?
-                    items << ArticleOccurrence.new(article_id: article.id, occurrence_id: occurrence_id)
-                  end
-                  ArticleOccurrence.import items, batch_size: 1_000, on_duplicate_key_ignore: true, validate: false
-                end
-              end
-              tmp_csv.unlink
-            end
-            tmp_file.unlink
-          end
-        end
+        process_data_packages(article)
         article.processed = true
         article.save
       end
@@ -118,6 +92,43 @@ module Bloodhound
 
     def defaults
       { first_page_only: false, max_size: 100_000_000 }
+    end
+
+    def process_data_packages(article)
+      article.gbif_downloadkeys.each do |key|
+        if datapackage_file_size(key) < @max_size
+          tmp_file = Tempfile.new('gbif')
+          zip = RestClient.get("#{url}#{key}.zip") rescue nil
+          next if zip.nil?
+          File.open(tmp_file, 'wb') do |output|
+            output.write zip
+          end
+          begin
+            dwc = DarwinCore.new(tmp_file.path)
+            gbifID = dwc.core.fields.select{|term| term[:term] == "http://rs.gbif.org/terms/1.0/gbifID"}[0][:index]
+            dwc.core.read(1000) do |data, errors|
+              ArticleOccurrence.import data.map{|a| { article_id: article.id, occurrence_id: a[gbifID].to_i } }, batch_size: 1_000, on_duplicate_key_ignore: true, validate: false
+            end
+          rescue
+            tmp_csv = Tempfile.new('gbif_csv')
+            Zip::File.open(tmp_file) do |zip_file|
+              entry = zip_file.glob('*.csv').first
+              if entry
+                entry.extract(tmp_csv)
+                items = []
+                CSV.foreach(tmp_csv, headers: :first_row, col_sep: "\t", liberal_parsing: true, quote_char: "\x00") do |row|
+                  occurrence_id = row["gbifid"] || row["gbifID"]
+                  next if occurrence_id.nil?
+                  items << ArticleOccurrence.new(article_id: article.id, occurrence_id: occurrence_id)
+                end
+                ArticleOccurrence.import items, batch_size: 1_000, on_duplicate_key_ignore: true, validate: false
+              end
+            end
+            tmp_csv.unlink
+          end
+          tmp_file.unlink
+        end
+      end
     end
 
   end

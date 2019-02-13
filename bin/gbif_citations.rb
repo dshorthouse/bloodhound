@@ -7,16 +7,20 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: gbif_citations.rb [options]. Check and import citations of downloaded specimens"
 
-  opts.on("-f", "--first-page", "Download new data packages and parse for gbifIDs") do
+  opts.on("-f", "--first-page", "Download new articles and their data packages and parse for gbifIDs") do
     options[:first] = true
   end
 
-  opts.on("-a", "--all", "Download all data packages and parse for gbifIDs") do
+  opts.on("-a", "--all", "Download all articles and their data packages and parse for gbifIDs") do
     options[:all] = true
   end
 
-  opts.on("-p", "--process", "Process all data packages by downloading and importing") do
+  opts.on("-p", "--process", "Loop through unprocessed articles, download all their data packages and import") do
     options[:process] = true
+  end
+
+  opts.on("-i", "--article_id", Integer, "Submit unprocessed article id, download all its data packages and import") do |article_id|
+    options[:article_id] = article_id
   end
 
   opts.on("-d", "--delete", "Delete irrelevant article_occurrences entries") do
@@ -38,7 +42,9 @@ if options[:first] || options[:all]
 end
 
 if options[:process]
-  tracker.process_data_packages
+  tracker.process_articles
+elsif options[:article_id]
+  tracker.process_article(options[:article_id])
 end
 
 if options[:delete]
