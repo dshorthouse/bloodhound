@@ -49,7 +49,7 @@ module Bloodhound
               dwc = DarwinCore.new(tmp_file.path)
               gbifID = dwc.core.fields.select{|term| term[:term] == "http://rs.gbif.org/terms/1.0/gbifID"}[0][:index]
               dwc.core.read(1000) do |data, errors|
-                ArticleOccurrence.import data.map{|a| { article_id: article.id, occurrence_id: a[gbifID].to_i } }, validate: false
+                ArticleOccurrence.import data.map{|a| { article_id: article.id, occurrence_id: a[gbifID].to_i } }, batch_size: 1_000, on_duplicate_key_ignore: true, validate: false
               end
             rescue
               tmp_csv = Tempfile.new('gbif_csv')
@@ -63,7 +63,7 @@ module Bloodhound
                     next if occurrence_id.nil?
                     items << ArticleOccurrence.new(article_id: article.id, occurrence_id: occurrence_id)
                   end
-                  ArticleOccurrence.import items, batch_size: 1_000, validate: false
+                  ArticleOccurrence.import items, batch_size: 1_000, on_duplicate_key_ignore: true, validate: false
                 end
               end
               tmp_csv.unlink

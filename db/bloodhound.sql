@@ -137,8 +137,9 @@ ALTER TABLE `articles`
 
 ALTER TABLE `article_occurrences`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `article_idx` (`article_id`),
-  ADD KEY `occurrence_idx` (`occurrence_id`);
+  ADD UNIQUE KEY `article_occurrence_idx` (`article_id`,`occurrence_id`),
+  ADD KEY `article_idx` (`article_id`) USING BTREE,
+  ADD KEY `occurrence_idx` (`occurrence_id`) USING BTREE;
 
 ALTER TABLE `occurrences`
   ADD PRIMARY KEY (`gbifID`) USING BTREE,
