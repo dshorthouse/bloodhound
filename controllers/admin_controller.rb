@@ -18,6 +18,12 @@ module Sinatra
             haml :'admin/articles', locals: { active_page: "administration" }
           end
 
+          app.get '/admin/article/:id' do
+            admin_protected!
+            @article = Article.find(params[:id])
+            haml :'admin/article', locals: { active_page: "administration" }
+          end
+
           app.get '/admin/organizations' do
             admin_protected!
             organizations
