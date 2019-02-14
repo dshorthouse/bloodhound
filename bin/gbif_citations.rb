@@ -19,7 +19,7 @@ OptionParser.new do |opts|
     options[:process] = true
   end
 
-  opts.on("-i", "--article_id", Integer, "Submit unprocessed article id, download all its data packages and import") do |article_id|
+  opts.on("-i", "--article_id [article_id]", Integer, "Submit unprocessed article id, download all its data packages and import") do |article_id|
     options[:article_id] = article_id
   end
 
