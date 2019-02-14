@@ -37,11 +37,9 @@ module Bloodhound
 
     def process_article(article_id)
       article = Article.find(article_id)
-      if !article.processed || article.processed.nil?
-        process_data_packages(article)
-        article.processed = true
-        article.save
-      end
+      process_data_packages(article)
+      article.processed = true
+      article.save
     end
 
     def process_articles
