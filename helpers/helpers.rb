@@ -281,7 +281,8 @@ module Sinatra
       end
 
       def articles
-        @results = Article.order(created: :desc)
+        @results = Article.includes(:article_occurrences)
+                          .order(created: :desc)
                           .paginate(page: params[:page])
       end
 

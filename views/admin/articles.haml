@@ -33,7 +33,7 @@
             %dd{class: "col-sm-10"} #{article.abstract}
             %dt{class: "col-sm-2"} Specimens used:
             %dd{class: "col-sm-10"}
-              %span{class: "badge badge-success badge-pill citation-correction"} #{number_with_delimiter(article.article_occurrences.count)}
+              %span{class: "badge badge-success badge-pill citation-correction"} #{number_with_delimiter(article.article_occurrences.size)}
             %dt{class: "col-sm-2"} Specimens claimed:
             %dd{class: "col-sm-10"}
               %span{class: "badge badge-success badge-pill citation-correction"} #{number_with_delimiter(article.claimed_specimen_count)}

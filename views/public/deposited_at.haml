@@ -25,7 +25,7 @@
                 %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
         - elsif !@recordings_at.empty?
           %h3{class: "d-flex justify-content-between list-header"}
-            Collected Specimens Deposted At
+            Collected Specimens Deposited At
             %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@recordings_at.count)}
           %ul{class: "list-group"}
             - @recordings_at.each do |k,v|
