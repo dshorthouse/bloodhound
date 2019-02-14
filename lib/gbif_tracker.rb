@@ -119,7 +119,7 @@ module Bloodhound
                 #WARNING: requires GNU parallel to split CSV files
                 system("cat #{tmp_csv.path} | parallel --header : --pipe -N 1000 'cat > #{tmp_csv.path}-{#}.csv' > /dev/null 2>&1")
                 items = []
-                all_files = Dir.glob(File.dirname(tmp_csv) + '/**/*.csv')
+                all_files = Dir.glob(File.dirname(tmp_csv) + "/**/#{File.basename(tmp_csv.path)}*.csv")
                 all_files.each do |csv|
                   CSV.foreach(csv, headers: :first_row, col_sep: "\t", liberal_parsing: true, quote_char: "\x00") do |row|
                     occurrence_id = row["gbifid"] || row["gbifID"]
