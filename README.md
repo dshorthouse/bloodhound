@@ -18,6 +18,7 @@ Sinatra app to parse people names from structured biodiversity occurrence data, 
 4. Redis 4.0.9+
 5. Apache Spark 2+
 6. Neo4j
+7. Unix-based operating system to use GNU parallel
 
 ## Installation
 

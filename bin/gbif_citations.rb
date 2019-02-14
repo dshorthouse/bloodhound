@@ -34,8 +34,15 @@ OptionParser.new do |opts|
 
 end.parse!
 
-first_page = (options[:first]) ? { first_page_only: true } : { first_page_only: false }
-tracker = Bloodhound::GbifTracker.new(first_page)
+params = { max_size: 100_000_000 }
+
+if options[:first]
+  params[:first_page_only] = true
+else
+  params[:first_page_only] = false
+end
+
+tracker = Bloodhound::GbifTracker.new(params)
 
 if options[:first] || options[:all]
   tracker.create_package_records

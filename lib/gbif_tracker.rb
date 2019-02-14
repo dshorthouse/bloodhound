@@ -5,6 +5,7 @@ module Bloodhound
 
     def initialize(args = {})
       @url = "https://www.gbif.org/api/resource/search?contentType=literature&relevance=GBIF_USED&limit=200&offset="
+      @package_url = "http://api.gbif.org/v1/occurrence/download/request/"
       args = defaults.merge(args)
       @first_page_only = args[:first_page_only]
       @max_size = args[:max_size]
@@ -44,7 +45,6 @@ module Bloodhound
     end
 
     def process_articles
-      url = "http://api.gbif.org/v1/occurrence/download/request/"
       Article.where(processed: [false, nil]).find_each do |article|
         process_data_packages(article)
         article.processed = true
@@ -100,11 +100,12 @@ module Bloodhound
       article.gbif_downloadkeys.each do |key|
         if datapackage_file_size(key) < @max_size
           tmp_file = Tempfile.new('gbif')
-          zip = RestClient.get("#{url}#{key}.zip") rescue nil
+          zip = RestClient.get("#{@package_url}#{key}.zip") rescue nil
           next if zip.nil?
           File.open(tmp_file, 'wb') do |output|
             output.write zip
           end
+
           begin
             dwc = DarwinCore.new(tmp_file.path)
             gbifID = dwc.core.fields.select{|term| term[:term] == "http://rs.gbif.org/terms/1.0/gbifID"}[0][:index]
@@ -117,17 +118,24 @@ module Bloodhound
               entry = zip_file.glob('*.csv').first
               if entry
                 entry.extract(tmp_csv)
+                #WARNING: requires GNU parallel to split CSV files
+                system("cat #{tmp_csv.path} | parallel --header : --pipe -N 1000 'cat > #{tmp_csv.path}-{#}.csv' > /dev/null 2>&1")
                 items = []
-                CSV.foreach(tmp_csv, headers: :first_row, col_sep: "\t", liberal_parsing: true, quote_char: "\x00") do |row|
-                  occurrence_id = row["gbifid"] || row["gbifID"]
-                  next if occurrence_id.nil?
-                  items << ArticleOccurrence.new(article_id: article.id, occurrence_id: occurrence_id)
+                all_files = Dir.glob(File.dirname(tmp_csv) + '/**/*.csv')
+                all_files.each do |csv|
+                  CSV.foreach(csv, headers: :first_row, col_sep: "\t", liberal_parsing: true, quote_char: "\x00") do |row|
+                    occurrence_id = row["gbifid"] || row["gbifID"]
+                    next if occurrence_id.nil?
+                    items << ArticleOccurrence.new(article_id: article.id, occurrence_id: occurrence_id)
+                  end
+                  ArticleOccurrence.import items, batch_size: 1_000, on_duplicate_key_ignore: true, validate: false
+                  File.unlink(csv)
                 end
-                ArticleOccurrence.import items, batch_size: 1_000, on_duplicate_key_ignore: true, validate: false
               end
             end
             tmp_csv.unlink
           end
+
           tmp_file.unlink
         end
       end
