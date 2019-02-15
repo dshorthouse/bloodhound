@@ -66,7 +66,7 @@ class User < ActiveRecord::Base
   def identifications_enum
     Enumerator.new do |y|
       identifications.find_each do |o|
-        y << { "@type": "Occurrence",
+        y << { "@type": "PreservedSpecimen",
                "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
              }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
       end
@@ -80,7 +80,7 @@ class User < ActiveRecord::Base
   def recordings_enum
     Enumerator.new do |y|
       recordings.find_each do |o|
-        y << { "@type": "Occurrence",
+        y << { "@type": "PreservedSpecimen",
                "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
              }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
       end

@@ -115,7 +115,7 @@ module Sinatra
                   associatedReferences: "http://rs.tdwg.org/dwc/terms/associatedReferences",
                   PreservedSpecimen: "http://rs.tdwg.org/dwc/terms/PreservedSpecimen",
               }.merge(dwc_contexts)
-              response["@type"] = "Occurrence"
+              response["@type"] = "PreservedSpecimen"
               response["@id"] = "https://gbif.org/occurrence/#{occurrence.id}"
               response["sameAs"] = "https://gbif.org/occurrence/#{occurrence.id}"
               occurrence.attributes
