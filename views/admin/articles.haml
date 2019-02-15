@@ -29,7 +29,7 @@
         - @results.each do |article|
           %tr
             %td 
-              %a{href: "/admin/article/#{article.id}"} #{article.citation[0..100].gsub(/\s\w+\s*$/,'...')}
+              %a{href: "/admin/article/#{article.id}"} #{article.citation[0..120].gsub(/\s\w+\s*$/,'...')}
             %td
               %a{href: "https://doi.org/#{article.doi}"} #{article.doi}
             %td
