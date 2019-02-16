@@ -34,7 +34,7 @@ OptionParser.new do |opts|
 
 end.parse!
 
-if !options[:agent_id] || ( !options[:orcid] || !options[:wikidata] )
+if !options[:agent_id] || [options[:orcid], options[:wikidata]].compact.empty?
   puts "ERROR: Both -a and -o or -w are required".red
 else
   agent = Agent.find(options[:agent_id])
