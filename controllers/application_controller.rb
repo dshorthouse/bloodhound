@@ -85,7 +85,7 @@ module Sinatra
                   statement = [id_statement,recorded_statement].compact.join(" and ")
                 end
                 maker.items.new_item do |item|
-                  item.link = "https://bloodhound.shorthouse.net/#{user.orcid}"
+                  item.link = "https://bloodhound-tracker.net/#{user.identifier}"
                   item.title = "Welcome #{user.fullname}!"
                   item.description = "#{user.fullname} #{statement}"
                   item.updated = user.updated
