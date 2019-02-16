@@ -18,9 +18,9 @@
     (GBIF) or all #{@viewed_user.fullname}'s specimens might have already been claimed.
 - else
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-    Help 
-    %span{class:"font-weight-bold"} #{@viewed_user.fullname}
-    claim up to #{number_with_delimiter(@total, delimeter: ",")} specimens on their behalf. Choose
+    Help attribute #{number_with_delimiter(@total, delimeter: ",")} specimens to
+    %span{class:"font-weight-bold"} #{@viewed_user.fullname}.
+    Choose
     %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
     collected, 
     %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}

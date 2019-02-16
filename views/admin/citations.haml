@@ -36,7 +36,7 @@
             %dt{class: "col-sm-2"} Specimens used:
             %dd{class: "col-sm-10"}
               %span{class: "badge badge-success badge-pill citation-correction"} #{number_with_delimiter(article.user_specimen_count(@admin_user.id))}
-              %a{href: "/admin/user/#{@admin_user.orcid}/citation/#{article.id}"} View
+              %a{href: "/admin/user/#{@admin_user.identifier}/citation/#{article.id}"} View
             %dt{class: "col-sm-2"} All data in study:
             %dd{class: "col-sm-10"}
               - article.gbif_dois.each do |doi|

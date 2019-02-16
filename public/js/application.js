@@ -25,7 +25,7 @@ var Application = (function($, window) {
       this.typeahead();
       this.activate_radios();
       this.activate_switch();
-      this.activate_orcid_refresh();
+      this.activate_refresh();
       this.candidate_counter();
     },
     bloodhound: function() {
@@ -63,8 +63,8 @@ var Application = (function($, window) {
         }
         ).on("typeahead:select", function(obj, datum) {
           if (self.path === "/admin") {
-            var orcid = window.location.pathname.split("/")[3];
-            window.location.href = "/admin/user/" + orcid + "/candidates/agent/" + datum.id;
+            var identifier = window.location.pathname.split("/")[3];
+            window.location.href = "/admin/user/" + identifier + "/candidates/agent/" + datum.id;
           } else if (self.path === "/agents") {
             window.location.href = "/agents?q=" + encodeURI(datum.name);
           } else {
@@ -82,10 +82,11 @@ var Application = (function($, window) {
           display : "name"
         }
         ).on("typeahead:select", function(obj, datum) {
+          var identifier = datum.orcid || datum.wikidata;
           if (self.path === "/admin") {
-            window.location.href = "/admin/user/" + datum.orcid;
+            window.location.href = "/admin/user/" + identifier;
           } else {
-            window.location.href = "/help-user/" + datum.orcid;
+            window.location.href = "/help-user/" + identifier;
           }
         });
 
@@ -277,12 +278,12 @@ var Application = (function($, window) {
         return false;
       });
     },
-    activate_orcid_refresh: function(){
+    activate_refresh: function(){
       var self = this;
-      $("a.orcid-refresh").on("click", function() {
+      $("a.profile-refresh").on("click", function() {
         $.ajax({
             method: "GET",
-            url: self.path + "/orcid-refresh.json?user_id=" + self.user_id
+            url: self.path + "/refresh.json?user_id=" + self.user_id
         }).done(function(data) {
           $(".alert").alert().show();
           $(".alert").on("closed.bs.alert", function () {

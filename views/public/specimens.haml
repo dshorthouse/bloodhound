@@ -7,7 +7,7 @@
 
 - if @results.empty?
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-    #{@viewed_user.fullname} is still working on their claims.
+    Specimens have not yet been recorded.
 
 - if !@results.empty?
   %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em;padding-left:0.1em;padding-right:0.1em"}
@@ -17,9 +17,9 @@
       %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
       identified a total of #{number_with_delimiter(@results.total_entries)} #{'specimen'.pluralize(@results.total_entries)}
     %div{class: "col col-3 text-right"}
-      %a{href: "/#{@viewed_user[:orcid]}/specimens.csv"}
+      %a{href: "/#{@viewed_user.identifier}/specimens.csv"}
         %img{src: "/images/csv-icon.png", width:24, alt: "CSV download", style:"margin-right:0.5rem"}
-      %a{href: "/#{@viewed_user[:orcid]}/specimens.json"}
+      %a{href: "/#{@viewed_user.identifier}/specimens.json"}
         %img{src: "/images/json-icon.png", width:24, alt: "JSON download"}
 
   %div{class:"table-responsive-lg"}

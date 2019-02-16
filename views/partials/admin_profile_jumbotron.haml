@@ -27,18 +27,23 @@
 
         %div.row
           %div{class: "col orcid text-center"}
-            %a{href: "https://orcid.org/#{@admin_user.orcid}"}
-              %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-            %a{href: "https://orcid.org/#{@admin_user.orcid}"} https://orcid.org/#{@admin_user.orcid}
+            - if @admin_user.orcid
+              %a{href: "https://orcid.org/#{@admin_user.orcid}"}
+                %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+              %a{href: "https://orcid.org/#{@admin_user.orcid}"} https://orcid.org/#{@admin_user.orcid}
+            - else
+              %a{href: "https://www.wikidata.org/wiki/#{@admin_user.wikidata}"}
+                %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
+              %a{href: "https://www.wikidata.org/wiki/#{@admin_user.wikidata}"} https://www.wikidata.org/wiki/#{@admin_user.wikidata}
 
         %div.row
           %div{id: "profile-buttons", class: "col text-center"}
             %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: is_user_public?, class:"btn-claim" }
             - if is_user_public?
-              %a{href: "/#{@admin_user.orcid}", target: "_blank", role: "button", class:"btn btn-sm btn-outline-success"} Public Profile
-            %a{ href:"/admin/orcid-refresh.json?user_id=#{@admin_user.id}", role: "button", class:"btn btn-sm btn-outline-success orcid-refresh"} Refresh ORCID Data
+              %a{href: "/#{@admin_user.identifier}", target: "_blank", role: "button", class:"btn btn-sm btn-outline-success"} Public Profile
+            %a{ href:"/admin/refresh.json?user_id=#{@admin_user.id}", role: "button", class:"btn btn-sm btn-outline-success profile-refresh"} Refresh Profile Data
 
         %div{class:"alert row alert-success alert-dismissible fade show", role: "alert"}
-          ORCID Data was refreshed.
+          Profile data was refreshed.
           %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
             %span{"aria-hidden":"true"} &times;

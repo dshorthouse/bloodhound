@@ -14,7 +14,7 @@
       - group.each do |u|
         %div{class: "col-sm"}
           - if !u.nil?
-            - cache_fragment(u.orcid) do
+            - cache_fragment(u.identifier) do
               = haml :'partials/user_card', layout: false, locals: { user: u }
 
   = will_paginate @results, { class: "pagination" }

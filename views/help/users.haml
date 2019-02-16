@@ -30,7 +30,7 @@
               - u = User.find(user[:_id])
               %div{class: "card", style:"margin:20px"}
                 %h5{class: "card-header"}
-                  %a{href: "/help-user/#{u.orcid}"} #{u.fullname_reverse}
+                  %a{href: "/help-user/#{u.identifier}"} #{u.fullname_reverse}
                 %div{class: "card-body"}
                   %div{class: "row"}
                     %div{class: "col small text-left text-muted"} #{u.country}

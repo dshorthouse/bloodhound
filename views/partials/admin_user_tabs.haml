@@ -1,15 +1,15 @@
 %ul{class: "nav nav-tabs justify-content-center"}
   %li{class: "nav-item "}
-    %a{class: "nav-link#{locals[:active_page] == "overview" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}"} Overview
+    %a{class: "nav-link#{locals[:active_page] == "overview" ? " active" : nil}", href: "/admin/user/#{@admin_user.identifier}"} Overview
   %li{class: "nav-item "}
-    %a{class: "nav-link#{locals[:active_page] == "specimens" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/specimens"} Claimed
+    %a{class: "nav-link#{locals[:active_page] == "specimens" ? " active" : nil}", href: "/admin/user/#{@admin_user.identifier}/specimens"} Claimed
   %li{class: "nav-item badge-item"}
-    %a{class: "nav-link#{locals[:active_page] == "candidates" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/candidates"}
+    %a{class: "nav-link#{locals[:active_page] == "candidates" ? " active" : nil}", href: "/admin/user/#{@admin_user.identifier}/candidates"}
       Discovered
     %span{class: "badge-notify badge badge-danger badge-pill"}
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "ignored" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/ignored"} Ignored
+    %a{class: "nav-link#{locals[:active_page] == "ignored" ? " active" : nil}", href: "/admin/user/#{@admin_user.identifier}/ignored"} Ignored
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "help" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/support"} Help Received
+    %a{class: "nav-link#{locals[:active_page] == "help" ? " active" : nil}", href: "/admin/user/#{@admin_user.identifier}/support"} Help Received
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "citations" ? " active" : nil}", href: "/admin/user/#{@admin_user.orcid}/citations"} Citations
+    %a{class: "nav-link#{locals[:active_page] == "citations" ? " active" : nil}", href: "/admin/user/#{@admin_user.identifier}/citations"} Citations

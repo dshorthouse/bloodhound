@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 
   before_update :set_update_time
 
-  after_create :update_orcid_profile, :add_search
+  after_create :update_profile, :add_search
   after_update :update_search
   after_destroy :remove_search
 
@@ -21,6 +21,10 @@ class User < ActiveRecord::Base
 
   def is_admin?
     is_admin
+  end
+
+  def identifier
+    orcid || wikidata
   end
 
   def fullname
@@ -67,7 +71,8 @@ class User < ActiveRecord::Base
     Enumerator.new do |y|
       identifications.find_each do |o|
         y << { "@type": "PreservedSpecimen",
-               "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
+               "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
+               sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
              }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
       end
     end
@@ -81,7 +86,8 @@ class User < ActiveRecord::Base
     Enumerator.new do |y|
       recordings.find_each do |o|
         y << { "@type": "PreservedSpecimen",
-               "@id": "https://gbif.org/occurrence/#{o.occurrence.id}"
+               "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
+               sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
              }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
       end
     end
@@ -247,6 +253,14 @@ class User < ActiveRecord::Base
     user_organizations.where(end_year: nil).first.organization rescue nil
   end
 
+  def update_profile
+    if wikidata
+      update_wikidata_profile
+    elsif orcid
+      update_orcid_profile
+    end
+  end
+
   def update_orcid_profile
     UserOrganization.where(user_id: id).destroy_all
 
@@ -286,6 +300,19 @@ class User < ActiveRecord::Base
       other_names: data[:other_names],
       country: data[:country]
     })
+  end
+
+  def update_wikidata_profile
+    wiki_user = Wikidata::Item.find(wikidata)
+    parsed = Namae.parse(wiki_user.title)[0] rescue nil
+
+    if !parsed.nil?
+      update({
+        family: parsed.family,
+        given: parsed.given,
+        other_names: ""
+      })
+    end
   end
 
   def articles_citing_specimens

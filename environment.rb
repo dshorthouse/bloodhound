@@ -51,6 +51,7 @@ require 'zip'
 require 'biodiversity'
 require 'rss'
 require 'xml-sitemap'
+require 'wikidata'
 
 register Sinatra::ConfigFile
 config_file File.join(File.dirname(__FILE__), 'config.yml')

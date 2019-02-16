@@ -46,7 +46,7 @@
 
 %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
   - if @total[:number_recorded] == 0 && @total[:number_identified] == 0
-    #{@viewed_user.fullname} is still working on their claims.
+    Claims have not yet been made.
   - else 
     - if @total[:number_identified] > 0
       Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}.

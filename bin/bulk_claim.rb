@@ -23,6 +23,10 @@ OptionParser.new do |opts|
     options[:orcid] = orcid
   end
 
+  opts.on("-k", "--wikidata [wikidata]", String, "Wikidata identifier for user") do |wikidata|
+    options[:wikidata] = wikidata
+  end
+
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
@@ -30,11 +34,16 @@ OptionParser.new do |opts|
 
 end.parse!
 
-if !options[:agent_id] || !options[:orcid]
-  puts "ERROR: Both -a and -o are required".red
+if !options[:agent_id] || ( !options[:orcid] || !options[:wikidata] )
+  puts "ERROR: Both -a and -o or -w are required".red
 else
   agent = Agent.find(options[:agent_id])
-  user = User.find_by_orcid(options[:orcid])
+  
+  if options[:orcid]
+    user = User.find_by_orcid(options[:orcid])
+  elsif options[:wikidata]
+    user = User.find_by_wikidata(options[:wikidata])
+  end
 
   if agent.nil? || user.nil?
     puts "ERROR: either agent or user not found".red

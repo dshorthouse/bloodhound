@@ -8,7 +8,7 @@
 %div{class: "card", style:"margin:20px"}
   %h5{class: "card-header"}
     - if locals[:user].is_public?
-      %a{href: "/#{locals[:user].orcid}"} #{locals[:user].fullname_reverse}
+      %a{href: "/#{locals[:user].identifier}"} #{locals[:user].fullname_reverse}
     - else
       #{locals[:user].fullname_reverse}
   %div{class: "card-body"}
