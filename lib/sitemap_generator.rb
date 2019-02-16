@@ -20,7 +20,7 @@ module Bloodhound
 
     def add_users
       User.where(is_public: true).find_each do |user|
-        @map.add "/#{user.orcid}"
+        @map.add "/#{user.identifier}"
       end
     end
 

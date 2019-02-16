@@ -15,7 +15,7 @@
 
 - if @results.empty?
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-    No specimens have been claimed.
+    Specimens have not yet been claimed.
 
 - if !@results.empty?
 
@@ -28,9 +28,9 @@
       %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
       identified, or Both.
     %div{class: "col col-3 text-right"}
-      %a{href: "/admin/user/#{@admin_user.orcid}/specimens.csv"}
+      %a{href: "/admin/user/#{@admin_user.identifier}/specimens.csv"}
         %img{src: "/images/csv-icon.png", width:24, alt: "CSV download", style:"margin-right:0.5rem"}
-      %a{href: "/admin/user/#{@admin_user.orcid}/specimens.json"}
+      %a{href: "/admin/user/#{@admin_user.identifier}/specimens.json"}
         %img{src: "/images/json-icon.png", width:24, alt: "JSON download"}
 
   %div{class:"table-responsive-lg"}

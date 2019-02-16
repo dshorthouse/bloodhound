@@ -47,7 +47,7 @@ module Sinatra
               number_specimens_cited: user.cited_specimens.count,
               number_articles: user.cited_specimens.select(:article_id).distinct.count
             }
-            cache_clear "fragments/#{user.orcid}"
+            cache_clear "fragments/#{user.identifier}"
             haml :'profile/overview'
           end
 
@@ -95,7 +95,7 @@ module Sinatra
             end
             user.save
             update_session
-            cache_clear "fragments/#{user.orcid}"
+            cache_clear "fragments/#{user.identifier}"
             { message: "ok"}.to_json
           end
 
@@ -313,14 +313,14 @@ module Sinatra
             haml :'help/users'
           end
 
-          app.get '/help-user/:orcid' do
+          app.get '/help-user/:id' do
             protected!
 
-            if params[:orcid].is_orcid?
+            if params[:id].is_orcid? || params[:id].is_wiki_id?
               occurrence_ids = []
               @page = (params[:page] || 1).to_i
 
-              @viewed_user = User.find_by_orcid(params[:orcid])
+              @viewed_user = find_user(params[:id])
               current_user = User.find(@user[:id])
 
               if @viewed_user == current_user
@@ -378,21 +378,22 @@ module Sinatra
             end
           end
 
-          app.get '/profile/orcid-refresh.json' do
+          app.get '/profile/refresh.json' do
             protected!
             content_type "application/json", charset: 'utf-8'
             user = User.find(@user[:id])
-            user.update_orcid_profile
+            user.update_profile
             update_session
-            cache_clear "fragments/#{user.orcid}"
+            cache_clear "fragments/#{user.identifier}"
             { message: "ok" }.to_json
           end
 
-          app.get '/:orcid/specimens.json' do
+          app.get '/:id/specimens.json' do
             content_type "application/ld+json", charset: 'utf-8'
-            if params[:orcid].is_orcid?
+            if params[:id].is_orcid? || params[:id].is_wiki_id?
               begin
-                user = User.find_by_orcid(params[:orcid])
+                user = find_user(params[:id])
+                id_url = user.orcid ? "https://orcid.org/#{user.orcid}" : "https://www.wikidata.org/wiki/#{user.wikidata}"
                 dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
                                             .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
                 {
@@ -403,10 +404,11 @@ module Sinatra
                     PreservedSpecimen: "http://rs.tdwg.org/dwc/terms/PreservedSpecimen"
                   }.merge(dwc_contexts),
                   "@type": "Person",
-                  "@id": "https://orcid.org/#{user.orcid}",
+                  "@id": id_url,
                   givenName: user.given,
                   familyName: user.family,
                   alternateName: user.other_names.split("|"),
+                  sameAs: id_url,
                   "@reverse": {
                     identified: user.identifications_enum,
                     recorded: user.recordings_enum
@@ -422,10 +424,10 @@ module Sinatra
             end
           end
 
-          app.get '/:orcid/specimens.csv' do
-            if params[:orcid].is_orcid?
+          app.get '/:id/specimens.csv' do
+            if params[:id].is_orcid? || params[:id].is_wiki_id?
               begin
-                @viewed_user = User.find_by_orcid(params[:orcid])
+                @viewed_user = find_user(params[:id])
                 records = @viewed_user.visible_occurrences
                 csv_stream_headers
                 body csv_stream_occurrences(records)
@@ -437,9 +439,9 @@ module Sinatra
             end
           end
 
-          app.get '/:orcid' do
-            if params[:orcid].is_orcid?
-              @viewed_user = User.find_by_orcid(params[:orcid])
+          app.get '/:id' do
+            if params[:id].is_orcid? || params[:id].is_wiki_id?
+              @viewed_user = find_user(params[:id])
               if @viewed_user && @viewed_user.is_public?
                 @total = {
                   number_identified: @viewed_user.identified_count,
@@ -457,9 +459,9 @@ module Sinatra
             end
           end
 
-          app.get '/:orcid/specialties' do
-            if params[:orcid].is_orcid?
-              @viewed_user = User.find_by_orcid(params[:orcid])
+          app.get '/:id/specialties' do
+            if params[:id].is_orcid? || params[:id].is_wiki_id?
+              @viewed_user = find_user(params[:id])
               if @viewed_user && @viewed_user.is_public?
                 @families_identified = @viewed_user.identified_families
                 @families_recorded = @viewed_user.recorded_families
@@ -474,9 +476,9 @@ module Sinatra
             end
           end
 
-          app.get '/:orcid/specimens' do
-            if params[:orcid].is_orcid?
-              @viewed_user = User.find_by_orcid(params[:orcid])
+          app.get '/:id/specimens' do
+            if params[:id].is_orcid? || params[:id].is_wiki_id?
+              @viewed_user = find_user(params[:id])
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
                 @results = @viewed_user.visible_occurrences
@@ -494,9 +496,9 @@ module Sinatra
             end
           end
 
-          app.get '/:orcid/citations' do
-            if params[:orcid].is_orcid?
-              @viewed_user = User.find_by_orcid(params[:orcid])
+          app.get '/:id/citations' do
+            if params[:id].is_orcid? || params[:id].is_wiki_id?
+              @viewed_user = find_user(params[:id])
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
                 @results = @viewed_user.articles_citing_specimens
@@ -512,9 +514,9 @@ module Sinatra
             end
           end
 
-          app.get '/:orcid/citation/:article_id' do
-            if params[:orcid].is_orcid?
-              @viewed_user = User.find_by_orcid(params[:orcid])
+          app.get '/:id/citation/:article_id' do
+            if params[:id].is_orcid? || params[:id].is_wiki_id?
+              @viewed_user = find_user(params[:id])
               @article= Article.find(params[:article_id])
               if @article && @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
@@ -531,9 +533,9 @@ module Sinatra
             end
           end
 
-          app.get '/:orcid/co-collectors' do
-            if params[:orcid].is_orcid?
-              @viewed_user = User.find_by_orcid(params[:orcid])
+          app.get '/:id/co-collectors' do
+            if params[:id].is_orcid? || params[:id].is_wiki_id?
+              @viewed_user = find_user(params[:id])
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
                 @results = @viewed_user.recorded_with
@@ -550,9 +552,9 @@ module Sinatra
             end
           end
 
-          app.get '/:orcid/identified-for' do
-            if params[:orcid].is_orcid?
-              @viewed_user = User.find_by_orcid(params[:orcid])
+          app.get '/:id/identified-for' do
+            if params[:id].is_orcid? || params[:id].is_wiki_id?
+              @viewed_user = find_user(params[:id])
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
                 @results = @viewed_user.identified_for
@@ -569,9 +571,9 @@ module Sinatra
             end
           end
 
-          app.get '/:orcid/deposited-at' do
-            if params[:orcid].is_orcid?
-              @viewed_user = User.find_by_orcid(params[:orcid])
+          app.get '/:id/deposited-at' do
+            if params[:id].is_orcid? || params[:id].is_wiki_id?
+              @viewed_user = find_user(params[:id])
               if @viewed_user && @viewed_user.is_public?
                 @recordings_at = @viewed_user.recordings_deposited_at
                 @identifications_at = @viewed_user.identifications_deposited_at

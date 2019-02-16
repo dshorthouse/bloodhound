@@ -1,10 +1,11 @@
 # Bloodhound
-Sinatra app to parse people names from structured biodiversity occurrence data, apply basic regular expressions and heuristics to disambiguate them, and then allow them to be claimed by authenticated users via [ORCID](https://orcid.org).
+Sinatra app to parse people names from structured biodiversity occurrence data, apply basic regular expressions and heuristics to disambiguate them, and then allow them to be claimed by authenticated users via [ORCID](https://orcid.org). Authenticated users may also help other users that have either ORCID or Wikidata identifiers.
 
 [![Build Status](https://travis-ci.org/dshorthouse/bloodhound.svg?branch=master)](https://travis-ci.org/dshorthouse/bloodhound)
 
 ## Recent Updates
 
+- **February 15, 2019**: Use Wikidata as optional identifier for the deceased.
 - **February 3, 2019**: Allow download of candidate specimen records then upload of claims.
 - **January 26, 2019**: Present citations of user specimens based on contents of GBIF data packages.
 - **October 12, 2018**: Used Neo4j to store weighted graphs of similarly structured people names as a quick mechanism to expand the list of users' candidate specimens & then present them in greatest to least probable.

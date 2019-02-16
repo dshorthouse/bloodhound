@@ -1,15 +1,15 @@
 %ul{class: "nav nav-tabs justify-content-center"}
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "overview" ? " active" : nil}", href: "/#{@viewed_user[:orcid]}"} Overview
+    %a{class: "nav-link#{locals[:active_page] == "overview" ? " active" : nil}", href: "/#{@viewed_user.identifier}"} Overview
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "specialties" ? " active" : nil}", href: "/#{@viewed_user.orcid}/specialties"} Specialties
+    %a{class: "nav-link#{locals[:active_page] == "specialties" ? " active" : nil}", href: "/#{@viewed_user.identifier}/specialties"} Specialties
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "co_collectors" ? " active" : nil}", href: "/#{@viewed_user.orcid}/co-collectors"} Co-collectors
+    %a{class: "nav-link#{locals[:active_page] == "co_collectors" ? " active" : nil}", href: "/#{@viewed_user.identifier}/co-collectors"} Co-collectors
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "identified_for" ? " active" : nil}", href: "/#{@viewed_user.orcid}/identified-for"} Identified For
+    %a{class: "nav-link#{locals[:active_page] == "identified_for" ? " active" : nil}", href: "/#{@viewed_user.identifier}/identified-for"} Identified For
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "deposits" ? " active" : nil}", href: "/#{@viewed_user.orcid}/deposited-at"} Deposited At
+    %a{class: "nav-link#{locals[:active_page] == "deposits" ? " active" : nil}", href: "/#{@viewed_user.identifier}/deposited-at"} Deposited At
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "citations" ? " active" : nil}", href: "/#{@viewed_user.orcid}/citations"} Citations
+    %a{class: "nav-link#{locals[:active_page] == "citations" ? " active" : nil}", href: "/#{@viewed_user.identifier}/citations"} Citations
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "specimens" ? " active" : nil}", href: "/#{@viewed_user.orcid}/specimens"} Specimens
+    %a{class: "nav-link#{locals[:active_page] == "specimens" ? " active" : nil}", href: "/#{@viewed_user.identifier}/specimens"} Specimens

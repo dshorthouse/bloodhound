@@ -5,6 +5,10 @@ class String
     orcid_pattern = /^(\d{4}-){3}\d{3}[0-9X]{1}$/
     orcid_pattern.match?(self)
   end
+  def is_wiki_id?
+    wiki_pattern = /^Q[0-9]{1,}$/
+    wiki_pattern.match?(self)
+  end
 end
 
 module Sinatra
@@ -149,6 +153,14 @@ module Sinatra
         response = client.search index: settings.elastic_user_index, type: "user", body: body
         results = response["hits"].deep_symbolize_keys
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) } rescue []
+      end
+
+      def find_user(id)
+        if id.is_orcid?
+          User.find_by_orcid(id)
+        elsif id.is_wiki_id?
+          User.find_by_wikidata(id)
+        end
       end
 
       def search_organization
@@ -369,6 +381,7 @@ module Sinatra
           { id: n[:_source][:id],
             score: n[:_score],
             orcid: n[:_source][:orcid],
+            wikidata: n[:_source][:wikidata],
             name: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", "),
             fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(" ")
           }

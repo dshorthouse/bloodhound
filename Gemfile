@@ -36,6 +36,7 @@ gem 'rubyzip'
 gem 'biodiversity'
 gem 'rss'
 gem 'xml-sitemap'
+gem 'wikidata-client'
 
 group :production do
 end

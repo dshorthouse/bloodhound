@@ -20,17 +20,22 @@
             %div{class:"col"}
               %input{class: "typeahead", id: "typeahead-user", type: :text, name: "q", placeholder: "Mary Smith", value: "#{params[:q]}", size:"30"}
           %div{class:"col-md-6 col-sm-12 form-group form-inline"}
-            %label{for: "orcid-add", class:"font-weight-bold col-form-label", style:"margin-right:1rem"}= "Add ORCID"
-            %div{class:"col"}
-              %input{class: "orcid-add", type: :text, name: "orcid", placeholder: "0000-0001-7618-5230", size:"22"}
-            %input{type: :submit, class:"btn btn-success orcid-submit", value: "Submit"}
+            %div{class:"row"}
+              %label{for: "orcid", class:"font-weight-bold col-form-label", style:"margin-right:1rem"}= "Add ORCID"
+              %div{class:"col"}
+                %input{class: "orcid-add", type: :text, name: "orcid", placeholder: "0000-0001-7618-5230", size:"22"}
+            %div{class:"row", style:"margin-top:0.5rem"}
+              %label{for: "wikidata", class:"font-weight-bold col-form-label", style:"margin-right:1rem"}= "Add Wiki ID"
+              %div{class:"col"}
+                %input{class: "orcid-add", type: :text, name: "wikidata", placeholder: "Q1234567", size:"15"}
+              %input{type: :submit, class:"btn btn-success orcid-submit", value: "Submit"}
 
       - if !@new_user.nil?
         %div{class: "row justify-content-center text-center"}
           %div{class: "col-sm-12 col-md-10 col-xl-8"}
             %div{class:"alert alert-success alert-dismissible fade show", role: "alert", style:"display:block"}
               %span{class:"font-weight-bold"}
-                %a{href: "/admin/user/#{@new_user[:orcid]}"} #{@new_user[:fullname]}
+                %a{href: "/admin/user/#{@new_user[:slug]}"} #{@new_user[:fullname]}
               was created or updated
               %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
                 %span{"aria-hidden":"true"} &times;
@@ -44,13 +49,14 @@
         %th{scope: "col"} Country
         %th{scope: "col"} Last Login
         %th{scope: "col"} Is Public?
-        %th{scope: "col"} ORCID
+        %th{scope: "col"} ORCID/Wikidata
+        
 
     %tbody
       - @results.each do |u|
         %tr
           %td 
-            %a{href: "/admin/user/#{u.orcid}"} #{u.fullname_reverse}
+            %a{href: "/admin/user/#{u.identifier}"} #{u.fullname_reverse}
           %td #{u.country}
           %td #{u.visited}
           %td
@@ -59,8 +65,13 @@
             - else
               #{u.is_public}
           %td
-            %a{href: "https://orcid.org/#{u.orcid}"}
-              %img{src: "/images/orcid_16x16.png", alt:"ORCID iD"}
-            %a{href: "https://orcid.org/#{u.orcid}"} https://orcid.org/#{u.orcid}
+            - if u.orcid
+              %a{href: "https://orcid.org/#{u.orcid}"}
+                %img{src: "/images/orcid_16x16.png", alt:"ORCID iD"}
+              %a{href: "https://orcid.org/#{u.orcid}"} https://orcid.org/#{u.orcid}
+            - else
+              %a{href: "https://www.wikidata.org/wiki/#{u.wikidata}"}
+                %img{src: "/images/wikidata_16x16.png", alt:"Wikidata iD"}
+              %a{href: "https://www.wikidata.org/wiki/#{u.wikidata}"} https://www.wikidata.org/wiki/#{u.wikidata}
 
 = will_paginate @results, { class: "pagination" }

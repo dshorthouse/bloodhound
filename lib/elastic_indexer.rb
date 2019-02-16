@@ -117,6 +117,7 @@ module Bloodhound
             properties: {
               id: { type: 'integer', index: false },
               orcid: { type: 'text', index: false },
+              wikidata: { type: 'text', index: false },
               family: { type: 'text', fielddata: true, search_analyzer: :family_search, analyzer: :family_index, omit_norms: true },
               given: { type: 'text', search_analyzer: :given_search, analyzer: :given_index, omit_norms: true }
             }
@@ -281,6 +282,7 @@ module Bloodhound
       {
         id: u.id,
         orcid: u.orcid,
+        wikidata: u.wikidata,
         family: u.family,
         given: u.given
       }

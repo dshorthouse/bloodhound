@@ -91,7 +91,8 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `family` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `given` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `orcid` varchar(25) NOT NULL,
+  `orcid` varchar(25) DEFAULT NULL,
+  `wikidata` varchar(50) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `other_names` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
@@ -172,7 +173,8 @@ ALTER TABLE `taxon_occurrences`
 
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `orcid_idx` (`orcid`);
+  ADD KEY `orcid_idx` (`orcid`) USING BTREE,
+  ADD KEY `wikidata_idx` (`wikidata`) USING BTREE;
 
 ALTER TABLE `user_occurrences`
   ADD PRIMARY KEY (`id`),
