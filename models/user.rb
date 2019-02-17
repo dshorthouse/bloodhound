@@ -305,12 +305,18 @@ class User < ActiveRecord::Base
   def update_wikidata_profile
     wiki_user = Wikidata::Item.find(wikidata)
     parsed = Namae.parse(wiki_user.title)[0] rescue nil
+    country = wiki_user.country.title rescue nil
+    date_born = Date.parse(wiki_user.date_of_birth.value.time) rescue nil
+    date_died = Date.parse(wiki_user.date_of_death.value.time) rescue nil
 
     if !parsed.nil?
       update({
         family: parsed.family,
         given: parsed.given,
-        other_names: ""
+        other_names: "",
+        country: country,
+        date_born: date_born,
+        date_died: date_died
       })
     end
   end

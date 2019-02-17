@@ -96,6 +96,8 @@ CREATE TABLE `users` (
   `email` varchar(255) DEFAULT NULL,
   `other_names` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `date_born` date DEFAULT NULL,
+  `date_died` date DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
   `made_public` timestamp NULL DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
