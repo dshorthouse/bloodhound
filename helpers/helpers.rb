@@ -402,6 +402,12 @@ module Sinatra
         }
       end
 
+      def format_lifespan(user)
+        born = !user.date_born.nil? ? user.date_born.to_formatted_s(:long) : "?"
+        died = !user.date_died.nil? ? user.date_died.to_formatted_s(:long) : "?"
+        "(" + [born,died].join(" &ndash; ") + ")"
+      end
+
       def cycle
         %w{even odd}[@_cycle = ((@_cycle || -1) + 1) % 2]
       end

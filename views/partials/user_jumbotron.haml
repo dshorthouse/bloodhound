@@ -3,9 +3,9 @@
 
     %h2{class:"display-4 text-center"}= @viewed_user.fullname
 
-    - if @viewed_user.date_born && @viewed_user.date_died
+    - if @viewed_user.date_born || @viewed_user.date_died
       %div{class: "text-center"}
-        (#{@viewed_user.date_born.to_formatted_s(:long)} &ndash; #{@viewed_user.date_died.to_formatted_s(:long)})
+        = format_lifespan(@viewed_user)
 
     %div{class:"row justify-content-center text-center"}
       %div{class:"col-sm-12 col-md-10 col-xl-10"}
