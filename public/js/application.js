@@ -58,6 +58,7 @@ var Application = (function($, window) {
         },
         {
           name: "agent",
+          limit: 10,
           source : this.data_sources.agent.ttAdapter(),
           display : "name"
         }
