@@ -11,7 +11,7 @@ OptionParser.new do |opts|
     options[:agent_id] = agent_id
   end
 
-  opts.on("-w", "--where [where]", String, "WHERE clause as a valid JSON string on occurrence records, eg '{ \"institutionCode\" : \"CAN\" }'") do |where|
+  opts.on("-w", "--where [where]", String, "WHERE as JSON on occurrence records, eg '{ \"institutionCode\" : \"CAN\" }' or a LIKE statement '{ \"scientificName LIKE ?\":\"Bolbelasmus %\"}'") do |where|
     options[:where] = where
   end
 
@@ -56,6 +56,9 @@ else
       determinations = agent.occurrence_determiners.pluck(:occurrence_id)
     else
       where_hash = JSON.parse options[:where].gsub('=>', ':')
+      if options[:where].include?("LIKE ?")
+        where_hash = where_hash.keys[0], where_hash.values[0]
+      end
       recordings = agent.recordings.where(where_hash).pluck(:gbifID)
       determinations = agent.determinations.where(where_hash).pluck(:gbifID)
     end
