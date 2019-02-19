@@ -309,10 +309,10 @@ class User < ActiveRecord::Base
     date_born = nil
     date_died = nil
     if wiki_user.date_of_birth && wiki_user.date_of_birth.precision_key == :day
-      date_born = Date.parse(wiki_user.date_of_birth.value.time)
+      date_born = Date.parse(wiki_user.date_of_birth.value.time) rescue nil
     end
     if wiki_user.date_of_death && wiki_user.date_of_death.precision_key == :day
-      date_died = Date.parse(wiki_user.date_of_death.value.time)
+      date_died = Date.parse(wiki_user.date_of_death.value.time) rescue nil
     end
 
     if !parsed.nil?
@@ -368,7 +368,10 @@ class User < ActiveRecord::Base
 
   def remove_search
     es = Bloodhound::ElasticIndexer.new
-    es.delete_user(self)
+    begin
+      es.delete_user(self)
+    rescue
+    end
   end
 
 end

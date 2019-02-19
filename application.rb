@@ -8,8 +8,6 @@ class BLOODHOUND < Sinatra::Base
 
   Encoding.default_internal = Encoding::UTF_8
   Encoding.default_external = Encoding::UTF_8
-  
-  Hashie.logger = Logger.new(nil)
 
   register Sinatra::ConfigFile
   config_file File.join(root, 'config.yml')
