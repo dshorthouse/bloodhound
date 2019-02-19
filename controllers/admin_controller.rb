@@ -63,7 +63,12 @@ module Sinatra
             elsif params[:wikidata] && params[:wikidata].is_wiki_id?
               new_user = User.find_or_create_by({ wikidata: params[:wikidata] })
               new_user.update_profile
-              session[:new_user] = { fullname: new_user.fullname, slug: new_user.wikidata }
+              if new_user.family.nil? || new_user.date_born.nil? || new_user.date_died.nil?
+                new_user.destroy
+                session[:new_user] = { fullname: params[:wikidata], slug: nil }
+              else
+                session[:new_user] = { fullname: new_user.fullname, slug: new_user.wikidata }
+              end
             end
             redirect '/admin/users'
           end
