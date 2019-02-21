@@ -232,6 +232,17 @@ class User < ActiveRecord::Base
         .order(:family)
   end
 
+  def identified_by
+    User.joins("JOIN user_occurrences as a ON a.user_id = users.id JOIN user_occurrences b ON a.occurrence_id = b.occurrence_id")
+        .where("b.user_id = #{id}")
+        .where("b.action LIKE '%recorded%'")
+        .where("b.visible = true")
+        .where("a.user_id != #{id}")
+        .where("a.action LIKE '%identified%'")
+        .where("a.visible = true")
+        .distinct
+        .order(:family)
+  end
 
   def recordings_deposited_at
     codes = recordings.pluck(:institutionCode).compact
