@@ -126,6 +126,9 @@ h3.list-header {
 }
 
 /* CARDS */
+.card-header h5{
+  margin-bottom:0px;
+}
 .card-body {
   padding:0.8rem;
 }

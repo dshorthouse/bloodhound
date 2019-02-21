@@ -6,11 +6,14 @@
 - if locals[:user].top_family_identified || locals[:user].top_family_recorded
   - statement = "#{locals[:user].given} " + [id_statement,recorded_statement].compact.join(" and ")
 %div{class: "card", style:"margin:20px"}
-  %h5{class: "card-header"}
-    - if locals[:user].is_public?
-      %a{href: "/#{locals[:user].identifier}"} #{locals[:user].fullname_reverse}
-    - else
-      #{locals[:user].fullname_reverse}
+  %div{class: "card-header"}
+    %h5
+      - if locals[:user].is_public?
+        %a{href: "/#{locals[:user].identifier}"} #{locals[:user].fullname_reverse}
+      - else
+        #{locals[:user].fullname_reverse}
+    - if locals[:user].wikidata
+      %span{class:"small text-muted"}= format_lifespan(locals[:user])
   %div{class: "card-body"}
     %div{class: "row"}
       %div{class: "col small text-left text-muted"} #{locals[:user].country}
