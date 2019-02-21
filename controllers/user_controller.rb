@@ -571,6 +571,25 @@ module Sinatra
             end
           end
 
+          app.get '/:id/identified-by' do
+            if params[:id].is_orcid? || params[:id].is_wiki_id?
+              @viewed_user = find_user(params[:id])
+              if @viewed_user && @viewed_user.is_public?
+                page = (params[:page] || 1).to_i
+                @results = @viewed_user.identified_by
+                                       .paginate(page: page)
+
+                haml :'public/identified_by', locals: { active_page: "roster" }
+              else
+                status 404
+                haml :oops
+              end
+            else
+              status 404
+              haml :oops
+            end
+          end
+
           app.get '/:id/deposited-at' do
             if params[:id].is_orcid? || params[:id].is_wiki_id?
               @viewed_user = find_user(params[:id])

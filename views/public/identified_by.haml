@@ -3,11 +3,11 @@
 - content_for :jumbotron do
   = haml :'partials/user_jumbotron', layout: false
 
-= haml :'partials/user_tabs', layout: false, locals: { active_page: 'identified_for' }
+= haml :'partials/user_tabs', layout: false, locals: { active_page: 'identified_by' }
 
 - if @results.empty?
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-    Identifications made to others' collected specimens have not yet been recorded.
+    Identifications made by others to collected specimens have not yet been recorded.
 - else
   %div{class:"container-fluid"}
     - @results.in_groups_of(3).each do |group|
