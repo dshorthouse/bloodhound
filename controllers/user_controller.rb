@@ -608,6 +608,16 @@ module Sinatra
             end
           end
 
+          app.get '/:id/comments' do
+            if params[:id].is_orcid? || params[:id].is_wiki_id?
+              @viewed_user = find_user(params[:id])
+              haml :'public/comments', locals: { active_page: "roster"}
+            else
+              status 404
+              haml :oops
+            end
+          end
+
         end
 
       end

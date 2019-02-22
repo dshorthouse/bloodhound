@@ -1,0 +1,30 @@
+- content_for(:title, "#{@viewed_user.fullname} : Bloodhound")
+
+- content_for :jumbotron do
+  = haml :'partials/user_jumbotron', layout: false
+
+= haml :'partials/user_tabs', layout: false
+
+%div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  - if @viewed_user.wikidata
+    Share an anecdote about a collecting trip, event or other memory you recall about #{@viewed_user.fullname}
+  - else
+    Got an anecdote about a collecting trip, event or anything else you wish to share?
+
+- if Sinatra::Application.settings.disqus_shortname
+  %div{id: "disqus_thread"}
+
+  :javascript
+    var disqus_config = function () {
+      this.page.url = "https://bloodhound-tracker.net/#{@viewed_user.identifier}/comments";
+      this.page.identifier = "#{@viewed_user.identifier}";
+    };
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = "https://#{Sinatra::Application.settings.disqus_shortname}.disqus.com/embed.js";
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  %noscript
+    Please enable JavaScript to view the
+    %a{href: "https://disqus.com/?ref_noscript"} comments powered by Disqus.

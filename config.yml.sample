@@ -19,6 +19,8 @@ development:
   elastic_user_index: 'bloodhound_users'
   elastic_organization_index: 'bloodhound_organizations'
   google_analytics: ''
+  disqus_shortname: ''
+  disqus_domain: ''
 
 test:
   adapter: mysql2
@@ -43,6 +45,8 @@ test:
   elastic_user_index: 'bloodhound_users'
   elastic_organization_index: 'bloodhound_organizations'
   google_analytics: ''
+  disqus_shortname: ''
+  disqus_domain: ''
 
 production:
   adapter: mysql2
@@ -67,3 +71,5 @@ production:
   elastic_user_index: 'bloodhound_users'
   elastic_organization_index: 'bloodhound_organizations'
   google_analytics: ''
+  disqus_shortname: ''
+  disqus_domain: ''
