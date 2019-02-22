@@ -317,7 +317,7 @@ class User < ActiveRecord::Base
     wiki_user = Wikidata::Item.find(wikidata)
     parsed = Namae.parse(wiki_user.title)[0] rescue nil
     country = wiki_user.country.title rescue nil
-    other_names = wiki_user.aliases.values.map{|a| a.map{|b| b.value}.uniq.join("|")}.uniq.join("|") rescue nil
+    other_names = wiki_user.aliases.values.map{|a| a.map{|b| b.value}}.flatten.uniq.join("|") rescue nil
     date_born = Date.parse(wiki_user.properties("P569").map{|a| a.value.time if a.precision_key == :day}.compact.first) rescue nil
     date_died = Date.parse(wiki_user.properties("P570").map{|a| a.value.time if a.precision_key == :day}.compact.first) rescue nil
 
