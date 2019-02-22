@@ -1,4 +1,4 @@
-%script{id:"dsq-count-scr", src:"//bloodhoundtracker.disqus.com/count.js", async:"async"}
+%script{id:"dsq-count-scr", src:"//#{Sinatra::Application.settings.disqus_shortname}.disqus.com/count.js", async:""}
 
 %div{class:"jumbotron jumbotron-fluid"}
   %div{class:"container-fluid"}
@@ -39,11 +39,10 @@
         %a{href: "https://www.wikidata.org/wiki/#{@viewed_user.wikidata}"}
           %img{src: "/images/wikidata_24x24.png", alt:"ORCID iD"}
           %a{href: "https://www.wikidata.org/wiki/#{@viewed_user.wikidata}"} https://www.wikidata.org/wiki/#{@viewed_user.wikidata}
-      - if Sinatra::Application.settings.disqus_domain
-        %div
-          %a{href: "#{Sinatra::Application.settings.disqus_domain}/#{@viewed_user.identifier}/comments#disqus_thread", class:"disqus-comment-count", "data-disqus-identifier":"#{@viewed_user.identifier}"}
-
-      
+    - if Sinatra::Application.settings.disqus_domain
+      %div{class: "text-right"}
+        %img{src: "/images/comments.png", alt:"Field notes"}
+        %a{href: "#{Sinatra::Application.settings.disqus_domain}/#{@viewed_user.identifier}/comments#disqus_thread", class:"disqus-comment-count", "data-disqus-identifier":"#{@viewed_user.identifier}"} Field notes
 
     - if locals[:search]
       = haml :'partials/help_user_search', layout: false

@@ -16,7 +16,7 @@
 
   :javascript
     var disqus_config = function () {
-      this.page.url = "https://bloodhound-tracker.net/#{@viewed_user.identifier}/comments";
+      this.page.url = "#{Sinatra::Application.settings.disqus_domain}/#{@viewed_user.identifier}/comments";
       this.page.identifier = "#{@viewed_user.identifier}";
     };
     (function() {
