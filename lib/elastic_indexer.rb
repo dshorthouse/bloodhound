@@ -67,8 +67,8 @@ module Bloodhound
           agent: {
             properties: {
               id: { type: 'integer', index: false },
-              family: { type: 'text', fielddata: true, search_analyzer: :family_search, analyzer: :family_index, omit_norms: true },
-              given: { type: 'text', search_analyzer: :given_search, analyzer: :given_index, omit_norms: true }
+              family: { type: 'text', fielddata: true, search_analyzer: :family_search, analyzer: :family_index, norms: false },
+              given: { type: 'text', search_analyzer: :given_search, analyzer: :given_index, norms: false }
             }
           }
         }
@@ -118,8 +118,8 @@ module Bloodhound
               id: { type: 'integer', index: false },
               orcid: { type: 'text', index: false },
               wikidata: { type: 'text', index: false },
-              family: { type: 'text', fielddata: true, search_analyzer: :family_search, analyzer: :family_index, omit_norms: true },
-              given: { type: 'text', search_analyzer: :given_search, analyzer: :given_index, omit_norms: true }
+              family: { type: 'text', fielddata: true, search_analyzer: :family_search, analyzer: :family_index, norms: false },
+              given: { type: 'text', search_analyzer: :given_search, analyzer: :given_index, norms: false }
             }
           }
         }
@@ -157,8 +157,8 @@ module Bloodhound
           organization: {
             properties: {
               id: { type: 'text', index: false },
-              name: { type: 'text', fielddata: true, search_analyzer: :organization_search, analyzer: :organization_index, omit_norms: true },
-              address: { type: 'text', search_analyzer: :organization_search, analyzer: :organization_index, omit_norms: true },
+              name: { type: 'text', fielddata: true, search_analyzer: :organization_search, analyzer: :organization_index, norms: false },
+              address: { type: 'text', search_analyzer: :organization_search, analyzer: :organization_index, norms: false },
               isni: { type: 'text', index: false },
               ringgold: { type: 'text', index: false },
               grid: { type: 'text', index: false },
