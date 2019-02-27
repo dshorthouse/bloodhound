@@ -106,7 +106,7 @@ Other considerations are how to get MySQL dump files back on the server. For fas
 Alternatively, mydumper and myloader can be used to accelerate these tasks.
 
       brew install mydumper
-      mydumper --user root --database bloodhound --table-list agents,occurrence,occurrence_recorders,occurrence_determiners,taxa,taxon_occurrences,taxon_determiners --compress --no-schemas --threads 8 --outputdir /Users/dshorthouse/bloodhound_dump
+      mydumper --user root --database bloodhound --tables-list agents,occurrences,occurrence_recorders,occurrence_determiners,taxa,taxon_occurrences,taxon_determiners --compress --no-schemas --threads 8 --outputdir /Users/dshorthouse/Documents/bloodhound_dump
 
       apt-get install mydumper
       myloader --database bloodhound --user bloodhound --password --threads 8 --directory /home/dshorthouse/bloodhound_restore
