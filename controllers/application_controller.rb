@@ -47,6 +47,10 @@ module Sinatra
             haml :integrations, locals: { active_page: "integrations" }
           end
 
+          app.get '/get-started' do
+            haml :get_started
+          end
+
           app.get '/agent.json' do
             content_type "application/json", charset: 'utf-8'
             search_agent
