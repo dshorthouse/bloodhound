@@ -5,7 +5,7 @@
   %div{class: "jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class: "mr-auto p-2"}
       %h2 Get Started
-      %p.lead.text-muted Three steps to claim the specimens you collected or identified and track their use in new science.
+      %p.lead.text-muted Three steps to claim the specimens you collected or identified and track their use in new science
 
 
 %h3 Step 1
@@ -15,13 +15,14 @@
     %h5{class:"mt-0"} Authenticate via ORCID
     %p ORCID is a nonprofit organization helping create a world in which all who participate in research, scholarship and innovation are uniquely identified and connected to their contributions and affiliations, across disciplines, borders, and time.
 
-    %p
-      %a{ href:"/auth/orcid", role: "button", class: "btn btn-lg btn-outline-success" }
-        %img{ alt: "ORCID logo", height:24, width:24, class:"orcid-id-logo", src:"/images/orcid_24x24.png"}
-        Log in or register with ORCID
+    - if !authorized?
+      %p
+        %a{ href:"/auth/orcid", role: "button", class: "btn btn-lg btn-outline-success" }
+          %img{ alt: "ORCID logo", height:24, width:24, class:"orcid-id-logo", src:"/images/orcid_24x24.png"}
+          Log in or register with ORCID
 
     %p
-      Suggested items to make publicly visible in your ORCID account and get the most out of Bloodhound:
+      Suggested items to make publicly visible in your ORCID account
 
     %ol
       %li Your full name
@@ -40,11 +41,19 @@
     %h5{class:"mt-0"} Visit the Discovered tab of your profile
     %p
       Once authenticated via ORCID, Bloodhound first shows you an
-      %strong
-        Overview
+      - if !authorized?
+        %strong
+          Overview
+      - else
+        %strong
+          %a{href: "/profile"} Overview
       of your profile. It pulls your full name and other details from your ORCID account, which you may refresh at any time. Click the
-      %strong Discovered
-      tab to see a list of your candidate specimens. Much like an email inbox, Bloodhound shows the number of specimens that await action.
+      - if !authorized?
+        %strong Discovered
+      - else
+        %strong
+          %a{href: "/profile/candidates"} Discovered
+      tab to see a list of candidate specimens. Much like an email inbox, Bloodhound shows the number of specimens that await action.
 
 %h3 Step 3
 %div{class:"media bd-callout bd-callout-info d-flex flex-wrap"}
@@ -53,18 +62,35 @@
     %h5{class:"mt-0"} Claim your specimens
     %p
       Under the
-      %strong
-        Discovered
+      - if !authorized?
+        %strong
+          Discovered
+      - else
+        %strong
+          %a{href: "/profile/candidates"} Discovered
       tab of your profile, you may bulk claim
       %em all visible rows
-      of specimens or claim single rows by clicking
-      %img{src:"/images/net-unselected.png", alt:"Collected icon", width:"18"}
-      for specimens you collected or
-      %img{src:"/images/microscope-unselected.png", alt:"Identified icon", width:"18"}
-      for specimens you identified, or "Both". Click the "Not me" buttons to ignore
+      of specimens or claim single rows by clicking:
+      %ul{class:"list-unstyled"}
+        %li
+          %img{src:"/images/net-unselected.png", alt:"Collected icon", width:"18"}
+          for specimens you collected or,
+        %li
+          %img{src:"/images/microscope-unselected.png", alt:"Identified icon", width:"18"}
+          for specimens you identified or,
+        %li Both for specimens you collected & identified
+      Click the "Not me" buttons to ignore
       %em all visible rows
-      or single rows of specimen records. Make a mistake? Visit other tabs like
-      %strong My Specimens
+      or single rows of specimen records. Make a mistake? Visit other tabs in your profile like
+      - if !authorized?
+        %strong My Specimens
+      - else
+        %strong
+          %a{href: "/profile/specimens"} My Specimens
       or
-      %strong Ignored
-      to repair your selections.
+      - if !authorized?
+        %strong Ignored
+      - else
+        %strong
+          %a{href: "/profile/ignored"} Ignored
+      to repair or adjust your selections.
