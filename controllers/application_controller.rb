@@ -69,9 +69,9 @@ module Sinatra
               maker.channel.language = "en"
               maker.channel.author = "Bloodhound"
               maker.channel.updated = Time.now.to_s
-              maker.channel.link = "https://bloodhound-tracker.net/user.rss"
+              maker.channel.link = "#{Sinatra::Application.settings.disqus_domain}/user.rss"
               maker.channel.title = "Bloodhound New User Feed"
-              maker.channel.description = "New User Feed on https://bloodhound-tracker.net"
+              maker.channel.description = "New User Feed on #{Sinatra::Application.settings.disqus_domain}"
 
               User.where(is_public: true).where.not(made_public: nil)
                   .where("made_public >= ?", 2.days.ago)
@@ -89,7 +89,7 @@ module Sinatra
                   statement = [id_statement,recorded_statement].compact.join(" and ")
                 end
                 maker.items.new_item do |item|
-                  item.link = "https://bloodhound-tracker.net/#{user.identifier}"
+                  item.link = "#{Sinatra::Application.settings.disqus_domain}/#{user.identifier}"
                   item.title = "#{user.fullname}"
                   item.description = "#{user.fullname} #{statement}"
                   item.updated = user.updated

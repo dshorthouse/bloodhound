@@ -16,6 +16,11 @@ describe "Bloodhound Application" do
     expect(last_response).to be_ok
   end
 
+  it "should allow accessing the public list of organizations/search" do
+    get '/organizations/search'
+    expect(last_response).to be_ok
+  end
+
   it "should allow accessing the public list of agents" do
     get '/agents'
     expect(last_response).to be_ok
@@ -31,4 +36,33 @@ describe "Bloodhound Application" do
     expect(last_response).to be_ok
   end
 
+  it "should allow accessing the get-started page" do
+    get '/get-started'
+    expect(last_response).to be_ok
+  end
+
+  it "should allow accessing the offline page" do
+    get '/offline'
+    expect(last_response).to be_ok
+  end
+
+  it "should allow accessing the about user rss feed" do
+    get '/user.rss'
+    expect(last_response).to be_ok
+  end
+
+  it "should allow accessing the organization json search" do
+    get '/organization.json'
+    expect(last_response).to be_ok
+  end
+
+  it "should allow accessing the user json search" do
+    get '/user.json'
+    expect(last_response).to be_ok
+  end
+
+  it "should allow accessing the agent json search" do
+    get '/agent.json'
+    expect(last_response).to be_ok
+  end
 end
