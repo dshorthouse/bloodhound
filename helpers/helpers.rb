@@ -187,7 +187,7 @@ module Sinatra
         count = User.where(is_public: true).count
         random_offset = rand(count)
         @results = User.where(is_public: true)
-                       .offset(random_offset).limit(3)
+                       .offset(random_offset).limit(6)
       end
 
       def candidate_agents
