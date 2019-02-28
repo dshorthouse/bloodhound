@@ -9,7 +9,7 @@
   - if @viewed_user.wikidata
     Share an anecdote about a collecting trip, event or other memory you recall about #{@viewed_user.fullname}
   - else
-    Got an anecdote about a collecting trip, event or anything else you wish to share?
+    Share an anecdote about a collecting trip, event or anything else.
 
 - if Sinatra::Application.settings.disqus_shortname
   %div{id: "disqus_thread"}

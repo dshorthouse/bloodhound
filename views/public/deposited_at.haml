@@ -11,12 +11,15 @@
 
 - if !@recordings_at.empty? || !@identifications_at.empty?
 
+  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    Specimens deposited and curated at the following institutions.
+
   %div{class: "container-fluid"}
     %div{class: "row"}
       %div{class: "col"}
         - if @recordings_at.empty? && !@identifications_at.empty?
           %h3{class: "d-flex justify-content-between list-header"}
-            Identified Specimens Deposited At
+            Specimens Identified
             %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@identifications_at.count)}
           %ul{class: "list-group"}
             - @identifications_at.each do |k,v|
@@ -25,7 +28,7 @@
                 %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
         - elsif !@recordings_at.empty?
           %h3{class: "d-flex justify-content-between list-header"}
-            Collected Specimens Deposited At
+            Specimens Collected
             %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@recordings_at.count)}
           %ul{class: "list-group"}
             - @recordings_at.each do |k,v|
@@ -35,7 +38,7 @@
       %div{class: "col"}
         - if !@recordings_at.empty? && !@identifications_at.empty?
           %h3{class: "d-flex justify-content-between list-header"}
-            Identified Specimens Deposited At
+            Specimens Identified
             %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@identifications_at.count)}
           %ul{class: "list-group"}
             - @identifications_at.each do |k,v|

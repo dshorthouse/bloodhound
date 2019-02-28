@@ -7,12 +7,10 @@
 
 - if @results.empty?
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-    Publications that made use of #{@viewed_user.fullname}'s data have not yet been recorded by the
-    %a{href:"https://www.gbif.org"} Global Biodiversity Information Facility
-    (GBIF).
+    Publications that made use of #{@viewed_user.fullname}'s specimen data have not yet been recorded by the Global Biodiversity Information Facility (GBIF).
 - else
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-    A total of #{number_with_delimiter(@results.total_entries)} #{'publication'.pluralize(@results.total_entries)} made use of #{@viewed_user.fullname}'s specimen data downloaded from the Global Biodiversity Information Facility (GBIF).
+    #{number_with_delimiter(@results.total_entries)} #{'publication'.pluralize(@results.total_entries)} made use of #{@viewed_user.fullname}'s specimen data downloaded from the Global Biodiversity Information Facility (GBIF).
 
   %div{class:"citation-wrapper"}
     %h3 Specimen Data Used
