@@ -10,7 +10,7 @@
     Identifications made to #{@viewed_user.fullname}'s collected specimens have not yet been recorded.
 - else
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-    The following individuals have identified specimens collected by #{@viewed_user.fullname}.
+    The following individual(s) have identified specimens collected by #{@viewed_user.fullname}.
 
   %div{class:"container-fluid"}
     - @results.in_groups_of(3).each do |group|
