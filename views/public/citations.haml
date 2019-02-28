@@ -12,17 +12,16 @@
     (GBIF).
 - else
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-    A total of #{number_with_delimiter(@results.total_entries)} #{'publication'.pluralize(@results.total_entries)} made use of #{@viewed_user.fullname}'s data downloaded from the 
-    %a{href:"https://www.gbif.org"} Global Biodiversity Information Facility
-    (GBIF).
+    A total of #{number_with_delimiter(@results.total_entries)} #{'publication'.pluralize(@results.total_entries)} made use of #{@viewed_user.fullname}'s specimen data downloaded from the Global Biodiversity Information Facility (GBIF).
 
   %div{class:"citation-wrapper"}
-    %h3 Specimen Data Used in Published Research
+    %h3 Specimen Data Used
     - @results.each do |article|
       %div{class: "card"}
         %div{class: "card-header"}
           %p{class: "citation card-title"}
-            %a{href: "https://doi.org/#{article.doi}"} #{article.citation}
+            #{article.citation}
+            %a{href: "https://doi.org/#{article.doi}"} https://doi.org/#{article.doi}
         %div{class: "card-body"}
           %p{class:"card-text",style:"margin-top:5px;"} #{article.abstract}
           %div{class: "small"}

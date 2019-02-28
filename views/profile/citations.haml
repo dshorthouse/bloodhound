@@ -18,22 +18,21 @@
     Citations have not yet been recorded.
 - else
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-    A total of #{number_with_delimiter(@total)} #{'publication'.pluralize(@total)} made use of your specimen data downloaded from the 
-    %a{href:"https://www.gbif.org"} Global Biodiversity Information Facility
-    (GBIF).
+    A total of #{number_with_delimiter(@total)} #{'publication'.pluralize(@total)} made use of your specimen data downloaded from the Global Biodiversity Information Facility (GBIF).
 
   %div{class:"citation-wrapper"}
-    %h2 My Specimen Data Used in Publications
+    %h2 Specimen Data Used
     - @results.each do |article|
       %div{class: "card"}
         %div{class: "card-header"}
           %p{class: "citation card-title"}
-            %a{href: "https://doi.org/#{article.doi}"} #{article.citation}
+            #{article.citation}
+            %a{href: "https://doi.org/#{article.doi}"} https://doi.org/#{article.doi}
         %div{class: "card-body"}
           %dl{class: "row"}
             %dt{class: "col-sm-2"} Abstract:
             %dd{class: "col-sm-10"} #{article.abstract}
-            %dt{class: "col-sm-2"} My specimens used:
+            %dt{class: "col-sm-2"} Specimens used:
             %dd{class: "col-sm-10"}
               %span{class: "badge badge-success badge-pill citation-correction"} #{number_with_delimiter(article.user_specimen_count(@user[:id]))}
               %a{href: "/profile/citation/#{article.id}"} View
