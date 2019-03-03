@@ -15,7 +15,7 @@
       %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
       collected or
       %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-      identified #{number_with_delimiter(@results.total_entries)} #{'specimen'.pluralize(@results.total_entries)}
+      identified #{number_with_delimiter(@pagy.count)} #{'specimen'.pluralize(@pagy.count)}
     %div{class: "col col-3 text-right"}
       %a{href: "/#{@viewed_user.identifier}/specimens.csv"}
         %img{src: "/images/csv-icon.png", width:24, alt: "CSV download", style:"margin-right:0.5rem"}

@@ -10,7 +10,7 @@
     Publications that made use of #{@viewed_user.fullname}'s specimen data have not yet been recorded by the Global Biodiversity Information Facility (GBIF).
 - else
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-    #{number_with_delimiter(@results.total_entries)} #{'publication'.pluralize(@results.total_entries)} made use of #{@viewed_user.fullname}'s specimen data downloaded from the Global Biodiversity Information Facility (GBIF).
+    #{number_with_delimiter(@pagy.count)} #{'publication'.pluralize(@pagy.count)} made use of #{@viewed_user.fullname}'s specimen data downloaded from the Global Biodiversity Information Facility (GBIF).
 
   %div{class:"citation-wrapper"}
     %h3 Specimen Data Used
