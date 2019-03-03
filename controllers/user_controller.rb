@@ -62,9 +62,7 @@ module Sinatra
               @page = @total/search_size.to_i + 1
             end
 
-            @results = user.visible_occurrences
-                           .order("occurrences.typeStatus desc")
-                           .paginate(page: @page, per_page: search_size)
+            @pagy, @results = pagy(user.visible_occurrences.order("occurrences.typeStatus desc"), items: search_size, page: @page)
             haml :'profile/specimens'
           end
 
@@ -79,8 +77,7 @@ module Sinatra
               @page = @total/search_size.to_i + 1
             end
 
-            @results = user.claims_received
-                           .paginate(page: @page, per_page: search_size)
+            @pagy, @results = pagy(ser.claims_received, items: search_size, page: @page)
             haml :'profile/support'
           end
 
@@ -263,8 +260,7 @@ module Sinatra
               @page = @total/search_size.to_i + 1
             end
 
-            @results = user.hidden_occurrences
-                           .paginate(page: @page, per_page: search_size)
+            @pagy, @results = pagy(user.hidden_occurrences, items: search_size, page: @page)
             haml :'profile/ignored'
           end
 
@@ -273,8 +269,7 @@ module Sinatra
             user = User.find(@user[:id])
             page = (params[:page] || 1).to_i
             @total = user.articles_citing_specimens.count
-            @results = user.articles_citing_specimens
-                           .paginate(page: page)
+            @pagy, @results = pagy(user.articles_citing_specimens, page: page)
             haml :'profile/citations'
           end
 
@@ -290,8 +285,7 @@ module Sinatra
                 @page = @total/search_size.to_i + 1
               end
 
-              @results = user.cited_specimens_by_article(@article.id)
-                             .paginate(page: @page, per_page: search_size)
+              @pagy, @results = pagy(user.cited_specimens_by_article(@article.id), items: search_size, page: @page)
               haml :'profile/citation'
             else
               status 404
@@ -482,10 +476,7 @@ module Sinatra
               @viewed_user = find_user(params[:id])
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
-                @results = @viewed_user.visible_occurrences
-                                       .order("occurrences.typeStatus desc")
-                                       .paginate(page: page)
-
+                @pagy, @results = pagy(@viewed_user.visible_occurrences.order("occurrences.typeStatus desc"), page: page)
                 haml :'public/specimens', locals: { active_page: "roster" }
               else
                 status 404
@@ -502,8 +493,7 @@ module Sinatra
               @viewed_user = find_user(params[:id])
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
-                @results = @viewed_user.articles_citing_specimens
-                                       .paginate(page: page)
+                @pagy, @results = pagy(@viewed_user.articles_citing_specimens, page: page)
                 haml :'public/citations', locals: { active_page: "roster" }
               else
                 status 404
@@ -521,8 +511,7 @@ module Sinatra
               @article= Article.find(params[:article_id])
               if @article && @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
-                @results = @viewed_user.cited_specimens_by_article(@article.id)
-                                       .paginate(page: page)
+                @pagy, @results = pagy(@viewed_user.cited_specimens_by_article(@article.id), page: page)
                 haml :'public/citation', locals: { active_page: "roster" }
               else
                 status 404
@@ -539,9 +528,7 @@ module Sinatra
               @viewed_user = find_user(params[:id])
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
-                @results = @viewed_user.recorded_with
-                                       .paginate(page: page)
-
+                @pagy, @results = pagy(@viewed_user.recorded_with, page: page)
                 haml :'public/co_collectors', locals: { active_page: "roster" }
               else
                 status 404
@@ -558,9 +545,7 @@ module Sinatra
               @viewed_user = find_user(params[:id])
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
-                @results = @viewed_user.identified_for
-                                       .paginate(page: page)
-
+                @pagy, @results = pagy(@viewed_user.identified_for, page: page)
                 haml :'public/identified_for', locals: { active_page: "roster" }
               else
                 status 404
@@ -577,9 +562,7 @@ module Sinatra
               @viewed_user = find_user(params[:id])
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
-                @results = @viewed_user.identified_by
-                                       .paginate(page: page)
-
+                @pagy, @results = pagy(@viewed_user.identified_by, page: page)
                 haml :'public/identifications_by', locals: { active_page: "roster" }
               else
                 status 404
