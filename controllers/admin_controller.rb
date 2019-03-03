@@ -98,9 +98,7 @@ module Sinatra
               @page = @total/search_size.to_i + 1
             end
 
-            @results = @admin_user.visible_occurrences
-                                  .order("occurrences.typeStatus desc")
-                                  .paginate(page: @page, per_page: search_size)
+            @pagy, @results = pagy(@admin_user.visible_occurrences.order("occurrences.typeStatus desc"), items: search_size, page: @page)
             haml :'admin/specimens', locals: { active_page: "administration" }
           end
 
