@@ -39,4 +39,4 @@
               %a{href: "https://www.grid.ac/institutes/#{o.grid}"} #{o.grid}
 
 
-= will_paginate @results, { class: "pagination" }
+= pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

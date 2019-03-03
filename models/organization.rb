@@ -2,8 +2,6 @@ class Organization < ActiveRecord::Base
   has_many :user_organizations
   has_many :users, through: :user_organizations, source: :user
 
-  self.per_page = 30
-
   after_create :add_search
 
   def self.active_user_organizations

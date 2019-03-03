@@ -13,8 +13,6 @@ class User < ActiveRecord::Base
   after_update :update_search
   after_destroy :remove_search
 
-  self.per_page = 30
-
   def is_public?
     is_public
   end

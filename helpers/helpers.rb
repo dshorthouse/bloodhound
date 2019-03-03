@@ -288,19 +288,15 @@ module Sinatra
       end
 
       def admin_roster
-        @results = User.order(visited: :desc, family: :asc)
-                       .paginate(page: params[:page])
+        @pagy, @results = pagy(User.order(visited: :desc, family: :asc))
       end
 
       def articles
-        @results = Article.order(created: :desc)
-                          .paginate(page: params[:page])
+        @pagy, @results = pagy(Article.order(created: :desc))
       end
 
       def organizations
-        @results = Organization.active_user_organizations
-                               .order(:name)
-                               .paginate(page: params[:page])
+        @pagy, @results = pagy(Organization.active_user_organizations.order(:name))
       end
 
       def organization
