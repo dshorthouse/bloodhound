@@ -25,8 +25,8 @@ module Sinatra
             page = (params[:page] || 1).to_i
             begin
               @agent = Agent.find(id)
-              @results = @agent.occurrences
-                               .paginate(page: page)
+              @pagy, @results = pagy(@agent.occurrences, page: page)
+
               haml :'agents/agent', locals: { active_page: "agents" }
             rescue
               status 404

@@ -56,16 +56,6 @@ module Sinatra
         defined?(@user) && is_admin?
       end
 
-      def paginate(collection)
-          options = {
-           inner_window: 3,
-           outer_window: 3,
-           previous_label: '&laquo;',
-           next_label: '&raquo;'
-          }
-         will_paginate collection, options
-      end
-
       def h(text)
         Rack::Utils.escape_html(text)
       end

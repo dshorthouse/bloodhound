@@ -30,4 +30,4 @@
           %a{href: "/agent/#{o[:id]}"} #{o[:name]}
           %small{class: "text-muted"} [Score: #{o[:score]}]
 
-    = will_paginate @results, { class: "pagination" }
+    = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
