@@ -87,5 +87,5 @@
   - if @total >= 25
     = haml :'partials/page_size', layout: false
 
-  = will_paginate @results, { class: "pagination" }
+  = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
 

@@ -153,8 +153,7 @@ module Sinatra
               @page = @total/search_size.to_i + 1
             end
 
-            @results = @admin_user.claims_received
-                                  .paginate(page: @page, per_page: search_size)
+            @pagy, @results = pagy(@admin_user.claims_received, items: search_size, page: @page)
             haml :'admin/support', locals: { active_page: "administration" }
           end
 
@@ -275,8 +274,7 @@ module Sinatra
               @page = @total/search_size.to_i + 1
             end
 
-            @results = @admin_user.hidden_occurrences
-                                  .paginate(page: @page, per_page: search_size)
+            @pagy, @results = pagy(@admin_user.hidden_occurrences, items: search_size, page: @page)
             haml :'admin/ignored', locals: { active_page: "administration" }
           end
 
@@ -285,8 +283,8 @@ module Sinatra
             @admin_user = find_user(params[:id])
             page = (params[:page] || 1).to_i
             @total = @admin_user.articles_citing_specimens.count
-            @results = @admin_user.articles_citing_specimens
-                                  .paginate(page: page)
+
+            @pagy, @results = pagy(@admin_user.articles_citing_specimens, page: page)
             haml :'admin/citations', locals: { active_page: "administration" }
           end
 
@@ -302,8 +300,7 @@ module Sinatra
                 @page = @total/search_size.to_i + 1
               end
 
-              @results = @admin_user.cited_specimens_by_article(@article.id)
-                                    .paginate(page: @page, per_page: search_size)
+              @pagy, @results = pagy(@admin_user.cited_specimens_by_article(@article.id), page: @page, items: search_size)
               haml :'admin/citation', locals: { active_page: "administration" }
             else
               status 404

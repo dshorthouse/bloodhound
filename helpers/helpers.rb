@@ -92,9 +92,8 @@ module Sinatra
         response = client.search index: settings.elastic_agent_index, type: "agent", from: from, size: search_size, body: body
         results = response["hits"].deep_symbolize_keys
 
-        @results = WillPaginate::Collection.create(page, search_size, results[:total]) do |pager|
-          pager.replace results[:hits]
-        end
+        @pagy = Pagy.new(count: results[:total], items: search_size, page: page)
+        @results = results[:hits]
       end
 
       def search_agents(family, given = nil)
