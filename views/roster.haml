@@ -17,4 +17,4 @@
             - cache_fragment(u.identifier) do
               = haml :'partials/user_card', layout: false, locals: { user: u }
 
-  = will_paginate @results, { class: "pagination" }
+  = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

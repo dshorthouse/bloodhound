@@ -36,4 +36,4 @@
                 %p{class:"card-text",style:"margin-top:5px;"}
                   #{o.address}
 
-  = will_paginate @results, { class: "pagination" }
+  = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

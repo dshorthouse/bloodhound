@@ -47,4 +47,4 @@
                       %span{class:"badge badge-success"} #{number_with_delimiter(u.all_occurrences_count)}
                       specimens
 
-    = will_paginate @results, { class: "pagination" }
+    = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

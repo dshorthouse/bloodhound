@@ -40,4 +40,4 @@
                     %p{class:"card-text",style:"margin-top:5px;"}
                       #{org.address}
 
-    = will_paginate @results, { class: "pagination" }
+    = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

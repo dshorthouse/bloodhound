@@ -39,7 +39,6 @@ class BLOODHOUND < Sinatra::Base
 
   use Rack::GoogleAnalytics, :tracker => settings.google_analytics
 
-  helpers WillPaginate::Sinatra::Helpers
   helpers Sinatra::ContentFor
   helpers Sinatra::Bloodhound::Helpers
 

@@ -117,8 +117,6 @@ module Sinatra
       end
 
       def search_user
-        @results = []
-        filters = []
         searched_term = params[:q]
         return if !searched_term.present?
 
@@ -126,14 +124,13 @@ module Sinatra
 
         client = Elasticsearch::Client.new
         body = build_name_query(searched_term)
-        from = (page -1) * search_size
+        from = (page -1) * 30
 
-        response = client.search index: settings.elastic_user_index, type: "user", from: from, size: search_size, body: body
+        response = client.search index: settings.elastic_user_index, type: "user", from: from, size: 30, body: body
         results = response["hits"].deep_symbolize_keys
 
-        @results = WillPaginate::Collection.create(page, search_size, results[:total]) do |pager|
-          pager.replace results[:hits]
-        end
+        @pagy = Pagy.new(count: results[:total], items: 30, page: page)
+        @results = results[:hits]
       end
 
       def search_users(family, given = nil)
@@ -164,8 +161,6 @@ module Sinatra
       end
 
       def search_organization
-        @results = []
-        filters = []
         searched_term = params[:q]
         return if !searched_term.present?
 
@@ -173,14 +168,13 @@ module Sinatra
 
         client = Elasticsearch::Client.new
         body = build_organization_query(searched_term)
-        from = (page -1) * search_size
+        from = (page -1) * 30
 
-        response = client.search index: settings.elastic_organization_index, type: "organization", from: from, size: search_size, body: body
+        response = client.search index: settings.elastic_organization_index, type: "organization", from: from, size: 30, body: body
         results = response["hits"].deep_symbolize_keys
 
-        @results = WillPaginate::Collection.create(page, search_size, results[:total]) do |pager|
-          pager.replace results[:hits]
-        end
+        @pagy = Pagy.new(count: results[:total], items: 30, page: page)
+        @results = results[:hits]
       end
 
       def example_profiles
@@ -269,22 +263,17 @@ module Sinatra
         if @page*search_size > @total
           @page = @total/search_size.to_i + 1
         end
-        @results = WillPaginate::Collection.create(@page, search_size, occurrence_ids.length) do |pager|
-          pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
-        end
+        @pagy, results = pagy_array(occurrence_ids, items: search_size, page: @page)
+        @results = Occurrence.find(occurrence_ids[@pagy.offset, search_size])
         if @total > 0 && @results.empty?
           @page -= 1
-          @results = WillPaginate::Collection.create(@page, search_size, occurrence_ids.length) do |pager|
-            pager.replace Occurrence.find(occurrence_ids[pager.offset, pager.per_page])
-          end
+          @pagy, results = pagy_array(occurrence_ids, items: search_size, page: @page)
+          @results = Occurrence.find(occurrence_ids[@pagy.offset, search_size])
         end
-        @results
       end
 
       def roster
-        @results = User.where(is_public: true)
-                       .order(:family)
-                       .paginate(page: params[:page])
+        @pagy, @results = pagy(User.where(is_public: true).order(:family))
       end
 
       def admin_roster
@@ -303,8 +292,7 @@ module Sinatra
         organizations = Organization.where(ringgold: params[:id]).or(Organization.where(grid: params[:id]))
         if !organizations.empty?
           @organization = organizations.first
-          @results = @organization.active_users.order(:family)
-                                  .paginate(page: params[:page])
+          @pagy, @results = pagy(@organization.active_users.order(:family))
         else
           status 404
           haml :oops
@@ -315,8 +303,7 @@ module Sinatra
         organizations = Organization.where(ringgold: params[:id]).or(Organization.where(grid: params[:id]))
         if !organizations.empty?
           @organization = organizations.first
-          @results = @organization.inactive_users.order(:family)
-                                  .paginate(page: params[:page])
+          @pagy, @results = pagy(@organization.inactive_users.order(:family))
         else
           status 404
           haml :oops
