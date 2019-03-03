@@ -77,7 +77,7 @@ module Sinatra
               @page = @total/search_size.to_i + 1
             end
 
-            @pagy, @results = pagy(ser.claims_received, items: search_size, page: @page)
+            @pagy, @results = pagy(user.claims_received, items: search_size, page: @page)
             haml :'profile/support'
           end
 
