@@ -75,5 +75,5 @@
   - if @total >= 25
     = haml :'partials/page_size', layout: false, locals: { klass: "restore-ignored" }
 
-  = will_paginate @results, { class: "pagination" }
+  = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
 
