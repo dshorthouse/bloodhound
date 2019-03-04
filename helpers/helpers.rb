@@ -271,7 +271,11 @@ module Sinatra
       end
 
       def admin_roster
-        @pagy, @results = pagy(User.order(visited: :desc, family: :asc))
+        data = User.order(visited: :desc, family: :asc)
+        if params[:order] && User.column_names.include?(params[:order]) && ["asc", "desc"].include?(params[:sort])
+          data = User.order("#{params[:order]} #{params[:sort]}")
+        end
+        @pagy, @results = pagy(data, items: 100)
       end
 
       def articles

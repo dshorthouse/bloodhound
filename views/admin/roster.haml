@@ -47,18 +47,22 @@
                 %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
                   %span{"aria-hidden":"true"} &times;
 
-
+- sort = locals[:sort] == "asc" ? "desc" : "asc"
 %div{class:"table-responsive-lg"}
   %table{class:"table table-hover table-sm"}
     %thead{class: "thead-light"}
       %tr
-        %th{scope: "col"} Users
-        %th{scope: "col"} Country
-        %th{scope: "col"} Last Login
-        %th{scope: "col"} Created
-        %th{scope: "col"} Is Public?
+        %th{scope: "col"}
+          %a{href: "/admin/users?order=family&sort=#{sort}"} Users
+        %th{scope: "col"}
+          %a{href: "/admin/users?order=country&sort=#{sort}"} Country
+        %th{scope: "col"}
+          %a{href: "/admin/users?order=visited&sort=#{sort}"} Last Login
+        %th{scope: "col"}
+          %a{href: "/admin/users?order=created&sort=#{sort}"} Created
+        %th{scope: "col"}
+          %a{href: "/admin/users?order=is_public&sort=#{sort}"} Is Public?
         %th{scope: "col"} ORCID/Wikidata
-        
 
     %tbody
       - @results.each do |u|

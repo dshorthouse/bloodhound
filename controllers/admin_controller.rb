@@ -50,8 +50,10 @@ module Sinatra
             admin_protected!
             @new_user = session[:new_user]
             session[:new_user] = nil
+            sort = params[:sort] || nil
+            order = params[:order] || nil
             admin_roster
-            haml :'admin/roster', locals: { active_page: "administration" }
+            haml :'admin/roster', locals: { active_page: "administration", sort: sort, order: order }
           end
 
           app.post '/admin/user/add' do
