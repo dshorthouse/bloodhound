@@ -190,6 +190,9 @@ dl.citation{
 .citation-correction{
   text-indent: 0em;
 }
+.alert ul {
+  margin-bottom:0rem;
+}
 @media (max-width: 400px) {
   .display-3 {
     font-size:3.5rem;
