@@ -250,7 +250,7 @@ module Sinatra
       def specimen_pager(occurrence_ids)
         @total = occurrence_ids.length
         if @page*search_size > @total
-          @page = @total/search_size.to_i + 1
+          @page = (@total/search_size).round
         end
         @pagy, results = pagy_array(occurrence_ids, items: search_size, page: @page)
         @results = Occurrence.find(occurrence_ids[@pagy.offset, search_size])
