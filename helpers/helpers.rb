@@ -106,6 +106,7 @@ module Sinatra
       end
 
       def search_user
+        @results = []
         searched_term = params[:q]
         return if !searched_term.present?
 
@@ -151,6 +152,7 @@ module Sinatra
 
       def search_organization
         searched_term = params[:q]
+        @results = []
         return if !searched_term.present?
 
         page = (params[:page] || 1).to_i
