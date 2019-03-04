@@ -169,10 +169,7 @@ module Sinatra
       end
 
       def example_profiles
-        count = User.where(is_public: true).count
-        random_offset = rand(count)
-        @results = User.where(is_public: true)
-                       .offset(random_offset).limit(6)
+        @results = User.where(is_public: true).limit(6).order(Arel.sql("RAND()"))
       end
 
       def candidate_agents
