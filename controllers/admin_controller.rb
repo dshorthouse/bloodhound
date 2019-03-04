@@ -236,7 +236,7 @@ module Sinatra
             admin_protected!
             content_type "application/json", charset: 'utf-8'
             @admin_user = User.find(params[:user_id].to_i)
-            return { count: 0}.to_json if @admin_user.family.nil?
+            return { count: 0 }.to_json if @admin_user.family.nil?
 
             agent_ids = admin_candidate_agents.pluck(:id)
             count = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @admin_user.user_occurrences.select(:occurrence_id)).count

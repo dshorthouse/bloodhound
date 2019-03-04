@@ -4,6 +4,7 @@
 }
 
 .typeahead, .orcid-add,
+.user-search,
 .organization-search,
 .tt-query,
 .tt-hint {
@@ -151,6 +152,9 @@ dl.col{
 #form-orcid{
   margin-top: 0.5rem;
 }
-#form-org-wrapper .twitter-typeahead {
+#form-org-wrapper .twitter-typeahead, #form-wrapper .twitter-typeahead {
   width:100%;
+}
+#form-wrapper .typeahead {
+  width:80%;
 }
