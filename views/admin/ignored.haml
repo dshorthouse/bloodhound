@@ -30,7 +30,7 @@
       %thead{class: "thead-light"}
         %tr
           %th{scope: "col", class:"selector"}
-            = haml :'partials/bulk_selector_top', layout: false
+            = haml :'partials/bulk_selector_top', layout: false, locals: { klass: "restore-ignored" }
           %th{scope: "col"} Scientific Name
           %th{scope: "col"} Collected By
           %th{scope: "col"} Identified By
@@ -45,7 +45,7 @@
           - o = uo.occurrence
           %tr
             %td{class: "selector"}
-              = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo }
+              = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo, klass: "restore-ignored" }
             %td
               - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
               %a{href: "https://www.gbif.org/occurrence/#{o[:gbifID]}", target: "_blank" } #{scientific_name}
@@ -61,7 +61,7 @@
         %tfoot{class: "thead-light"}
           %tr
             %th{scope: "col", class:"selector"}
-              = haml :'partials/bulk_selector_bottom', layout: false
+              = haml :'partials/bulk_selector_bottom', layout: false, locals: { klass: "restore-ignored" }
             %th{scope: "col"} Scientific Name
             %th{scope: "col"} Collected By
             %th{scope: "col"} Identified By
