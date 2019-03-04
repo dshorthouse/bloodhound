@@ -60,7 +60,7 @@
           %td
             %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{o.id}"} Not them
 
-    - if @total >= 25
+    - if @total > 25
       %tfoot{class: "thead-light"}
         %tr
           %th{scope: "col", class:"selector"}
@@ -76,7 +76,7 @@
           %th{scope: "col"}
 
 
-  - if @total >= 25
+  - if @total > 25
     = haml :'partials/page_size', layout: false
                 
   = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

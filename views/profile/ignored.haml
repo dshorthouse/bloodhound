@@ -58,7 +58,7 @@
             %td #{o.catalogNumber}
             %td #{o.typeStatus}
 
-      - if @total >= 25
+      - if @total > 25
         %tfoot{class: "thead-light"}
           %tr
             %th{scope: "col", class:"selector"}
@@ -72,7 +72,7 @@
             %th{scope: "col"} Catalog Number
             %th{scope: "col"} Type Status
 
-  - if @total >= 25
+  - if @total > 25
     = haml :'partials/page_size', layout: false
 
   = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
