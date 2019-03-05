@@ -27,11 +27,11 @@ OptionParser.new do |opts|
     options[:logged] = true
   end
 
-  opts.on("-w", "--update-orcid", "Update all ORCID accounts.") do
+  opts.on("-u", "--update-orcid", "Update all ORCID accounts.") do
     options[:update_orcid] = true
   end
 
-  opts.on("-w", "--update-wikidata", "Update all wikidata accounts.") do
+  opts.on("-v", "--update-wikidata", "Update all wikidata accounts.") do
     options[:update_wikidata] = true
   end
 
