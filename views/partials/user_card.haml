@@ -16,7 +16,7 @@
       %span{class:"small text-muted"}= format_lifespan(locals[:user])
   %div{class: "card-body"}
     %div{class: "row"}
-      %div{class: "col small text-left text-muted"} #{locals[:user].country}
+      %div{class: "col small text-left text-muted"} #{locals[:user].country.split("|").join("; ")}
       %div{class: "col small text-right text-muted"}
         %span{class:"badge badge-success"} #{number_with_delimiter(locals[:user].all_occurrences_count)}
         specimens
