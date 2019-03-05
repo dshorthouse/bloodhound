@@ -130,7 +130,6 @@ module Bloodhound
         given: given,
         other_names: other_names,
         email: email,
-        country_code: country_code,
         country: country,
         organizations: organizations.compact
       }

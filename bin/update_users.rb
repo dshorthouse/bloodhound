@@ -62,7 +62,7 @@ end
 if options[:wikidata]
   u = User.find_or_create_by({ wikidata: options[:wikidata] })
   u.update_profile
-  if u.family.nil? || u.date_born.nil? || u.date_died.nil?
+  if !u.complete_wikicontent?
     u.destroy
     puts "#{u.wikidata} destroyed. Missing either family name, birth or death date".red
   else
@@ -81,7 +81,7 @@ if options[:file]
       u = User.find_or_create_by({ orcid: row[0] })
     end
     u.update_profile
-    if u.family.nil? || u.date_born.nil? || u.date_died.nil?
+    if !u.complete_wikicontent?
       u.destroy
       puts "#{u.wikidata} destroyed. Missing either family name, birth or death date".red
     else

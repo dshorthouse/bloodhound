@@ -18,7 +18,7 @@
           - if !@admin_user.country.blank?
             %dl{class: "col"}
               %dt Country
-              %dd #{@admin_user.country}
+              %dd #{@admin_user.country.split("|").join("; ")}
           
           - if !org.nil?
             %dl{class: "col"}

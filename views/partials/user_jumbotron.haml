@@ -20,7 +20,7 @@
           - if !@viewed_user[:country].blank?
             %dl{class: "col"}
               %dt Country
-              %dd #{@viewed_user.country}
+              %dd #{@viewed_user.country.split("|").join("; ")}
           - if !org.nil?
             %dl{class: "col"}
               %dt Organization

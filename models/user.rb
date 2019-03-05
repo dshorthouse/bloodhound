@@ -45,6 +45,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def complete_wikicontent?
+    !family.nil? && !date_born.nil? && !date_died.nil?
+  end
+
   def visible_user_occurrences
     user_occurrences.where(visible: true)
   end
@@ -306,33 +310,13 @@ class User < ActiveRecord::Base
       })
     end
 
-    update({
-      family: data[:family],
-      given: data[:given],
-      email: data[:email],
-      other_names: data[:other_names],
-      country: data[:country]
-    })
+    update(data.except!(:organizations))
   end
 
   def update_wikidata_profile
-    wiki_user = Wikidata::Item.find(wikidata)
-    parsed = Namae.parse(wiki_user.title)[0] rescue nil
-    country = wiki_user.country.title rescue nil
-    other_names = wiki_user.aliases.values.map{|a| a.map{|b| b.value if b.language == "en"}.compact}.flatten.uniq.join("|") rescue nil
-    date_born = Date.parse(wiki_user.properties("P569").map{|a| a.value.time if a.precision_key == :day}.compact.first) rescue nil
-    date_died = Date.parse(wiki_user.properties("P570").map{|a| a.value.time if a.precision_key == :day}.compact.first) rescue nil
-
-    if !parsed.nil?
-      update({
-        family: parsed.family,
-        given: parsed.given,
-        other_names: other_names,
-        country: country,
-        date_born: date_born,
-        date_died: date_died
-      })
-    end
+    wikidata_lib = Bloodhound::WikidataSearch.new
+    data = wikidata_lib.account_data(wikidata)
+    update(data)
   end
 
   def articles_citing_specimens
