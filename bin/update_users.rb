@@ -7,10 +7,6 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: update_agents.rb [options]"
 
-  opts.on("-r", "--refresh", "Refresh profile data") do
-    options[:refresh] = true
-  end
-
   opts.on("-p", "--poll", "Poll ORCID for new users") do
     options[:poll] = true
   end
@@ -31,6 +27,14 @@ OptionParser.new do |opts|
     options[:logged] = true
   end
 
+  opts.on("-w", "--update-orcid", "Update all ORCID accounts.") do
+    options[:update_orcid] = true
+  end
+
+  opts.on("-w", "--update-wikidata", "Update all wikidata accounts.") do
+    options[:update_wikidata] = true
+  end
+
   opts.on("-a", "--all", "Update all user accounts.") do
     options[:all] = true
   end
@@ -41,33 +45,9 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-if options[:refresh]
-  User.find_each do |u|
-    u.update_profile
-    puts "#{u.fullname_reverse}".green
-  end
-end
-
 if options[:poll]
   search = Bloodhound::OrcidSearch.new
   search.populate_new_users
-end
-
-if options[:orcid]
-  u = User.find_or_create_by({ orcid: options[:orcid] })
-  u.update_profile
-  puts "#{u.fullname_reverse} created/updated".green
-end
-
-if options[:wikidata]
-  u = User.find_or_create_by({ wikidata: options[:wikidata] })
-  u.update_profile
-  if !u.complete_wikicontent?
-    u.destroy
-    puts "#{u.wikidata} destroyed. Missing either family name, birth or death date".red
-  else
-    puts "#{u.fullname_reverse} created/updated".green
-  end
 end
 
 if options[:file]
@@ -90,15 +70,36 @@ if options[:file]
   end
 end
 
-if options[:logged]
+if options[:wikidata]
+  u = User.find_or_create_by({ wikidata: options[:wikidata] })
+  u.update_profile
+  if !u.complete_wikicontent?
+    u.destroy
+    puts "#{u.wikidata} destroyed. Missing either family name, birth or death date".red
+  else
+    puts "#{u.fullname_reverse} created/updated".green
+  end
+elsif options[:orcid]
+  u = User.find_or_create_by({ orcid: options[:orcid] })
+  u.update_profile
+  puts "#{u.fullname_reverse} created/updated".green
+elsif options[:logged]
   User.where.not(visited: nil).find_each do |u|
     u.update_profile
     puts "#{u.fullname_reverse}".green
   end
-end
-
-if options[:all]
+elsif options[:all]
   User.find_each do |u|
+    u.update_profile
+    puts "#{u.fullname_reverse}".green
+  end
+elsif options[:update_wikidata]
+  User.where.not(wikidata: nil).find_each do |u|
+    u.update_profile
+    puts "#{u.fullname_reverse}".green
+  end
+elsif options[:update_orcid]
+  User.where.not(orcid: nil).find_each do |u|
     u.update_profile
     puts "#{u.fullname_reverse}".green
   end
