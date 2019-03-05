@@ -21,6 +21,10 @@ class User < ActiveRecord::Base
     is_admin
   end
 
+  def can_comment?
+    can_comment
+  end
+
   def identifier
     orcid || wikidata
   end

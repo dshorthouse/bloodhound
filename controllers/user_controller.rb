@@ -594,7 +594,12 @@ module Sinatra
           app.get '/:id/comments' do
             if params[:id].is_orcid? || params[:id].is_wiki_id?
               @viewed_user = find_user(params[:id])
-              haml :'public/comments', locals: { active_page: "roster"}
+              if @viewed_user.can_comment?
+                haml :'public/comments', locals: { active_page: "roster"}
+              else
+                status 404
+                haml :oops
+              end
             else
               status 404
               haml :oops

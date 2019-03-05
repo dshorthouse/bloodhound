@@ -39,7 +39,7 @@
         %a{href: "https://www.wikidata.org/wiki/#{@viewed_user.wikidata}"}
           %img{src: "/images/wikidata_24x24.png", alt:"ORCID iD"}
           %a{href: "https://www.wikidata.org/wiki/#{@viewed_user.wikidata}"} https://www.wikidata.org/wiki/#{@viewed_user.wikidata}
-    - if Sinatra::Application.settings.disqus_domain && !locals[:search]
+    - if Sinatra::Application.settings.disqus_domain && !locals[:search] && @viewed_user.can_comment?
       %div{class: "text-right"}
         %img{src: "/images/comments.png", alt:"Field notes"}
         %a{href: "#{Sinatra::Application.settings.disqus_domain}/#{@viewed_user.identifier}/comments#disqus_thread", class:"disqus-comment-count", "data-disqus-identifier":"#{@viewed_user.identifier}"} Field notes
