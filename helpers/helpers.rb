@@ -383,7 +383,7 @@ module Sinatra
       def format_lifespan(user)
         born = !user.date_born.nil? ? user.date_born.to_formatted_s(:long) : "?"
         died = !user.date_died.nil? ? user.date_died.to_formatted_s(:long) : "?"
-        "(" + [born,died].join(" &ndash; ") + ")"
+        "(" + ["b. " + born, "d. " + died].join(" &ndash; ") + ")"
       end
 
       def cycle
