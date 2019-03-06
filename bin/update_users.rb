@@ -57,9 +57,12 @@ end
 if options[:country_codes]
   User.find_each do |user|
     if !user.country.blank?
-      country_code = IsoCountryCodes.search_by_name(user.country).first.alpha2 rescue nil
-      if country_code
-        user.country_code = country_code
+      codes = []
+      user.country.split("|").each do |country|
+        codes << IsoCountryCodes.search_by_name(country).first.alpha2 rescue nil
+      end
+      if !codes.compact.empty?
+        user.country_code = codes.compact.join("|")
         user.save
       else
         puts "#{user.fullname_reverse}".red
