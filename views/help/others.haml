@@ -12,8 +12,8 @@
   %div{class:"jumbotron jumbotron-fluid"}
     %div{class: "container-fluid"}
 
-      %h2{class:"display-4 text-center"} Help Others Claim Specimens
-      = haml :'partials/help_user_search', layout: false
+      %h2{class:"display-4 text-center"} Help Claim Specimens
+      = haml :'partials/help_others_search', layout: false
 
 - if @results.empty? && params[:q] && !params[:q].empty?
   %div{class: "alert alert-danger", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
@@ -29,6 +29,9 @@
     and make their name publicly available. If they additionally assign one of the keywords 
     %span{class: "font-italic"} #{Sinatra::Application.settings.orcid_keywords.join(", ")},
     to their ORCID account, Bloodhound will find them and add them by the following day.
+  %h2 Browse by Country
+  = haml :'partials/help_others_countries', layout: false
+
 - else
   %div{class:"container-fluid"}
     - @results.in_groups_of(3).each do |group|
@@ -38,8 +41,11 @@
             - if !user.nil?
               - u = User.find(user[:_id])
               %div{class: "card", style:"margin:20px"}
-                %h5{class: "card-header"}
-                  %a{href: "/help-user/#{u.identifier}"} #{u.fullname_reverse}
+                %div{class: "card-header"}
+                  %h5
+                    %a{href: "/help-others/#{u.identifier}"} #{u.fullname_reverse}
+                  - if u.wikidata
+                    %span{class:"small text-muted"}= format_lifespan(u)
                 %div{class: "card-body"}
                   %div{class: "row"}
                     %div{class: "col small text-left text-muted"} #{u.country}

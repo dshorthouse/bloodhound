@@ -1,7 +1,7 @@
 %div{class: " d-flex flex-wrap justify-content-center text-center"}
-  %form{id:"#form-wrapper", method: "get", action: "/help-users", "accept-charset" => "UTF-8", class: "form-inline helpers"}
+  %form{id:"#form-wrapper", method: "get", action: "/help-others", "accept-charset" => "UTF-8", class: "form-inline helpers"}
     %div{class: "form-group"}
-      %label{for: "typeahead", class:"font-weight-bold col-sm-3 col-form-label"}= "Search User"
+      %label{for: "typeahead", class:"font-weight-bold col-sm-3 col-form-label"}= "Search"
       - username = @viewed_user ? @viewed_user.fullname : "Mary Smith"
       %input{class: "typeahead", id: "typeahead-user", type: :text, name: "q", placeholder: "#{username}", size:"30"}
     %input{type: :submit, class:"btn btn-success", value:"Search"}

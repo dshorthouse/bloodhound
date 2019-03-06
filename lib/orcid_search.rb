@@ -131,6 +131,7 @@ module Bloodhound
         other_names: other_names,
         email: email,
         country: country,
+        country_code: country_code,
         organizations: organizations.compact
       }
     end

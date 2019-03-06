@@ -23,7 +23,8 @@ module Sinatra
                           orcid: session_data[:uid],
                           email: email,
                           other_names: other_names,
-                          country: country
+                          country: country,
+                          country_code: country_code
                         )
                        .find_or_create_by(orcid: orcid)
             organization = user.current_organization.as_json.symbolize_keys rescue nil
@@ -298,16 +299,31 @@ module Sinatra
             redirect '/'
           end
 
-          app.get '/help-users' do
+          app.get '/help-others' do
             protected!
             @results = []
+            @countries = IsoCountryCodes.for_select
             if params[:q]
               search_user
             end
-            haml :'help/users'
+            haml :'help/others'
           end
 
-          app.get '/help-user/:id' do
+          app.get '/help-others/country/:country_code' do
+            protected!
+            country_code = params[:country_code]
+            @results = []
+            begin
+              @country = IsoCountryCodes.find(country_code)
+              @pagy, @results = pagy(User.where("country_code LIKE ?", "%#{country_code}%").order(:family), items: 30)
+              haml :'help/country'
+            rescue
+              status 404
+              haml :oops
+            end
+          end
+
+          app.get '/help-others/:id' do
             protected!
 
             if params[:id].is_orcid? || params[:id].is_wiki_id?

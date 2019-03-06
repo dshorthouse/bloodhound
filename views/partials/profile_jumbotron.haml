@@ -34,7 +34,6 @@
             - if is_public?
               %a{href: "/#{@user[:orcid]}", target: "_blank", role: "button", class:"btn btn-sm btn-outline-success"} Public Profile
             %a{ href:"/profile/refresh.json?user_id=#{@user[:id]}", role: "button", class:"btn btn-sm btn-outline-success profile-refresh"} Refresh ORCID Data
-            %a{ href:"/help-users", role: "button", class:"btn btn-sm btn-outline-success"} Help Others
 
         %div{class:"alert row alert-success alert-dismissible fade show", role: "alert"}
           ORCID Data was refreshed.

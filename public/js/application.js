@@ -87,7 +87,7 @@ var Application = (function($, window) {
           if (self.path === "/admin") {
             window.location.href = "/admin/user/" + identifier;
           } else {
-            window.location.href = "/help-user/" + identifier;
+            window.location.href = "/help-others/" + identifier;
           }
         });
 

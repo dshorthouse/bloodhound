@@ -7,6 +7,10 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: update_agents.rb [options]"
 
+  opts.on("-c", "--country-codes", "Update country codes") do
+    options[:country_codes] = true
+  end
+
   opts.on("-p", "--poll", "Poll ORCID for new users") do
     options[:poll] = true
   end
@@ -48,6 +52,20 @@ end.parse!
 if options[:poll]
   search = Bloodhound::OrcidSearch.new
   search.populate_new_users
+end
+
+if options[:country_codes]
+  User.find_each do |user|
+    if !user.country.blank?
+      country_code = IsoCountryCodes.search_by_name(user.country).first.alpha2 rescue nil
+      if country_code
+        user.country_code = country_code
+        user.save
+      else
+        puts "#{user.fullname_reverse}".red
+      end
+    end
+  end
 end
 
 if options[:file]
