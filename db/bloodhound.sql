@@ -96,6 +96,8 @@ CREATE TABLE `users` (
   `email` varchar(255) DEFAULT NULL,
   `other_names` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `country_code` varchar(50) DEFAULT NULL,
+  `keywords` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `date_born` date DEFAULT NULL,
   `date_died` date DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
@@ -177,7 +179,8 @@ ALTER TABLE `taxon_occurrences`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD KEY `orcid_idx` (`orcid`) USING BTREE,
-  ADD KEY `wikidata_idx` (`wikidata`) USING BTREE;
+  ADD KEY `wikidata_idx` (`wikidata`) USING BTREE,
+  ADD KEY `country_code` (`country_code`);
 
 ALTER TABLE `user_occurrences`
   ADD PRIMARY KEY (`id`),
@@ -208,13 +211,13 @@ ALTER TABLE `taxa`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34372;
 
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25926;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32649;
 
 ALTER TABLE `user_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6007902;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6013708;
 
 ALTER TABLE `user_organizations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37496;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37639;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
