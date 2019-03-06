@@ -104,6 +104,7 @@ module Bloodhound
       family = data[:person][:name][:"family-name"][:value] rescue nil
       given = data[:person][:name][:"given-names"][:value] rescue nil
       other_names = data[:person][:"other-names"][:"other-name"].map{|n| n[:content]}.join("|") rescue nil
+      keywords = data[:person][:keywords][:keyword].map{|k| k[:content]}.compact.join("|") rescue nil
       email = nil
       data[:person][:emails][:email].each do |mail|
         next if !mail[:primary]
@@ -132,6 +133,7 @@ module Bloodhound
         email: email,
         country: country,
         country_code: country_code,
+        keywords: keywords,
         organizations: organizations.compact
       }
     end

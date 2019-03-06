@@ -3,39 +3,37 @@
 
     %h2{class:"display-4 text-center"}= @user[:fullname]
 
-    %div{class: "row justify-content-center text-center"}
-      %div{class: "col-sm-12 col-md-10 col-xl-8"}
-        %div.row
-          - if !@user[:other_names].blank?
-            %dl{class: "col"}
-              %dt Also known as
-              %dd #{@user[:other_names].split("|").join("; ")}
-          - if !@user[:country].blank?
-            %dl{class: "col"}
-              %dt Country
-              %dd #{@user[:country]}
-          - if !@user[:current_organization].nil?
-            %dl{class: "col"}
-              %dt Organization
-              %dd
-                - path = @user[:current_organization][:ringgold] || @user[:current_organization][:grid]
-                = succeed "," do
-                  %a{href: "/organization/#{path}"} #{@user[:current_organization][:name]}
-                #{@user[:current_organization][:address]}
-        %div.row
-          %div{class: "col orcid text-center"}
-            %a{href: "https://orcid.org/#{@user[:orcid]}"}
-              %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-            %a{href: "https://orcid.org/#{@user[:orcid]}"} https://orcid.org/#{@user[:orcid]}
+    - if !@user[:other_names].blank?
+      %div{class:"text-center text-muted"} #{@user[:other_names].split("|").join("; ")}
 
-        %div.row
-          %div{id: "profile-buttons", class: "col text-center"}
-            %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: is_public?, class:"btn-claim" }
-            - if is_public?
-              %a{href: "/#{@user[:orcid]}", target: "_blank", role: "button", class:"btn btn-sm btn-outline-success"} Public Profile
-            %a{ href:"/profile/refresh.json?user_id=#{@user[:id]}", role: "button", class:"btn btn-sm btn-outline-success profile-refresh"} Refresh ORCID Data
+    %div{class: "text-center"}
+      - if !@user[:current_organization].nil?
+        - path = @user[:current_organization][:ringgold] || @user[:current_organization][:grid]
+        = succeed "," do
+          %a{href: "/organization/#{path}"} #{@user[:current_organization][:name]}
+        #{@user[:current_organization][:address]}
+      - if !@user[:current_organization].nil? && !@user[:country].blank?
+        |
+      - if !@user[:country].blank?
+        #{@user[:country]}
 
-        %div{class:"alert row alert-success alert-dismissible fade show", role: "alert"}
-          ORCID Data was refreshed.
-          %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
-            %span{"aria-hidden":"true"} &times;
+    %div{class: "orcid text-center"}
+      %a{href: "https://orcid.org/#{@user[:orcid]}"}
+        %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+          %a{href: "https://orcid.org/#{@user[:orcid]}"} https://orcid.org/#{@user[:orcid]}
+
+    - if !@user[:keywords].blank?
+      %div{class: "text-center text-muted font-italic"}
+        #{@user[:keywords].split("|").join(", ")}
+
+    %div{id: "profile-buttons", class: "text-center"}
+      %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: is_public?, class:"btn-claim" }
+      - if is_public?
+        %a{href: "/#{@user[:orcid]}", target: "_blank", role: "button", class:"btn btn-sm btn-outline-success"} Public Profile
+      %a{ href:"/profile/refresh.json?user_id=#{@user[:id]}", role: "button", class:"btn btn-sm btn-outline-success profile-refresh"} Refresh ORCID Data
+
+    %div{class:"row justify-content-center"}
+      %div{class:"alert alert-success alert-dismissible fade show text-center col-md-6", role: "alert"}
+        ORCID Data was refreshed.
+        %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+          %span{"aria-hidden":"true"} &times;

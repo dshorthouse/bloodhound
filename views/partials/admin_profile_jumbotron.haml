@@ -3,51 +3,47 @@
 
     %h2{class:"display-4 text-center"}= @admin_user.fullname
 
+    - if !@admin_user.other_names.blank?
+      %div{class:"text-center text-muted"} #{@admin_user.other_names.split("|").join("; ")}
+
     - if @admin_user.date_born || @admin_user.date_died
-      %div{class: "text-center"}
+      %div{class: "text-center text-muted"}
         = format_lifespan(@admin_user)
 
-    %div{class: "row justify-content-center text-center"}
-      %div{class: "col-sm-12 col-md-10 col-xl-10"}
-        %div.row
-          - org = @admin_user.current_organization
-          - if !@admin_user.other_names.blank?
-            %dl{class: "col"}
-              %dt Also known as
-              %dd #{@admin_user.other_names.split("|").join("; ")}
-          - if !@admin_user.country.blank?
-            %dl{class: "col"}
-              %dt Country
-              %dd #{@admin_user.country.split("|").join("; ")}
-          
-          - if !org.nil?
-            %dl{class: "col"}
-              - path = org.ringgold || org.grid
-              %dt Organization
-              %dd
-                = succeed "," do
-                  %a{href: "/organization/#{path}"} #{org.name}
-                #{org.address}
+    %div{class: "text-center"}
+      - org = @admin_user.current_organization
+      - if !org.nil?
+        - path = org.ringgold || org.grid
+        = succeed "," do
+          %a{href: "/organization/#{path}"} #{org.name}
+        #{org.address}
+      - if !@admin_user.current_organization.nil? && !@admin_user.country.blank?
+        |
+      - if !@admin_user.country.blank?
+        #{@admin_user.country.split("|").join(", ")}
 
-        %div.row
-          %div{class: "col orcid text-center"}
-            - if @admin_user.orcid
-              %a{href: "https://orcid.org/#{@admin_user.orcid}"}
-                %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-              %a{href: "https://orcid.org/#{@admin_user.orcid}"} https://orcid.org/#{@admin_user.orcid}
-            - else
-              %a{href: "https://www.wikidata.org/wiki/#{@admin_user.wikidata}"}
-                %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
-              %a{href: "https://www.wikidata.org/wiki/#{@admin_user.wikidata}"} https://www.wikidata.org/wiki/#{@admin_user.wikidata}
+    %div{class: "orcid text-center"}
+      - if @admin_user.orcid
+        %a{href: "https://orcid.org/#{@admin_user.orcid}"}
+          %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+        %a{href: "https://orcid.org/#{@admin_user.orcid}"} https://orcid.org/#{@admin_user.orcid}
+      - else
+        %a{href: "https://www.wikidata.org/wiki/#{@admin_user.wikidata}"}
+          %img{src: "/images/wikidata_24x24.png", alt:"ORCID iD"}
+          %a{href: "https://www.wikidata.org/wiki/#{@admin_user.wikidata}"} https://www.wikidata.org/wiki/#{@admin_user.wikidata}
 
-        %div.row
-          %div{id: "profile-buttons", class: "col text-center"}
-            %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: is_user_public?, class:"btn-claim" }
-            - if is_user_public?
-              %a{href: "/#{@admin_user.identifier}", target: "_blank", role: "button", class:"btn btn-sm btn-outline-success"} Public Profile
-            %a{ href:"/admin/refresh.json?user_id=#{@admin_user.id}", role: "button", class:"btn btn-sm btn-outline-success profile-refresh"} Refresh Profile Data
+    %div{class: "text-center text-muted font-italic"}
+      - if !@admin_user.keywords.blank?
+        #{@admin_user.keywords.split("|").join(", ")}
 
-        %div{class:"alert row alert-success alert-dismissible fade show", role: "alert"}
-          Profile data was refreshed.
-          %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
-            %span{"aria-hidden":"true"} &times;
+    %div{id: "profile-buttons", class: "text-center"}
+      %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: is_user_public?, class:"btn-claim" }
+      - if is_user_public?
+        %a{href: "/#{@admin_user.identifier}", target: "_blank", role: "button", class:"btn btn-sm btn-outline-success"} Public Profile
+      %a{ href:"/admin/refresh.json?user_id=#{@admin_user.id}", role: "button", class:"btn btn-sm btn-outline-success profile-refresh"} Refresh Profile Data
+
+    %div{class:"row justify-content-center"}
+      %div{class:"alert alert-success alert-dismissible fade show text-center col-md-6", role: "alert"}
+        Profile data was refreshed.
+        %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+          %span{"aria-hidden":"true"} &times;
