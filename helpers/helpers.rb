@@ -172,11 +172,11 @@ module Sinatra
         @results = User.where(is_public: true).limit(6).order(Arel.sql("RAND()"))
       end
 
-      def candidate_agents
-        agents = search_agents(@user[:family], @user[:given])
+      def candidate_agents(user)
+        agents = search_agents(user.family, user.given)
 
-        if !@user[:other_names].nil?
-          @user[:other_names].split("|").each do |other_name|
+        if !user.other_names.nil?
+          user.other_names.split("|").each do |other_name|
             next if !other_name.include?(" ")
             begin
               parsed = Namae.parse other_name.gsub(/\./, ".\s")
@@ -193,7 +193,7 @@ module Sinatra
 
         if !params.has_key?(:relaxed) || params[:relaxed] == "0"
           agents.delete_if do |key,value|
-            !@user[:given].nil? && !key[:given].nil? && DwcAgent.similarity_score(key[:given], @user[:given]) == 0
+            !user.given.nil? && !key[:given].nil? && DwcAgent.similarity_score(key[:given], user.given) == 0
           end
         end
         agents.compact.uniq
@@ -384,6 +384,43 @@ module Sinatra
         born = !user.date_born.nil? ? user.date_born.to_formatted_s(:long) : "?"
         died = !user.date_died.nil? ? user.date_died.to_formatted_s(:long) : "?"
         "(" + ["b. " + born, "d. " + died].join(" &ndash; ") + ")"
+      end
+
+      def upload_file(user_id:, created_by:)
+        @error = nil
+        @record_count = 0
+        if params[:file] && params[:file][:tempfile]
+          tempfile = params[:file][:tempfile]
+          filename = params[:file][:filename]
+          if params[:file][:type] == "text/csv" && params[:file][:tempfile].size <= 5_000_000
+            begin
+              items = []
+              CSV.foreach(tempfile, headers: true) do |row|
+                action = row["action"].gsub(/\s+/, "") rescue nil
+                next if action.blank?
+                if UserOccurrence.accepted_actions.include?(action) && row.include?("gbifID")
+                  items << UserOccurrence.new({
+                    occurrence_id: row["gbifID"],
+                    user_id: user_id,
+                    created_by: created_by,
+                    action: action
+                  })
+                  @record_count += 1
+                end
+              end
+              UserOccurrence.import items, batch_size: 250, validate: false, on_duplicate_key_ignore: true
+              tempfile.unlink
+            rescue
+              tempfile.unlink
+              @error = "There was an error in your file. Did it at least contain the headers, action and gbifID and were columns separated by commas?"
+            end
+          else
+            tempfile.unlink
+            @error = "Only files of type tex/csv less than 5MB are accepted."
+          end
+        else
+          @error = "No file was uploaded."
+        end
       end
 
       def cycle

@@ -15,6 +15,8 @@
   %div{class: "alert alert-warning", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
     Did not sniff any specimens indexed by the Global Biodiversity Information Facility (GBIF) or all #{@viewed_user.fullname}'s specimens might have already been claimed.
 - else
+  = haml :'partials/upload_claim_modal', layout: false, locals: { csv_download_url: "/help-others/#{@viewed_user.identifier}/candidates.csv", csv_upload_url: "/help-others/#{@viewed_user.identifier}/upload-claims", user: @viewed_user}
+
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
     Help attribute #{number_with_delimiter(@total, delimeter: ",")} specimens to
     %span{class:"font-weight-bold"} #{@viewed_user.fullname}.
@@ -23,6 +25,8 @@
     collected, 
     %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
     identified, or Both.
+    %a{href: "#", "data-toggle":"modal", "data-target":"#modal_claims"} Work offline then upload 
+    claims.
 
 - if !@results.empty?
   %table{class:"table table-hover table-sm"}

@@ -149,7 +149,7 @@ module Sinatra
             return { count: 0}.to_json if @user[:family].nil?
 
             user = User.find(@user[:id])
-            agent_ids = candidate_agents.map{|a| a[:id] if a[:score] >= 10 }.compact
+            agent_ids = candidate_agents(user).map{|a| a[:id] if a[:score] >= 10 }.compact
             count = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
                                                        .count
             { count: count }.to_json
@@ -158,7 +158,7 @@ module Sinatra
           app.get '/profile/candidates.csv' do
             protected!
             user = User.find(@user[:id])
-            agent_ids = candidate_agents.pluck(:id)
+            agent_ids = candidate_agents(user).pluck(:id)
             records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
             csv_stream_headers("bloodhound-candidates")
             body csv_stream_candidates(records)
@@ -168,12 +168,13 @@ module Sinatra
             protected!
             occurrence_ids = []
             @page = (params[:page] || 1).to_i
+            user = User.find(@user[:id])
 
-            if @user[:family].nil?
+            if user.family.nil?
               @results = []
               @total = nil
             else
-              id_scores = candidate_agents.map{|a| { id: a[:id], score: a[:score] } if a[:score] >= 10 }.compact
+              id_scores = candidate_agents(user).map{|a| { id: a[:id], score: a[:score] } if a[:score] >= 10 }.compact
 
               if !id_scores.empty?
                 ids = id_scores.map{|a| a[:id]}
@@ -183,7 +184,7 @@ module Sinatra
                     id_scores << { id: id, score: 1 } #TODO: how to more effectively use the edge weights here?
                   end
                 end
-                occurrence_ids = occurrences_by_score(id_scores, User.find(@user[:id]))
+                occurrence_ids = occurrences_by_score(id_scores, user)
               end
 
               specimen_pager(occurrence_ids)
@@ -213,41 +214,7 @@ module Sinatra
 
           app.post '/profile/upload-claims' do
             protected!
-            @error = nil
-            @record_count = 0
-            accepted_actions = ["identified","recorded","identified,recorded","recorded,identified"]
-            if params[:file] && params[:file][:tempfile]
-              tempfile = params[:file][:tempfile]
-              filename = params[:file][:filename]
-              if params[:file][:type] == "text/csv" && params[:file][:tempfile].size <= 5_000_000
-                begin
-                  items = []
-                  CSV.foreach(tempfile, headers: true) do |row|
-                    action = row["action"].gsub(/\s+/, "") rescue nil
-                    next if action.blank?
-                    if accepted_actions.include?(action) && row.include?("gbifID")
-                      items << UserOccurrence.new({
-                        occurrence_id: row["gbifID"],
-                        user_id: @user[:id],
-                        created_by: @user[:id],
-                        action: action
-                      })
-                      @record_count += 1
-                    end
-                  end
-                  UserOccurrence.import items, batch_size: 250, validate: false, on_duplicate_key_ignore: true
-                  tempfile.unlink
-                rescue
-                  tempfile.unlink
-                  @error = "There was an error in your file. Did it at least contain the headers, action and gbifID and were columns separated by commas?"
-                end
-              else
-                tempfile.unlink
-                @error = "Only files of type tex/csv less than 5MB are accepted."
-              end
-            else
-              @error = "No file was uploaded."
-            end
+            upload_file(user_id: @user[:id], created_by: @user[:id])
             haml :'profile/upload'
           end
 
@@ -292,6 +259,16 @@ module Sinatra
               status 404
               haml :oops
             end
+          end
+
+          app.get '/profile/refresh.json' do
+            protected!
+            content_type "application/json", charset: 'utf-8'
+            user = User.find(@user[:id])
+            user.update_profile
+            update_session
+            cache_clear "fragments/#{user.identifier}"
+            { message: "ok" }.to_json
           end
 
           app.get '/logout' do
@@ -389,14 +366,30 @@ module Sinatra
             end
           end
 
-          app.get '/profile/refresh.json' do
+          app.get '/help-others/:id/candidates.csv' do
             protected!
-            content_type "application/json", charset: 'utf-8'
-            user = User.find(@user[:id])
-            user.update_profile
-            update_session
-            cache_clear "fragments/#{user.identifier}"
-            { message: "ok" }.to_json
+            if params[:id].is_orcid? || params[:id].is_wiki_id?
+              @viewed_user = find_user(params[:id])
+              agent_ids = candidate_agents(@viewed_user).pluck(:id)
+              records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @viewed_user.user_occurrences.select(:occurrence_id))
+              csv_stream_headers("bloodhound-candidates-#{params[:id]}")
+              body csv_stream_candidates(records)
+            else
+              status 404
+              haml :oops
+            end
+          end
+
+          app.post '/help-others/:id/upload-claims' do
+            protected!
+            if params[:id].is_orcid? || params[:id].is_wiki_id?
+              @viewed_user = find_user(params[:id])
+              upload_file(user_id: @viewed_user.id, created_by: @user[:id])
+              haml :'help/upload'
+            else
+              status 404
+              haml :oops
+            end
           end
 
           app.get '/:id/specimens.json' do

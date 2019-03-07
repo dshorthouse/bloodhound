@@ -11,6 +11,10 @@ class UserOccurrence < ActiveRecord::Base
 
    alias_attribute :user_occurrence_id, :id
 
+   def self.accepted_actions
+     ["identified","recorded","identified,recorded","recorded,identified"]
+   end
+
    def recorded?
      action.include? "recorded"
    end
