@@ -20,7 +20,8 @@
 - else
   %h3 Specimens Used In
   %p{class: "citation"}
-    %a{href: "https://doi.org/#{@article.doi}"} #{@article.citation}
+    #{@article.citation}
+    %a{href: "https://doi.org/#{@article.doi}"} https://doi.org/#{@article.doi}
 
   %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
     %div{class: "col col-12"}

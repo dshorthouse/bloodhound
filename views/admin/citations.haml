@@ -26,9 +26,12 @@
       %div{class: "card"}
         %div{class: "card-header"}
           %p{class: "citation card-title"}
-            %a{href: "https://doi.org/#{article.doi}"} #{article.citation}
+            #{article.citation}
         %div{class: "card-body"}
           %dl{class: "row"}
+            %dt{class: "col-sm-2"} DOI
+            %dd{class: "col-sm-10"}
+              %a{href: "https://doi.org/#{article.doi}"} #{article.doi}
             %dt{class: "col-sm-2"} Abstract:
             %dd{class: "col-sm-10"} #{article.abstract}
             %dt{class: "col-sm-2"} Specimens used:
