@@ -22,22 +22,49 @@
           Log in or register with ORCID
 
     %p
-      Suggested items to make publicly visible in your ORCID account
+      Suggested details to make publicly visible in your ORCID account
 
     %ol
       %li Full name
       %li
         %em Also known as
         names
-      %li Country
-      %li Employment
-      %li Education and qualifications
+        %small
+          %sup a
+      %li
+        Country
+        %small
+          %sup b
+      %li
+        Keywords
+        %small
+          %sup b
+      %li
+        Employment
+        %small
+          %sup b
+      %li
+        Education and qualifications
+        %small
+          %sup b
+      %li Works
+
+    %div
+      %small
+        %sup a
+        Alternate names, inclusive of nicknames and family names are particurly useful to help Bloodhound find your specimen data,
+        %em eg
+        Miles Zhang, M. Zhang
+    %div
+      %small
+        %sup b
+        These will be drawn into your Bloodhound profile where they are periodically refreshed
 
 %h3 Step 2
 %div{class:"media bd-callout bd-callout-info d-flex flex-wrap"}
   %img{src:"/images/profile-tabs.png", alt:"Bloodhound profile tabs", class:"align-self-start mr-3 mb-3", width:"250"}
   %div{class:"media-body"}
-    %h5{class:"mt-0"} Visit the Discovered tab of your profile
+    %h5{class:"mt-0"} Visit the Discovered tab in your profile
     %p
       Once authenticated via ORCID, Bloodhound first shows you an
       - if !authorized?
@@ -46,7 +73,7 @@
       - else
         %strong
           %a{href: "/profile"} Overview
-      of your profile. It pulls your full name and other details from your ORCID account, which you may refresh at any time. Click the
+      of your profile. It pulls your full name and other details (see above) from your ORCID account, which you may refresh at any time. Click the
       - if !authorized?
         %strong Discovered
       - else
@@ -77,10 +104,13 @@
         %li
           %img{src:"/images/microscope-unselected.png", alt:"Identified icon", width:"18"}
           for specimens you identified or,
-        %li Both for specimens you collected & identified
+        %li
+          %strong
+            Both
+          for specimens you collected & identified
       Click the "Not me" buttons to ignore
       %em all visible rows
-      or single rows of specimen records. Make a mistake? Visit other tabs in your profile like
+      or single rows of specimen records. Make a mistake? Visit other tabs in your profile such as
       - if !authorized?
         %strong My Specimens
       - else
@@ -93,3 +123,4 @@
         %strong
           %a{href: "/profile/ignored"} Ignored
       to repair or adjust your selections.
+    %p Too many specimen records or want to sort by columns and/or filter by content? Click "work offline then upload" to view instructions on how to download, add claims in a spreadsheet, then upload a completed csv file.
