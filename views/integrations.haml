@@ -65,9 +65,18 @@
       %a{href: "https://gbif.org/occurrence/477976412"} https://gbif.org/occurrence/477976412
 
 %h3 Raw Data
+
+%div{class: "bd-callout bd-callout-info"}
+  %h5 List of Public Profiles
+  %div
+    %a{href: "/data/bloodhound-public-profiles.csv"} bloodhound-public-profiles.csv
+  %p
+    %smal{class:"text-muted"}
+      Where the above csv includes a header, "Family, Given, wikidata, ORCID, URL"
+    
 - if @compressed_file_size
   %div{class: "bd-callout bd-callout-info"}
-    %h5 All Claims from Public, Authenticated Profiles
+    %h5 All Claims from Public Profiles
     %div
       Daily build,
       %a{href: "/data/bloodhound-public-claims.csv.gz"} bloodhound-public-claims.csv.gz
