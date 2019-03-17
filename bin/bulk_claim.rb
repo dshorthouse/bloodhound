@@ -56,11 +56,22 @@ else
       determinations = agent.occurrence_determiners.pluck(:occurrence_id)
     else
       where_hash = JSON.parse options[:where].gsub('=>', ':')
-      if options[:where].include?("LIKE ?")
-        where_hash = where_hash.keys[0], where_hash.values[0]
-      end
-      recordings = agent.recordings.where(where_hash).pluck(:gbifID)
-      determinations = agent.determinations.where(where_hash).pluck(:gbifID)
+
+      recordings = where_hash.inject(agent.recordings) do |o, a|
+        if a[0].include?(" ?")
+          o.send("where", a)
+        else
+          o.send("where", Hash[[a]])
+        end
+      end.pluck(:gbifID)
+
+      determinations = where_hash.inject(agent.determinations) do |o, a|
+        if a[0].include?(" ?")
+          o.send("where", a)
+        else
+          o.send("where", Hash[[a]])
+        end
+      end.pluck(:gbifID)
     end
 
     uniq_recordings = (recordings - determinations) - claimed
