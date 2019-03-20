@@ -203,18 +203,17 @@ module Sinatra
             @admin_user = User.find(params[:user_id].to_i)
             @error = nil
             @record_count = 0
-            accepted_actions = ["identified","recorded","identified,recorded","recorded,identified"]
             if params[:file] && params[:file][:tempfile]
               tempfile = params[:file][:tempfile]
               filename = params[:file][:filename]
               if params[:file][:type] == "text/csv" && params[:file][:tempfile].size <= 5_000_000
                 items = []
-                CSV.foreach(tempfile, headers: true) do |row|
-                  action = row["action"].gsub(/\s+/, "") rescue nil
+                CSV.foreach(tempfile, headers: true, header_converters: :symbol) do |row|
+                  action = row[:action].gsub(/\s+/, "") rescue nil
                   next if action.blank?
-                  if accepted_actions.include?(action) && row.include?("gbifID")
+                  if UserOccurrence.accepted_actions.include?(action) && row.headers.include?(:gbifid)
                     items << UserOccurrence.new({
-                      occurrence_id: row["gbifID"],
+                      occurrence_id: row[:gbifid],
                       user_id: @admin_user.id,
                       created_by: @admin_user.id,
                       action: action

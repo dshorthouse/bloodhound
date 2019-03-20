@@ -376,12 +376,12 @@ module Sinatra
           if params[:file][:type] == "text/csv" && params[:file][:tempfile].size <= 5_000_000
             begin
               items = []
-              CSV.foreach(tempfile, headers: true) do |row|
-                action = row["action"].gsub(/\s+/, "") rescue nil
+              CSV.foreach(tempfile, headers: true, header_converters: :symbol) do |row|
+                action = row[:action].gsub(/\s+/, "") rescue nil
                 next if action.blank?
-                if UserOccurrence.accepted_actions.include?(action) && row.include?("gbifID")
+                if UserOccurrence.accepted_actions.include?(action) && row.headers.include?(:gbifid)
                   items << UserOccurrence.new({
-                    occurrence_id: row["gbifID"],
+                    occurrence_id: row[:gbifid],
                     user_id: user_id,
                     created_by: created_by,
                     action: action
