@@ -177,7 +177,9 @@ module Sinatra
 
         if !user.other_names.nil?
           user.other_names.split("|").each do |other_name|
-            next if !other_name.include?(" ")
+            if !other_name.include?(" ")
+              other_name = [other_name, user.family].join(" ")
+            end
             begin
               parsed = Namae.parse other_name.gsub(/\./, ".\s")
               name = DwcAgent.clean(parsed[0])
@@ -194,27 +196,6 @@ module Sinatra
         if !params.has_key?(:relaxed) || params[:relaxed] == "0"
           agents.delete_if do |key,value|
             !user.given.nil? && !key[:given].nil? && DwcAgent.similarity_score(key[:given], user.given) == 0
-          end
-        end
-        agents.compact.uniq
-      end
-
-      def admin_candidate_agents
-        agents = search_agents(@admin_user.family, @admin_user.given)
-
-        if !@admin_user.other_names.nil?
-          @admin_user.other_names.split("|").each do |other_name|
-            next if !other_name.include?(" ")
-            begin
-              parsed = Namae.parse other_name.gsub(/\./, ".\s")
-              name = DwcAgent.clean(parsed[0])
-              family = !name[:family].nil? ? name[:family] : ""
-              given = !name[:given].nil? ? name[:given] : ""
-              if !family.blank?
-                agents.concat search_agents(family, given)
-              end
-            rescue
-            end
           end
         end
         agents.compact.uniq

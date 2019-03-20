@@ -162,7 +162,7 @@ module Sinatra
           app.get '/admin/user/:id/candidates.csv' do
             protected!
             @admin_user = find_user(params[:id])
-            agent_ids = admin_candidate_agents.pluck(:id)
+            agent_ids = candidate_agents(@admin_user).pluck(:id)
             records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @admin_user.user_occurrences.select(:occurrence_id))
             csv_stream_headers("bloodhound-candidates")
             body csv_stream_candidates(records)
@@ -179,8 +179,8 @@ module Sinatra
               @results = []
               @total = nil
             else
-              id_scores = admin_candidate_agents.map{|a| { id: a[:id], score: a[:score] } }
-                                                .compact
+              id_scores = candidate_agents(@admin_user).map{|a| { id: a[:id], score: a[:score] } }
+                                                       .compact
               if !id_scores.empty?
                 ids = id_scores.map{|a| a[:id]}
                 nodes = AgentNode.where(agent_id: ids)
@@ -240,7 +240,7 @@ module Sinatra
             @admin_user = User.find(params[:user_id].to_i)
             return { count: 0 }.to_json if @admin_user.family.nil?
 
-            agent_ids = admin_candidate_agents.pluck(:id)
+            agent_ids = candidate_agents(@admin_user).pluck(:id)
             count = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @admin_user.user_occurrences.select(:occurrence_id)).count
             { count: count }.to_json
           end
