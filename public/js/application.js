@@ -295,11 +295,14 @@ var Application = (function($, window) {
       });
     },
     candidate_counter: function() {
-      var self = this;
+      var self = this, relaxed = 0;
       if (self.path === "/profile" || (self.path === "/admin" && self.user_id)) {
+        if (self.path === "/admin") {
+          relaxed = 1;
+        }
         $.ajax({
           method: "GET",
-          url: self.path + "/candidate-count.json?user_id=" + self.user_id
+          url: self.path + "/candidate-count.json?relaxed=" + relaxed + "&user_id=" + self.user_id
         }).done(function(data) {
           if (data.count > 0 && data.count <= 50) {
             $(".badge-notify").text(data.count).show();
