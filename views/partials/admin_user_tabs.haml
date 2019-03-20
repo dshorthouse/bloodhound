@@ -4,7 +4,7 @@
   %li{class: "nav-item "}
     %a{class: "nav-link#{locals[:active_page] == "specimens" ? " active" : nil}", href: "/admin/user/#{@admin_user.identifier}/specimens"} Claimed
   %li{class: "nav-item badge-item"}
-    %a{class: "nav-link#{locals[:active_page] == "candidates" ? " active" : nil}", href: "/admin/user/#{@admin_user.identifier}/candidates"}
+    %a{class: "nav-link#{locals[:active_page] == "candidates" ? " active" : nil}", href: "/admin/user/#{@admin_user.identifier}/candidates?relaxed=1"}
       Discovered
     %span{class: "badge-notify badge badge-danger badge-pill"}
   %li{class: "nav-item"}
