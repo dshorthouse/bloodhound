@@ -374,9 +374,10 @@ module Sinatra
           tempfile = params[:file][:tempfile]
           filename = params[:file][:filename]
           if params[:file][:type] == "text/csv" && params[:file][:tempfile].size <= 5_000_000
+            charset = detect_charset(params[:file][:tempfile].path)
             begin
               items = []
-              CSV.foreach(tempfile, headers: true, header_converters: :symbol) do |row|
+              CSV.foreach(tempfile, headers: true, header_converters: :symbol, encoding: "#{charset}:utf-8") do |row|
                 action = row[:action].gsub(/\s+/, "") rescue nil
                 next if action.blank?
                 if UserOccurrence.accepted_actions.include?(action) && row.headers.include?(:gbifid)
@@ -464,6 +465,18 @@ module Sinatra
             end
           end
         end
+      end
+
+      # from https://stackoverflow.com/questions/24897465/determining-encoding-for-a-file-in-ruby
+      def detect_charset(file_path)
+        charset = if OS.mac?
+          `file -I #{file_path}`.strip.split('charset=').last
+        elsif OS.linux?
+          `file -i #{file_path}`.strip.split('charset=').last
+        else
+          nil
+        end
+      rescue => e 
       end
 
     end

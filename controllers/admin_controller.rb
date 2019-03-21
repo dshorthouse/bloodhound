@@ -207,8 +207,9 @@ module Sinatra
               tempfile = params[:file][:tempfile]
               filename = params[:file][:filename]
               if params[:file][:type] == "text/csv" && params[:file][:tempfile].size <= 5_000_000
+                charset = detect_charset(params[:file][:tempfile].path)
                 items = []
-                CSV.foreach(tempfile, headers: true, header_converters: :symbol) do |row|
+                CSV.foreach(tempfile, headers: true, header_converters: :symbol, encoding: "#{charset}:utf-8") do |row|
                   action = row[:action].gsub(/\s+/, "") rescue nil
                   next if action.blank?
                   if UserOccurrence.accepted_actions.include?(action) && row.headers.include?(:gbifid)
