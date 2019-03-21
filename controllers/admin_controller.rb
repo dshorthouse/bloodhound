@@ -206,7 +206,7 @@ module Sinatra
             if params[:file] && params[:file][:tempfile]
               tempfile = params[:file][:tempfile]
               filename = params[:file][:filename]
-              if params[:file][:type] == "text/csv" && params[:file][:tempfile].size <= 5_000_000
+              if ["text/csv", "text/plain"].include?(params[:file][:type]) && params[:file][:tempfile].size <= 5_000_000
                 charset = detect_charset(params[:file][:tempfile].path)
                 items = []
                 CSV.foreach(tempfile, headers: true, header_converters: :symbol, encoding: "#{charset}:utf-8") do |row|
@@ -226,7 +226,7 @@ module Sinatra
                 tempfile.unlink
               else
                 tempfile.unlink
-                @error = "Only files of type text/csv less than 5MB are accepted."
+                @error = "Only files of type text/csv or text/plain less than 5MB are accepted."
               end
             else
               @error = "No file was uploaded."
