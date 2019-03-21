@@ -373,11 +373,11 @@ module Sinatra
         if params[:file] && params[:file][:tempfile]
           tempfile = params[:file][:tempfile]
           filename = params[:file][:filename]
-          if ["text/csv", "text/plain"].include?(params[:file][:type]) && params[:file][:tempfile].size <= 5_000_000
-            charset = detect_charset(params[:file][:tempfile].path)
+          mime_encoding = detect_mime_encoding(params[:file][:tempfile].path)
+          if ["text/csv", "text/plain"].include?(mime_encoding[0]) && params[:file][:tempfile].size <= 5_000_000
             begin
               items = []
-              CSV.foreach(tempfile, headers: true, header_converters: :symbol, encoding: "#{charset}:utf-8") do |row|
+              CSV.foreach(tempfile, headers: true, header_converters: :symbol, encoding: "#{mime_encoding[1]}:utf-8") do |row|
                 action = row[:action].gsub(/\s+/, "") rescue nil
                 next if action.blank?
                 if UserOccurrence.accepted_actions.include?(action) && row.headers.include?(:gbifid)
@@ -468,15 +468,10 @@ module Sinatra
       end
 
       # from https://stackoverflow.com/questions/24897465/determining-encoding-for-a-file-in-ruby
-      def detect_charset(file_path)
-        charset = if OS.mac?
-          `file -I #{file_path}`.strip.split('charset=').last
-        elsif OS.linux?
-          `file -i #{file_path}`.strip.split('charset=').last
-        else
-          nil
-        end
-      rescue => e 
+      def detect_mime_encoding(file_path)
+        mt = FileMagic.new(:mime_type)
+        me = FileMagic.new(:mime_encoding)
+        [mt.file(file_path), me.file(file_path)]
       end
 
     end

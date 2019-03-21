@@ -51,7 +51,7 @@ require 'biodiversity'
 require 'rss'
 require 'xml-sitemap'
 require 'wikidata'
-require 'os'
+require 'filemagic'
 
 Hashie.logger = Logger.new(nil)
 

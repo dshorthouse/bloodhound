@@ -206,10 +206,10 @@ module Sinatra
             if params[:file] && params[:file][:tempfile]
               tempfile = params[:file][:tempfile]
               filename = params[:file][:filename]
-              if ["text/csv", "text/plain"].include?(params[:file][:type]) && params[:file][:tempfile].size <= 5_000_000
-                charset = detect_charset(params[:file][:tempfile].path)
+              mime_encoding = detect_mime_encoding(params[:file][:tempfile].path)
+              if ["text/csv", "text/plain"].include?(mime_encoding[0]) && params[:file][:tempfile].size <= 5_000_000
                 items = []
-                CSV.foreach(tempfile, headers: true, header_converters: :symbol, encoding: "#{charset}:utf-8") do |row|
+                CSV.foreach(tempfile, headers: true, header_converters: :symbol, encoding: "#{mime_encoding[1]}:utf-8") do |row|
                   action = row[:action].gsub(/\s+/, "") rescue nil
                   next if action.blank?
                   if UserOccurrence.accepted_actions.include?(action) && row.headers.include?(:gbifid)

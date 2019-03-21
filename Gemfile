@@ -37,7 +37,7 @@ gem 'biodiversity'
 gem 'rss'
 gem 'xml-sitemap'
 gem 'wikidata-client'
-gem 'os'
+gem 'ruby-filemagic'
 
 group :production do
 end
