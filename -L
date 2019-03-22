@@ -1,0 +1,12 @@
+HTTP/2 302 
+date: Fri, 22 Mar 2019 12:24:59 GMT
+content-type: text/html;charset=utf-8
+content-length: 189
+set-cookie: __cfduid=d540f0dd6288bc88bbfaee0b42317ea0b1553257499; expires=Sat, 21-Mar-20 12:24:59 GMT; path=/; domain=.doi.org; HttpOnly
+vary: Accept
+location: https://japanlinkcenter.org/data/10.18942/apg.201812
+expires: Fri, 22 Mar 2019 13:11:48 GMT
+expect-ct: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+server: cloudflare
+cf-ray: 4bb8254ebcefca51-YUL
+
