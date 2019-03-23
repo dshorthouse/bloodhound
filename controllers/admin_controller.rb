@@ -200,37 +200,7 @@ module Sinatra
 
           app.post '/admin/upload-claims' do
             admin_protected!
-            @admin_user = User.find(params[:user_id].to_i)
-            @error = nil
-            @record_count = 0
-            if params[:file] && params[:file][:tempfile]
-              tempfile = params[:file][:tempfile]
-              filename = params[:file][:filename]
-              mime_encoding = detect_mime_encoding(params[:file][:tempfile].path)
-              if ["text/csv", "text/plain"].include?(mime_encoding[0]) && params[:file][:tempfile].size <= 5_000_000
-                items = []
-                CSV.foreach(tempfile, headers: true, header_converters: :symbol, encoding: "#{mime_encoding[1]}:utf-8") do |row|
-                  action = row[:action].gsub(/\s+/, "") rescue nil
-                  next if action.blank?
-                  if UserOccurrence.accepted_actions.include?(action) && row.headers.include?(:gbifid)
-                    items << UserOccurrence.new({
-                      occurrence_id: row[:gbifid],
-                      user_id: @admin_user.id,
-                      created_by: @admin_user.id,
-                      action: action
-                    })
-                    @record_count += 1
-                  end
-                end
-                UserOccurrence.import items, batch_size: 250, validate: false, on_duplicate_key_ignore: true
-                tempfile.unlink
-              else
-                tempfile.unlink
-                @error = "Only files of type text/csv or text/plain less than 5MB are accepted."
-              end
-            else
-              @error = "No file was uploaded."
-            end
+            upload_file(user_id: params[:user_id], created_by: @user[:id])
             haml :'admin/upload'
           end
 
