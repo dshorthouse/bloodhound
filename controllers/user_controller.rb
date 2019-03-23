@@ -615,6 +615,17 @@ module Sinatra
             end
           end
 
+          app.get '/:id/progress.json' do
+            content_type "application/json"
+
+            user = find_user(params[:id])
+            claimed = user.all_occurrences_count
+            agent_ids = candidate_agents(user).map{|a| a[:id] if a[:score] >= 10 }.compact
+            unclaimed = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
+                                                           .count
+            { claimed: claimed, unclaimed: unclaimed }.to_json
+          end
+
         end
 
       end

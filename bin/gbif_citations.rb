@@ -23,7 +23,7 @@ OptionParser.new do |opts|
     options[:article_id] = article_id
   end
 
-  opts.on("-d", "--delete", "Delete irrelevant article_occurrences entries") do
+  opts.on("-d", "--delete", "Delete irrelevant article_occurrences entries because gbifID no longer exists") do
     options[:delete] = true
   end
 
