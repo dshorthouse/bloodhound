@@ -11,14 +11,16 @@ var ProgressBar = (function($, window) {
       this.candidate_counter();
     },
     candidate_counter: function() {
-      var self = this, percent;
+      var self = this, percent, progress_bar = $('#progress-bar');
       $.ajax({
         method: "GET",
         url: "/" + self.user_id + "/progress.json?relaxed=0"
       }).done(function(data) {
-        console.log(data);
         percent = parseInt(100 * data.claimed / (data.claimed + data.unclaimed), 10);
-        $('#progress-bar').width(percent + '%');
+        progress_bar.width(percent + '%');
+        if (percent === 100) {
+          progress_bar.removeClass("bg-info").addClass("bg-success");
+        }
       });
     }
   };
