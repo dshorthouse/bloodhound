@@ -6,6 +6,10 @@ rvm:
 branches:
   only:
       - master
+addons:
+  apt:
+    packages:
+      - libmagic-dev
 services:
   - mysql
 install:
