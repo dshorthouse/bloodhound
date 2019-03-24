@@ -18,11 +18,13 @@
           %span{class:"font-weight-bold"} 5MB or less
           with a single header row minimally containing
           %span{class:"font-weight-bold"} action
+          or
+          %span{class:"font-weight-bold"} not me
           and
           %span{class:"font-weight-bold"} gbifID
           are accepted. This routine does not update underlying specimen data nor does it update existing claims; if existing claims are present in the upload, these will be skipped.
         %p{class:"text-center"}
-          %img{src: "/images/candidates-instructions.png", width:450, alt: "Instructions for offline claims"}
+          %img{src: "/images/candidates-instructions.png", width:650, alt: "Instructions for offline claims"}
         %form{id:"#form-wrapper", method: :post, action: "#{locals[:csv_upload_url]}", enctype: "multipart/form-data", "accept-charset": "UTF-8", class: "form"}
           - relaxed = params["relaxed"] == "1" ? "?relaxed=1" : nil
           %div{class:"container-fluid"}

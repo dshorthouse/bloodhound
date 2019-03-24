@@ -379,13 +379,22 @@ module Sinatra
               items = []
               CSV.foreach(tempfile, headers: true, header_converters: :symbol, encoding: "#{mime_encoding[1]}:utf-8") do |row|
                 action = row[:action].gsub(/\s+/, "") rescue nil
-                next if action.blank?
+                next if action.blank? && row[:not_me].blank?
                 if UserOccurrence.accepted_actions.include?(action) && row.headers.include?(:gbifid)
                   items << UserOccurrence.new({
                     occurrence_id: row[:gbifid],
                     user_id: user_id,
                     created_by: created_by,
                     action: action
+                  })
+                  @record_count += 1
+                elsif (row[:not_me].downcase == "true" || row[:not_me] == 1) && row.headers.include?(:gbifid)
+                  items << UserOccurrence.new({
+                    occurrence_id: row[:gbifid],
+                    user_id: user_id,
+                    created_by: created_by,
+                    action: nil,
+                    visible: 0
                   })
                   @record_count += 1
                 end
@@ -456,11 +465,11 @@ module Sinatra
 
       def csv_stream_candidates(occurrences)
         Enumerator.new do |y|
-          header = ["action"].concat(Occurrence.attribute_names)
+          header = ["action"].concat(Occurrence.attribute_names).concat(["not me"])
           y << CSV::Row.new(header, header, true).to_s
           if !occurrences.empty?
             occurrences.each do |o|
-              data = [""].concat(o.occurrence.attributes.values)
+              data = [""].concat(o.occurrence.attributes.values).concat([""])
               y << CSV::Row.new(header, data).to_s
             end
           end

@@ -164,7 +164,7 @@ module Sinatra
             @admin_user = find_user(params[:id])
             agent_ids = candidate_agents(@admin_user).pluck(:id)
             records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @admin_user.user_occurrences.select(:occurrence_id))
-            csv_stream_headers("bloodhound-candidates")
+            csv_stream_headers("bloodhound-candidates-#{params[:id]}")
             body csv_stream_candidates(records)
           end
 
@@ -198,9 +198,10 @@ module Sinatra
             haml :'admin/candidates', locals: { active_page: "administration" }
           end
 
-          app.post '/admin/upload-claims' do
+          app.post '/admin/user/:id/upload-claims' do
             admin_protected!
-            upload_file(user_id: params[:user_id], created_by: @user[:id])
+            @admin_user = find_user(params[:id])
+            upload_file(user_id: @admin_user.id, created_by: @user[:id])
             haml :'admin/upload'
           end
 
