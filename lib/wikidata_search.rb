@@ -73,9 +73,11 @@ module Bloodhound
     end
 
     def create_user(wikidata)
-      u = User.create(wikidata: wikidata)
-      u.update_wikidata_profile
-      puts "#{u.fullname_reverse}".green
+      if !wikidata[:family].nil? && !wikidata[:given].nil?
+        u = User.create(wikidata: wikidata)
+        u.update_profile
+        puts "#{u.fullname_reverse}".green
+      end
     end
 
     def find_country_code(name)
