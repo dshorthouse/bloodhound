@@ -11,8 +11,12 @@ OptionParser.new do |opts|
     options[:country_codes] = true
   end
 
-  opts.on("-p", "--poll", "Poll ORCID for new users") do
-    options[:poll] = true
+  opts.on("-p", "--poll-orcid", "Poll ORCID for new accounts") do
+    options[:poll_orcid] = true
+  end
+
+  opts.on("-w", "--poll-wikidata", "Poll wikidata for new accounts") do
+    options[:poll_wikidata] = true
   end
 
   opts.on("-o", "--orcid [ORCID]", String, "Add/update user with an ORCID") do |orcid|
@@ -49,8 +53,13 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-if options[:poll]
+if options[:poll_orcid]
   search = Bloodhound::OrcidSearch.new
+  search.populate_new_users
+end
+
+if options[:poll_wikidata]
+  search = Bloodhound::WikidataSearch.new
   search.populate_new_users
 end
 

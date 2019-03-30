@@ -38,6 +38,7 @@ gem 'rss'
 gem 'xml-sitemap'
 gem 'wikidata-client'
 gem 'ruby-filemagic'
+gem 'sparql-client'
 
 group :production do
 end

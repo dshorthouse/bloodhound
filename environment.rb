@@ -52,6 +52,7 @@ require 'rss'
 require 'xml-sitemap'
 require 'wikidata'
 require 'filemagic'
+require 'sparql/client'
 
 Hashie.logger = Logger.new(nil)
 
