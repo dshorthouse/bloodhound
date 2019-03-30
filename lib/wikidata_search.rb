@@ -40,8 +40,8 @@ module Bloodhound
     end
 
     def populate_new_users
-      (found_wikicodes - existing_wikicodes).each do |wikidata|
-        create_user(wikidata)
+      (found_wikicodes - existing_wikicodes).each do |wikicode|
+        create_user(wikicode)
       end
     end
 
@@ -72,10 +72,10 @@ module Bloodhound
       User.pluck(:wikidata)
     end
 
-    def create_user(wikidata)
-      if !wikidata[:family].nil? && !wikidata[:given].nil?
-        u = User.create(wikidata: wikidata)
-        u.update_profile
+    def create_user(wikicode)
+      user = account_data(wikicode).merge({wikidata: wikicode})
+      if !user[:family].nil? && !user[:given].nil?
+        u = User.create(user)
         puts "#{u.fullname_reverse}".green
       end
     end
