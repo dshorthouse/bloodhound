@@ -138,7 +138,6 @@ module Sinatra
           app.get '/admin/user/:id/specimens.csv' do
             admin_protected!
             user = find_user(params[:id])
-            user = User.find_by_orcid(params[:orcid])
             records = user.visible_occurrences
             csv_stream_headers
             body csv_stream_occurrences(records)
