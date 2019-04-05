@@ -7,6 +7,8 @@ development:
   reconnect: true
   pool: 40
   timeout: 5000
+  neo4j_username:
+  neo4j_password:
   orcid_api_url: 'https://pub.orcid.org/v2.1/'
   orcid_key: ''
   orcid_secret: ''
