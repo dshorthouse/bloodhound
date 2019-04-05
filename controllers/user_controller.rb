@@ -342,15 +342,14 @@ module Sinatra
 
           app.get '/help-others/:id/candidates.csv' do
             protected!
+            csv_stream_headers
             if params[:id].is_orcid? || params[:id].is_wiki_id?
               @viewed_user = find_user(params[:id])
               agent_ids = candidate_agents(@viewed_user).pluck(:id)
               records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @viewed_user.user_occurrences.select(:occurrence_id))
-              csv_stream_headers("bloodhound-candidates-#{params[:id]}")
               body csv_stream_candidates(records)
             else
               status 404
-              haml :oops
             end
           end
 
@@ -405,9 +404,9 @@ module Sinatra
           app.get '/:id/specimens.csv' do
             if params[:id].is_orcid? || params[:id].is_wiki_id?
               begin
+                csv_stream_headers
                 @viewed_user = find_user(params[:id])
                 records = @viewed_user.visible_occurrences
-                csv_stream_headers
                 body csv_stream_occurrences(records)
               rescue
                 status 404

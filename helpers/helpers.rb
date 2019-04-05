@@ -446,8 +446,8 @@ module Sinatra
       end
 
       def csv_stream_headers(file_name = "download")
-        content_type "application/csv"
-        attachment !params[:orcid].nil? ? "#{params[:orcid]}.csv" : "#{file_name}.csv"
+        content_type "application/csv", charset: 'utf-8'
+        attachment !params[:id].nil? ? "#{params[:id]}.csv" : "#{file_name}.csv"
         cache_control :no_cache
         headers.delete("Content-Length")
       end
