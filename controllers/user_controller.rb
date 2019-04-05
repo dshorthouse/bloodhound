@@ -318,32 +318,7 @@ module Sinatra
                 @results = []
                 @total = nil
               else
-                agents = search_agents(@viewed_user.family, @viewed_user.given)
-
-                if !@viewed_user.other_names.nil?
-                  @viewed_user.other_names.split("|").each do |other_name|
-                    begin
-                      parsed = Namae.parse other_name.gsub(/\./, ".\s")
-                      name = DwcAgent.clean(parsed[0])
-                      family = !name[:family].nil? ? name[:family] : ""
-                      given = !name[:given].nil? ? name[:given] : ""
-                      if !family.blank?
-                        agents.concat search_agents(family, given)
-                      end
-                    rescue
-                    end
-                  end
-                end
-
-                if !params.has_key?(:relaxed) || params[:relaxed] == "0"
-                  agents.delete_if do |key,value|
-                    !@viewed_user.given.nil? && !key[:given].nil? && DwcAgent.similarity_score(key[:given], @viewed_user.given) == 0
-                  end
-                end
-
-                id_scores = agents.compact.uniq
-                                          .map{|a| { id: a[:id], score: a[:score] } if a[:score] >= 10}
-                                          .compact
+                id_scores = candidate_agents(@viewed_user).map{|a| { id: a[:id], score: a[:score] } if a[:score] >= 10 }.compact
 
                 if !id_scores.empty?
                   ids = id_scores.map{|a| a[:id]}
