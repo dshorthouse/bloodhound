@@ -27,6 +27,7 @@ val verbatimTerms = List(
   "decimalLongitude",
   "country",
   "eventDate",
+  "year",
   "family",
   "identifiedBy",
   "institutionCode",

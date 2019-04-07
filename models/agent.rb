@@ -48,8 +48,8 @@ class Agent < ActiveRecord::Base
   end
 
   def recordings_year_range
-    years = recordings.pluck(:eventDate)
-                      .map{ |d| Bloodhound::AgentUtility.valid_year(d) }
+    years = recordings.pluck(:eventDate, :year)
+                      .map{ |d| Bloodhound::AgentUtility.valid_year(d.compact.reject(&:empty?).first) }
                       .compact
                       .minmax rescue [nil,nil]
     years[0] = years[1] if years[0].nil?

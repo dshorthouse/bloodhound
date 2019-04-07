@@ -52,7 +52,7 @@
               %a{href: "https://www.gbif.org/occurrence/#{o.id}", target: "_blank" } #{scientific_name}
             %td #{o.recordedBy}
             %td #{o.identifiedBy}
-            %td #{o.eventDate}
+            %td #{o.eventDate || o.year}
             %td #{o.dateIdentified}
             %td #{o.institutionCode}
             %td #{o.catalogNumber}
