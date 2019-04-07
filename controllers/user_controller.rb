@@ -60,7 +60,8 @@ module Sinatra
             @total = user.visible_occurrences.count
 
             if @page*search_size > @total
-              @page = @total/search_size.to_i + 1
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
             end
 
             @pagy, @results = pagy(user.visible_occurrences.order("occurrences.typeStatus desc"), items: search_size, page: @page)
@@ -75,7 +76,8 @@ module Sinatra
             @total = user.claims_received.count
 
             if @page*search_size > @total
-              @page = @total/search_size.to_i + 1
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
             end
 
             @pagy, @results = pagy(user.claims_received, items: search_size, page: @page)
@@ -225,7 +227,8 @@ module Sinatra
             @total = user.hidden_occurrences.count
 
             if @page*search_size > @total
-              @page = @total/search_size.to_i + 1
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
             end
 
             @pagy, @results = pagy(user.hidden_occurrences, items: search_size, page: @page)
@@ -250,7 +253,8 @@ module Sinatra
               @total = user.cited_specimens_by_article(@article.id).count
 
               if @page*search_size > @total
-                @page = @total/search_size.to_i + 1
+                bump_page = @total % search_size.to_i != 0 ? 1 : 0
+                @page = @total/search_size.to_i + bump_page
               end
 
               @pagy, @results = pagy(user.cited_specimens_by_article(@article.id), items: search_size, page: @page)

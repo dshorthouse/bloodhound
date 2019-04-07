@@ -97,7 +97,8 @@ module Sinatra
             @total = @admin_user.visible_occurrences.count
 
             if @page*search_size > @total
-              @page = @total/search_size.to_i + 1
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
             end
 
             @pagy, @results = pagy(@admin_user.visible_occurrences.order("occurrences.typeStatus desc"), items: search_size, page: @page)
@@ -151,7 +152,8 @@ module Sinatra
             @total = @admin_user.claims_received.count
 
             if @page*search_size > @total
-              @page = @total/search_size.to_i + 1
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
             end
 
             @pagy, @results = pagy(@admin_user.claims_received, items: search_size, page: @page)
@@ -243,7 +245,8 @@ module Sinatra
             @total = @admin_user.hidden_occurrences.count
 
             if @page*search_size > @total
-              @page = @total/search_size.to_i + 1
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
             end
 
             @pagy, @results = pagy(@admin_user.hidden_occurrences, items: search_size, page: @page)
@@ -269,7 +272,8 @@ module Sinatra
               @total = @admin_user.cited_specimens_by_article(@article.id).count
 
               if @page*search_size > @total
-                @page = @total/search_size.to_i + 1
+                bump_page = @total % search_size.to_i != 0 ? 1 : 0
+                @page = @total/search_size.to_i + bump_page
               end
 
               @pagy, @results = pagy(@admin_user.cited_specimens_by_article(@article.id), page: @page, items: search_size)
@@ -325,8 +329,9 @@ module Sinatra
             content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
             occurrence_ids = req[:occurrence_ids].split(",")
+            visible = req[:visible] rescue true
             UserOccurrence.where(id: occurrence_ids, user_id: req[:user_id].to_i)
-                          .update_all({action: req[:action]})
+                          .update_all({ action: req[:action], visible: visible })
             { message: "ok" }.to_json
           end
 
