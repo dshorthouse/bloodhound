@@ -41,7 +41,7 @@ module Bloodhound
     end
 
     def populate_new_users
-      (found_wikicodes - existing_wikicodes).each do |wikicode|
+      (found_wikicodes.uniq - existing_wikicodes).each do |wikicode|
         create_user(wikicode)
       end
     end
