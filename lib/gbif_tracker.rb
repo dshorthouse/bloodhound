@@ -63,7 +63,7 @@ module Bloodhound
             results.each do |result|
               begin
                 if result[:identifiers][:doi] && !result[:gbifDownloadKey].empty?
-                  yielder << { 
+                  yielder << {
                     doi: result[:identifiers][:doi],
                     abstract: result[:abstract],
                     gbif_dois: result[:_gbifDOIs].map{ |d| d.sub("doi:","") },
@@ -84,7 +84,14 @@ module Bloodhound
     end
 
     def flush_irrelevant_entries
-      sql = "DELETE article_occurrences FROM article_occurrences LEFT JOIN occurrences ON article_occurrences.occurrence_id = occurrences.gbifID WHERE occurrences.gbifID IS NULL"
+      sql = "DELETE
+              article_occurrences
+            FROM
+              article_occurrences
+            LEFT JOIN
+              occurrences ON article_occurrences.occurrence_id = occurrences.gbifID
+            WHERE
+              occurrences.gbifID IS NULL"
       ActiveRecord::Base.connection.execute(sql)
     end
 

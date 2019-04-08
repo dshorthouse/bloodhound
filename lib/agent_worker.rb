@@ -17,7 +17,9 @@ module Bloodhound
 
         agents.each do |a|
           begin
-            agent = Agent.find_or_create_by({family: a[:family].to_s, given: a[:given].to_s})
+            agent = Agent.find_or_create_by({
+              family: a[:family].to_s,
+              given: a[:given].to_s })
           rescue
             retry
           end
