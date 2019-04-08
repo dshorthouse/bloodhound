@@ -9,7 +9,11 @@ module Sinatra
       path = cache_gen_path(tag)
       return nil unless File.file?(path)
       time, content_type, content = File.open(path, 'rb') do |f|
-        [f.gets.chomp.to_i, f.gets.chomp, f.read.force_encoding(Encoding.default_internal)]
+        [
+          f.gets.chomp.to_i,
+          f.gets.chomp,
+          f.read.force_encoding(Encoding.default_internal)
+        ]
       end
       if content_type == 'marshal'
         content = Marshal.load(content)
