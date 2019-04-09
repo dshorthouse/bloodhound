@@ -18,8 +18,8 @@ module Bloodhound
     def wikidata_query
       properties_list = PEOPLE_PROPERTIES.values.map{|a| "wdt:#{a}"}.join("|")
       %Q(
-          SELECT
-            ?item
+          SELECT DISTINCT
+            ?item ?itemLabel
           WHERE {
             ?item #{properties_list} ?id.
             SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
@@ -32,17 +32,18 @@ module Bloodhound
         )
     end
 
-    def found_wikicodes
-      codes = []
-      @sparql.query(wikidata_query).each_solution do |solution|
-        codes << solution.to_h[:item].to_s.match(/Q[0-9]{1,}/).to_s
-      end
-      codes
-    end
-
     def populate_new_users
-      (found_wikicodes.uniq - existing_wikicodes).each do |wikicode|
-        create_user(wikicode)
+      existing = existing_wikicodes
+      @sparql.query(wikidata_query).each_solution do |solution|
+        wikicode = solution.to_h[:item].to_s.match(/Q[0-9]{1,}/).to_s
+        next if existing.include? wikicode
+        
+        name = solution.to_h[:itemLabel].to_s
+        parsed = Namae.parse(name)[0] rescue nil
+        next if parsed[:family].nil? || parsed[:given].nil?
+        
+        u = User.create({ wikidata: wikicode })
+        puts u.fullname_reverse.green
       end
     end
 
@@ -71,14 +72,6 @@ module Bloodhound
 
     def existing_wikicodes
       User.pluck(:wikidata)
-    end
-
-    def create_user(wikicode)
-      user = account_data(wikicode).merge({wikidata: wikicode})
-      if !user[:family].nil? && !user[:given].nil?
-        u = User.create(user)
-        puts "#{u.fullname_reverse}".green
-      end
     end
 
     def find_country_code(name)
