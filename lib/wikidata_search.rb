@@ -40,7 +40,7 @@ module Bloodhound
         
         name = solution.to_h[:itemLabel].to_s
         parsed = Namae.parse(name)[0] rescue nil
-        next if parsed[:family].nil? || parsed[:given].nil?
+        next if parsed.nil? || parsed[:family].nil? || parsed[:given].nil?
         
         u = User.create({ wikidata: wikicode })
         puts u.fullname_reverse.green
