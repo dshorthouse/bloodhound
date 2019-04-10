@@ -10,38 +10,40 @@
   %script{id:"dsq-count-scr", src:"//#{Sinatra::Application.settings.disqus_shortname}.disqus.com/count.js"}
   :javascript
     var countryData=#{@total[:country_counts].to_json};
-    
+  
     $(function() {
       var map = $('#world-map');
-      map.vectorMap({
-        map: 'world_mill',
-        backgroundColor: '#fff',
-        regionStyle: {
-          initial: {
-            fill: "#e9ecef"
-          }
-        },
-        focusOn: Object.keys(countryData),
-        series: {
-          regions: [{
-            values: Object.keys(countryData).reduce(function (result,item) {
-              result[item] = countryData[item].count;
-              return result; 
-            }, {}),
-            scale: ['#C8EEFF', '#0071A4'],
-            normalizeFunction: 'polynomial'
-          }]
-        },
-        onRegionTipShow: function(e, el, code) {
-          count = 0
-          if (countryData.hasOwnProperty(code)) {
-            count = countryData[code].count;
-          }
-          el.html(el.html()+' ('+count+')');
-        }
-      });
-      ProgressBar.init("#{@viewed_user.identifier}");
       DISQUSWIDGETS.getCount({reset: true});
+      ProgressBar.init("#{@viewed_user.identifier}");
+      if (Object.keys(countryData).length > 0) {
+        map.vectorMap({
+          map: 'world_mill',
+          backgroundColor: '#fff',
+          regionStyle: {
+            initial: {
+              fill: "#e9ecef"
+            }
+          },
+          focusOn: Object.keys(countryData),
+          series: {
+            regions: [{
+              values: Object.keys(countryData).reduce(function (result,item) {
+                result[item] = countryData[item].count;
+                return result; 
+              }, {}),
+              scale: ['#C8EEFF', '#0071A4'],
+              normalizeFunction: 'polynomial'
+            }]
+          },
+          onRegionTipShow: function(e, el, code) {
+            count = 0
+            if (countryData.hasOwnProperty(code)) {
+              count = countryData[code].count;
+            }
+            el.html(el.html()+' ('+count+')');
+          }
+        });
+      }
     });
 
 - content_for :jumbotron do
