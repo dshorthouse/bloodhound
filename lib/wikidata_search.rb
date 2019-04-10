@@ -37,11 +37,11 @@ module Bloodhound
       @sparql.query(wikidata_query).each_solution do |solution|
         wikicode = solution.to_h[:item].to_s.match(/Q[0-9]{1,}/).to_s
         next if existing.include? wikicode
-        
+
         name = solution.to_h[:itemLabel].to_s
         parsed = Namae.parse(name)[0] rescue nil
         next if parsed.nil? || parsed[:family].nil? || parsed[:given].nil?
-        
+
         u = User.create({ wikidata: wikicode })
         puts u.fullname_reverse.green
       end
