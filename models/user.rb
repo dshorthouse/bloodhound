@@ -267,7 +267,11 @@ class User < ActiveRecord::Base
   end
 
   def current_organization
-    user_organizations.where(end_year: nil).first.organization rescue nil
+    current = user_organizations.where.not(start_year: nil).where(end_year: nil).first.organization rescue nil
+    if current.nil?
+      current = user_organizations.where(end_year: nil).first.organization rescue nil
+    end
+    current
   end
 
   def update_profile
