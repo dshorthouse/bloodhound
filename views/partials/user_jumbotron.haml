@@ -1,46 +1,52 @@
 %div{class:"jumbotron jumbotron-fluid"}
-  %div{class:"container-fluid"}
 
-    %h2{class:"display-4 text-center"}= @viewed_user.fullname
+  %div{class:"row"}
+    %div{class:"col"}
+      - if @viewed_user.image_url
+        %img{src:"https://abekpgaoen.cloudimg.io/height/200/x/#{@viewed_user.image_url}", class:"rounded mx-auto d-block", alt:"#{@viewed_user.fullname}"}
+    %div{class:"col-12 col-md-6"}
 
-    - if !@viewed_user.other_names.blank?
-      %div{class:"text-center text-muted"} #{@viewed_user.other_names.split("|").join("; ")}
+      %h2{class:"display-4 text-center"}= @viewed_user.fullname
 
-    - if @viewed_user.date_born || @viewed_user.date_died
-      %div{class: "text-center text-muted"}
-        = format_lifespan(@viewed_user)
+      - if !@viewed_user.other_names.blank?
+        %div{class:"text-center text-muted"} #{@viewed_user.other_names.split("|").join("; ")}
 
-    %div{class: "text-center"}
-      - org = @viewed_user.current_organization
-      - if !org.nil?
-        - path = org.ringgold || org.grid
-        = succeed "," do
-          %a{href: "/organization/#{path}"} #{org.name}
-        #{org.address}
-      - if !@viewed_user.current_organization.nil? && !@viewed_user.country.blank?
-        |
-      - if !@viewed_user.country.blank?
-        #{@viewed_user.country.split("|").join(", ")}
+      - if @viewed_user.date_born || @viewed_user.date_died
+        %div{class: "text-center text-muted"}
+          = format_lifespan(@viewed_user)
 
-    %div{class: "orcid text-center"}
-      - if @viewed_user.orcid
-        %a{href: "https://orcid.org/#{@viewed_user.orcid}"}
-          %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-        %a{href: "https://orcid.org/#{@viewed_user.orcid}"} https://orcid.org/#{@viewed_user.orcid}
-      - else
-        %a{href: "https://www.wikidata.org/wiki/#{@viewed_user.wikidata}"}
-          %img{src: "/images/wikidata_24x24.png", alt:"ORCID iD"}
-          %a{href: "https://www.wikidata.org/wiki/#{@viewed_user.wikidata}"} https://www.wikidata.org/wiki/#{@viewed_user.wikidata}
+      %div{class: "text-center"}
+        - org = @viewed_user.current_organization
+        - if !org.nil?
+          - path = org.ringgold || org.grid
+          = succeed "," do
+            %a{href: "/organization/#{path}"} #{org.name}
+          #{org.address}
+        - if !@viewed_user.current_organization.nil? && !@viewed_user.country.blank?
+          |
+        - if !@viewed_user.country.blank?
+          #{@viewed_user.country.split("|").join(", ")}
 
-    %div{class:"row"}
-      %div{class:"col-lg-2"}
-      %div{class:"col-lg-8 text-center text-muted font-italic"}
-        - if !@viewed_user.keywords.blank?
-          #{@viewed_user.keywords.split("|").join(", ")}
-      %div{class:"col-lg-2 text-right"}
-        - if Sinatra::Application.settings.disqus_domain && !locals[:search] && @viewed_user.can_comment?
-          %img{src: "/images/comments.png", alt:"Field notes"}
-          %a{href: "#{Sinatra::Application.settings.disqus_domain}/#{@viewed_user.identifier}/comments#disqus_thread", class:"disqus-comment-count", "data-disqus-identifier":"#{@viewed_user.identifier}"} Field notes
+      %div{class: "orcid text-center"}
+        - if @viewed_user.orcid
+          %a{href: "https://orcid.org/#{@viewed_user.orcid}"}
+            %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+          %a{href: "https://orcid.org/#{@viewed_user.orcid}"} https://orcid.org/#{@viewed_user.orcid}
+        - else
+          %a{href: "https://www.wikidata.org/wiki/#{@viewed_user.wikidata}"}
+            %img{src: "/images/wikidata_24x24.png", alt:"ORCID iD"}
+            %a{href: "https://www.wikidata.org/wiki/#{@viewed_user.wikidata}"} https://www.wikidata.org/wiki/#{@viewed_user.wikidata}
+    %div{class:"col"}
 
-    - if locals[:search]
-      = haml :'partials/help_others_search', layout: false
+  %div{class:"row"}
+    %div{class:"col-lg-2"}
+    %div{class:"col-lg-8 text-center text-muted font-italic"}
+      - if !@viewed_user.keywords.blank?
+        #{@viewed_user.keywords.split("|").join(", ")}
+    %div{class:"col-lg-2 text-right"}
+      - if Sinatra::Application.settings.disqus_domain && !locals[:search] && @viewed_user.can_comment?
+        %img{src: "/images/comments.png", alt:"Field notes"}
+        %a{href: "#{Sinatra::Application.settings.disqus_domain}/#{@viewed_user.identifier}/comments#disqus_thread", class:"disqus-comment-count", "data-disqus-identifier":"#{@viewed_user.identifier}"} Field notes
+
+  - if locals[:search]
+    = haml :'partials/help_others_search', layout: false
