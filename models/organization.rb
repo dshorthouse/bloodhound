@@ -1,4 +1,6 @@
 class Organization < ActiveRecord::Base
+  serialize :institution_codes, Array
+
   has_many :user_organizations
   has_many :users, through: :user_organizations, source: :user
 
@@ -60,6 +62,12 @@ class Organization < ActiveRecord::Base
     rescue
     end
     isni
+  end
+
+  def update_institution_codes
+    wikidata_lib = Bloodhound::WikidataSearch.new
+    codes = wikidata_lib.wiki_institution_codes(identifier)
+    update({ institution_codes: codes})
   end
 
   private

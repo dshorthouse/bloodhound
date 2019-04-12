@@ -11,6 +11,10 @@ OptionParser.new do |opts|
     options[:isni] = true
   end
 
+  opts.on("-c", "--update_codes", "Gather and update institutionCodes from Wikidata") do
+    options[:codes] = true
+  end
+
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
@@ -18,9 +22,16 @@ OptionParser.new do |opts|
 end.parse!
 
 if options[:isni]
-  Organization.where("id > 2762").find_each do |o|
+  Organization.find_each do |o|
     isni = o.update_isni
     puts "#{o.id}: #{isni}"
     sleep(0.1)
+  end
+end
+
+if options[:codes]
+  Organization.where(institution_codes: nil).find_each do |o|
+    o.update_institution_codes
+    puts "#{o.id}: #{o.institution_codes}"
   end
 end

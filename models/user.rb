@@ -267,9 +267,14 @@ class User < ActiveRecord::Base
   end
 
   def current_organization
-    current = user_organizations.where.not(start_year: nil).where(end_year: nil).first.organization rescue nil
+    current = user_organizations.where.not(start_year: nil)
+                                .where(end_year: nil)
+                                .first
+                                .organization rescue nil
     if current.nil?
-      current = user_organizations.where(end_year: nil).first.organization rescue nil
+      current = user_organizations.where(end_year: nil)
+                                  .first
+                                  .organization rescue nil
     end
     current
   end
@@ -319,7 +324,7 @@ class User < ActiveRecord::Base
 
   def update_wikidata_profile
     wikidata_lib = Bloodhound::WikidataSearch.new
-    data = wikidata_lib.account_data(wikidata)
+    data = wikidata_lib.wiki_user_data(wikidata)
     update(data)
   end
 

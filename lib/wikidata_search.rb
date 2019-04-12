@@ -15,7 +15,7 @@ module Bloodhound
       @sparql = SPARQL::Client.new("https://query.wikidata.org/sparql")
     end
 
-    def wikidata_query
+    def wikidata_people_query
       properties_list = PEOPLE_PROPERTIES.values.map{|a| "wdt:#{a}"}.join("|")
       %Q(
           SELECT DISTINCT
@@ -32,9 +32,37 @@ module Bloodhound
         )
     end
 
+    def wikidata_institution_code_query(identifier)
+      %Q(
+        SELECT DISTINCT
+          *
+        WHERE {
+          VALUES ?identifier {"#{identifier}"} {
+            # institution that includes collection has grid or ringgold
+            ?institution wdt:P3500|wdt:P2427 ?identifier .
+            # various part of relationships
+            ?collection wdt:P195|wdt:P137|wdt:P749|wdt:P361 ?institution .
+          } UNION {
+            # collection itself has grid or ringgold
+            ?collection wdt:P3500|wdt:P2427 ?identifier .
+          }
+          # Code(s) for collection
+          {
+            # Index Herb. or Biodiv Repo ID
+            ?collection wdt:P5858|wdt:P4090 ?code .
+          } UNION {
+            # Derive from Wikispecies URL
+            ?wikispecies schema:about ?collection .
+            BIND( REPLACE( STR(?wikispecies),"https://species.wikimedia.org/wiki/","" ) AS ?code).
+            FILTER contains (STR(?wikispecies),'species.wikimedia.org')
+          }
+        }
+      )
+    end
+
     def populate_new_users
       existing = existing_wikicodes
-      @sparql.query(wikidata_query).each_solution do |solution|
+      @sparql.query(wikidata_people_query).each_solution do |solution|
         wikicode = solution.to_h[:item].to_s.match(/Q[0-9]{1,}/).to_s
         next if existing.include? wikicode
 
@@ -47,7 +75,16 @@ module Bloodhound
       end
     end
 
-    def account_data(wikicode)
+    def wiki_institution_codes(identifier)
+      institution_codes = []
+      identifier = "grid.4903.e"
+      @sparql.query(wikidata_institution_code_query(identifier)).each_solution do |solution|
+        institution_codes << solution.code.to_s
+      end
+      institution_codes.uniq
+    end
+
+    def wiki_user_data(wikicode)
       wiki_user = Wikidata::Item.find(wikicode)
       parsed = Namae.parse(wiki_user.title)[0] rescue nil
       family = parsed.family rescue nil
