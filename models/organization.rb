@@ -67,7 +67,8 @@ class Organization < ActiveRecord::Base
   def update_institution_codes
     wikidata_lib = Bloodhound::WikidataSearch.new
     codes = wikidata_lib.wiki_institution_codes(identifier)
-    update({ institution_codes: codes})
+    update({ institution_codes: codes}) if codes
+    codes
   end
 
   private

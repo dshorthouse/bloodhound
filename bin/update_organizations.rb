@@ -31,7 +31,11 @@ end
 
 if options[:codes]
   Organization.where(institution_codes: nil).find_each do |o|
-    o.update_institution_codes
-    puts "#{o.id}: #{o.institution_codes}"
+    codes = o.update_institution_codes
+    if !codes.empty?
+      puts "#{o.name}: #{o.institution_codes}".green
+    else
+      puts "#{o.name}".red
+    end
   end
 end
