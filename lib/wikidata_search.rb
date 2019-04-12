@@ -77,7 +77,6 @@ module Bloodhound
 
     def wiki_institution_codes(identifier)
       institution_codes = []
-      identifier = "grid.4903.e"
       @sparql.query(wikidata_institution_code_query(identifier)).each_solution do |solution|
         institution_codes << solution.code.to_s
       end

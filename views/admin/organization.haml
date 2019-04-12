@@ -30,4 +30,9 @@
       %small{id:"ringgold-link", class:"form-text text-muted"}
         View known
         %a{href: "https://www.grid.ac/institutes/#{@organization.grid}", target:"_blank"} GRID
+  %div{class:"form-group"}
+    %label{for:"institution_codes"} Institution Codes
+    %input{type:"text", class:"form-control", id:"institution_codes", placeholder:"#{@organization.institution_codes.join("|")}", value:"#{@organization.institution_codes.join("|")}", name:"institution_codes"}
+    %small{class:"form-text text-muted"}
+      Use pipe-separated values.
   %button{type:"submit", class:"btn btn-success"} Submit

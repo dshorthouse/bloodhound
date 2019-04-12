@@ -42,6 +42,7 @@ module Sinatra
             @organization.isni = params[:isni]
             @organization.grid = params[:grid]
             @organization.ringgold = params[:ringgold]
+            @organization.institution_codes = params[:institution_codes].split("|").map(&:strip)
             @organization.save
             haml :'admin/organization', locals: { active_page: "administration" }
           end
