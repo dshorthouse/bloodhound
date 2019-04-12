@@ -4,4 +4,5 @@
       %label{for: "typeahead", class:"font-weight-bold col-sm-3 col-form-label"}= "Search"
       - username = @viewed_user ? @viewed_user.fullname : "Mary Smith"
       %input{class: "typeahead", id: "typeahead-user", type: :text, name: "q", placeholder: "#{username}", size:"30"}
-    %input{type: :submit, class:"btn btn-success", value:"Search"}
+    %div{class:"col-12 col-md-1 text-center"}
+      %input{type: :submit, class:"btn btn-success", value:"Search"}

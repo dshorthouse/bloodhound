@@ -193,6 +193,17 @@ dl.citation{
 .alert ul {
   margin-bottom:0rem;
 }
+
+.form-group{
+  margin-bottom:1rem;
+}
+
+@media(max-width: 767px) {
+  .form-inline .form-group {
+    margin-bottom:1rem;
+  }
+}
+
 @media (max-width: 400px) {
   .display-3 {
     font-size:3.5rem;

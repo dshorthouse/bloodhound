@@ -24,15 +24,33 @@
 
 - if @results.empty? || params[:q].nil?
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-    Is the person you're looking for not here? Ask them to register an 
-    %a{href: "https://orcid.org/register"} ORCID account
-    and make their name publicly available. If they additionally assign one of the keywords 
-    %span{class: "font-italic"} #{Sinatra::Application.settings.orcid_keywords.join(", ")},
-    to their ORCID account, Bloodhound will find them and add them by the following day.
+    Is the person you're looking for not here?
+    %ul
+      %li
+        %strong
+          Living:
+        Ask them to create an 
+        %a{href: "https://orcid.org/register"} ORCID account
+        with a publicly available name. If they assign themselves a keyword 
+        %span{class: "font-italic"} #{Sinatra::Application.settings.orcid_keywords.join(", ")}
+        to their ORCID account, Bloodhound will add them the following day
+      %li
+        %strong
+          Deceased:
+        Search on 
+        %a{href:"https://www.wikidata.org"} Wikidata
+        and ensure they have a birth and death date accurate to the day
+
   %h2{class:"mb-4"} Browse by Collectors' or Determiners' Country
   = haml :'partials/help_others_countries', layout: false
 
 - else
+  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    #{@results.count} search results for
+    %span{class: "font-weight-bold"}
+      :escaped
+        #{params[:q]}
+
   %div{class:"container-fluid"}
     - @results.in_groups_of(3).each do |group|
       %div{class: "row"}
