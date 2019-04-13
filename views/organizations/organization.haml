@@ -16,11 +16,7 @@
     = haml :'partials/organization_search', layout: false
 
 %div{class:"container-fluid"}
-  %ul{class: "nav nav-tabs"}
-    %li{class: "nav-item"}
-      %a{class: "nav-link#{locals[:active_tab] == "organization-current" ? " active" : nil}", href: "/organization/#{@organization.identifier}"} Current
-    %li{class: "nav-item"}
-      %a{class: "nav-link#{locals[:active_tab] == "organization-past" ? " active" : nil}", href: "/organization/#{@organization.identifier}/past"} Previous
+  = haml :'partials/organization_tabs', layout:false, locals: { active_tab: locals[:active_tab] }
 
   - if @results.empty?
     %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}

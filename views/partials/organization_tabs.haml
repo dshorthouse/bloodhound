@@ -1,0 +1,7 @@
+%ul{class: "nav nav-tabs"}
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_tab] == "organization-current" ? " active" : nil}", href: "/organization/#{@organization.identifier}"} Current
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_tab] == "organization-past" ? " active" : nil}", href: "/organization/#{@organization.identifier}/past"} Previous
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_tab] == "organization-metrics" ? " active" : nil}", href: "/organization/#{@organization.identifier}/metrics"} Metrics

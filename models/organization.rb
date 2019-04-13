@@ -16,6 +16,10 @@ class Organization < ActiveRecord::Base
     self.find_by_ringgold(id) || self.find_by_grid(id)
   end
 
+  def identifier
+    ringgold || grid
+  end
+
   def active_users
     users.includes(:user_organizations)
          .where(user_organizations: { end_year: nil })
@@ -34,8 +38,59 @@ class Organization < ActiveRecord::Base
          .where(is_public: true).distinct
   end
 
-  def identifier
-    ringgold || grid
+  #TODO: incorporate dates staff employed and make where clause for eventDate
+  def active_users_own_specimens_recorded
+    UserOccurrence.joins("JOIN occurrences ON user_occurrences.occurrence_id = occurrences.gbifID JOIN users u ON u.id = user_occurrences.user_id JOIN user_organizations uo ON uo.user_id = u.id")
+                  .where("user_occurrences.visible = 1")
+                  .where("user_occurrences.action LIKE '%recorded%'")
+                  .where("uo.organization_id = ?", id)
+                  .where("uo.end_year IS NULL")
+                  .where("occurrences.institutionCode IS NOT NULL")
+                  .where("occurrences.institutionCode IN (?)", institution_codes)
+                  .pluck("user_occurrences.occurrence_id").uniq
+  end
+
+  def active_users_own_specimens_identified
+    UserOccurrence.joins("JOIN occurrences ON user_occurrences.occurrence_id = occurrences.gbifID JOIN users u ON u.id = user_occurrences.user_id JOIN user_organizations uo ON uo.user_id = u.id")
+                  .where("user_occurrences.visible = 1")
+                  .where("user_occurrences.action LIKE '%identified%'")
+                  .where("uo.organization_id = ?", id)
+                  .where("uo.end_year IS NULL")
+                  .where("occurrences.institutionCode IS NOT NULL")
+                  .where("occurrences.institutionCode IN (?)", institution_codes)
+                  .pluck("user_occurrences.occurrence_id").uniq
+  end
+
+  def active_users_others_specimens_recorded
+    codes = Occurrence.joins("JOIN user_occurrences ON user_occurrences.occurrence_id = occurrences.gbifID JOIN users u ON u.id = user_occurrences.user_id JOIN user_organizations uo ON uo.user_id = u.id")
+                  .where("user_occurrences.visible = 1")
+                  .where("user_occurrences.action LIKE '%recorded%'")
+                  .where("uo.organization_id = ?", id)
+                  .where("uo.end_year IS NULL")
+                  .where("occurrences.institutionCode IS NOT NULL")
+                  .where("occurrences.institutionCode NOT IN (?)", institution_codes)
+                  .unscope(:order)
+                  .pluck(:institutionCode).compact
+    Hash.new(0).tap{ |h| codes.each { |f| h[f] += 1 } }
+               .sort_by {|_key, value| value}
+               .reverse
+               .to_h
+  end
+
+  def active_users_others_specimens_identified
+    codes = Occurrence.joins("JOIN user_occurrences ON user_occurrences.occurrence_id = occurrences.gbifID JOIN users u ON u.id = user_occurrences.user_id JOIN user_organizations uo ON uo.user_id = u.id")
+                  .where("user_occurrences.visible = 1")
+                  .where("user_occurrences.action LIKE '%identified%'")
+                  .where("uo.organization_id = ?", id)
+                  .where("uo.end_year IS NULL")
+                  .where("occurrences.institutionCode IS NOT NULL")
+                  .where("occurrences.institutionCode NOT IN (?)", institution_codes)
+                  .unscope(:order)
+                  .pluck(:institutionCode).compact
+    Hash.new(0).tap{ |h| codes.each { |f| h[f] += 1 } }
+               .sort_by {|_key, value| value}
+               .reverse
+               .to_h
   end
 
   def update_isni

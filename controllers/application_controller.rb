@@ -182,6 +182,11 @@ module Sinatra
             haml :'organizations/organization', locals: { active_page: "organizations", active_tab: "organization-past" }
           end
 
+          app.get '/organization/:id/metrics' do
+            organization_metrics
+            haml :'organizations/organization_metrics', locals: { active_page: "organizations", active_tab: "organization-metrics" }
+          end
+
           app.get '/roster' do
             roster
             haml :roster, locals: { active_page: "roster" }

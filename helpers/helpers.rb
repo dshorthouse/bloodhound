@@ -265,9 +265,8 @@ module Sinatra
       end
 
       def organization
-        organizations = Organization.where(ringgold: params[:id]).or(Organization.where(grid: params[:id]))
-        if !organizations.empty?
-          @organization = organizations.first
+        @organization = Organization.find_by_identifier(params[:id])
+        if !@organization.nil?
           @pagy, @results = pagy(@organization.active_users.order(:family))
         else
           status 404
@@ -276,10 +275,20 @@ module Sinatra
       end
 
       def past_organization
-        organizations = Organization.where(ringgold: params[:id]).or(Organization.where(grid: params[:id]))
-        if !organizations.empty?
-          @organization = organizations.first
+        @organization = Organization.find_by_identifier(params[:id])
+        if !@organization.nil?
           @pagy, @results = pagy(@organization.inactive_users.order(:family))
+        else
+          status 404
+          haml :oops
+        end
+      end
+
+      def organization_metrics
+        @organization = Organization.find_by_identifier(params[:id])
+        if !@organization.nil?
+          @others_recorded = @organization.active_users_others_specimens_recorded
+          @others_identified = @organization.active_users_others_specimens_identified
         else
           status 404
           haml :oops

@@ -37,6 +37,6 @@ if options[:codes]
     else
       puts "#{o.name}".red
     end
-    sleep(0.1)
+    sleep(0.25)
   end
 end

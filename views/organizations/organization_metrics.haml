@@ -1,0 +1,71 @@
+-content_for :title do
+  #{@organization.name}: Bloodhound
+
+-content_for :scripts do
+  %script{src: "/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init();
+    });
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
+    %div{class:"mr-auto p-2"}
+      %h2 #{@organization.name}
+      %p{class:"text-muted"} #{@organization.address}
+    = haml :'partials/organization_search', layout: false
+
+%div{class:"container-fluid"}
+  = haml :'partials/organization_tabs', layout:false, locals: { active_tab: 'organization-metrics' }
+
+  %h2{class:"mt-3"}
+    Organizational Impact
+
+  - if @others_recorded.empty? && @others_identified.empty?
+    %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+      Current staff have not yet deposited specimens they collected nor have they identified specimens at other institutions.
+
+  - else
+
+    %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+      Current staff have deposited specimens they collected or have identified specimens at the following institutions.
+
+    %div{class: "container-fluid"}
+      %div{class: "row"}
+        %div{class: "col"}
+          - if @others_recorded.empty? && !@others_identified.empty?
+            %h3{class: "d-flex justify-content-between list-header"}
+              Specimens Identified
+              %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_identified.count)} institutions
+            %div{class: "d-flex justify-content-end list-header h3"}
+              %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_identified.values.inject(0){|sum,x| sum + x })} specimens
+            %ul{class: "list-group"}
+              - @others_identified.each do |k,v|
+                %li{class: "list-group-item d-flex justify-content-between align-items-center"}
+                  #{k}
+                  %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
+          - elsif !@others_recorded.empty?
+            %h3{class: "d-flex justify-content-between list-header"}
+              Specimens Collected
+              %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_recorded.count)} institutions
+            %div{class: "d-flex justify-content-end list-header h3"}
+              %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_recorded.values.inject(0){|sum,x| sum + x })} specimens
+            %ul{class: "list-group"}
+              - @others_recorded.each do |k,v|
+                %li{class: "list-group-item d-flex justify-content-between align-items-center"}
+                  #{k}
+                  %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
+        %div{class: "col"}
+          - if !@others_recorded.empty? && !@others_identified.empty?
+            %h3{class: "d-flex justify-content-between list-header"}
+              Specimens Identified
+              %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_identified.count)} institutions
+            %div{class: "d-flex justify-content-end list-header h3"}
+              %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_identified.values.inject(0){|sum,x| sum + x })} specimens
+
+            %ul{class: "list-group"}
+              - @others_identified.each do |k,v|
+                %li{class: "list-group-item d-flex justify-content-between align-items-center"}
+                  #{k}
+                  %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
+

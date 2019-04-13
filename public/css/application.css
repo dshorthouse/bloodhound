@@ -103,6 +103,10 @@ h3 {
 h3.list-header {
   padding:0.75rem 1.25rem
 }
+div.list-header{
+  padding-right:1.25rem;
+  padding-bottom:0.75rem;
+}
 .bulk-label{
   text-align:center;
   font-size:0.75em;
