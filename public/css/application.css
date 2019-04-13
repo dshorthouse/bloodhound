@@ -100,7 +100,7 @@ table td.selector{
 h3 {
   margin-top:0.5em;
 }
-h3.list-header {
+h3.list-header, h4.list-header {
   padding:0.75rem 1.25rem
 }
 div.list-header{
