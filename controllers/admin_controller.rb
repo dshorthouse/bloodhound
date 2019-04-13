@@ -30,6 +30,12 @@ module Sinatra
             haml :'admin/organizations', locals: { active_page: "administration" }
           end
 
+          app.get '/admin/organizations/search' do
+            admin_protected!
+            search_organization
+            haml :'admin/organizations_search', locals: { active_page: "administration" }
+          end
+
           app.get '/admin/organization/:id' do
             admin_protected!
             @organization = Organization.find(params[:id])

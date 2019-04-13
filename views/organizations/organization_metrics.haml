@@ -18,8 +18,7 @@
 %div{class:"container-fluid"}
   = haml :'partials/organization_tabs', layout:false, locals: { active_tab: 'organization-metrics' }
 
-  %h3{class:"mt-3"}
-    Impact on the Activities in Other Organizations
+  %h3{class:"mt-3"} Impact on the Activities in Other Organizations
 
   - if @others_recorded.empty? && @others_identified.empty?
     %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
