@@ -36,7 +36,7 @@
           - if @others_recorded.empty? && !@others_identified.empty?
             %h3{class: "d-flex justify-content-between list-header"}
               Specimens Identified
-              %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_identified.count)} institutions
+              %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_identified.count)} organizations
             %div{class: "d-flex justify-content-end list-header h3"}
               %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_identified.values.inject(0){|sum,x| sum + x })} specimens
             %ul{class: "list-group"}
@@ -47,7 +47,7 @@
           - elsif !@others_recorded.empty?
             %h3{class: "d-flex justify-content-between list-header"}
               Specimens Collected
-              %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_recorded.count)} institutions
+              %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_recorded.count)} organizations
             %div{class: "d-flex justify-content-end list-header h3"}
               %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_recorded.values.inject(0){|sum,x| sum + x })} specimens
             %ul{class: "list-group"}
@@ -59,7 +59,7 @@
           - if !@others_recorded.empty? && !@others_identified.empty?
             %h3{class: "d-flex justify-content-between list-header"}
               Specimens Identified
-              %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_identified.count)} institutions
+              %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_identified.count)} organizations
             %div{class: "d-flex justify-content-end list-header h3"}
               %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_identified.values.inject(0){|sum,x| sum + x })} specimens
 
