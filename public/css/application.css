@@ -101,10 +101,10 @@ h3 {
   margin-top:0.5em;
 }
 h3.list-header, h4.list-header {
-  padding:0.75rem 1.25rem;
+  padding:0.75rem 0rem;
 }
 div.list-header{
-  padding:0.75rem 1.25rem;
+  padding:0.75rem 0rem;
 }
 .bulk-label{
   text-align:center;
