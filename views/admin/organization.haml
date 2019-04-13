@@ -32,7 +32,7 @@
         %a{href: "https://www.grid.ac/institutes/#{@organization.grid}", target:"_blank"} GRID
   %div{class:"form-group"}
     %label{for:"institution_codes"} Institution Codes
-    %input{type:"text", class:"form-control", id:"institution_codes", placeholder:"#{@organization.institution_codes.join("|")}", value:"#{@organization.institution_codes.join("|")}", name:"institution_codes"}
+    %textarea{type:"text", class:"form-control", id:"institution_codes", name:"institution_codes"}= "#{@organization.institution_codes.join("|")}"
     %small{class:"form-text text-muted"}
       Use pipe-separated values.
   %button{type:"submit", class:"btn btn-success"} Submit
