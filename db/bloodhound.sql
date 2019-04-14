@@ -1,6 +1,5 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
+SET time_zone = "+00:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -68,7 +67,12 @@ CREATE TABLE `organizations` (
   `grid` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
   `name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
   `address` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `institution_codes` text COLLATE utf8mb4_bin
+  `institution_codes` text COLLATE utf8mb4_bin,
+  `wikidata` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  `latitude` float DEFAULT NULL,
+  `longitude` float DEFAULT NULL,
+  `image_url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `website` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `schema_migrations` (
@@ -222,7 +226,6 @@ ALTER TABLE `user_occurrences`
 
 ALTER TABLE `user_organizations`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
