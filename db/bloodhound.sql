@@ -71,7 +71,7 @@ CREATE TABLE `organizations` (
   `wikidata` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
   `latitude` float DEFAULT NULL,
   `longitude` float DEFAULT NULL,
-  `image_url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `image_url` text COLLATE utf8mb4_bin,
   `website` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
