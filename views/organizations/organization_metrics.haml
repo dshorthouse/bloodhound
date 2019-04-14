@@ -13,6 +13,16 @@
     %div{class:"mr-auto p-2"}
       %h2 #{@organization.name}
       %p{class:"text-muted"} #{@organization.address}
+      - if @organization.website
+        %p
+          %a{href: "#{@organization.website}"} #{@organization.website}
+      - if @organization.image_url
+        %div
+          %img{src:"https://abekpgaoen.cloudimg.io/height/200/x/#{@organization.image_url}", class:"rounded mx-auto", alt:"#{@organization.name}"}
+          %p
+            %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"}
+              %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
+              %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"} https://www.wikidata.org/wiki/#{@organization.wikidata}
     = haml :'partials/organization_search', layout: false
 
 %div{class:"container-fluid"}
