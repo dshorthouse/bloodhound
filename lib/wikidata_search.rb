@@ -32,6 +32,7 @@ module Bloodhound
         )
     end
 
+    # With help from @rdmpage
     def wikidata_institution_code_query(identifier)
       %Q(
         SELECT DISTINCT
@@ -60,6 +61,24 @@ module Bloodhound
       )
     end
 
+    def wikidata_institution_wiki_query(identifier)
+      %Q(
+        SELECT ?item ?lat ?long ?image_url ?website
+        WHERE {
+          ?item wdt:P3500|wdt:P2427 '#{identifier}' .
+          ?item p:P625 ?statement .
+          ?statement psv:P625 ?coordinate_node .
+          ?coordinate_node wikibase:geoLatitude ?lat .
+          ?coordinate_node wikibase:geoLongitude ?long .
+          ?item wdt:P18 ?image_url .
+          ?item wdt:P856 ?website .
+          SERVICE wikibase:label {
+            bd:serviceParam wikibase:language "en" .
+          }
+        }
+      )
+    end
+
     def populate_new_users
       existing = existing_wikicodes
       @sparql.query(wikidata_people_query).each_solution do |solution|
@@ -81,6 +100,26 @@ module Bloodhound
         institution_codes << solution.code.to_s
       end
       institution_codes.uniq
+    end
+
+    def institution_wikidata(identifier)
+      wikidata = {}
+      response = @sparql.query(wikidata_institution_wiki_query(identifier)).first
+      if response
+        wikicode = response[:item].to_s.match(/Q[0-9]{1,}/).to_s
+        latitude = response[:lat].to_f
+        longitude = response[:long].to_f
+        image_url = response[:image_url].to_s
+        website = response[:website].to_s
+        wikidata = {
+          wikidata: wikicode,
+          latitude: latitude,
+          longitude: longitude,
+          image_url: image_url,
+          website: website
+        }
+      end
+      wikidata
     end
 
     def wiki_user_data(wikicode)

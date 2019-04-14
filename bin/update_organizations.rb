@@ -15,6 +15,10 @@ OptionParser.new do |opts|
     options[:codes] = true
   end
 
+  opts.on("-w", "--update_wiki", "Gather and update coordinates and wikidata Q identifers from Wikidata") do
+    options[:wikidata] = true
+  end
+
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
@@ -22,7 +26,7 @@ OptionParser.new do |opts|
 end.parse!
 
 if options[:isni]
-  Organization.find_each do |o|
+  Organization.where.not(isni: nil).find_each do |o|
     isni = o.update_isni
     puts "#{o.id}: #{isni}"
     sleep(0.1)
@@ -34,6 +38,18 @@ if options[:codes]
     codes = o.update_institution_codes
     if !codes.empty?
       puts "#{o.name}: #{o.institution_codes}".green
+    else
+      puts "#{o.name}".red
+    end
+    sleep(0.25)
+  end
+end
+
+if options[:wikidata]
+  Organization.find_each do |o|
+    wikicode = o.update_wikidata
+    if wikicode
+      puts "#{o.name}: #{o.wikidata}".green
     else
       puts "#{o.name}".red
     end

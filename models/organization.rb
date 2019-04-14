@@ -126,6 +126,19 @@ class Organization < ActiveRecord::Base
     codes
   end
 
+  def update_wikidata
+    wikidata_lib = Bloodhound::WikidataSearch.new
+    wiki = wikidata_lib.institution_wikidata(identifier)
+    update({
+      wikidata: wiki[:wikidata],
+      latitude: wiki[:latitude],
+      longitude: wiki[:longitude],
+      image_url: wiki[:image_url],
+      website: wiki[:website]
+    }) if !wiki.empty?
+    wikidata
+  end
+
   private
 
   def add_search
