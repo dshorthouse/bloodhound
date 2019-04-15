@@ -1,8 +1,27 @@
 -content_for :title do
   #{@organization.name}: Bloodhound
 
+-content_for :stylesheets do
+  - if @organization.latitude
+    %link{href: "https://unpkg.com/leaflet@1.4.0/dist/leaflet.css", rel: "stylesheet", type: "text/css"}
+
 -content_for :scripts do
   %script{src: "/js/application.js"}
+  - if @organization.latitude
+    %script{src: "https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"}
+    :javascript
+      $(function() {
+        var mymap = L.map('mapid').setView([#{@organization.latitude}, #{@organization.longitude}], 13);
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZHNob3J0aG91c2UiLCJhIjoiY2p1aG81cDZ0MGpscTRkcG5rMjdoOWNkeCJ9.yRdxFszrFvljWz6GbdinTA', {
+          maxZoom: 18,
+          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+          '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+          'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          id: 'mapbox.streets'
+        }).addTo(mymap);
+
+        L.marker([#{@organization.latitude}, #{@organization.longitude}]).addTo(mymap).bindPopup("<b>#{@organization.name}</b>");
+      });
   :javascript
     $(function() {
       Application.init();
@@ -17,13 +36,16 @@
         %p
           %a{href: "#{@organization.website}"} #{@organization.website}
       - if @organization.image_url
-        %div
-          %img{src:"https://abekpgaoen.cloudimg.io/height/200/x/#{@organization.image_url}", class:"rounded mx-auto", alt:"#{@organization.name}"}
-          %p
-            %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"}
-              %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
-              %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"} https://www.wikidata.org/wiki/#{@organization.wikidata}
-    = haml :'partials/organization_search', layout: false
+        %div{class:"row"}
+          %div{class:"col"}
+            %img{src:"https://abekpgaoen.cloudimg.io/height/200/x/#{@organization.image_url}", class:"rounded mx-auto", alt:"#{@organization.name}"}
+          - if @organization.latitude
+            %div{class:"col"}
+              %div{id:"mapid", style:"width: 400px; height: 200px;"}
+        %p
+          %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"}
+            %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
+          %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"} https://www.wikidata.org/wiki/#{@organization.wikidata}
 
 %div{class:"container-fluid"}
   = haml :'partials/organization_tabs', layout:false, locals: { active_tab: 'organization-metrics' }
