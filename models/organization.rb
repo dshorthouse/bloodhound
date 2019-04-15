@@ -128,7 +128,8 @@ class Organization < ActiveRecord::Base
 
   def update_wikidata
     wikidata_lib = Bloodhound::WikidataSearch.new
-    wiki = wikidata_lib.institution_wikidata(identifier)
+    code = wikidata || identifier
+    wiki = wikidata_lib.institution_wikidata(code)
     update({
       wikidata: wiki[:wikidata],
       latitude: wiki[:latitude],

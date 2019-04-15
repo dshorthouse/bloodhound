@@ -103,23 +103,32 @@ module Bloodhound
     end
 
     def institution_wikidata(identifier)
-      wikidata = {}
-      response = @sparql.query(wikidata_institution_wiki_query(identifier)).first
-      if response
-        wikicode = response[:item].to_s.match(/Q[0-9]{1,}/).to_s
-        latitude = response[:lat].to_f
-        longitude = response[:long].to_f
-        image_url = response[:image_url].to_s
-        website = response[:website].to_s
-        wikidata = {
-          wikidata: wikicode,
-          latitude: latitude,
-          longitude: longitude,
-          image_url: image_url,
-          website: website
-        }
+      wikicode, latitude, longitude, image_url, website = nil
+
+      if identifier.match(/Q[0-9]{1,}/)
+        data = Wikidata::Item.find(identifier)
+        wikicode = identifier
+        latitude = data.properties("P625").first.latitude.to_f rescue nil
+        longitude = data.properties("P625").first.longitude.to_f rescue nil
+        image_url = data.properties("P18").first.url rescue nil
+        website = data.properties("P856").first.value rescue nil
+      else
+        response = @sparql.query(wikidata_institution_wiki_query(identifier)).first
+        if response
+          wikicode = response[:item].to_s.match(/Q[0-9]{1,}/).to_s
+          latitude = response[:lat].to_f
+          longitude = response[:long].to_f
+          image_url = response[:image_url].to_s
+          website = response[:website].to_s
+        end
       end
-      wikidata
+      {
+        wikidata: wikicode,
+        latitude: latitude,
+        longitude: longitude,
+        image_url: image_url,
+        website: website
+      }
     end
 
     def wiki_user_data(wikicode)
