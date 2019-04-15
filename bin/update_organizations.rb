@@ -46,7 +46,7 @@ if options[:codes]
 end
 
 if options[:wikidata]
-  Organization.where(wikidata:nil).find_each do |o|
+  Organization.where(wikidata: nil).find_each do |o|
     wikicode = o.update_wikidata
     if wikicode
       puts "#{o.name}: #{o.wikidata}".green
