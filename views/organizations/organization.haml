@@ -28,29 +28,7 @@
     });
 
 -content_for :jumbotron do
-  %div{class:"jumbotron jumbotron-fluid"}
-    %div{class:"d-flex flex-wrap"}
-      %div{class:"mr-auto p-2"}
-        %h2 #{@organization.name}
-        %p{class:"text-muted"} #{@organization.address}
-        - if @organization.website
-          %p{class:"mb-0"}
-            %a{href: "#{@organization.website}", class:"mr-3"} #{@organization.website}
-            - if @organization.wikidata
-              %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"}
-                %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
-              %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"} https://www.wikidata.org/wiki/#{@organization.wikidata}
-
-      = haml :'partials/organization_search', layout: false
-
-    - if @organization.image_url || @organization.latitude
-      %div{class:"d-flex flex-wrap"}
-        - if @organization.image_url
-          %div{class:"p-2"}
-            %img{src:"https://abekpgaoen.cloudimg.io/height/200/x/#{@organization.image_url}", class:"rounded mx-auto", alt:"#{@organization.name}"}
-        - if @organization.latitude
-          %div{class:"p-2"}
-            %div{id:"mapid", style:"width: 400px; height: 200px;"}
+  = haml :'partials/organization_jumbotron', layout:false
 
 %div{class:"container-fluid"}
   = haml :'partials/organization_tabs', layout:false, locals: { active_tab: locals[:active_tab] }

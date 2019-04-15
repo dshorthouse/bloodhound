@@ -122,22 +122,14 @@ class Organization < ActiveRecord::Base
   def update_institution_codes
     wikidata_lib = Bloodhound::WikidataSearch.new
     codes = wikidata_lib.wiki_institution_codes(identifier)
-    update({ institution_codes: codes}) if codes
-    codes
+    update(codes) if !codes[:institution_codes].empty?
   end
 
   def update_wikidata
     wikidata_lib = Bloodhound::WikidataSearch.new
     code = wikidata || identifier
     wiki = wikidata_lib.institution_wikidata(code)
-    update({
-      wikidata: wiki[:wikidata],
-      latitude: wiki[:latitude],
-      longitude: wiki[:longitude],
-      image_url: wiki[:image_url],
-      website: wiki[:website]
-    }) if !wiki.empty?
-    wikidata
+    update(wiki) if !wiki[:wikidata].nil?
   end
 
   private

@@ -99,7 +99,7 @@ module Bloodhound
       @sparql.query(wikidata_institution_code_query(identifier)).each_solution do |solution|
         institution_codes << solution.code.to_s
       end
-      institution_codes.uniq
+      { institution_codes: institution_codes.uniq }
     end
 
     def institution_wikidata(identifier)
