@@ -51,7 +51,7 @@ module Sinatra
             @organization.wikidata = params[:wikidata]
             @organization.institution_codes = params[:institution_codes].split("|").map(&:strip)
             @organization.save
-            if params[:wikidata]
+            if !params[:wikidata].blank?
               @organization.update_wikidata
             end
             haml :'admin/organization', locals: { active_page: "administration" }
