@@ -23,6 +23,7 @@
         %th{scope: "col"} ISNI
         %th{scope: "col"} Ringgold
         %th{scope: "col"} GRID
+        %th{scope: "col"} Wikidata
 
     %tbody
       - @results.each do |o|
@@ -37,6 +38,9 @@
           %td
             - if !o.grid.blank?
               %a{href: "https://www.grid.ac/institutes/#{o.grid}"} #{o.grid}
+          %td
+            - if !o.wikidata.blank?
+              %a{href: "https://www.wikidata.org/wiki/#{o.wikidata}"} #{o.wikidata}
 
 
 = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
