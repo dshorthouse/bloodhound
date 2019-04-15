@@ -162,7 +162,7 @@ module Sinatra
             protected!
             user = User.find(@user[:id])
             agent_ids = candidate_agents(user).pluck(:id)
-            records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
+            records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: user.user_occurrences.select(:occurrence_id)).limit(5_000)
             csv_stream_headers("bloodhound-candidates")
             body csv_stream_candidates(records)
           end
@@ -351,7 +351,7 @@ module Sinatra
             if params[:id].is_orcid? || params[:id].is_wiki_id?
               @viewed_user = find_user(params[:id])
               agent_ids = candidate_agents(@viewed_user).pluck(:id)
-              records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @viewed_user.user_occurrences.select(:occurrence_id))
+              records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @viewed_user.user_occurrences.select(:occurrence_id)).limti(5_000)
               body csv_stream_candidates(records)
             else
               status 404
