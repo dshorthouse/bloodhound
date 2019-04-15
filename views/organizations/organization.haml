@@ -28,19 +28,20 @@
     });
 
 -content_for :jumbotron do
-  %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
-    %div{class:"mr-auto p-2"}
-      %h2 #{@organization.name}
-      %p{class:"text-muted"} #{@organization.address}
-      - if @organization.website
-        %p
-          %a{href: "#{@organization.website}", class:"mr-3"} #{@organization.website}
-          - if @organization.wikidata
-            %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"}
-              %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
-            %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"} https://www.wikidata.org/wiki/#{@organization.wikidata}
+  %div{class:"jumbotron jumbotron-fluid"}
+    %div{class:"d-flex flex-wrap"}
+      %div{class:"mr-auto p-2"}
+        %h2 #{@organization.name}
+        %p{class:"text-muted"} #{@organization.address}
+        - if @organization.website
+          %p
+            %a{href: "#{@organization.website}", class:"mr-3"} #{@organization.website}
+            - if @organization.wikidata
+              %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"}
+                %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
+              %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"} https://www.wikidata.org/wiki/#{@organization.wikidata}
 
-    = haml :'partials/organization_search', layout: false
+      = haml :'partials/organization_search', layout: false
 
     - if @organization.image_url || @organization.latitude
       %div{class:"row"}
