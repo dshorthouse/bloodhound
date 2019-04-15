@@ -34,21 +34,22 @@
       %p{class:"text-muted"} #{@organization.address}
       - if @organization.website
         %p
-          %a{href: "#{@organization.website}"} #{@organization.website}
-      - if @organization.image_url || @organization.latitude
-        %div{class:"row"}
-          - if @organization.image_url
-            %div{class:"col"}
-              %img{src:"https://abekpgaoen.cloudimg.io/height/200/x/#{@organization.image_url}", class:"rounded mx-auto", alt:"#{@organization.name}"}
-          - if @organization.latitude
-            %div{class:"col"}
-              %div{id:"mapid", style:"width: 400px; height: 200px;"}
-        %p
-          %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"}
-            %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
-          %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"} https://www.wikidata.org/wiki/#{@organization.wikidata}
+          %a{href: "#{@organization.website}", class:"mr-3"} #{@organization.website}
+          - if @organization.wikidata
+            %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"}
+              %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
+            %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"} https://www.wikidata.org/wiki/#{@organization.wikidata}
 
     = haml :'partials/organization_search', layout: false
+
+    - if @organization.image_url || @organization.latitude
+      %div{class:"row"}
+        - if @organization.image_url
+          %div{class:"col mt-2 mb-2"}
+            %img{src:"https://abekpgaoen.cloudimg.io/height/200/x/#{@organization.image_url}", class:"rounded mx-auto", alt:"#{@organization.name}"}
+        - if @organization.latitude
+          %div{class:"col mt-2 mb-2"}
+            %div{id:"mapid", style:"width: 400px; height: 200px;"}
 
 %div{class:"container-fluid"}
   = haml :'partials/organization_tabs', layout:false, locals: { active_tab: locals[:active_tab] }
