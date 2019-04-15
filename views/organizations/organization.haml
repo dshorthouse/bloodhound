@@ -34,7 +34,7 @@
         %h2 #{@organization.name}
         %p{class:"text-muted"} #{@organization.address}
         - if @organization.website
-          %p
+          %p{class:"mb-0"}
             %a{href: "#{@organization.website}", class:"mr-3"} #{@organization.website}
             - if @organization.wikidata
               %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"}
