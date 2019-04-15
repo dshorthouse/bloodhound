@@ -31,8 +31,8 @@
         View known
         %a{href: "https://www.grid.ac/institutes/#{@organization.grid}", target:"_blank"} GRID
   %div{class:"form-group"}
-    %label{for:"ringgold"} Wikidata
-    %input{type:"text", class:"form-control", id:"wikidata", value:"#{@organization.wikidata}", name:"grid"}
+    %label{for:"wikidata"} Wikidata
+    %input{type:"text", class:"form-control", id:"wikidata", value:"#{@organization.wikidata}", name:"wikidata"}
     - if !@organization.wikidata.blank?
       %small{id:"ringgold-link", class:"form-text text-muted"}
         %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"}
