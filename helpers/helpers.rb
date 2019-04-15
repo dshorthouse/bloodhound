@@ -463,10 +463,10 @@ module Sinatra
 
       def csv_stream_occurrences(occurrences)
         Enumerator.new do |y|
-          header = ["action"].concat(Occurrence.attribute_names)
+          header = ["action"].concat(Occurrence.attribute_names - ["dateIdentified_processed", "eventDate_processed"])
           y << CSV::Row.new(header, header, true).to_s
           occurrences.find_each do |o|
-            data = [o.action].concat(o.occurrence.attributes.values)
+            data = [o.action].concat(o.occurrence.attributes.values - [o.dateIdentified_processed, o.eventDate_processed])
             y << CSV::Row.new(header, data).to_s
           end
         end
@@ -474,11 +474,11 @@ module Sinatra
 
       def csv_stream_candidates(occurrences)
         Enumerator.new do |y|
-          header = ["action"].concat(Occurrence.attribute_names).concat(["not me"])
+          header = ["action"].concat(Occurrence.attribute_names - ["dateIdentified_processed", "eventDate_processed"]).concat(["not me"])
           y << CSV::Row.new(header, header, true).to_s
           if !occurrences.empty?
             occurrences.each do |o|
-              data = [""].concat(o.occurrence.attributes.values).concat([""])
+              data = [""].concat(o.occurrence.attributes.values - [o.dateIdentified_processed, o.eventDate_processed]).concat([""])
               y << CSV::Row.new(header, data).to_s
             end
           end

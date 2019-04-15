@@ -1,4 +1,6 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -31,7 +33,7 @@ CREATE TABLE `article_occurrences` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `occurrences` (
-  `gbifID` int(11) NOT NULL,
+  `gbifID` int(11) UNSIGNED NOT NULL,
   `occurrenceID` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
   `dateIdentified` text COLLATE utf8mb4_bin,
   `decimalLatitude` text COLLATE utf8mb4_bin,
@@ -47,7 +49,9 @@ CREATE TABLE `occurrences` (
   `catalogNumber` text COLLATE utf8mb4_bin,
   `recordedBy` text COLLATE utf8mb4_bin,
   `scientificName` text COLLATE utf8mb4_bin,
-  `typeStatus` text COLLATE utf8mb4_bin
+  `typeStatus` text COLLATE utf8mb4_bin,
+  `dateIdentified_processed` datetime DEFAULT NULL,
+  `eventDate_processed` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `occurrence_determiners` (
@@ -226,6 +230,7 @@ ALTER TABLE `user_occurrences`
 
 ALTER TABLE `user_organizations`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

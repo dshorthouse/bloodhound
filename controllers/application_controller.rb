@@ -107,10 +107,11 @@ module Sinatra
 
           app.get '/occurrence/:id.json' do
             content_type "application/ld+json", charset: 'utf-8'
+            ignore_cols = ["gbifID", "dateIdentified_processed", "eventDate_processed"]
             begin
               occurrence = Occurrence.find(params[:id])
-              dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
-                                          .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
+              dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignored_cols.include?(column)}
+                                          .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignored_cols.include?(o) }]
               response = {}
               response["@context"] = {
                   "@vocab": "http://schema.org/",

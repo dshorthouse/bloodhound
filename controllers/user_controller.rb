@@ -102,9 +102,10 @@ module Sinatra
           app.get '/profile/download.json' do
             protected!
             content_type "application/ld+json", charset: 'utf-8'
+            ignore_cols = ["gbifID", "dateIdentified_processed", "eventDate_processed"]
             user = User.find(@user[:id])
-            dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
-                                        .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
+            dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignored_cols.include?(column)}
+                                        .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignored_cols.include?(o) }]
             {
               "@context": {
                 "@vocab": "http://schema.org/",
@@ -371,12 +372,13 @@ module Sinatra
 
           app.get '/:id/specimens.json' do
             content_type "application/ld+json", charset: 'utf-8'
+            ignore_cols = ["gbifID", "dateIdentified_processed", "eventDate_processed"]
             if params[:id].is_orcid? || params[:id].is_wiki_id?
               begin
                 user = find_user(params[:id])
                 id_url = user.orcid ? "https://orcid.org/#{user.orcid}" : "https://www.wikidata.org/wiki/#{user.wikidata}"
-                dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
-                                            .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
+                dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ingnored_cols.include?(column)}
+                                            .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignored_cols.include?(o) }]
                 {
                   "@context": {
                     "@vocab": "http://schema.org/",
