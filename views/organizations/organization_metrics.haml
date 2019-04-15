@@ -44,12 +44,12 @@
       = haml :'partials/organization_search', layout: false
 
     - if @organization.image_url || @organization.latitude
-      %div{class:"row"}
+      %div{class:"d-flex flex-wrap"}
         - if @organization.image_url
-          %div{class:"col mt-2 mb-2"}
+          %div{class:"p-2"}
             %img{src:"https://abekpgaoen.cloudimg.io/height/200/x/#{@organization.image_url}", class:"rounded mx-auto", alt:"#{@organization.name}"}
         - if @organization.latitude
-          %div{class:"col mt-2 mb-2"}
+          %div{class:"p-2"}
             %div{id:"mapid", style:"width: 400px; height: 200px;"}
 
 %div{class:"container-fluid"}
