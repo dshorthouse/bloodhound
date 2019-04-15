@@ -15,21 +15,29 @@
 
   %div{class:"form-group"}
     %label{for:"isni"} ISNI
-    %input{type:"text", class:"form-control", id:"isni", placeholder:"#{@organization.isni}", value:"#{@organization.isni}", name:"isni"}
+    %input{type:"text", class:"form-control", id:"isni", value:"#{@organization.isni}", name:"isni"}
     - if !@organization.isni.blank?
       %small{id:"isni-link", class:"form-text text-muted"}
         View known
         %a{href: "http://www.isni.org/isni/#{@organization.isni}", target:"_blank"} ISNI
   %div{class:"form-group"}
     %label{for:"ringgold"} Ringgold
-    %input{type:"text", class:"form-control", id:"ringgold", placeholder:"#{@organization.ringgold}", value:"#{@organization.ringgold}", name:"ringgold"}
+    %input{type:"text", class:"form-control", id:"ringgold", value:"#{@organization.ringgold}", name:"ringgold"}
   %div{class:"form-group"}
     %label{for:"ringgold"} GRID
-    %input{type:"text", class:"form-control", id:"ringgold", placeholder:"#{@organization.grid}", value:"#{@organization.grid}", name:"grid"}
+    %input{type:"text", class:"form-control", id:"ringgold", value:"#{@organization.grid}", name:"grid"}
     - if !@organization.grid.blank?
       %small{id:"ringgold-link", class:"form-text text-muted"}
         View known
         %a{href: "https://www.grid.ac/institutes/#{@organization.grid}", target:"_blank"} GRID
+  %div{class:"form-group"}
+    %label{for:"ringgold"} Wikidata
+    %input{type:"text", class:"form-control", id:"wikidata", value:"#{@organization.wikidata}", name:"grid"}
+    - if !@organization.wikidata.blank?
+      %small{id:"ringgold-link", class:"form-text text-muted"}
+        %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"}
+          %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
+        %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}", target:"_blank"} https://www.wikidata.org/wiki/#{@organization.wikidata}
   %div{class:"form-group"}
     %label{for:"institution_codes"} Institution Codes
     %textarea{type:"text", class:"form-control", id:"institution_codes", name:"institution_codes"}= "#{@organization.institution_codes.join("|")}"
