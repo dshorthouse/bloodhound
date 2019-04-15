@@ -35,10 +35,11 @@
       - if @organization.website
         %p
           %a{href: "#{@organization.website}"} #{@organization.website}
-      - if @organization.image_url
+      - if @organization.image_url || @organization.latitude
         %div{class:"row"}
-          %div{class:"col"}
-            %img{src:"https://abekpgaoen.cloudimg.io/height/200/x/#{@organization.image_url}", class:"rounded mx-auto", alt:"#{@organization.name}"}
+          - if @organization.image_url
+            %div{class:"col"}
+              %img{src:"https://abekpgaoen.cloudimg.io/height/200/x/#{@organization.image_url}", class:"rounded mx-auto", alt:"#{@organization.name}"}
           - if @organization.latitude
             %div{class:"col"}
               %div{id:"mapid", style:"width: 400px; height: 200px;"}
