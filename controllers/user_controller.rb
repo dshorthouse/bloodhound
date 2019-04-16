@@ -64,6 +64,8 @@ module Sinatra
               @page = @total/search_size.to_i + bump_page
             end
 
+            @page = 1 if @page <= 0
+
             @pagy, @results = pagy(user.visible_occurrences.order("occurrences.typeStatus desc"), items: search_size, page: @page)
             haml :'profile/specimens'
           end
@@ -79,6 +81,8 @@ module Sinatra
               bump_page = @total % search_size.to_i != 0 ? 1 : 0
               @page = @total/search_size.to_i + bump_page
             end
+
+            @page = 1 if @page <= 0
 
             @pagy, @results = pagy(user.claims_received, items: search_size, page: @page)
             haml :'profile/support'
@@ -231,6 +235,8 @@ module Sinatra
               bump_page = @total % search_size.to_i != 0 ? 1 : 0
               @page = @total/search_size.to_i + bump_page
             end
+
+            @page = 1 if @page <= 0
 
             @pagy, @results = pagy(user.hidden_occurrences, items: search_size, page: @page)
             haml :'profile/ignored'

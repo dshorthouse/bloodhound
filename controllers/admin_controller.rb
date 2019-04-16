@@ -112,6 +112,8 @@ module Sinatra
               @page = @total/search_size.to_i + bump_page
             end
 
+            @page = 1 if @page <= 0
+
             @pagy, @results = pagy(@admin_user.visible_occurrences.order("occurrences.typeStatus desc"), items: search_size, page: @page)
             haml :'admin/specimens', locals: { active_page: "administration" }
           end
@@ -166,6 +168,8 @@ module Sinatra
               bump_page = @total % search_size.to_i != 0 ? 1 : 0
               @page = @total/search_size.to_i + bump_page
             end
+
+            @page = 1 if @page <= 0
 
             @pagy, @results = pagy(@admin_user.claims_received, items: search_size, page: @page)
             haml :'admin/support', locals: { active_page: "administration" }
@@ -260,6 +264,8 @@ module Sinatra
               @page = @total/search_size.to_i + bump_page
             end
 
+            @page = 1 if @page <= 0
+
             @pagy, @results = pagy(@admin_user.hidden_occurrences, items: search_size, page: @page)
             haml :'admin/ignored', locals: { active_page: "administration" }
           end
@@ -286,6 +292,8 @@ module Sinatra
                 bump_page = @total % search_size.to_i != 0 ? 1 : 0
                 @page = @total/search_size.to_i + bump_page
               end
+
+              @page = 1 if @page <= 0
 
               @pagy, @results = pagy(@admin_user.cited_specimens_by_article(@article.id), page: @page, items: search_size)
               haml :'admin/citation', locals: { active_page: "administration" }
