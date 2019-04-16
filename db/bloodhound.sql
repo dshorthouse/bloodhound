@@ -29,7 +29,7 @@ CREATE TABLE `articles` (
 CREATE TABLE `article_occurrences` (
   `id` bigint(11) UNSIGNED NOT NULL,
   `article_id` int(11) NOT NULL,
-  `occurrence_id` int(11) NOT NULL
+  `occurrence_id` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `occurrences` (
@@ -55,12 +55,12 @@ CREATE TABLE `occurrences` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `occurrence_determiners` (
-  `occurrence_id` int(11) NOT NULL,
+  `occurrence_id` int(11) UNSIGNED NOT NULL,
   `agent_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `occurrence_recorders` (
-  `occurrence_id` int(11) NOT NULL,
+  `occurrence_id` int(11) UNSIGNED NOT NULL,
   `agent_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -94,7 +94,7 @@ CREATE TABLE `taxon_determiners` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `taxon_occurrences` (
-  `occurrence_id` int(11) NOT NULL,
+  `occurrence_id` int(11) UNSIGNED NOT NULL,
   `taxon_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -124,7 +124,7 @@ CREATE TABLE `users` (
 CREATE TABLE `user_occurrences` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `occurrence_id` int(11) NOT NULL,
+  `occurrence_id` int(11) UNSIGNED NOT NULL,
   `action` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `visible` tinyint(1) NOT NULL DEFAULT '1',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
