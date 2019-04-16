@@ -61,8 +61,8 @@ class Organization < ActiveRecord::Base
                   .pluck("user_occurrences.occurrence_id").uniq
   end
 
-  def active_users_others_specimens_recorded
-    codes = Occurrence.joins("JOIN user_occurrences ON user_occurrences.occurrence_id = occurrences.gbifID JOIN users u ON u.id = user_occurrences.user_id JOIN user_organizations uo ON uo.user_id = u.id")
+  def users_others_specimens_recorded
+    current = Occurrence.joins("JOIN user_occurrences ON user_occurrences.occurrence_id = occurrences.gbifID JOIN users u ON u.id = user_occurrences.user_id JOIN user_organizations uo ON uo.user_id = u.id")
                   .where("user_occurrences.visible = 1")
                   .where("user_occurrences.action LIKE '%recorded%'")
                   .where("uo.organization_id = ?", id)
@@ -70,17 +70,28 @@ class Organization < ActiveRecord::Base
                   .where("YEAR(occurrences.eventDate_processed) >= uo.start_year")
                   .where("occurrences.institutionCode IS NOT NULL")
                   .where("occurrences.institutionCode NOT IN (?)", institution_codes)
-                  .distinct
-                  .unscope(:order)
-                  .pluck(:gbifID, :institutionCode).compact
-    Hash.new(0).tap{ |h| codes.each { |f| h[f[1]] += 1 } }
+    past = Occurrence.joins("JOIN user_occurrences ON user_occurrences.occurrence_id = occurrences.gbifID JOIN users u ON u.id = user_occurrences.user_id JOIN user_organizations uo ON uo.user_id = u.id")
+                  .where("user_occurrences.visible = 1")
+                  .where("user_occurrences.action LIKE '%recorded%'")
+                  .where("uo.organization_id = ?", id)
+                  .where("uo.end_year IS NOT NULL")
+                  .where("uo.start_year IS NOT NULL")
+                  .where("YEAR(occurrences.eventDate_processed) >= uo.start_year")
+                  .where("YEAR(occurrences.eventDate_processed) <= uo.end_year")
+                  .where("occurrences.institutionCode IS NOT NULL")
+                  .where("occurrences.institutionCode NOT IN (?)", institution_codes)
+    combined = current.union_all(past)
+                      .distinct
+                      .unscope(:order)
+                      .pluck(:gbifID, :institutionCode).compact
+    Hash.new(0).tap{ |h| combined.each { |f| h[f[1]] += 1 } }
                .sort_by {|_key, value| value}
                .reverse
                .to_h
   end
 
-  def active_users_others_specimens_identified
-    codes = Occurrence.joins("JOIN user_occurrences ON user_occurrences.occurrence_id = occurrences.gbifID JOIN users u ON u.id = user_occurrences.user_id JOIN user_organizations uo ON uo.user_id = u.id")
+  def users_others_specimens_identified
+    current = Occurrence.joins("JOIN user_occurrences ON user_occurrences.occurrence_id = occurrences.gbifID JOIN users u ON u.id = user_occurrences.user_id JOIN user_organizations uo ON uo.user_id = u.id")
                   .where("user_occurrences.visible = 1")
                   .where("user_occurrences.action LIKE '%identified%'")
                   .where("uo.organization_id = ?", id)
@@ -88,10 +99,21 @@ class Organization < ActiveRecord::Base
                   .where("YEAR(occurrences.dateIdentified_processed) >= uo.start_year")
                   .where("occurrences.institutionCode IS NOT NULL")
                   .where("occurrences.institutionCode NOT IN (?)", institution_codes)
-                  .distinct
-                  .unscope(:order)
-                  .pluck(:gbifID, :institutionCode).compact
-    Hash.new(0).tap{ |h| codes.each { |f| h[f[1]] += 1 } }
+    past = Occurrence.joins("JOIN user_occurrences ON user_occurrences.occurrence_id = occurrences.gbifID JOIN users u ON u.id = user_occurrences.user_id JOIN user_organizations uo ON uo.user_id = u.id")
+                  .where("user_occurrences.visible = 1")
+                  .where("user_occurrences.action LIKE '%identified%'")
+                  .where("uo.organization_id = ?", id)
+                  .where("uo.end_year IS NOT NULL")
+                  .where("uo.start_year IS NOT NULL")
+                  .where("YEAR(occurrences.dateIdentified_processed) >= uo.start_year")
+                  .where("YEAR(occurrences.dateIdentified_processed) <= uo.end_year")
+                  .where("occurrences.institutionCode IS NOT NULL")
+                  .where("occurrences.institutionCode NOT IN (?)", institution_codes)
+    combined = current.union_all(past)
+                      .distinct
+                      .unscope(:order)
+                      .pluck(:gbifID, :institutionCode).compact
+    Hash.new(0).tap{ |h| combined.each { |f| h[f[1]] += 1 } }
                .sort_by {|_key, value| value}
                .reverse
                .to_h

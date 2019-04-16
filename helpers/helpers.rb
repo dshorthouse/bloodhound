@@ -287,8 +287,8 @@ module Sinatra
       def organization_metrics
         @organization = Organization.find_by_identifier(params[:id])
         if !@organization.nil?
-          @others_recorded = @organization.active_users_others_specimens_recorded
-          @others_identified = @organization.active_users_others_specimens_identified
+          @others_recorded = @organization.users_others_specimens_recorded
+          @others_identified = @organization.users_others_specimens_identified
         else
           status 404
           haml :oops
