@@ -38,13 +38,13 @@ class Organization < ActiveRecord::Base
          .where(is_public: true).distinct
   end
 
-  #TODO: incorporate dates staff employed and make where clause for eventDate
   def active_users_own_specimens_recorded
     UserOccurrence.joins("JOIN occurrences ON user_occurrences.occurrence_id = occurrences.gbifID JOIN users u ON u.id = user_occurrences.user_id JOIN user_organizations uo ON uo.user_id = u.id")
                   .where("user_occurrences.visible = 1")
                   .where("user_occurrences.action LIKE '%recorded%'")
                   .where("uo.organization_id = ?", id)
                   .where("uo.end_year IS NULL")
+                  .where("YEAR(occurrences.eventDate_processed) >= uo.start_year")
                   .where("occurrences.institutionCode IS NOT NULL")
                   .where("occurrences.institutionCode IN (?)", institution_codes)
                   .pluck("user_occurrences.occurrence_id").uniq
@@ -56,6 +56,7 @@ class Organization < ActiveRecord::Base
                   .where("user_occurrences.action LIKE '%identified%'")
                   .where("uo.organization_id = ?", id)
                   .where("uo.end_year IS NULL")
+                  .where("YEAR(occurrences.dateIdentified_processed) >= uo.start_year")
                   .where("occurrences.institutionCode IS NOT NULL")
                   .where("occurrences.institutionCode IN (?)", institution_codes)
                   .pluck("user_occurrences.occurrence_id").uniq

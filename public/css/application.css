@@ -1,3 +1,6 @@
+body{
+  margin-bottom:2rem;
+}
 .btn-outline-light:hover{
   color:#212529 !important;
 }
