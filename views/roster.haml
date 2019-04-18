@@ -1,6 +1,9 @@
 -content_for :title do
   Bloodhound: Profiles
 
+-content_for :stylesheets do
+  %link{rel:"alternate", type:"application/rss+xml", title:"RSS Feed for New User Profiles", href:"/user.rss"}
+
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
