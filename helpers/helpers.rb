@@ -468,8 +468,8 @@ module Sinatra
           if !occurrences.empty?
             occurrences.find_each do |o|
               attributes = o.occurrence.attributes
-              attributes.delete(:dateIdentified_processed)
-              attributes.delete(:eventDate_processed)
+              attributes.delete("dateIdentified_processed")
+              attributes.delete("eventDate_processed")
               data = [o.action].concat(attributes.values)
               y << CSV::Row.new(header, data).to_s
             end
@@ -484,8 +484,8 @@ module Sinatra
           if !occurrences.empty?
             occurrences.each do |o|
               attributes = o.occurrence.attributes
-              attributes.delete(:dateIdentified_processed)
-              attributes.delete(:eventDate_processed)
+              attributes.delete("dateIdentified_processed")
+              attributes.delete("eventDate_processed")
               data = [""].concat(attributes.values).concat([""])
               y << CSV::Row.new(header, data).to_s
             end
