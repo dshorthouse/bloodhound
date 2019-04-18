@@ -122,7 +122,7 @@ module Sinatra
             admin_protected!
             user = find_user(params[:id])
             content_type "application/ld+json", charset: 'utf-8'
-            ignore_cols = ["gbifID", "dateIdentified_processed", "eventDate_processed"]
+            ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
             begin
               dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignore_cols.include?(column)}
                                           .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o) }]
