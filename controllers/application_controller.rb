@@ -107,11 +107,11 @@ module Sinatra
 
           app.get '/occurrence/:id.json' do
             content_type "application/ld+json", charset: 'utf-8'
-            ignore_cols = ["gbifID", "dateIdentified_processed", "eventDate_processed"]
+            ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
             begin
               occurrence = Occurrence.find(params[:id])
-              dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignored_cols.include?(column)}
-                                          .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignored_cols.include?(o) }]
+              dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignore_cols.include?(column)}
+                                          .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o) }]
               response = {}
               response["@context"] = {
                   "@vocab": "http://schema.org/",
@@ -124,7 +124,7 @@ module Sinatra
               response["@id"] = "https://gbif.org/occurrence/#{occurrence.id}"
               response["sameAs"] = "https://gbif.org/occurrence/#{occurrence.id}"
               occurrence.attributes
-                        .reject{|column| column == 'gbifID'}
+                        .reject{|column| ignore_cols.include?(column)}
                         .map{|k,v| response[k] = v }
 
               response["recorded"] = occurrence.user_recordings.map{|o|

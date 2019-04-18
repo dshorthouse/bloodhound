@@ -122,9 +122,10 @@ module Sinatra
             admin_protected!
             user = find_user(params[:id])
             content_type "application/ld+json", charset: 'utf-8'
+            ignore_cols = ["gbifID", "dateIdentified_processed", "eventDate_processed"]
             begin
-              dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| column == 'gbifID'}
-                                          .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if o != "gbifID" }]
+              dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignore_cols.include?(column)}
+                                          .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o) }]
               id_url = user.orcid ? "https://orcid.org/#{user.orcid}" : "https://www.wikidata.org/wiki/#{user.wikidata}"
               {
                 "@context": {

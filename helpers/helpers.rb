@@ -465,9 +465,14 @@ module Sinatra
         Enumerator.new do |y|
           header = ["action"].concat(Occurrence.attribute_names - ["dateIdentified_processed", "eventDate_processed"])
           y << CSV::Row.new(header, header, true).to_s
-          occurrences.find_each do |o|
-            data = [o.action].concat(o.occurrence.attributes.values - [o.dateIdentified_processed, o.eventDate_processed])
-            y << CSV::Row.new(header, data).to_s
+          if !occurrences.empty?
+            occurrences.find_each do |o|
+              attributes = o.occurrence.attributes
+              attributes.delete(:dateIdentified_processed)
+              attributes.delete(:eventDate_processed)
+              data = [o.action].concat(attributes.values)
+              y << CSV::Row.new(header, data).to_s
+            end
           end
         end
       end
@@ -478,7 +483,10 @@ module Sinatra
           y << CSV::Row.new(header, header, true).to_s
           if !occurrences.empty?
             occurrences.each do |o|
-              data = [""].concat(o.occurrence.attributes.values - [o.dateIdentified_processed, o.eventDate_processed]).concat([""])
+              attributes = o.occurrence.attributes
+              attributes.delete(:dateIdentified_processed)
+              attributes.delete(:eventDate_processed)
+              data = [""].concat(attributes.values).concat([""])
               y << CSV::Row.new(header, data).to_s
             end
           end
