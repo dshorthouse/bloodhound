@@ -1,5 +1,5 @@
 -content_for :title do
-  #{@organization.name}: Bloodhound
+  #{@organization.name}
 
 -content_for :stylesheets do
   - if @organization.latitude
@@ -37,12 +37,12 @@
 
   - if @others_recorded.empty? && @others_identified.empty?
     %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-      Past and present staff have not yet claimed specimens that were deposited or identified at other organizations.
+      Past and present personnl have not yet claimed specimens that they deposited or identified at other organizations while affiliated with #{@organization.name}.
 
   - else
 
     %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-      Past and present staff have claimed specimens that were deposited or identified at the following organizations.
+      Past and present personnel have claimed specimens that they deposited or identified at the following organizations while affiliated with #{@organization.name}.
 
     %div{class: "container-fluid"}
       %div{class: "row"}
