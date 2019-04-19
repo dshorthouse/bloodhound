@@ -63,7 +63,7 @@ module Bloodhound
 
     def wikidata_institution_wiki_query(identifier)
       %Q(
-        SELECT ?item ?lat ?long ?image_url ?website
+        SELECT ?item ?lat ?long ?image_url ?logo_url ?website
         WHERE {
           ?item wdt:P3500|wdt:P2427 '#{identifier}' .
           ?item p:P625 ?statement .
@@ -71,6 +71,7 @@ module Bloodhound
           ?coordinate_node wikibase:geoLatitude ?lat .
           ?coordinate_node wikibase:geoLongitude ?long .
           ?item wdt:P18 ?image_url .
+          ?item wdt:P154 ?logo_url .
           ?item wdt:P856 ?website .
           SERVICE wikibase:label {
             bd:serviceParam wikibase:language "en" .
@@ -103,7 +104,7 @@ module Bloodhound
     end
 
     def institution_wikidata(identifier)
-      wikicode, latitude, longitude, image_url, website = nil
+      wikicode, latitude, longitude, image_url, logo_url, website = nil
 
       if identifier.match(/Q[0-9]{1,}/)
         data = Wikidata::Item.find(identifier)
@@ -111,6 +112,7 @@ module Bloodhound
         latitude = data.properties("P625").first.latitude.to_f rescue nil
         longitude = data.properties("P625").first.longitude.to_f rescue nil
         image_url = data.properties("P18").first.url rescue nil
+        logo_url = data.properties("P154").first.url rescue nil
         website = data.properties("P856").first.value rescue nil
       else
         response = @sparql.query(wikidata_institution_wiki_query(identifier)).first
@@ -119,6 +121,7 @@ module Bloodhound
           latitude = response[:lat].to_f
           longitude = response[:long].to_f
           image_url = response[:image_url].to_s
+          logo_url = response[:logo_url].to_s
           website = response[:website].to_s
         end
       end
@@ -126,7 +129,7 @@ module Bloodhound
         wikidata: wikicode,
         latitude: latitude,
         longitude: longitude,
-        image_url: image_url,
+        image_url: image_url || logo_url,
         website: website
       }
     end
