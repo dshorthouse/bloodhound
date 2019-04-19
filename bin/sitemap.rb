@@ -29,5 +29,6 @@ if options[:directory] && options[:domain]
   map = Bloodhound::SitemapGenerator.new({domain: options[:domain], directory: options[:directory] })
   map.add_flat_pages
   map.add_users
+  map.add_organizations
   map.render
 end

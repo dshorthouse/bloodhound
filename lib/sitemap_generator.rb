@@ -33,6 +33,14 @@ module Bloodhound
       end
     end
 
+    def add_organizations
+      Organization.find_each do |o|
+        @map.add "/organization/#{o.identifier}"
+        @map.add "/organization/#{o.identifier}/past"
+        @map.add "/organization/#{o.identifier}/metrics"
+      end
+    end
+
     def render
       @map.render_to(File.join(@directory, "sitemap.xml.gz"), gzip: true)
     end
