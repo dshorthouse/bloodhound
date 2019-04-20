@@ -23,7 +23,7 @@ class BLOODHOUND < Sinatra::Base
   include Pagy::Backend
   include Pagy::Frontend
   Pagy::VARS[:items] = 30
-                             
+
   use OmniAuth::Builder do
     provider :orcid, settings.orcid_key, settings.orcid_secret,
       :authorize_params => {
