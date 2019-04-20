@@ -44,23 +44,6 @@
 %p
   When Bloodhound users indicate start and end dates for their past and present education and employment in their ORCID accounts, these details are cross-referenced against dates and institution codes in the specimens they collected or identified. The result is a depiction of an organization's sphere of influence on formally or informally partnering organizations through the activities of their students, research and/or curatorial staff. Although the quality of these data often need improvement to fully capture this measure of reach, the necessary elements are all present in ORCID accounts and natural history collections data shared with the Global Biodiversity Information Facility. This approach affords a fresh new incentive for organizations to insist that specimen data be quickly and openly shared when their personnel donate specimens, visit other collections where they identify specimens in a backlog, or return borrowed specimens with new annotations or determinations. It also underscores a recognition that collections of all sizes and specialties participate in national and international networks of enthusiasts and experts. Bloodhound attempts to transparently automate these reports for organizations while simultaneously showcasing the expertise of collectors and determiners of natural history specimens.
 
-%h3 Development History
-
-%p
-  This application is developed and maintained by 
-  %a{href: "https://orcid.org/0000-0001-7618-5230" } David P. Shorthouse 
-  using specimen data periodically downloaded from the 
-  %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
-  (GBIF) and authentication provided by 
-  = succeed "." do
-    %a{href: "https://orcid.org" } ORCID
-  It was launched in August 2018 as a submission to the annual 
-  = succeed "." do
-    %a{href: "https://www.gbif.org/news/1GQURfK5jS4Iq4O06Y0EK4/2018-gbif-ebbe-nielsen-challenge-seeks-open-data-innovations-for-biodiversity"} Ebbe Nielsen Challenge
-  Since then,
-  %a{href: "https://www.wikidata.org"} wikidata identifiers
-  were integrated to capture the names, birth, and dates of death for deceased biologists to help maximize downstream data integration and engagement.
-
 %h3 Inner Workings
 
 %p
@@ -77,3 +60,20 @@
   and incorporated as a method in the dwc_agent gem. These scores are used to help expand the search for candidate specimens, presented in order of greatest to least probable. If you declared alternate names in your ORCID account such as a maiden name or if aliases are mentioned in wikidata profiles, these are used to search for candidate specimen records. Processing 186M specimen records is an intensive, through repeatable process using MIT-licensed,
   %a{href: "https://github.com/dshorthouse/bloodhound"} open source code. 
   Specimens used in the analyses for published papers are found by downloading cited data packages (less than 100MB zipped) that GBIF serves on behalf of the research community and then reattributed to collectors or determiners. This is comparable to the common practice in taxonomy whereby authors of new species descriptions formally acknowledge the collectors of the specimens they handled and the institutions where new type specimens are deposited.
+
+%h3 Development History
+
+%p
+  This application is developed and maintained by 
+  %a{href: "https://orcid.org/0000-0001-7618-5230" } David P. Shorthouse 
+  using specimen data periodically downloaded from the 
+  %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
+  (GBIF) and authentication provided by 
+  = succeed "." do
+    %a{href: "https://orcid.org" } ORCID
+  It was launched in August 2018 as a submission to the annual 
+  = succeed "." do
+    %a{href: "https://www.gbif.org/news/1GQURfK5jS4Iq4O06Y0EK4/2018-gbif-ebbe-nielsen-challenge-seeks-open-data-innovations-for-biodiversity"} Ebbe Nielsen Challenge
+  Since then,
+  %a{href: "https://www.wikidata.org"} wikidata identifiers
+  were integrated to capture the names, birth, and dates of death for deceased biologists to help maximize downstream data integration and engagement.
