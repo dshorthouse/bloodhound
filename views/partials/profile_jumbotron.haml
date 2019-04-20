@@ -1,39 +1,56 @@
 %div{class:"jumbotron jumbotron-fluid"}
-  %div{class: "container-fluid"}
+  %div{class:"row"}
+    %div{class:"col"}
+      %form{id:"form-wrapper", method: :post, action: "/", enctype: "multipart/form-data", "accept-charset": "UTF-8", class: "form"}
+        - bg_class = @user.image_url ? "" : "profile-image-bg" 
+        %div{id:"profile-image", class:"image-placeholder rounded mx-auto d-block align-self-center align-items-center #{bg_class}"}
+          %img{src:profile_image(@user)}
+          %span Change profile photo
+          %ul{id:"profile-upload-option", class:"list-group"}
+            %li{class:"list-group-item profile-upload-option-list"}
+              %input{name:"user-image", id:"user-image", type:"file", accept:"image/x-png,image/jpeg"}
+              %span Upload
+            %li{id:"profile-remove", class:"list-group-item profile-upload-option-list"} Remove
+            %li{id:"profile-cancel", class:"list-group-item profile-upload-option-list"} Cancel
 
-    %h2{class:"display-4 text-center"}= @user[:fullname]
+    %div{class:"col-12 col-md-6"}
+      %h2{class:"display-4 text-center"}= @user.fullname
 
-    - if !@user[:other_names].blank?
-      %div{class:"text-center text-muted"} #{@user[:other_names].split("|").join("; ")}
+      - if !@user.other_names.blank?
+        %div{class:"text-center text-muted"} #{@user.other_names.split("|").join("; ")}
 
-    %div{class: "text-center"}
-      - if !@user[:current_organization].nil?
-        - path = @user[:current_organization][:ringgold] || @user[:current_organization][:grid]
-        = succeed "," do
-          %a{href: "/organization/#{path}"} #{@user[:current_organization][:name]}
-        #{@user[:current_organization][:address]}
-      - if !@user[:current_organization].nil? && !@user[:country].blank?
-        |
-      - if !@user[:country].blank?
-        #{@user[:country]}
+      %div{class: "text-center"}
+        - if !@user.current_organization.nil?
+          - path = @user.current_organization.ringgold || @user.current_organization.grid
+          = succeed "," do
+            %a{href: "/organization/#{path}"} #{@user.current_organization.name}
+          #{@user.current_organization.address}
+        - if !@user.current_organization.nil? && !@user.country.blank?
+          |
+        - if !@user.country.blank?
+          #{@user.country}
 
-    %div{class: "orcid text-center"}
-      %a{href: "https://orcid.org/#{@user[:orcid]}"}
-        %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-          %a{href: "https://orcid.org/#{@user[:orcid]}"} https://orcid.org/#{@user[:orcid]}
+      %div{class: "orcid text-center"}
+        %a{href: "https://orcid.org/#{@user.orcid}"}
+          %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+            %a{href: "https://orcid.org/#{@user.orcid}"} https://orcid.org/#{@user.orcid}
+    %div{class:"col"}
 
-    - if !@user[:keywords].blank?
-      %div{class: "text-center text-muted font-italic"}
-        #{@user[:keywords].split("|").join(", ")}
+  - if !@user.keywords.blank?
+    %div{class:"row"}
+      %div{class:"col-lg-2"}
+      %div{class: "col-lg-8 text-center text-muted font-italic"}
+        #{@user.keywords.split("|").join(", ")}
+      %div{class:"col-lg-2 text-right"}
 
-    %div{id: "profile-buttons", class: "text-center"}
-      %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: is_public?, class:"btn-claim" }
-      - if is_public?
-        %a{href: "/#{@user[:orcid]}", target: "_blank", role: "button", class:"btn btn-sm btn-outline-success"} Public Profile
-      %a{ href:"/profile/refresh.json?user_id=#{@user[:id]}", role: "button", class:"btn btn-sm btn-outline-success profile-refresh"} Refresh ORCID Data
+  %div{id: "profile-buttons", class: "text-center"}
+    %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: is_public?, class:"btn-claim" }
+    - if is_public?
+      %a{href: "/#{@user[:orcid]}", target: "_blank", role: "button", class:"btn btn-sm btn-outline-success"} Public Profile
+    %a{ href:"/profile/refresh.json?user_id=#{@user.id}", role: "button", class:"btn btn-sm btn-outline-success profile-refresh"} Refresh ORCID Data
 
-    %div{class:"row justify-content-center"}
-      %div{class:"alert alert-success alert-dismissible fade show text-center col-md-6", role: "alert"}
-        ORCID Data was refreshed.
-        %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
-          %span{"aria-hidden":"true"} &times;
+  %div{class:"row justify-content-center"}
+    %div{class:"alert alert-success alert-dismissible fade show text-center col-md-6", role: "alert"}
+      ORCID Data was refreshed.
+      %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+        %span{"aria-hidden":"true"} &times;

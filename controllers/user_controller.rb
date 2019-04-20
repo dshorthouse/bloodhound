@@ -31,8 +31,8 @@ module Sinatra
             user.update(visited: Time.now)
             user_hash = user.as_json.symbolize_keys
             user_hash[:fullname] = user.fullname
-            user_hash[:current_organization] = organization
-            session[:omniauth] = user_hash
+            user_hash[:current_organization] = OpenStruct.new(organization)
+            session[:omniauth] = OpenStruct.new(user_hash)
             redirect '/profile'
           end
 
@@ -50,6 +50,32 @@ module Sinatra
             }
             cache_clear "fragments/#{user.identifier}"
             haml :'profile/overview'
+          end
+
+          app.post '/profile/image' do
+            protected!
+            user = User.find(@user[:id])
+            file_name = upload_image
+            if file_name
+              user.image_url = file_name
+              user.save
+              update_session
+              { message: "ok" }.to_json
+            else
+              { message: "failed" }.to_json
+            end
+          end
+
+          app.delete '/profile/image' do
+            protected!
+            user = User.find(@user[:id])
+            if user.image_url
+              FileUtils.rm(File.join(root, "public", "images", "users", user.image_url))
+            end
+            user.image_url = nil
+            user.save
+            update_session
+            { message: "ok" }.to_json
           end
 
           app.get '/profile/specimens' do

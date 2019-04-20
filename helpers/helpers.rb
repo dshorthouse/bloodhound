@@ -33,8 +33,9 @@ module Sinatra
         user = User.find(@user[:id]).reload
         user_hash = user.as_json.symbolize_keys
         user_hash[:fullname] = user.fullname
-        user_hash[:current_organization] = user.current_organization.as_json.symbolize_keys rescue nil
-        session[:omniauth] = user_hash
+        user_hash[:current_organization] = OpenStruct.new(user.current_organization.as_json.symbolize_keys) rescue nil
+        user_hash[:image_url] = user.image_url
+        session[:omniauth] = OpenStruct.new(user_hash)
         set_session
       end
 
@@ -54,6 +55,19 @@ module Sinatra
 
       def admin_authorized?
         defined?(@user) && is_admin?
+      end
+
+      def profile_image(user)
+        img = "/images/photo.png"
+        cloud_img = "https://abekpgaoen.cloudimg.io/height/200/x/"
+        if user.image_url
+          if user.wikidata
+            img =  cloud_img + user.image_url
+          else
+            img = cloud_img + Sinatra::Application.settings.base_url + "/images/user/" + user.image_url
+          end
+        end
+        img
       end
 
       def h(text)
@@ -382,8 +396,8 @@ module Sinatra
         if params[:file] && params[:file][:tempfile]
           tempfile = params[:file][:tempfile]
           filename = params[:file][:filename]
-          mime_encoding = detect_mime_encoding(params[:file][:tempfile].path)
-          if ["text/csv", "text/plain"].include?(mime_encoding[0]) && params[:file][:tempfile].size <= 5_000_000
+          mime_encoding = detect_mime_encoding(tempfile.path)
+          if ["text/csv", "text/plain"].include?(mime_encoding[0]) && tempfile.size <= 5_000_000
             begin
               items = []
               CSV.foreach(tempfile, headers: true, header_converters: :symbol, encoding: "#{mime_encoding[1]}:utf-8") do |row|
@@ -421,6 +435,24 @@ module Sinatra
         else
           @error = "No file was uploaded."
         end
+      end
+
+      def upload_image
+        new_name = nil
+        if params[:file] && params[:file][:tempfile]
+          tempfile = params[:file][:tempfile]
+          filename = params[:file][:filename]
+          mime_encoding = detect_mime_encoding(tempfile.path)
+          if ["image/jpeg", "image/png"].include?(mime_encoding[0]) && tempfile.size <= 5_000_000
+            extension = File.extname(tempfile.path)
+            filename = File.basename(tempfile.path, extension)
+            new_name = Digest::MD5.hexdigest(filename) + extension
+            FileUtils.mv(tempfile, File.join(root, "public", "images", "users", new_name))
+          else
+            tempfile.unlink
+          end
+        end
+        new_name
       end
 
       def cycle

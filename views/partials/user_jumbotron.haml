@@ -3,7 +3,8 @@
   %div{class:"row"}
     %div{class:"col"}
       - if @viewed_user.image_url
-        %img{src:"https://abekpgaoen.cloudimg.io/height/200/x/#{@viewed_user.image_url}", class:"rounded mx-auto d-block", alt:"#{@viewed_user.fullname}"}
+        %img{src:profile_image(@viewed_user), class:"rounded mx-auto d-block", alt:"#{@viewed_user.fullname}"}
+
     %div{class:"col-12 col-md-6"}
 
       %h2{class:"display-4 text-center"}= @viewed_user.fullname
@@ -44,9 +45,9 @@
       - if !@viewed_user.keywords.blank?
         #{@viewed_user.keywords.split("|").join(", ")}
     %div{class:"col-lg-2 text-right"}
-      - if Sinatra::Application.settings.disqus_domain && !locals[:search] && @viewed_user.can_comment?
+      - if Sinatra::Application.settings.base_url && !locals[:search] && @viewed_user.can_comment?
         %img{src: "/images/comments.png", alt:"Field notes"}
-        %a{href: "#{Sinatra::Application.settings.disqus_domain}/#{@viewed_user.identifier}/comments#disqus_thread", class:"disqus-comment-count", "data-disqus-identifier":"#{@viewed_user.identifier}"} Field notes
+        %a{href: "#{Sinatra::Application.settings.base_url}/#{@viewed_user.identifier}/comments#disqus_thread", class:"disqus-comment-count", "data-disqus-identifier":"#{@viewed_user.identifier}"} Field notes
 
   - if locals[:search]
     = haml :'partials/help_others_search', layout: false
