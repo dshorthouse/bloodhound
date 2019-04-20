@@ -3,9 +3,11 @@
 
 -content_for :scripts do
   %script{src:"/js/application.js"}
+  %script{src:"/js/profile.js"}
   :javascript
     $(function() {
         Application.init(#{@user[:id]}, "PUT", "/profile");
+        Profile.init();
     });
 
 -content_for :jumbotron do
