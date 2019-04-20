@@ -447,6 +447,7 @@ module Sinatra
             extension = File.extname(tempfile.path)
             filename = File.basename(tempfile.path, extension)
             new_name = Digest::MD5.hexdigest(filename) + extension
+            FileUtils.chmod 0755, tempfile
             FileUtils.mv(tempfile, File.join(root, "public", "images", "users", new_name))
           else
             tempfile.unlink
