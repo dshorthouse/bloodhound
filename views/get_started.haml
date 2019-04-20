@@ -8,131 +8,128 @@
       %p.lead.text-muted Three steps to claim the specimens you collected or identified and track their use in new science
 
 
-%h3 Step 1
-%div{class:"media d-flex flex-wrap"}
-  %img{src:"/images/orcid-logo.png", alt:"ORCID", class:"align-self-start mr-3 mb-3"}
-  %div{class:"media-body"}
-    %h5{class:"mt-0"} Authenticate via ORCID
-    %p ORCID is a nonprofit organization helping create a world in which all who participate in research, scholarship and innovation are uniquely identified and connected to their contributions and affiliations, across disciplines, borders, and time.
+%h3 Step 1: Authenticate via ORCID
+%div{class:"ml-5 mt-4"}
+  %div{class:"media mb-3 mt-3"}
+    %img{src:"/images/orcid-logo.png", alt:"ORCID", class:"mb-3 mr-3"}
+    %div{class:"media-body"}
+      ORCID is a nonprofit organization helping create a world in which all who participate in research, scholarship and innovation are uniquely identified and connected to their contributions and affiliations, across disciplines, borders, and time.
 
+  - if !authorized?
+    %p
+      %a{ href:"/auth/orcid", role: "button", class: "btn btn-lg btn-outline-success" }
+        %img{ alt: "ORCID logo", height:24, width:24, class:"orcid-id-logo", src:"/images/orcid_24x24.png"}
+        Log in or register with ORCID
+
+  %p
+    Suggested details to make publicly visible in your ORCID account
+
+  %ul
+    %li
+      Full name
+      %small
+        %sup a
+    %li
+      %em Also known as
+      names
+      %small
+        %sup a,b
+    %li
+      Country
+      %small
+        %sup a
+    %li
+      Keywords
+      %small
+        %sup a
+    %li
+      Employment
+      %small
+        %sup a,c
+    %li
+      Education and qualifications
+      %small
+        %sup a,c
+
+  %div{class:"bd-callout bd-callout-info"}
+    %div
+      %small
+        %sup a
+        Periodically and automatically refreshed in Bloodhound.
+    %div
+      %small
+        %sup b
+        Alternate names, inclusive of nicknames and family names are useful to help Bloodhound find your specimens,
+        %em eg
+        Miles Zhang, Y. Miles Zhang, Yuanmeng	Zhang
+    %div
+      %small
+        %sup c
+        If you include start and end dates for Employment and/or Education and qualifications, these are cross-referenced against dates on specimens you collected or identified and help your organizations measure their impact. When selecting your organizations, ensure that their
+        %strong Organization Identifiers
+        %em eg
+        Ringgold or GRID have been captured in your ORCID account.
+
+%h3 Step 2: Visit the Discovered tab
+%div{class:"ml-5 mt-4"}
+  %img{src:"/images/profile-tabs.png", alt:"Bloodhound profile tabs", class:"mb-3"}
+  %p
+    Once authenticated via ORCID, Bloodhound first shows you an
     - if !authorized?
-      %p
-        %a{ href:"/auth/orcid", role: "button", class: "btn btn-lg btn-outline-success" }
-          %img{ alt: "ORCID logo", height:24, width:24, class:"orcid-id-logo", src:"/images/orcid_24x24.png"}
-          Log in or register with ORCID
+      %strong
+        Overview
+    - else
+      %strong
+        %a{href: "/profile"} Overview
+    of your profile. It pulls your full name and other details (see above) from your ORCID account, which you may refresh at any time. Click the
+    - if !authorized?
+      %strong Discovered
+    - else
+      %strong
+        %a{href: "/profile/candidates"} Discovered
+    tab to see a list of candidate specimens. Much like an email inbox, Bloodhound shows the number of specimens that await action.
 
-    %p
-      Suggested details to make publicly visible in your ORCID account
-
-    %ol
+%h3 Step 3: Claim your specimens
+%div{class:"ml-5 mt-4"}
+  %p
+    Under the
+    - if !authorized?
+      %strong
+        Discovered
+    - else
+      %strong
+        %a{href: "/profile/candidates"} Discovered
+    tab of your profile, you may bulk claim
+    %em all visible rows
+    of specimens or claim single rows by clicking:
+    %ul{class:"list-unstyled"}
       %li
-        Full name
-        %small
-          %sup a
+        %img{src:"/images/net-unselected.png", alt:"Collected icon", width:"18"}
+        for specimens you collected or,
       %li
-        %em Also known as
-        names
-        %small
-          %sup a,b
+        %img{src:"/images/microscope-unselected.png", alt:"Identified icon", width:"18"}
+        for specimens you identified or,
       %li
-        Country
-        %small
-          %sup a
-      %li
-        Keywords
-        %small
-          %sup a
-      %li
-        Employment
-        %small
-          %sup a,c
-      %li
-        Education and qualifications
-        %small
-          %sup a,c
-      %li Works
-
-    %div{class:"bd-callout bd-callout-info"}
-      %div
-        %small
-          %sup a
-          Periodically and automatically refreshed in Bloodhound.
-      %div
-        %small
-          %sup b
-          Alternate names, inclusive of nicknames and family names are useful to help Bloodhound find your specimens,
-          %em eg
-          Miles Zhang, Y. Miles Zhang, Yuanmeng	Zhang
-      %div
-        %small
-          %sup c
-          If you include start and end dates for Employment and/or Education and qualifications, these are cross-referenced against dates on specimens you collected or identified and help your organizations measure their impact. When selecting your organizations, ensure that their
-          %strong Organization Identifiers
-          %em eg
-          Ringgold or GRID have been captured in your ORCID account.
-
-%h3 Step 2
-%div{class:"media d-flex flex-wrap"}
-  %img{src:"/images/profile-tabs.png", alt:"Bloodhound profile tabs", class:"align-self-start mr-3 mb-3", width:"250"}
-  %div{class:"media-body"}
-    %h5{class:"mt-0"} Visit the Discovered tab in your profile
-    %p
-      Once authenticated via ORCID, Bloodhound first shows you an
-      - if !authorized?
         %strong
-          Overview
-      - else
-        %strong
-          %a{href: "/profile"} Overview
-      of your profile. It pulls your full name and other details (see above) from your ORCID account, which you may refresh at any time. Click the
-      - if !authorized?
-        %strong Discovered
-      - else
-        %strong
-          %a{href: "/profile/candidates"} Discovered
-      tab to see a list of candidate specimens. Much like an email inbox, Bloodhound shows the number of specimens that await action.
-
-%h3 Step 3
-%div{class:"media d-flex flex-wrap"}
-  %img{src:"/images/button-selectors.png", alt:"Bloodhound butons", class:"align-self-start mr-3 mb-3", width:"250"}
-  %div{class:"media-body"}
-    %h5{class:"mt-0"} Claim your specimens
-    %p
-      Under the
-      - if !authorized?
-        %strong
-          Discovered
-      - else
-        %strong
-          %a{href: "/profile/candidates"} Discovered
-      tab of your profile, you may bulk claim
-      %em all visible rows
-      of specimens or claim single rows by clicking:
-      %ul{class:"list-unstyled"}
-        %li
-          %img{src:"/images/net-unselected.png", alt:"Collected icon", width:"18"}
-          for specimens you collected or,
-        %li
-          %img{src:"/images/microscope-unselected.png", alt:"Identified icon", width:"18"}
-          for specimens you identified or,
-        %li
-          %strong
-            Both
-          for specimens you collected & identified
-      Click the "Not me" buttons to ignore
-      %em all visible rows
-      or single rows of specimen records. Make a mistake? Visit other tabs in your profile such as
-      - if !authorized?
-        %strong My Specimens
-      - else
-        %strong
-          %a{href: "/profile/specimens"} My Specimens
-      or
-      - if !authorized?
-        %strong Ignored
-      - else
-        %strong
-          %a{href: "/profile/ignored"} Ignored
-      to repair or adjust your selections.
-    %div{class:"bd-callout bd-callout-info"}
-      Too many specimen records or want to sort by columns and/or filter by content? Click "work offline then upload" to view instructions on how to download, add claims in a spreadsheet, then upload a completed csv file.
+          Both
+        for specimens you collected & identified
+    %img{src:"/images/button-selectors.png", alt:"Bloodhound butons", class:"mb-3"}
+  
+  %p
+    Click the "Not me" buttons to ignore
+    %em all visible rows
+    or single rows of specimen records. Make a mistake? Visit other tabs in your profile such as
+    - if !authorized?
+      %strong My Specimens
+    - else
+      %strong
+        %a{href: "/profile/specimens"} My Specimens
+    or
+    - if !authorized?
+      %strong Ignored
+    - else
+      %strong
+        %a{href: "/profile/ignored"} Ignored
+    to repair or adjust your selections.
+  %div{class:"bd-callout bd-callout-info"}
+    Too many specimen records or want to sort by columns and/or filter by content? Click "work offline then upload" to view instructions on how to download, add claims in a spreadsheet, then upload a completed csv file.
