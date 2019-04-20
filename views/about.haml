@@ -6,7 +6,9 @@
     %div{class:"mr-auto p-2"}
       %h2 About
 
-%div{class:"bd-callout bd-callout-info"}
+%h3 Rationale
+
+%p
   Despite the world-wide importance of natural history collections, most are at risk because they are critically underfunded or undervalued. A significant contributing factor for this apparent neglect is the lack of a professional reward system that quantifies and illustrates the breadth and depth of expertise required to collect and identify specimens, maintain them, digitize their labels, mobilize the data, and enhance these data as errors and omissions are identified by stakeholders. See thoughts by 
   %a{href: "https://doi.org/10.1525/bio.2011.61.8.8"}
     McDade
@@ -14,24 +16,33 @@
     2011
   who describe what are the necessary elements for a professional reward system in Biology, which includes museum science. If people throughout the full value-chain in natural history collections received professional credit for their efforts, ideally recognized by their administrators and funding bodies, they would prioritize traditionally unrewarded tasks and could convincingly self-advocate. Proper methods of attribution at both the individual and institutional level are essential.
 
-%h3 Rationale
-
 %p
-  The Global Biodiversity Information Facility (GBIF) has prioritized a focus on people. The very first planned item in their 
+  The
+  %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
+  (GBIF) has prioritized a focus on people. The very first planned item in their 
   %a{href: "https://www.gbif.org/document/83029/gbif-implementation-plan-2017-2021-and-annual-work-programme-2017" }Implementation Plan for 2017-2021 
   and Annual Work Programme states:
-  %blockquote{class: "blockquote text-muted"}
-    %small "1.a.i: Develop mechanisms to support and reflect the skills, expertise and experience of individual and organizational contributions to the GBIF network, including revision of identity management system and integration of ORCID identifiers".
+  %div{class: "bd-callout bd-callout-info"}
+    "1.a.i: Develop mechanisms to support and reflect the skills, expertise and experience of individual and organizational contributions to the GBIF network, including revision of identity management system and integration of ORCID identifiers".
+
+%h3 The Problem
+
+%p
   A bottleneck that prevents the full execution of GBIF's plan is a legacy of intractable, text-based content shared from natural history museums that ambiguously record people or organizations implicated in specimen data, none of which include pre-determined links to ORCID identifiers. Typical content shared by natural history museums under the Darwin Core terms 
   %a{href: "http://rs.tdwg.org/dwc/terms/#recordedBy"} recordedBy 
   (collector) and 
   %a{href: "http://rs.tdwg.org/dwc/terms/#identifidBy"} identifiedBy 
-  (determiners or identifiers) is unstructured and variable. It may include variously ordered or unorderd people names, suffer from insensitivity to cultural preferences, additionally express full or abbreviated names of organizations, or other annotations that collectively make extraction of people names from these fields extremely difficult. The full solution requires multiple approaches. A progressive, modern approach would be to associate ORCID identifiers with specimens as their labels are digitized. Another, retrospective approach is to engage natural historians by giving them the freedom to claim their specimens and in so doing, illustrate their breadth of expertise and efforts. If sufficient numbers of people claim their specimens, we may unwittingly develop the necessary authority files to help museum staff employ a more modern, integrated approach that could use look-ups of disambiguated people names along with their professional identifiers.
+  (determiners or identifiers) is unstructured and variable. It may include variously ordered or unorderd people names, suffer from insensitivity to cultural preferences, additionally express full or abbreviated names of organizations, or other annotations that collectively make extraction of people names from these fields extremely difficult. The full solution requires multiple approaches. A progressive, modern approach would be to associate ORCID identifiers with specimens as their labels are digitized. Another, retrospective approach is to engage natural historians by giving them the freedom to claim their specimens and in so doing, showcase their breadth of expertise and efforts. If sufficient numbers of people claim their specimens, we may unwittingly develop the necessary authority files to help museum staff employ a more modern, integrated approach that could use look-ups of disambiguated people names along with their professional identifiers.
 
 %h3 Metrics on Organizations
 
+%div{class: "bd-callout bd-callout-info"}
+  A single visit to a distant museum by a graduate student to examine and identify specimens can have a significant impact on her career. It also carries with it, her affiliation with her graduate school.
+
 %p
-  Organizations struggle to measure the impact of their investments in digitizing and sharing of natural history specimen records. One way to assess organizational reach is to quantify the activities of personnel as evidenced directly in the specimen data shared by other organizations. Donations, curatorial or research visits, or the return of loans with new annotations or determinations are all activities that disseminate expertise. When Bloodhound users indicate start and end dates for their past and present education and employment in their ORCID accounts, these details are cross-referenced against dates and institution codes in the specimens they collected or identified. The result is a depiction of an organization's sphere of influence on formally or informally partnering organizations through the activities of their students, research and/or curatorial staff. Although the quality of these data often need improvement to fully capture this measure of reach, the necessary elements are all present in ORCID accounts and natural history collections data shared with the Global Biodiversity Information Facility. This approach affords a fresh new incentive for organizations to insist that specimen data be quickly and openly shared when their personnel donate specimens, visit other collections where they identify specimens in a backlog, or return borrowed specimens with new annotations or determinations. It also underscores a recognition that collections of all sizes and specialties participate in national and international networks of enthusiasts and experts. A single visit to a distant museum by a graduate student to examine and identify specimens can have a significant impact on her career. It also carries with it, her affiliation with her graduate school. Bloodhound attempts to transparently automate these reports for organizations while simultaneously showcasing the expertise of collectors and determiners of natural history specimens.
+  Organizations struggle to measure the impact of their investments in digitizing and sharing of natural history specimen records. One way to assess organizational reach is to quantify the activities of personnel as evidenced directly in the specimen data shared by other organizations. Donations, curatorial or research visits, or the return of loans with new annotations or determinations are all activities that disseminate expertise and carry with them the interests of organizations.
+%p
+  When Bloodhound users indicate start and end dates for their past and present education and employment in their ORCID accounts, these details are cross-referenced against dates and institution codes in the specimens they collected or identified. The result is a depiction of an organization's sphere of influence on formally or informally partnering organizations through the activities of their students, research and/or curatorial staff. Although the quality of these data often need improvement to fully capture this measure of reach, the necessary elements are all present in ORCID accounts and natural history collections data shared with the Global Biodiversity Information Facility. This approach affords a fresh new incentive for organizations to insist that specimen data be quickly and openly shared when their personnel donate specimens, visit other collections where they identify specimens in a backlog, or return borrowed specimens with new annotations or determinations. It also underscores a recognition that collections of all sizes and specialties participate in national and international networks of enthusiasts and experts. Bloodhound attempts to transparently automate these reports for organizations while simultaneously showcasing the expertise of collectors and determiners of natural history specimens.
 
 %h3 Development History
 
@@ -48,7 +59,7 @@
     %a{href: "https://www.gbif.org/news/1GQURfK5jS4Iq4O06Y0EK4/2018-gbif-ebbe-nielsen-challenge-seeks-open-data-innovations-for-biodiversity"} Ebbe Nielsen Challenge
   Since then,
   %a{href: "https://www.wikidata.org"} wikidata identifiers
-  were integrated to capture the names, birth, and dates of death for deceased biologists to help maximize downstream data integration.
+  were integrated to capture the names, birth, and dates of death for deceased biologists to help maximize downstream data integration and engagement.
 
 %h3 Inner Workings
 
@@ -59,10 +70,10 @@
   %a{href: "http://rs.tdwg.org/dwc/terms/#recordedBy"} recordedBy 
   (collector) or 
   %a{href: "http://rs.tdwg.org/dwc/terms/#identifiedBy"} identifiedBy 
-  Darwin Core fields. Names of collectors and identifiers are parsed and cleaned using the test-driven
+  Darwin Core fields. Names of collectors and determiners are parsed and cleaned using the test-driven
   %a{href: "https://github.com/dshorthouse/dwc_agent"} dwc_agent ruby gem 
   available for free integration in other projects. Similarity of people names is scored using a graph theory method outlined by 
   %a{href: "https://orcid.org/0000-0002-7101-9767"} R.D.M. Page 
-  and incorporated as a method in the dwc_agent gem. These scores are used to help expand the search for candidate specimens, presented in order of greatest to least probable. If you declared alternate names in your ORCID account such as a maiden name or if aliases are mentioned in wikidata profiles, these are used to search for candidate specimen records. Processing 180M specimen records is a scalable, repeatable process and requires approximately 2-3 hours on a laptop with 16GB of RAM using MIT-licensed,
+  and incorporated as a method in the dwc_agent gem. These scores are used to help expand the search for candidate specimens, presented in order of greatest to least probable. If you declared alternate names in your ORCID account such as a maiden name or if aliases are mentioned in wikidata profiles, these are used to search for candidate specimen records. Processing 186M specimen records is an intensive, through repeatable process using MIT-licensed,
   %a{href: "https://github.com/dshorthouse/bloodhound"} open source code. 
-  Specimens used in the analyses for published papers are found by downloading cited data packages (less than 100MB zipped) that GBIF serves on behalf of the research community and then reattributing these to collectors or determiners.
+  Specimens used in the analyses for published papers are found by downloading cited data packages (less than 100MB zipped) that GBIF serves on behalf of the research community and then reattributed to collectors or determiners. This is comparable to the common practice in taxonomy whereby authors of new species descriptions formally acknowledge the collectors of the specimens they handled and the institutions where new type specimens are deposited.
