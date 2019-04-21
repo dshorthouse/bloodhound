@@ -127,10 +127,10 @@ module Bloodhound
         response = @sparql.query(wikidata_institution_wiki_query(identifier)).first
         if response
           wikicode = response[:item].to_s.match(/Q[0-9]{1,}/).to_s
-          latitude = response[:lat].to_f
-          longitude = response[:long].to_f
-          image_url = response[:image_url].to_s
-          website = response[:website].to_s
+          latitude = response[:lat].to_f if !response[:lat].nil?
+          longitude = response[:long].to_f if !response[:long].nil?
+          image_url = response[:image_url].to_s if !response[:image_url].nil?
+          website = response[:website].to_s if !response[:website].nil?
         end
       end
       {
