@@ -22,7 +22,7 @@ var Profile = (function($, window) {
         e.preventDefault();
         popup.hide();
         $('#profile-image').addClass("profile-image-bg")
-                           .find("img")
+                           .find("img").attr({width:"0px", height:"0px"})
                            .attr({src:"/images/photo.png", width:"48px", height:"96px"});
         $.ajax({
           url: '/profile/image',
