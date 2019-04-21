@@ -35,10 +35,10 @@
           %a{href: "https://www.wikidata.org/wiki/#{@admin_user.wikidata}"}
             %img{src: "/images/wikidata_24x24.png", alt:"ORCID iD"}
             %a{href: "https://www.wikidata.org/wiki/#{@admin_user.wikidata}"} https://www.wikidata.org/wiki/#{@admin_user.wikidata}
-
-      %div{class: "text-center text-muted font-italic"}
-        - if !@admin_user.keywords.blank?
+      - if !@admin_user.keywords.blank?
+        %div{class: "text-center text-muted font-italic"}
           #{@admin_user.keywords.split("|").join(", ")}
+
     %div{class:"col"}
 
   %div{id: "profile-buttons", class: "text-center"}

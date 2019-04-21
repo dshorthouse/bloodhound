@@ -34,14 +34,10 @@
         %a{href: "https://orcid.org/#{@user.orcid}"}
           %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
             %a{href: "https://orcid.org/#{@user.orcid}"} https://orcid.org/#{@user.orcid}
+      - if !@user.keywords.blank?
+        %div{class: "text-center text-muted font-italic"}
+          #{@user.keywords.split("|").join(", ")}
     %div{class:"col"}
-
-  - if !@user.keywords.blank?
-    %div{class:"row"}
-      %div{class:"col-lg-2"}
-      %div{class: "col-lg-8 text-center text-muted font-italic"}
-        #{@user.keywords.split("|").join(", ")}
-      %div{class:"col-lg-2 text-right"}
 
   %div{id: "profile-buttons", class: "text-center"}
     %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: is_public?, class:"btn-claim" }

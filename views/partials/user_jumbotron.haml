@@ -37,17 +37,16 @@
           %a{href: "https://www.wikidata.org/wiki/#{@viewed_user.wikidata}"}
             %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
             %a{href: "https://www.wikidata.org/wiki/#{@viewed_user.wikidata}"} https://www.wikidata.org/wiki/#{@viewed_user.wikidata}
+
+      - if !@viewed_user.keywords.blank?
+        %div{class: "text-center text-muted font-italic"}
+          #{@viewed_user.keywords.split("|").join(", ")}
     %div{class:"col"}
 
-  %div{class:"row"}
-    %div{class:"col-lg-2"}
-    %div{class:"col-lg-8 text-center text-muted font-italic"}
-      - if !@viewed_user.keywords.blank?
-        #{@viewed_user.keywords.split("|").join(", ")}
-    %div{class:"col-lg-2 text-right"}
-      - if Sinatra::Application.settings.base_url && !locals[:search] && @viewed_user.can_comment?
-        %img{src: "/images/comments.png", alt:"Field notes"}
-        %a{href: "#{Sinatra::Application.settings.base_url}/#{@viewed_user.identifier}/comments#disqus_thread", class:"disqus-comment-count", "data-disqus-identifier":"#{@viewed_user.identifier}"} Field notes
+  - if Sinatra::Application.settings.base_url && !locals[:search] && @viewed_user.can_comment?
+    %div{class:"text-right"}
+      %img{src: "/images/comments.png", alt:"Field notes"}
+      %a{href: "#{Sinatra::Application.settings.base_url}/#{@viewed_user.identifier}/comments#disqus_thread", class:"disqus-comment-count", "data-disqus-identifier":"#{@viewed_user.identifier}"} Field notes
 
   - if locals[:search]
     = haml :'partials/help_others_search', layout: false

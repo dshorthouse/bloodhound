@@ -219,6 +219,7 @@ dl.citation{
   position:relative;
   height:200px;
   width:300px;
+  margin-bottom:1rem;
 }
 #profile-image input {
   opacity:0;
