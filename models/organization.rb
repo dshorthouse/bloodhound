@@ -17,7 +17,7 @@ class Organization < ActiveRecord::Base
   end
 
   def identifier
-    ringgold || grid
+    ringgold.to_s || grid
   end
 
   def active_users

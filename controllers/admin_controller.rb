@@ -45,16 +45,15 @@ module Sinatra
           app.post '/admin/organization/:id' do
             admin_protected!
             @organization = Organization.find(params[:id])
-            @organization.isni = params[:isni]
-            @organization.grid = params[:grid]
-            @organization.ringgold = params[:ringgold]
-            @organization.wikidata = params[:wikidata]
-            @organization.institution_codes = params[:institution_codes].split("|").map(&:strip)
+            @organization.isni = params[:isni].blank? ? nil : params[:isni]
+            @organization.grid = params[:grid].blank? ? nil : params[:grid]
+            @organization.ringgold = params[:ringgold].blank? ? nil : params[:ringgold]
+            @organization.wikidata = params[:wikidata].blank? ? nil : params[:wikidata]
+            @organization.institution_codes = params[:institution_codes].empty? ? nil : params[:institution_codes].split("|").map(&:strip)
             @organization.save
-            if !params[:wikidata].blank?
-              @organization.update_wikidata
-            end
-            haml :'admin/organization', locals: { active_page: "administration" }
+            @organization.reload
+            @organization.update_wikidata
+            redirect "/admin/organization/#{params[:id]}"
           end
 
           app.get '/admin/users' do
