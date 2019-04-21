@@ -17,7 +17,7 @@ class Organization < ActiveRecord::Base
   end
 
   def identifier
-    ringgold.to_s || grid
+    ringgold || grid
   end
 
   def active_users
@@ -186,7 +186,7 @@ class Organization < ActiveRecord::Base
 
   def update_wikidata
     wikidata_lib = Bloodhound::WikidataSearch.new
-    code = wikidata || identifier
+    code = wikidata || identifier.to_s
     wiki = wikidata_lib.institution_wikidata(code)
     update(wiki) if !wiki[:wikidata].nil?
   end
