@@ -101,8 +101,8 @@ module Bloodhound
       )
       data = JSON.parse(response, :symbolize_names => true)
 
-      family = data[:person][:name][:"family-name"][:value] rescue nil
-      given = data[:person][:name][:"given-names"][:value] rescue nil
+      family = data[:person][:name][:"family-name"][:value].strip rescue nil
+      given = data[:person][:name][:"given-names"][:value].strip rescue nil
       other_names = data[:person][:"other-names"][:"other-name"].map{|n| n[:content]}.join("|") rescue nil
       keywords = data[:person][:keywords][:keyword].map{|k| k[:content]}.compact.join("|") rescue nil
       email = nil
@@ -150,8 +150,8 @@ module Bloodhound
         end
       end
       return {} if ringgold.nil? && grid.nil?
-      name = place[:organization][:name]
-      address = place[:organization][:address].values.compact.join(", ") rescue nil
+      name = place[:organization][:name].strip
+      address = place[:organization][:address].values.compact.join(", ").strip rescue nil
       start_year = place[:"start-date"][:year][:value].to_i rescue nil
       start_month = place[:"start-date"][:month][:value].to_i rescue nil
       start_day = place[:"start-date"][:day][:value].to_i rescue nil

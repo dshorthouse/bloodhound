@@ -275,7 +275,11 @@ module Sinatra
       end
 
       def organizations
-        @pagy, @results = pagy(Organization.active_user_organizations.order(:name))
+        data = Organization.active_user_organizations.order(:name)
+        if params[:order] && Organization.column_names.include?(params[:order]) && ["asc", "desc"].include?(params[:sort])
+          data = Organization.active_user_organizations.order("#{params[:order]} #{params[:sort]}")
+        end
+        @pagy, @results = pagy(data)
       end
 
       def organization

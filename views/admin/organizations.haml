@@ -14,16 +14,22 @@
       %h2 Organizations
     = haml :'partials/admin_organization_search', layout: false
 
+- sort = locals[:sort] == "asc" ? "desc" : "asc"
 %div{class:"table-responsive-lg"}
   %table{class:"table table-hover table-sm"}
     %thead{class: "thead-light"}
       %tr
-        %th{scope: "col"} Name
+        %th{scope: "col"}
+          %a{href: "/admin/organizations?order=name&sort=#{sort}"} Name
         %th{scope: "col"} Address
-        %th{scope: "col"} ISNI
-        %th{scope: "col"} Ringgold
-        %th{scope: "col"} GRID
-        %th{scope: "col"} Wikidata
+        %th{scope: "col"}
+          %a{href: "/admin/organizations?order=isni&sort=#{sort}"} ISNI
+        %th{scope: "col"}
+          %a{href: "/admin/organizations?order=ringgold&sort=#{sort}"} Ringgold
+        %th{scope: "col"}
+          %a{href: "/admin/organizations?order=grid&sort=#{sort}"} GRID
+        %th{scope: "col"}
+          %a{href: "/admin/organizations?order=wikidata&sort=#{sort}"} Wikidata
 
     %tbody
       - @results.each do |o|

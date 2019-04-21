@@ -26,8 +26,10 @@ module Sinatra
 
           app.get '/admin/organizations' do
             admin_protected!
+            sort = params[:sort] || nil
+            order = params[:order] || nil
             organizations
-            haml :'admin/organizations', locals: { active_page: "administration" }
+            haml :'admin/organizations', locals: { active_page: "administration", sort: sort, order: order  }
           end
 
           app.get '/admin/organizations/search' do

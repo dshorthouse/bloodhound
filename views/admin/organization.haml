@@ -9,6 +9,10 @@
   %a{href: "https://www.grid.ac/disambiguate"}
     Search
   for organization on GRID
+  %br
+  %a{href: "https://www.wikidata.org/w/index.php?search=#{URI.encode(@organization.name)}", target: "_blank"}
+    Search
+  for organization on Wikidata
 
 %form{id:"form-org-wrapper", method: "post", action: "/admin/organization/#{@organization.id}", "accept-charset" => "UTF-8", class: "helpers"}
 
