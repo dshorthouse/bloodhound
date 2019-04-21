@@ -63,16 +63,24 @@ module Bloodhound
 
     def wikidata_institution_wiki_query(identifier)
       %Q(
-        SELECT ?item ?lat ?long ?image_url ?logo_url ?website
+        SELECT ?item ?lat ?long ?image_url ?website
         WHERE {
-          ?item wdt:P3500|wdt:P2427 '#{identifier}' .
-          ?item p:P625 ?statement .
-          ?statement psv:P625 ?coordinate_node .
-          ?coordinate_node wikibase:geoLatitude ?lat .
-          ?coordinate_node wikibase:geoLongitude ?long .
-          ?item wdt:P18 ?image_url .
-          ?item wdt:P154 ?logo_url .
-          ?item wdt:P856 ?website .
+          VALUES ?identifier {"#{identifier}"} {
+            ?item wdt:P3500|wdt:P2427 ?identifier .
+          }
+          OPTIONAL {
+            ?item p:P625 ?statement .
+            ?statement psv:P625 ?coordinate_node .
+            ?coordinate_node wikibase:geoLatitude ?lat .
+            ?coordinate_node wikibase:geoLongitude ?long .
+          }
+          OPTIONAL {
+            ?item wdt:P18|wdt:P154 ?image_url .
+          }
+          OPTIONAL {
+            #TODO FILTER BY current when a date
+            ?item wdt:P856 ?website .
+          }
           SERVICE wikibase:label {
             bd:serviceParam wikibase:language "en" .
           }
@@ -111,9 +119,10 @@ module Bloodhound
         wikicode = identifier
         latitude = data.properties("P625").first.latitude.to_f rescue nil
         longitude = data.properties("P625").first.longitude.to_f rescue nil
-        image_url = data.properties("P18").first.url rescue nil
-        logo_url = data.properties("P154").first.url rescue nil
-        website = data.properties("P856").first.value rescue nil
+        image = data.properties("P18").first.url rescue nil
+        logo = data.properties("P154").first.url rescue nil
+        image_url = image || logo
+        website = data.properties("P856").last.value rescue nil
       else
         response = @sparql.query(wikidata_institution_wiki_query(identifier)).first
         if response
@@ -121,7 +130,6 @@ module Bloodhound
           latitude = response[:lat].to_f
           longitude = response[:long].to_f
           image_url = response[:image_url].to_s
-          logo_url = response[:logo_url].to_s
           website = response[:website].to_s
         end
       end
@@ -129,7 +137,7 @@ module Bloodhound
         wikidata: wikicode,
         latitude: latitude,
         longitude: longitude,
-        image_url: image_url || logo_url,
+        image_url: image_url,
         website: website
       }
     end
