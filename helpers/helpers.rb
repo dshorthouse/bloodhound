@@ -283,35 +283,30 @@ module Sinatra
         @pagy, @results = pagy(data)
       end
 
-      def organization
+      def organization_redirect(path = "")
         @organization = Organization.find_by_identifier(params[:id]) rescue nil
-        if !@organization.nil? && !@organization.wikidata.nil? && params[:id] != @organization.wikidata
-          redirect "/organization/#{@organization.wikidata}"
-        end
-        if !@organization.nil?
-          @pagy, @results = pagy(@organization.active_users.order(:family))
-        else
+        if @organization.nil?
           halt 404, haml(:oops)
         end
+        if !@organization.wikidata.nil? && params[:id] != @organization.wikidata
+          redirect "/organization/#{@organization.wikidata}#{path}"
+        end
+      end
+
+      def organization
+        organization_redirect
+        @pagy, @results = pagy(@organization.active_users.order(:family))
       end
 
       def past_organization
-        @organization = Organization.find_by_identifier(params[:id])
-        if !@organization.nil?
-          @pagy, @results = pagy(@organization.inactive_users.order(:family))
-        else
-          halt 404, haml(:oops)
-        end
+        organization_redirect("/past")
+        @pagy, @results = pagy(@organization.inactive_users.order(:family))
       end
 
       def organization_metrics
-        @organization = Organization.find_by_identifier(params[:id])
-        if !@organization.nil?
-          @others_recorded = @organization.users_others_specimens_recorded
-          @others_identified = @organization.users_others_specimens_identified
-        else
-          halt 404, haml(:oops)
-        end
+        organization_redirect("/metrics")
+        @others_recorded = @organization.users_others_specimens_recorded
+        @others_identified = @organization.users_others_specimens_identified
       end
 
       def build_name_query(search)
