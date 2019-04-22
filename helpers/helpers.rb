@@ -275,20 +275,23 @@ module Sinatra
       end
 
       def organizations
-        data = Organization.active_user_organizations.order(:name)
         if params[:order] && Organization.column_names.include?(params[:order]) && ["asc", "desc"].include?(params[:sort])
           data = Organization.active_user_organizations.order("#{params[:order]} #{params[:sort]}")
+        else
+          data = Organization.active_user_organizations.order(:name)
         end
         @pagy, @results = pagy(data)
       end
 
       def organization
-        @organization = Organization.find_by_identifier(params[:id])
+        @organization = Organization.find_by_identifier(params[:id]) rescue nil
+        if !@organization.nil? && !@organization.wikidata.nil? && params[:id] != @organization.wikidata
+          redirect "/organization/#{@organization.wikidata}"
+        end
         if !@organization.nil?
           @pagy, @results = pagy(@organization.active_users.order(:family))
         else
-          status 404
-          haml :oops
+          halt 404, haml(:oops)
         end
       end
 
@@ -297,8 +300,7 @@ module Sinatra
         if !@organization.nil?
           @pagy, @results = pagy(@organization.inactive_users.order(:family))
         else
-          status 404
-          haml :oops
+          halt 404, haml(:oops)
         end
       end
 
@@ -308,8 +310,7 @@ module Sinatra
           @others_recorded = @organization.users_others_specimens_recorded
           @others_identified = @organization.users_others_specimens_identified
         else
-          status 404
-          haml :oops
+          halt 404, haml(:oops)
         end
       end
 
@@ -383,6 +384,7 @@ module Sinatra
             isni: n[:_source][:isni],
             ringgold: n[:_source][:ringgold],
             grid: n[:_source][:grid],
+            wikidata: n[:_source][:wikidata],
             preferred: n[:_source][:preferred]
           }
         }

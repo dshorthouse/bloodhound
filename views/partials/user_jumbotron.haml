@@ -19,9 +19,8 @@
       %div{class: "text-center"}
         - org = @viewed_user.current_organization
         - if !org.nil?
-          - path = org.ringgold || org.grid
           = succeed "," do
-            %a{href: "/organization/#{path}"} #{org.name}
+            %a{href: "/organization/#{org.identifier}"} #{org.name}
           #{org.address}
         - if !@viewed_user.current_organization.nil? && !@viewed_user.country.blank?
           |

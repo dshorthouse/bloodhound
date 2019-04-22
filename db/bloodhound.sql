@@ -1,6 +1,4 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -173,7 +171,8 @@ ALTER TABLE `organizations`
   ADD PRIMARY KEY (`id`),
   ADD KEY `ringgold_idx` (`ringgold`),
   ADD KEY `grid_idx` (`grid`),
-  ADD KEY `isni_idx` (`isni`);
+  ADD KEY `isni_idx` (`isni`),
+  ADD KEY `wikidata` (`wikidata`);
 
 ALTER TABLE `schema_migrations`
   ADD UNIQUE KEY `unique_schema_migrations` (`version`);
@@ -230,7 +229,6 @@ ALTER TABLE `user_occurrences`
 
 ALTER TABLE `user_organizations`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

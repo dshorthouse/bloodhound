@@ -21,7 +21,7 @@
 
       %div{class: "text-center"}
         - if !@user.current_organization.nil?
-          - path = @user.current_organization.ringgold || @user.current_organization.grid
+          - path = @user.current_organization.identifier
           = succeed "," do
             %a{href: "/organization/#{path}"} #{@user.current_organization.name}
           #{@user.current_organization.address}

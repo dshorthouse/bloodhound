@@ -195,6 +195,7 @@ module Bloodhound
               isni: { type: 'text', index: false },
               ringgold: { type: 'text', index: false },
               grid: { type: 'text', index: false },
+              wikidata: { type: 'text', index: false },
               preferred: { type: 'text', index: false }
             }
           }
@@ -333,6 +334,7 @@ module Bloodhound
         isni: o.isni,
         grid: o.grid,
         ringgold: o.ringgold,
+        wikidata: o.wikidata,
         preferred: o.identifier
       }
     end
