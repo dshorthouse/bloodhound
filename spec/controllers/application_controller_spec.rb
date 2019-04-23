@@ -31,6 +31,21 @@ describe "Bloodhound Application" do
     expect(last_response).to be_ok
   end
 
+  it "should allow accessing the developers page" do
+    get '/developers'
+    expect(last_response).to be_ok
+  end
+
+  it "should allow accessing the how it works page" do
+    get '/how-it-works'
+    expect(last_response).to be_ok
+  end
+
+  it "should allow accessing the countries page" do
+    get '/countries'
+    expect(last_response).to be_ok
+  end
+
   it "should allow accessing the about page" do
     get '/about'
     expect(last_response).to be_ok
