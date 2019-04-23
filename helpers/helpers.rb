@@ -191,7 +191,7 @@ module Sinatra
 
         if !user.other_names.nil?
           user.other_names.split("|").each do |other_name|
-            if !other_name.include?(" ")
+            if !other_name.include?(" ") && other_name != user.family
               other_name = [other_name, user.family].join(" ")
             end
             begin
