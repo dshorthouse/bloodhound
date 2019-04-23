@@ -13,6 +13,7 @@ module Bloodhound
     def add_flat_pages
       @map.add '/about'
       @map.add '/agents'
+      @map.add '/countries'
       @map.add '/get-started'
       @map.add '/developers'
       @map.add '/integrations'
@@ -39,6 +40,13 @@ module Bloodhound
         @map.add "/organization/#{o.identifier}"
         @map.add "/organization/#{o.identifier}/past"
         @map.add "/organization/#{o.identifier}/metrics"
+      end
+    end
+
+    def add_countries
+      countries = IsoCountryCodes.for_select
+      countries.each do |country|
+        @map.add "/country/#{country[1]}"
       end
     end
 

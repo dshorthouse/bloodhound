@@ -41,6 +41,27 @@ module Sinatra
             haml :'agents/agents', locals: { active_page: "agents" }
           end
 
+          app.get '/countries' do
+            @results = []
+            @countries = IsoCountryCodes.for_select
+            haml :'countries/countries', locals: { active_page: "countries" }
+          end
+
+          app.get '/country/:country_code' do
+            country_code = params[:country_code]
+            @results = []
+            begin
+              @country = IsoCountryCodes.find(country_code)
+              users = User.where.not(orcid: nil)
+                          .where("country_code LIKE ?", "%#{country_code}%").order(:family)
+              @pagy, @results = pagy(users, items: 30)
+              haml :'countries/country', locals: { active_page: "countries" }
+            rescue
+              status 404
+              haml :oops
+            end
+          end
+
           app.get '/developers' do
             file = File.join(root, "public", "data", "bloodhound-public-claims.csv.gz")
             @compressed_file_size = (File.size(file).to_f / 2**20).round(2) rescue nil

@@ -1,0 +1,19 @@
+-content_for :title do
+  Countries
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
+    %div{class:"mr-auto p-2"}
+      %h2 Countries
+      %p.lead.text-muted
+        From countries stated in
+        %a{href:"https://orcid.org"} ORCID
+        accounts
+
+
+%div{class:"container-fluid"}
+  - @countries.in_groups_of(10, false).each do |group|
+    %ul{class:"list-inline"}
+      - group.each do |country|
+        %li{class:"list-inline-item"}
+          %a{href: "/country/#{country[1]}", class:"btn btn-outline-success btn-sm mb-2"} #{country[0]}

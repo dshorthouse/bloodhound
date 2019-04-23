@@ -30,5 +30,6 @@ if options[:directory] && options[:domain]
   map.add_flat_pages
   map.add_users
   map.add_organizations
+  map.add_countries
   map.render
 end

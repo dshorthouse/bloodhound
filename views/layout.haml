@@ -55,6 +55,8 @@
             %li{class: "nav-item"}
               %a{ href: "/organizations", class:"nav-link#{locals[:active_page] == "organizations" ? " active" : nil}" } Organizations
             %li{class: "nav-item"}
+              %a{ href: "/countries", class:"nav-link#{locals[:active_page] == "countries" ? " active" : nil}" } Countries
+            %li{class: "nav-item"}
               %a{ href: '/agents', class: "nav-link#{locals[:active_page] == "agents" ? " active" : nil}" } Agents
           %ul{class: "navbar-nav"}
             - if authorized?
