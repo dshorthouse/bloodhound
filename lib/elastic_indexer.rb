@@ -262,14 +262,13 @@ module Bloodhound
       @client.index index: @settings.elastic_organization_index, type: 'organization', id: org.id, body: organization_document(org)
     end
 
-    def refresh_agent_index
-      @client.indices.refresh index: @settings.elastic_agent_index
+    def update_organization(org)
+      doc = { doc: organization_document(org) }
+      @client.update index: @settings.elastic_organization_index, type: 'organization', id: org.id, body: doc
     end
 
-    def import_users
-      User.where.not(family: [nil, ""]).find_in_batches do |batch|
-        bulk_user(batch)
-      end
+    def refresh_agent_index
+      @client.indices.refresh index: @settings.elastic_agent_index
     end
 
     def import_organizations
@@ -289,6 +288,12 @@ module Bloodhound
         }
       end
       @client.bulk index: @settings.elastic_user_index, type: 'user', refresh: false, body: users
+    end
+
+    def import_users
+      User.where.not(family: [nil, ""]).find_in_batches do |batch|
+        bulk_user(batch)
+      end
     end
 
     def get_user(u)

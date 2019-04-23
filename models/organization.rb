@@ -5,6 +5,7 @@ class Organization < ActiveRecord::Base
   has_many :users, through: :user_organizations, source: :user
 
   after_create :add_search
+  after_update :update_search
 
   def self.active_user_organizations
     self.includes(:user_organizations)
@@ -198,6 +199,11 @@ class Organization < ActiveRecord::Base
     if !es.get_organization(self)
       es.add_organization(self)
     end
+  end
+
+  def update_search
+    es = Bloodhound::ElasticIndexer.new
+    es.update_organization(self)
   end
 
 end
