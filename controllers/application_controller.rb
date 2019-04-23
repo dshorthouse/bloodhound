@@ -41,10 +41,18 @@ module Sinatra
             haml :'agents/agents', locals: { active_page: "agents" }
           end
 
-          app.get '/integrations' do
+          app.get '/developers' do
             file = File.join(root, "public", "data", "bloodhound-public-claims.csv.gz")
             @compressed_file_size = (File.size(file).to_f / 2**20).round(2) rescue nil
-            haml :integrations, locals: { active_page: "integrations" }
+            haml :developers
+          end
+
+          app.get '/how-it-works' do
+            haml :how_it_works
+          end
+
+          app.get '/integrations' do
+            haml :integrations
           end
 
           app.get '/get-started' do

@@ -36,47 +36,63 @@
     %script{src: "/js/typeahead.bundle.min.js"}
     = yield_content :scripts
 
-  %body
-    %nav{class:"navbar navbar-expand-md navbar-dark bg-dark"}
-      %a{class:"navbar-brand", href:"/"}
-        %img{src: "/images/logo.png", height:48, alt: "Bloodhound"}
-      %button{class:"navbar-toggler", type:"button", "data-toggle":"collapse", "data-target":"#navbarSupportedContent", "aria-controls":"navbarSupportedContent", "aria-expanded":"false", "aria-label":"Toggle navigation"}
-        %span{class:"navbar-toggler-icon"}
-      %div{class: "collapse navbar-collapse", id:"navbarSupportedContent"}
-        %ul{class: "navbar-nav mr-auto"}
-          %li{class: "nav-item"}
-            %a{ href: "/", class:"nav-link#{locals[:active_page] == "home" ? " active" : nil}" } Home
-          - if admin_authorized?
+  %body{class:"d-flex flex-column"}
+    %header
+      %nav{class:"navbar navbar-expand-md navbar-dark bg-dark"}
+        %a{class:"navbar-brand", href:"/"}
+          %img{src: "/images/logo.png", height:48, alt: "Bloodhound"}
+        %button{class:"navbar-toggler", type:"button", "data-toggle":"collapse", "data-target":"#navbarSupportedContent", "aria-controls":"navbarSupportedContent", "aria-expanded":"false", "aria-label":"Toggle navigation"}
+          %span{class:"navbar-toggler-icon"}
+        %div{class: "collapse navbar-collapse", id:"navbarSupportedContent"}
+          %ul{class: "navbar-nav mr-auto"}
             %li{class: "nav-item"}
-              %a{ href: "/admin", class:"nav-link#{locals[:active_page] == "administration" ? " active" : nil}" } Administration
-          %li{class: "nav-item"}
-            %a{ href: "/roster", class:"nav-link#{locals[:active_page] == "roster" ? " active" : nil}" } Profiles
-          %li{class: "nav-item"}
-            %a{ href: "/organizations", class:"nav-link#{locals[:active_page] == "organizations" ? " active" : nil}" } Organizations
-          %li{class: "nav-item"}
-            %a{ href: '/agents', class: "nav-link#{locals[:active_page] == "agents" ? " active" : nil}" } Agents
-          %li{class: "nav-item"}
-            %a{ href: '/integrations', class: "nav-link#{locals[:active_page] == "integrations" ? " active" : nil}" } Integrations
-          %li{class: "nav-item"}
-            %a{ href: "https://github.com/dshorthouse/bloodhound/issues", class: "nav-link" } Feedback
-          %li{class: "nav-item"}
-            %a{ href: '/about', class: "nav-link#{locals[:active_page] == "about" ? " active" : nil}" } About
-        %ul{class: "navbar-nav"}
-          - if authorized?
+              %a{ href: "/", class:"nav-link#{locals[:active_page] == "home" ? " active" : nil}" } Home
+            - if admin_authorized?
+              %li{class: "nav-item"}
+                %a{ href: "/admin", class:"nav-link#{locals[:active_page] == "administration" ? " active" : nil}" } Administration
             %li{class: "nav-item"}
-              %a{ href: "/help-others", class: "nav-link"} Help Others
+              %a{ href: "/roster", class:"nav-link#{locals[:active_page] == "roster" ? " active" : nil}" } Profiles
             %li{class: "nav-item"}
-              %a{ href: "/profile", id: "linked-button", role: "button", class: "btn btn-outline-light" }= @user[:fullname]
+              %a{ href: "/organizations", class:"nav-link#{locals[:active_page] == "organizations" ? " active" : nil}" } Organizations
             %li{class: "nav-item"}
-              %a{ href: "/logout", class: "nav-link" } Logout
-          - else
-            %li
-              %a{ href:"/auth/orcid", role: "button", class: "btn btn-outline-light connect-orcid-button" }
-                %img{ alt: "ORCID logo", height:24, width:24, class:"orcid-id-logo", src:"/images/orcid_24x24.png"}
-                Log in with ORCID
+              %a{ href: '/agents', class: "nav-link#{locals[:active_page] == "agents" ? " active" : nil}" } Agents
+          %ul{class: "navbar-nav"}
+            - if authorized?
+              %li{class: "nav-item"}
+                %a{ href: "/help-others", class: "nav-link"} Help Others
+              %li{class: "nav-item"}
+                %a{ href: "/profile", id: "linked-button", role: "button", class: "btn btn-outline-light" }= @user[:fullname]
+              %li{class: "nav-item"}
+                %a{ href: "/logout", class: "nav-link" } Logout
+            - else
+              %li
+                %a{ href:"/auth/orcid", role: "button", class: "btn btn-outline-light connect-orcid-button" }
+                  %img{ alt: "ORCID logo", height:24, width:24, class:"orcid-id-logo", src:"/images/orcid_24x24.png"}
+                  Log in with ORCID
 
-    = yield_content :jumbotron
+      = yield_content :jumbotron
 
-    %main{id:"main"}
+    %main{id:"main", role:"main", class:"mb-3"}
       %div{class: "container-fluid"}
         = yield
+
+    %footer{class: "footer mt-auto py-3 border-top d-flex justify-content-end"}
+      %div{class:"px-5"}
+        %h5 Resources
+        %ul{class: "list-unstyled text-small"}
+          %li
+            %a{href: "/integrations", class: "text-muted"} Integrations
+          %li
+            %a{href: "/developers", class: "text-muted"} Developers
+      %div{class: "px-5"}
+        %h5 About
+        %ul{class: "list-unstyled text-small"}
+          %li
+            %a{href: "/about", class: "text-muted"} Rationale
+          %li
+            %a{href: "/how-it-works", class: "text-muted"} How it Works
+          %li
+            %a{href: "https://github.com/dshorthouse/bloodhound/issues", class: "text-muted"} Feedback
+      %div{class:"pr-3"}
+        %a{href: "https://twitter.com/BloodhoundTrack"}
+          %img{src:"/images/twitter-icon.png", alt:"Bloodhound on Twitter"}

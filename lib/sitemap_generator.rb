@@ -14,6 +14,7 @@ module Bloodhound
       @map.add '/about'
       @map.add '/agents'
       @map.add '/get-started'
+      @map.add '/developers'
       @map.add '/integrations'
       @map.add '/organizations'
       @map.add '/roster'

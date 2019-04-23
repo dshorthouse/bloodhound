@@ -1,5 +1,5 @@
-body{
-  margin-bottom:2rem;
+html, body {
+  height: 100%;
 }
 .btn-outline-light:hover{
   color:#212529 !important;

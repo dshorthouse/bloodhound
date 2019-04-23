@@ -36,73 +36,6 @@
         %a{href: "https://addons.mozilla.org/en-US/firefox/addon/bloodhound-attributor/"}
           %img{src: "/images/chrome_extension_screenshot.png", alt: "Bloodhound Firefox Addon"}
 
-%h3 Web Services
-
-%p Bloodhound data are exposed as CSV downloads or JSON-LD documents on publicly shared profile pages. Individual occurrence records are exposed as JSON-LD documents.
-
-%div{class:"ml-3"}
-  %h5 User Data from a Public Profile
-  %div
-    %a{href: "/0000-0001-7618-5230/specimens.csv"} #{base_url}/0000-0001-7618-5230/specimens.csv
-  %div
-    %a{href: "/0000-0001-7618-5230/specimens.json"} #{base_url}/0000-0001-7618-5230/specimens.json
-  %p
-    %small{class:"text-muted"}
-      Where 
-      %em 0000-0001-7618-5230
-      is a user's ORCID identifier,
-      %a{href: "https://orcid.org/0000-0001-7618-5230"} https://orcid.org/0000-0001-7618-5230
-
-%div{class:"ml-3"}
-  %h5 Specimen Record
-  %div
-    %a{href: "/occurrence/477976412.json"} #{base_url}/occurrence/477976412.json
-  %p
-    %small{class:"text-muted"}
-      Where 
-      %em /occurrence/477976412
-      is that provided by the Global Biodiversity Information Facility (GBIF),
-      %a{href: "https://gbif.org/occurrence/477976412"} https://gbif.org/occurrence/477976412.
-      This same service is used in both the above browser extensions, what the developer community calls
-      %a{href: "https://en.wikipedia.org/wiki/Eating_your_own_dog_food"}
-        %em
-          dogfooding.
-
-%h3 Raw Data
-
-%div{class:"ml-3"}
-  %h5 List of Public Profiles
-  %div
-    %a{href: "/data/bloodhound-public-profiles.csv"} bloodhound-public-profiles.csv
-  %p
-    %smal{class:"text-muted"}
-      Where the above csv includes a header, "Family, Given, wikidata, ORCID, URL"
-    
-- if @compressed_file_size
-  %div{class:"ml-3"}
-    %h5 All Claims from Public Profiles
-    %div
-      Daily build,
-      %a{href: "/data/bloodhound-public-claims.csv.gz"} bloodhound-public-claims.csv.gz
-      (#{@compressed_file_size} MB)
-    %p
-      %small{class:"text-muted"}
-        Where the above gzipped csv includes a header, "Subject, Predicate, Object" and rows are expressed as, "https://gbif.org/occurrence/1801358422, http://rs.tdwg.org/dwc/iri/identifiedBy, https://orcid.org/0000-0001-9008-0611"
-
-%div{class:"ml-3"}
-  %h5 Unverified, Unauthenticated Agents
-  %div
-    %a{href: "https://github.com/dshorthouse/bloodhound/blob/d6605b8b3771a42bc62e613fc6622af0bd5cb278/public/data/bloodhound-agents.gz"} bloodhound-agents.gz
-    (474 MB)
-    
-  %p
-    %small{class:"text-muted"}
-      The above gzipped csv includes a header, "agents, gbifIDs_recordedBy, gbifIDs_identifiedBy", was constructed from
-      %a{href: "https://doi.org/10.15468/dl.rohj3n"} https://doi.org/10.15468/dl.rohj3n
-      using a 
-      %a{href: "https://github.com/dshorthouse/bloodhound/blob/master/spark.md"} Scala / Apache Spark script
-      where the gbifIDs_recordedBy and gbifIDs_identifiedBy columns each contain an array of GBIF IDs. The "agents" column is as presented on GBIF and will require additional parsing.
-
 %h3 Feeds
 
 %div{class:"ml-3"}
@@ -120,10 +53,3 @@
   %p
     %small{class:"text-muted"}
       RSS feed of all new comments (aka "Field notes") on profiles, provided by Disqus.
-
-%h3 Code
-%p
-  The MIT-licensed code is available on 
-  = succeed "." do
-    %a{href: "https://github.com/dshorthouse/bloodhound" } GitHub
-  Technologies at play include Apache Spark to group occurrence records by raw entries in recordedBy and identifiedBy and to import into MySQL, Neo4j to store the scores between similarly structured people names, Elasticsearch to aid in the searching of people names once parsed and cleaned, Redis to coordinate the processing queues, and Sinatra/ruby for the application layer.
