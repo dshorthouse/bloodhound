@@ -7,7 +7,7 @@ module Bloodhound
       args = defaults.merge(args)
       @domain = args[:domain]
       @directory = args[:directory]
-      @map = XmlSitemap::Map.new(@domain)
+      @map = XmlSitemap::Map.new(@domain, { secure: true })
     end
 
     def add_flat_pages
