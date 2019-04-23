@@ -47,14 +47,23 @@ module Sinatra
           app.post '/admin/organization/:id' do
             admin_protected!
             @organization = Organization.find(params[:id])
-            @organization.isni = params[:isni].blank? ? nil : params[:isni]
-            @organization.grid = params[:grid].blank? ? nil : params[:grid]
-            @organization.ringgold = params[:ringgold].blank? ? nil : params[:ringgold]
-            @organization.wikidata = params[:wikidata].blank? ? nil : params[:wikidata]
-            @organization.institution_codes = params[:institution_codes].empty? ? nil : params[:institution_codes].split("|").map(&:strip)
-            @organization.save
-            @organization.reload
-            @organization.update_wikidata
+            isni = params[:isni].blank? ? nil : params[:isni]
+            grid = params[:grid].blank? ? nil : params[:grid]
+            ringgold = params[:ringgold].blank? ? nil : params[:ringgold]
+            wikidata = params[:wikidata].blank? ? nil : params[:wikidata]
+            institution_codes = params[:institution_codes].empty? ? nil : params[:institution_codes].split("|").map(&:strip)
+            data = {
+              isni: isni,
+              grid: grid,
+              ringgold: ringgold,
+              wikidata: wikidata,
+              institution_codes: institution_codes
+            }
+            wikidata_lib = ::Bloodhound::WikidataSearch.new
+            code = wikidata || grid || ringgold
+            wiki = wikidata_lib.institution_wikidata(code)
+            data.merge!(wiki) if wiki 
+            @organization.update(data)
             redirect "/admin/organization/#{params[:id]}"
           end
 
