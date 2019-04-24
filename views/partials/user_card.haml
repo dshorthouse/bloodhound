@@ -5,15 +5,16 @@
 - statement = nil
 - if locals[:user].top_family_identified || locals[:user].top_family_recorded
   - statement = "#{locals[:user].given} " + [id_statement,recorded_statement].compact.join(" and ")
-%div{class: "card", style:"margin:20px"}
-  %div{class: "card-header"}
-    %h5
-      - if locals[:user].is_public?
+%div{class: "card my-3"}
+  %div{class: "card-header d-flex justify-content-between"}
+    %div
+      %h5
         %a{href: "/#{locals[:user].identifier}"} #{locals[:user].fullname_reverse}
-      - else
-        #{locals[:user].fullname_reverse}
-    - if locals[:user].wikidata
-      %span{class:"small text-muted"}= format_lifespan(locals[:user])
+      - if locals[:user].wikidata
+        %span{class:"small text-muted"}= format_lifespan(locals[:user])
+    - if locals[:user].is_public?
+      %div
+        %img{src:"/images/people.png", alt: "Public account"}
   %div{class: "card-body"}
     %div{class: "row"}
       %div{class: "col small text-left text-muted"}
@@ -23,5 +24,5 @@
         - count = locals[:user].all_occurrences_count
         - color = count == 0 ? "light" : "success"
         %span{class:"badge badge-#{color}"} #{number_with_delimiter(count)}
-        specimens
-    %p{class:"card-text",style:"margin-top:5px;"} #{statement}
+        #{'specimen'.pluralize(count)}
+    %p{class:"card-text mt-2"} #{statement}

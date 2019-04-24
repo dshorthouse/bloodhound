@@ -8,67 +8,78 @@
   %script{src: "/js/jquery-jvectormap-2.0.3.min.js"}
   %script{src: "/js/jquery-jvectormap-world-mill.js"}
   %script{id:"dsq-count-scr", src:"//#{Sinatra::Application.settings.disqus_shortname}.disqus.com/count.js"}
-  :javascript
-    var countryData=#{@total[:country_counts].to_json};
+  - if @viewed_user.is_public?
+    :javascript
+      var countryData=#{@total[:country_counts].to_json};
   
-    $(function() {
-      var map = $('#world-map');
-      DISQUSWIDGETS.getCount({reset: true});
-      ProgressBar.init("#{@viewed_user.identifier}");
-      if (Object.keys(countryData).length > 0) {
-        map.vectorMap({
-          map: 'world_mill',
-          backgroundColor: '#fff',
-          regionStyle: {
-            initial: {
-              fill: "#e9ecef"
+      $(function() {
+        var map = $('#world-map');
+        DISQUSWIDGETS.getCount({reset: true});
+        ProgressBar.init("#{@viewed_user.identifier}");
+        if (Object.keys(countryData).length > 0) {
+          map.vectorMap({
+            map: 'world_mill',
+            backgroundColor: '#fff',
+            regionStyle: {
+              initial: {
+                fill: "#e9ecef"
+              }
+            },
+            focusOn: Object.keys(countryData),
+            series: {
+              regions: [{
+                values: Object.keys(countryData).reduce(function (result,item) {
+                  result[item] = countryData[item].count;
+                  return result; 
+                }, {}),
+                scale: ['#C8EEFF', '#0071A4'],
+                normalizeFunction: 'polynomial'
+              }]
+            },
+            onRegionTipShow: function(e, el, code) {
+              count = 0
+              if (countryData.hasOwnProperty(code)) {
+                count = countryData[code].count;
+              }
+              el.html(el.html()+' ('+count+')');
             }
-          },
-          focusOn: Object.keys(countryData),
-          series: {
-            regions: [{
-              values: Object.keys(countryData).reduce(function (result,item) {
-                result[item] = countryData[item].count;
-                return result; 
-              }, {}),
-              scale: ['#C8EEFF', '#0071A4'],
-              normalizeFunction: 'polynomial'
-            }]
-          },
-          onRegionTipShow: function(e, el, code) {
-            count = 0
-            if (countryData.hasOwnProperty(code)) {
-              count = countryData[code].count;
-            }
-            el.html(el.html()+' ('+count+')');
-          }
-        });
-      }
-    });
+          });
+        }
+      });
 
 - content_for :jumbotron do
   = haml :'partials/user_jumbotron', layout: false
 
-= haml :'partials/user_tabs', layout: false, locals: { active_page: 'overview' }
+- if @viewed_user.is_public?
+  = haml :'partials/user_tabs', layout: false, locals: { active_page: 'overview' }
 
-%div{class: "alert alert-info justify-content-between row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-  %div{class:"col-8"}
-    - if @total[:number_recorded] == 0 && @total[:number_identified] == 0
-      Identified or collected specimens have not yet been recorded.
+  %div{class: "alert alert-info justify-content-between row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    %div{class:"col-8"}
+      - if @total[:number_recorded] == 0 && @total[:number_identified] == 0
+        Identified or collected specimens have not yet been recorded.
+      - else
+        - if @total[:number_identified] > 0
+          Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}.
+        - if @total[:number_recorded] > 0
+          = succeed "." do
+            Collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])}
+            - if @total[:country_counts].count > 0 
+              from at least #{@total[:country_counts].count} #{'country'.pluralize(@total[:country_counts].count)}
+    %div{class:"col-3"}
+      Claim progress
+      %div{class:"progress", style:"border:1px solid rgba(0,0,0,.125);inline"}
+        %div{id:"progress-bar", class:"progress-bar bg-info", role:"progressbar", style:"width: 0%;inline", "aria-valuenow":"0", "aria-valuemin":"0", "aria-valuemax":"100"}
+
+  - if !@total[:country_counts].empty?
+    %div{class:"row d-flex justify-content-center"}
+      %div{class:"col col-sm-12 col-md-10 col-xl-10"}
+        #world-map{style:"width: 100%; height: 350px"}
+
+- else
+  %div{class: "alert alert-warning"}
+    - specimen_count = @viewed_user.all_occurrences_count
+    - if specimen_count > 0
+      Although #{number_with_delimiter(specimen_count)} #{'specimens'.pluralize(specimen_count)} were collected or identified, this profile
     - else
-      - if @total[:number_identified] > 0
-        Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}.
-      - if @total[:number_recorded] > 0
-        = succeed "." do
-          Collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])}
-          - if @total[:country_counts].count > 0 
-            from at least #{@total[:country_counts].count} #{'country'.pluralize(@total[:country_counts].count)}
-  %div{class:"col-3"}
-    Claim progress
-    %div{class:"progress", style:"border:1px solid rgba(0,0,0,.125);inline"}
-      %div{id:"progress-bar", class:"progress-bar bg-info", role:"progressbar", style:"width: 0%;inline", "aria-valuenow":"0", "aria-valuemin":"0", "aria-valuemax":"100"}
-
-- if !@total[:country_counts].empty?
-  %div{class:"row d-flex justify-content-center"}
-    %div{class:"col col-sm-12 col-md-10 col-xl-10"}
-      #world-map{style:"width: 100%; height: 350px"}
+      Profile
+    has not yet been made public.

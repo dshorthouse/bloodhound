@@ -457,7 +457,7 @@ module Sinatra
           app.get '/:id' do
             if params[:id].is_orcid? || params[:id].is_wiki_id?
               @viewed_user = find_user(params[:id])
-              if @viewed_user && @viewed_user.is_public?
+              if @viewed_user
                 @total = {
                   number_identified: @viewed_user.identified_count,
                   number_recorded: @viewed_user.recorded_count,
