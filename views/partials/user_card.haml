@@ -20,6 +20,8 @@
         - if locals[:user].country
           #{locals[:user].country.split("|").join("; ")}
       %div{class: "col small text-right text-muted"}
-        %span{class:"badge badge-success"} #{number_with_delimiter(locals[:user].all_occurrences_count)}
+        - count = locals[:user].all_occurrences_count
+        - color = count == 0 ? "light" : "success"
+        %span{class:"badge badge-#{color}"} #{number_with_delimiter(count)}
         specimens
     %p{class:"card-text",style:"margin-top:5px;"} #{statement}
