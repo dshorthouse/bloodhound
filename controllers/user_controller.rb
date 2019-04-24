@@ -316,7 +316,7 @@ module Sinatra
           app.get '/help-others' do
             protected!
             @results = []
-            @countries = IsoCountryCodes.for_select
+            @countries = IsoCountryCodes.for_select.group_by{|u| ActiveSupport::Inflector.transliterate(u[0][0]) }
             if params[:q]
               search_user
             end

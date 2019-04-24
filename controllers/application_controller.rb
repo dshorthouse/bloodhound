@@ -43,7 +43,7 @@ module Sinatra
 
           app.get '/countries' do
             @results = []
-            @countries = IsoCountryCodes.for_select
+            @countries = IsoCountryCodes.for_select.group_by{|u| ActiveSupport::Inflector.transliterate(u[0][0]) }
             haml :'countries/countries', locals: { active_page: "countries" }
           end
 

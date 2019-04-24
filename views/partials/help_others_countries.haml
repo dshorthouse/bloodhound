@@ -1,5 +1,6 @@
 %div{class:"container-fluid"}
-  - @countries.in_groups_of(10, false).each do |group|
+  - @countries.each do |k, group|
+    %h3 #{k}
     %ul{class:"list-inline"}
       - group.each do |country|
         %li{class:"list-inline-item"}
