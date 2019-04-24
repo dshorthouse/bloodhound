@@ -1,0 +1,20 @@
+%div{class: "card my-3"}
+  %div{class:"card-header d-flex justify-content-between"}
+    %div
+      %h5
+        %a{href: "/help-others/#{locals[:user].identifier}"} #{locals[:user].fullname_reverse}
+      - if locals[:user].wikidata
+        %span{class:"small text-muted"}= format_lifespan(locals[:user])
+    - if locals[:user].is_public?
+      %div
+        %img{src:"/images/people.png", alt: "Public account"}
+  %div{class: "card-body"}
+    %div{class: "row"}
+      %div{class: "col small text-left text-muted"}
+        - if locals[:user].country
+          #{locals[:user].country.split("|").join("; ")}
+      %div{class: "col small text-right text-muted"}
+        - count = locals[:user].all_occurrences_count
+        - color = count == 0 ? "light" : "success"
+        %span{class:"badge badge-#{color}"} #{number_with_delimiter(count)}
+        #{'specimen'.pluralize(count)}

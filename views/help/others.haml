@@ -57,18 +57,6 @@
         - group.each do |user|
           %div{class: "col-sm"}
             - if !user.nil?
-              - u = User.find(user[:_id])
-              %div{class: "card", style:"margin:20px"}
-                %div{class: "card-header"}
-                  %h5
-                    %a{href: "/help-others/#{u.identifier}"} #{u.fullname_reverse}
-                  - if u.wikidata
-                    %span{class:"small text-muted"}= format_lifespan(u)
-                %div{class: "card-body"}
-                  %div{class: "row"}
-                    %div{class: "col small text-left text-muted"} #{u.country}
-                    %div{class: "col small text-right text-muted"}
-                      %span{class:"badge badge-success"} #{number_with_delimiter(u.all_occurrences_count)}
-                      specimens
+              = haml :'partials/user_card_dynamic', layout: false, locals: { user: User.find(user[:_id]) }
 
     = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
