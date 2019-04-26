@@ -143,10 +143,10 @@ module Sinatra
           app.get '/profile/download.json' do
             protected!
             content_type "application/ld+json", charset: 'utf-8'
-            ignore_cols = ["gbifID", "dateIdentified_processed", "eventDate_processed"]
+            ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
             user = User.find(@user[:id])
-            dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignored_cols.include?(column)}
-                                        .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignored_cols.include?(o) }]
+            dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignore_cols.include?(column)}
+                                        .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o) }]
             {
               "@context": {
                 "@vocab": "http://schema.org/",
@@ -166,14 +166,14 @@ module Sinatra
                                            "@type": "PreservedSpecimen",
                                            "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
                                            sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
-                                         }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
+                                         }.merge(o.occurrence.attributes.reject {|column| ignore_cols.include?(column) })
                                        },
                 recorded: user.recordings
                                        .map{|o| {
                                            "@type": "PreservedSpecimen",
                                            "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
                                            sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
-                                         }.merge(o.occurrence.attributes.reject {|column| column == 'gbifID'})
+                                         }.merge(o.occurrence.attributes.reject {|column| ignore_cols.include?(column) })
                                        }
               }
             }.to_json
