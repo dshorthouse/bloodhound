@@ -33,6 +33,18 @@ module Sinatra
             user_hash[:fullname] = user.fullname
             user_hash[:current_organization] = OpenStruct.new(organization)
             session[:omniauth] = OpenStruct.new(user_hash)
+            cache_clear "fragments/#{user.identifier}"
+            redirect '/profile'
+          end
+
+          #/auth/zenodo is automatically added by OmniAuth
+          app.get '/auth/zenodo/callback' do
+            protected!
+            user = User.find(@user[:id])
+            session_data = request.env['omniauth.auth'].deep_symbolize_keys
+            user.zenodo_access_token = session_data[:info][:access_token_hash]
+            user.save
+            session[:omniauth][:zenodo] = true
             redirect '/profile'
           end
 
@@ -48,7 +60,6 @@ module Sinatra
               number_specimens_cited: user.cited_specimens.count,
               number_articles: user.cited_specimens.select(:article_id).distinct.count
             }
-            cache_clear "fragments/#{user.identifier}"
             haml :'profile/overview'
           end
 

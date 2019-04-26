@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  serialize :zenodo_access_token, Hash
+
   has_many :user_occurrences
   has_many :occurrences, -> { distinct }, through: :user_occurrences, source: :occurrence
   has_many :claims, foreign_key: :created_by, class_name: "UserOccurrence"

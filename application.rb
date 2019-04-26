@@ -35,6 +35,20 @@ class BLOODHOUND < Sinatra::Base
         :token_url => settings.orcid_token_url,
         :scope => '/authenticate'
       }
+
+      provider :zenodo, settings.zenodo_key, settings.zenodo_secret,
+        :authorize_params => {
+          :client_id => settings.zenodo_key,
+          :redirect_uri => settings.base_url + '/auth/zenodo/callback'
+        },
+        :client_options => {
+          :site => settings.zenodo_site,
+          :authorize_url => settings.zenodo_authorize_url,
+          :token_url => settings.zenodo_token_url,
+          :token_method => :post,
+          :scope => 'deposit:write deposit:actions',
+          :redirect_uri => settings.base_url + '/auth/zenodo/callback'
+        }
   end
 
   use Rack::GoogleAnalytics, :tracker => settings.google_analytics

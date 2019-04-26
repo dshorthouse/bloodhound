@@ -39,6 +39,7 @@ gem 'xml-sitemap'
 gem 'wikidata-client'
 gem 'ruby-filemagic'
 gem 'sparql-client'
+gem 'rubysl-securerandom'
 
 group :production do
 end
