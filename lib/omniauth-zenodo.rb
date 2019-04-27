@@ -6,7 +6,7 @@ module OmniAuth
 
       option :name, "zenodo"
 
-      option :provider_ignores_state, false
+      option :sandbox, false
 
       option :authorize_options, [:response_type,
                                   :redirect_uri,
@@ -19,7 +19,6 @@ module OmniAuth
       def initialize(app, *args, &block)
         super
         @options.client_options.site          = site
-        @options.client_options.api_base_url  = api_base_url
         @options.client_options.authorize_url = authorize_url
         @options.client_options.token_url     = token_url
       end
@@ -40,16 +39,16 @@ module OmniAuth
         end
       end
 
-      def site
-        "https://zenodo.org/api/"
-      end
-
-      def api_base_url
-        "https://zenodo.org/api/"
-      end
-
       def root_url
-        'https://zenodo.org'
+        if options[:sandbox]
+          'https://sandbox.zenodo.org'
+        else
+          'https://zenodo.org'
+        end
+      end
+
+      def site
+        root_url + '/api'
       end
 
       def authorize_url

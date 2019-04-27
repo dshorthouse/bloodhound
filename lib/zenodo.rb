@@ -24,12 +24,24 @@ module Bloodhound
                   end
     end
 
-    def new_deposition_url
+    def new_deposit_url
+      "/api/deposit/depositions"
+    end
+
+    def deposit_url(id)
+      "/api/deposit/depositions/#{id}"
+    end
+
+    def deposits_url
       "/api/deposit/depositions"
     end
 
     def add_file_url(id)
       "/api/deposit/depositions/#{id}/files"
+    end
+
+    def delete_file_url(id, file_id)
+      "/api/deposit/depositions/#{id}/files/#{file_id}"
     end
 
     def new_version_url(id)
@@ -51,16 +63,17 @@ module Bloodhound
     end
 
     def list_deposits
-      response = access_token.get("/api/deposit/depositions")
+      response = access_token.get(deposits_url)
       JSON.parse(response.body).map(&:deep_symbolize_keys)
     end
 
     def get_deposit(id:)
-      response = access_token.get("/api/deposit/depositions/#{id}")
+      response = access_token.get(deposit_url(id))
       JSON.parse(response.body).deep_symbolize_keys
     end
 
-    # Returns eg {:doi=>"10.5281/zenodo.2652234", :recid=>2652234}
+    # Input, name: "Shorthouse, David", orcid: "0000-0001-7618-5230"
+    # Returns {:doi=>"10.5281/zenodo.2652234", :recid=>2652234}
     def new_deposit(name:, orcid:)
       headers = { "Content-Type": "application/json"}
       creators = [{ name: name, orcid: orcid }]
@@ -68,12 +81,12 @@ module Bloodhound
         metadata: { upload_type: "dataset", 
           title: "Natural history specimens collected and/or identified and deposited.", 
           creators: creators,
-          description: "Natural history specimen data collected and/or identified by #{name}, https://orcid.org/#{orcid}",
+          description: "Natural history specimen data collected and/or identified by #{name}, <a href=\"https://orcid.org/#{orcid}\">https://orcid.org/#{orcid}</a>. Claims were made on Bloodhound, <a href=\"http://bloodhound-tracker.net\">https://bloodhound-tracker.net</a> using specimen data from the Global Biodiversity Information Facility, <a href=\"https://gbif.org\">https://gbif.org</a>.",
           access_right: "open",
           license: "cc-zero"
         }
       }
-      raw_response = access_token.post(new_deposition_url, { body: body.to_json, headers: headers })
+      raw_response = access_token.post(new_deposit_url, { body: body.to_json, headers: headers })
       response = JSON.parse(raw_response.body).deep_symbolize_keys
       response[:metadata][:prereserve_doi]
     end
@@ -88,12 +101,14 @@ module Bloodhound
     end
 
     def delete_file(id:, file_id:)
-      access_token.delete("/api/deposit/depositions/#{id}/files/#{file_id}")
+      access_token.delete(delete_file_url(id, file_id))
     end
 
     def new_version(id:)
       response = access_token.post(new_version_url(id))
-      JSON.parse(response.body).deep_symbolize_keys
+      response = JSON.parse(response.body).deep_symbolize_keys
+      new_id = response[:links][:latest_draft].split("/").last.to_i
+      get_deposit(id: new_id)
     end
 
     def publish(id:)
