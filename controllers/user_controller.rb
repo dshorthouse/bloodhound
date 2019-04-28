@@ -123,7 +123,7 @@ module Sinatra
               @user.made_public = Time.now
             end
             @user.save
-            cache_clear "fragments/#{user.identifier}"
+            cache_clear "fragments/#{@user.identifier}"
             { message: "ok"}.to_json
           end
 
@@ -141,8 +141,8 @@ module Sinatra
                 PreservedSpecimen: "http://rs.tdwg.org/dwc/terms/PreservedSpecimen"
               }.merge(dwc_contexts),
               "@type": "Person",
-              "@id": "https://orcid.org/#{user.orcid}",
-              sameAs: "https://orcid.org/#{user.orcid}",
+              "@id": "https://orcid.org/#{@user.orcid}",
+              sameAs: "https://orcid.org/#{@user.orcid}",
               givenName: @user.given,
               familyName: @user.family,
               alternateName: @user.other_names.split("|"),
@@ -185,8 +185,8 @@ module Sinatra
 
           app.get '/profile/candidates.csv' do
             protected!
-            agent_ids = candidate_agents(user).pluck(:id)
-            records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: user.user_occurrences.select(:occurrence_id)).limit(5_000)
+            agent_ids = candidate_agents(@user).pluck(:id)
+            records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @user.user_occurrences.select(:occurrence_id)).limit(5_000)
             csv_stream_headers("bloodhound-candidates")
             body csv_stream_candidates(records)
           end
@@ -296,7 +296,7 @@ module Sinatra
             protected!
             content_type "application/json", charset: 'utf-8'
             @user.update_profile
-            cache_clear "fragments/#{user.identifier}"
+            cache_clear "fragments/#{@user.identifier}"
             { message: "ok" }.to_json
           end
 
@@ -398,8 +398,8 @@ module Sinatra
             ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
             if params[:id].is_orcid? || params[:id].is_wiki_id?
               begin
-                user = find_user(params[:id])
-                id_url = user.orcid ? "https://orcid.org/#{user.orcid}" : "https://www.wikidata.org/wiki/#{user.wikidata}"
+                viewed_user = find_user(params[:id])
+                id_url = viewed_user.orcid ? "https://orcid.org/#{viewed_user.orcid}" : "https://www.wikidata.org/wiki/#{viewed_user.wikidata}"
                 dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignore_cols.include?(column)}
                                             .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o) }]
                 {
@@ -411,13 +411,13 @@ module Sinatra
                   }.merge(dwc_contexts),
                   "@type": "Person",
                   "@id": id_url,
-                  givenName: user.given,
-                  familyName: user.family,
-                  alternateName: user.other_names.split("|"),
+                  givenName: viewed_user.given,
+                  familyName: viewed_user.family,
+                  alternateName: viewed_user.other_names.split("|"),
                   sameAs: id_url,
                   "@reverse": {
-                    identified: user.identifications_enum,
-                    recorded: user.recordings_enum
+                    identified: viewed_user.identifications_enum,
+                    recorded: viewed_user.recordings_enum
                   }
                 }.to_json
               rescue
@@ -620,10 +620,10 @@ module Sinatra
           app.get '/:id/progress.json' do
             content_type "application/json"
 
-            user = find_user(params[:id])
-            claimed = user.all_occurrences_count
-            agent_ids = candidate_agents(user).map{|a| a[:id] if a[:score] >= 10 }.compact
-            unclaimed = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
+            viewed_user = find_user(params[:id])
+            claimed = viewed_user.all_occurrences_count
+            agent_ids = candidate_agents(viewed_user).map{|a| a[:id] if a[:score] >= 10 }.compact
+            unclaimed = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: viewed_user.user_occurrences.select(:occurrence_id))
                                                            .count
             { claimed: claimed, unclaimed: unclaimed }.to_json
           end
