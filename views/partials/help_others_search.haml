@@ -1,8 +1,6 @@
-%div{class: "d-flex flex-wrap justify-content-center text-center"}
-  %form{id:"#form-wrapper", method: "get", action: "/help-others", "accept-charset" => "UTF-8", class: "form-inline helpers"}
-    %div{class: "form-group"}
-      %label{for: "typeahead", class:"font-weight-bold col-sm-3 col-form-label"}= "Search"
+%div{class:"p-2"}
+  %form{id:"form-helper-wrapper", method: "get", action: "/help-others", "accept-charset" => "UTF-8", class: "form-inline helpers"}
+    %div{class: "form-group w-75"}
       - username = @viewed_user ? @viewed_user.fullname : "Mary Smith"
-      %input{class: "typeahead", id: "typeahead-user", type: :text, name: "q", placeholder: "#{username}", size:"30"}
-    %div{class:"col-12 col-md-1 text-center"}
-      %input{type: :submit, class:"btn btn-success", value:"Search"}
+      %input{class: "typeahead help-search", id: "typeahead-user", type: :text, name: "q", placeholder: "#{username}", size:"25"}
+    %input{type: :submit, class:"btn btn-success", value:"Search", style:"margin-left:0.25rem;margin-right:0.25rem;"}

@@ -1,5 +1,9 @@
 %div{class:"jumbotron jumbotron-fluid"}
 
+  - if locals[:search]
+    %div{class:"d-flex flex-row-reverse"}
+      = haml :'partials/help_others_search', layout: false
+
   %div{class:"row"}
     %div{class:"col"}
       - if @viewed_user.image_url
@@ -40,12 +44,10 @@
       - if !@viewed_user.keywords.blank?
         %div{class: "text-center text-muted font-italic"}
           #{@viewed_user.keywords.split("|").join(", ")}
+
     %div{class:"col"}
 
   - if Sinatra::Application.settings.base_url && !locals[:search] && @viewed_user.can_comment?
     %div{class:"text-right"}
       %i{class:"fas fa-comments"}
       %a{href: "#{Sinatra::Application.settings.base_url}/#{@viewed_user.identifier}/comments#disqus_thread", class:"disqus-comment-count", "data-disqus-identifier":"#{@viewed_user.identifier}"} Field notes
-
-  - if locals[:search]
-    = haml :'partials/help_others_search', layout: false

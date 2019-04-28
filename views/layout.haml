@@ -62,7 +62,7 @@
           %ul{class: "navbar-nav"}
             - if authorized?
               %li{class: "nav-item"}
-                %a{ href: "/help-others", class: "nav-link"} Help Others
+                %a{ href: "/help-others", class: "nav-link#{locals[:active_page] == "help" ? " active" : nil}"} Help Others
               %li{class: "nav-item"}
                 %a{ href: "/profile", id: "linked-button", role: "button", class: "btn btn-outline-light" }= @user.fullname
               %li{class: "nav-item"}

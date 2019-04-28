@@ -312,7 +312,7 @@ module Sinatra
             if params[:q]
               search_user
             end
-            haml :'help/others'
+            haml :'help/others', locals: { active_page: "help" }
           end
 
           app.get '/help-others/country/:country_code' do
@@ -322,7 +322,7 @@ module Sinatra
             begin
               @country = IsoCountryCodes.find(country_code)
               @pagy, @results = pagy(User.where("country_code LIKE ?", "%#{country_code}%").order(:family), items: 30)
-              haml :'help/country'
+              haml :'help/country', locals: { active_page: "help" }
             rescue
               status 404
               haml :oops
@@ -361,7 +361,7 @@ module Sinatra
                 specimen_pager(occurrence_ids)
               end
 
-              haml :'help/user'
+              haml :'help/user', locals: { active_page: "help" }
             else
               status 404
               haml :oops
@@ -386,7 +386,7 @@ module Sinatra
             if params[:id].is_orcid? || params[:id].is_wiki_id?
               @viewed_user = find_user(params[:id])
               upload_file(user_id: @viewed_user.id, created_by: @user.id)
-              haml :'help/upload'
+              haml :'help/upload', locals: { active_page: "help" }
             else
               status 404
               haml :oops
