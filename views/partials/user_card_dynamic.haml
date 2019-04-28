@@ -3,10 +3,10 @@
     %h5
       %a{href: "/help-others/#{locals[:user].identifier}"} #{locals[:user].fullname_reverse}
   %div{class: "card-body"}
-    - if locals[:user].country
-      %p{class:"small text-muted mt-0 mb-0"} #{locals[:user].country.split("|").join("; ")}
     - if locals[:user].wikidata
       %p{class:"small text-muted mt-0 mb-0"}= format_lifespan(locals[:user])
+    - if locals[:user].country
+      %p{class:"small text-muted mt-0 mb-0"} #{locals[:user].country.split("|").join("; ")}
     %div{class: "d-flex mt-2"}
       %div{class: "small text-right text-muted mr-2"}
         - if locals[:user].is_public?

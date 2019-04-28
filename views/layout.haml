@@ -64,7 +64,7 @@
               %li{class: "nav-item"}
                 %a{ href: "/help-others", class: "nav-link"} Help Others
               %li{class: "nav-item"}
-                %a{ href: "/profile", id: "linked-button", role: "button", class: "btn btn-outline-light" }= @user[:fullname]
+                %a{ href: "/profile", id: "linked-button", role: "button", class: "btn btn-outline-light" }= @user.fullname
               %li{class: "nav-item"}
                 %a{ href: "/logout", class: "nav-link" } Logout
             - else

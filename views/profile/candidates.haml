@@ -6,7 +6,7 @@
   %script{src:"/js/profile.js"}
   :javascript
     $(function() {
-      Application.init(#{@user[:id]}, "POST", "/profile");
+      Application.init(#{@user.id}, "POST", "/profile");
       Profile.init();
     });
 
@@ -18,7 +18,7 @@
 = haml :'partials/upload_claim_modal', layout: false, locals: { csv_download_url: "/profile/candidates.csv", csv_upload_url: "/profile/upload-claims"}
 
 - alert_class = "info"
-- placeholder = @user[:fullname]
+- placeholder = @user.fullname
 - if !@searched_user.nil?
   - alert_class = "warning"
   - placeholder = @searched_user.fullname

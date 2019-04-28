@@ -6,7 +6,7 @@
   %script{src:"/js/profile.js"}
   :javascript
     $(function() {
-      Application.init(#{@user[:id]}, "PUT", "/profile");
+      Application.init(#{@user.id}, "PUT", "/profile");
       Profile.init();
     });
 

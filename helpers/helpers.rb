@@ -25,18 +25,8 @@ module Sinatra
 
       def set_session
         if session[:omniauth]
-          @user = session[:omniauth]
+          @user = User.find(session[:omniauth].id) rescue nil
         end
-      end
-
-      def update_session
-        user = User.find(@user[:id]).reload
-        user_hash = user.as_json.symbolize_keys
-        user_hash[:fullname] = user.fullname
-        user_hash[:current_organization] = OpenStruct.new(user.current_organization.as_json.symbolize_keys) rescue nil
-        user_hash[:image_url] = user.image_url
-        session[:omniauth] = OpenStruct.new(user_hash)
-        set_session
       end
 
       def protected!
@@ -45,7 +35,7 @@ module Sinatra
       end
 
       def authorized?
-        defined? @user
+        !@user.nil?
       end
 
       def admin_protected!
@@ -54,7 +44,7 @@ module Sinatra
       end
 
       def admin_authorized?
-        defined?(@user) && is_admin?
+        !@user.nil? && is_admin?
       end
 
       def profile_image(user)
@@ -470,7 +460,7 @@ module Sinatra
       end
 
       def is_public?
-        @user[:is_public] ? true : false
+        @user.is_public ? true : false
       end
 
       def is_user_public?
@@ -478,7 +468,7 @@ module Sinatra
       end
 
       def is_admin?
-        @user[:is_admin] ? true : false
+        @user && @user.is_admin? ? true : false
       end
 
       def to_csv(model, records)

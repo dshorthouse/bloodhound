@@ -29,10 +29,7 @@ module Sinatra
                        .find_or_create_by(orcid: orcid)
             organization = user.current_organization.as_json.symbolize_keys rescue nil
             user.update(visited: Time.now)
-            user_hash = user.as_json.symbolize_keys
-            user_hash[:fullname] = user.fullname
-            user_hash[:current_organization] = OpenStruct.new(organization)
-            session[:omniauth] = OpenStruct.new(user_hash)
+            session[:omniauth] = OpenStruct.new({ id: user.id })
             cache_clear "fragments/#{user.identifier}"
             redirect '/profile'
           end
@@ -40,37 +37,33 @@ module Sinatra
           #/auth/zenodo is automatically added by OmniAuth
           app.get '/auth/zenodo/callback' do
             protected!
-            user = User.find(@user[:id])
             session_data = request.env['omniauth.auth'].deep_symbolize_keys
-            user.zenodo_access_token = session_data[:info][:access_token_hash]
-            user.save
+            @user.zenodo_access_token = session_data[:info][:access_token_hash]
+            @user.save
             session[:omniauth][:zenodo] = true
             redirect '/profile'
           end
 
           app.get '/profile' do
             protected!
-            user = User.find(@user[:id])
             @total = {
-              number_identified: user.identified_count,
-              number_recorded: user.recorded_count,
-              number_helped: user.helped_count,
-              number_claims_given: user.claims_given.count,
-              number_countries: user.quick_country_counts,
-              number_specimens_cited: user.cited_specimens.count,
-              number_articles: user.cited_specimens.select(:article_id).distinct.count
+              number_identified: @user.identified_count,
+              number_recorded: @user.recorded_count,
+              number_helped: @user.helped_count,
+              number_claims_given: @user.claims_given.count,
+              number_countries: @user.quick_country_counts,
+              number_specimens_cited: @user.cited_specimens.count,
+              number_articles: @user.cited_specimens.select(:article_id).distinct.count
             }
             haml :'profile/overview'
           end
 
           app.post '/profile/image' do
             protected!
-            user = User.find(@user[:id])
             file_name = upload_image
             if file_name
-              user.image_url = file_name
-              user.save
-              update_session
+              @user.image_url = file_name
+              @user.save
               { message: "ok" }.to_json
             else
               { message: "failed" }.to_json
@@ -79,22 +72,19 @@ module Sinatra
 
           app.delete '/profile/image' do
             protected!
-            user = User.find(@user[:id])
-            if user.image_url
-              FileUtils.rm(File.join(root, "public", "images", "users", user.image_url))
+            if @user.image_url
+              FileUtils.rm(File.join(root, "public", "images", "users", @user.image_url))
             end
-            user.image_url = nil
-            user.save
-            update_session
+            @user.image_url = nil
+            @user.save
             { message: "ok" }.to_json
           end
 
           app.get '/profile/specimens' do
             protected!
-            user = User.find(@user[:id])
 
             @page = (params[:page] || 1).to_i
-            @total = user.visible_occurrences.count
+            @total = @user.visible_occurrences.count
 
             if @page*search_size > @total
               bump_page = @total % search_size.to_i != 0 ? 1 : 0
@@ -103,16 +93,15 @@ module Sinatra
 
             @page = 1 if @page <= 0
 
-            @pagy, @results = pagy(user.visible_occurrences.order("occurrences.typeStatus desc"), items: search_size, page: @page)
+            @pagy, @results = pagy(@user.visible_occurrences.order("occurrences.typeStatus desc"), items: search_size, page: @page)
             haml :'profile/specimens'
           end
 
           app.get '/profile/support' do
             protected!
-            user = User.find(@user[:id])
 
             @page = (params[:page] || 1).to_i
-            @total = user.claims_received.count
+            @total = @user.claims_received.count
 
             if @page*search_size > @total
               bump_page = @total % search_size.to_i != 0 ? 1 : 0
@@ -121,7 +110,7 @@ module Sinatra
 
             @page = 1 if @page <= 0
 
-            @pagy, @results = pagy(user.claims_received, items: search_size, page: @page)
+            @pagy, @results = pagy(@user.claims_received, items: search_size, page: @page)
             haml :'profile/support'
           end
 
@@ -129,13 +118,11 @@ module Sinatra
             protected!
             content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
-            user = User.find(@user[:id])
-            user.is_public = req[:is_public]
+            @user.is_public = req[:is_public]
             if req[:is_public]
-              user.made_public = Time.now
+              @user.made_public = Time.now
             end
-            user.save
-            update_session
+            @user.save
             cache_clear "fragments/#{user.identifier}"
             { message: "ok"}.to_json
           end
@@ -144,7 +131,6 @@ module Sinatra
             protected!
             content_type "application/ld+json", charset: 'utf-8'
             ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
-            user = User.find(@user[:id])
             dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignore_cols.include?(column)}
                                         .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o) }]
             {
@@ -157,18 +143,18 @@ module Sinatra
               "@type": "Person",
               "@id": "https://orcid.org/#{user.orcid}",
               sameAs: "https://orcid.org/#{user.orcid}",
-              givenName: user.given,
-              familyName: user.family,
-              alternateName: user.other_names.split("|"),
+              givenName: @user.given,
+              familyName: @user.family,
+              alternateName: @user.other_names.split("|"),
               "@reverse": {
-                identified: user.identifications
+                identified: @user.identifications
                                        .map{|o| {
                                            "@type": "PreservedSpecimen",
                                            "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
                                            sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
                                          }.merge(o.occurrence.attributes.reject {|column| ignore_cols.include?(column) })
                                        },
-                recorded: user.recordings
+                recorded: @user.recordings
                                        .map{|o| {
                                            "@type": "PreservedSpecimen",
                                            "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
@@ -181,8 +167,7 @@ module Sinatra
 
           app.get '/profile/download.csv' do
             protected!
-            user = User.find(@user[:id])
-            records = user.visible_occurrences
+            records = @user.visible_occurrences
             csv_stream_headers
             body csv_stream_occurrences(records)
           end
@@ -190,18 +175,16 @@ module Sinatra
           app.get '/profile/candidate-count.json' do
             protected!
             content_type "application/json"
-            return { count: 0}.to_json if @user[:family].nil?
+            return { count: 0}.to_json if @user.family.nil?
 
-            user = User.find(@user[:id])
-            agent_ids = candidate_agents(user).map{|a| a[:id] if a[:score] >= 10 }.compact
-            count = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
+            agent_ids = candidate_agents(@user).map{|a| a[:id] if a[:score] >= 10 }.compact
+            count = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @user.user_occurrences.select(:occurrence_id))
                                                        .count
             { count: count }.to_json
           end
 
           app.get '/profile/candidates.csv' do
             protected!
-            user = User.find(@user[:id])
             agent_ids = candidate_agents(user).pluck(:id)
             records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: user.user_occurrences.select(:occurrence_id)).limit(5_000)
             csv_stream_headers("bloodhound-candidates")
@@ -210,15 +193,15 @@ module Sinatra
 
           app.get '/profile/candidates' do
             protected!
+
             occurrence_ids = []
             @page = (params[:page] || 1).to_i
-            user = User.find(@user[:id])
 
-            if user.family.nil?
+            if @user.family.nil?
               @results = []
               @total = nil
             else
-              id_scores = candidate_agents(user).map{|a| { id: a[:id], score: a[:score] } if a[:score] >= 10 }.compact
+              id_scores = candidate_agents(@user).map{|a| { id: a[:id], score: a[:score] } if a[:score] >= 10 }.compact
 
               if !id_scores.empty?
                 ids = id_scores.map{|a| a[:id]}
@@ -228,7 +211,7 @@ module Sinatra
                     id_scores << { id: id, score: 1 } #TODO: how to more effectively use the edge weights here?
                   end
                 end
-                occurrence_ids = occurrences_by_score(id_scores, user)
+                occurrence_ids = occurrences_by_score(id_scores, @user)
               end
 
               specimen_pager(occurrence_ids)
@@ -239,6 +222,7 @@ module Sinatra
 
           app.get '/profile/candidates/agent/:id' do
             protected!
+
             occurrence_ids = []
             @page = (params[:page] || 1).to_i
 
@@ -250,7 +234,7 @@ module Sinatra
               id_scores.concat(node.agent_nodes_weights.map{|a| { id: a[0], score: a[1] }})
             end
 
-            occurrence_ids = occurrences_by_score(id_scores, User.find(@user[:id]))
+            occurrence_ids = occurrences_by_score(id_scores, @user)
             specimen_pager(occurrence_ids)
 
             haml :'profile/candidates'
@@ -258,15 +242,15 @@ module Sinatra
 
           app.post '/profile/upload-claims' do
             protected!
-            upload_file(user_id: @user[:id], created_by: @user[:id])
+            upload_file(user_id: @user.id, created_by: @user.id)
             haml :'profile/upload'
           end
 
           app.get '/profile/ignored' do
             protected!
-            user = User.find(@user[:id])
+
             @page = (params[:page] || 1).to_i
-            @total = user.hidden_occurrences.count
+            @total = @user.hidden_occurrences.count
 
             if @page*search_size > @total
               bump_page = @total % search_size.to_i != 0 ? 1 : 0
@@ -275,33 +259,32 @@ module Sinatra
 
             @page = 1 if @page <= 0
 
-            @pagy, @results = pagy(user.hidden_occurrences, items: search_size, page: @page)
+            @pagy, @results = pagy(@user.hidden_occurrences, items: search_size, page: @page)
             haml :'profile/ignored'
           end
 
           app.get '/profile/citations' do
             protected!
-            user = User.find(@user[:id])
             page = (params[:page] || 1).to_i
-            @total = user.articles_citing_specimens.count
-            @pagy, @results = pagy(user.articles_citing_specimens, page: page)
+            @total = @user.articles_citing_specimens.count
+            @pagy, @results = pagy(@user.articles_citing_specimens, page: page)
             haml :'profile/citations'
           end
 
           app.get '/profile/citation/:article_id' do
             protected!
-            user = User.find(@user[:id])
+
             @article = Article.find(params[:article_id])
             if @article
               @page = (params[:page] || 1).to_i
-              @total = user.cited_specimens_by_article(@article.id).count
+              @total = @user.cited_specimens_by_article(@article.id).count
 
               if @page*search_size > @total
                 bump_page = @total % search_size.to_i != 0 ? 1 : 0
                 @page = @total/search_size.to_i + bump_page
               end
 
-              @pagy, @results = pagy(user.cited_specimens_by_article(@article.id), items: search_size, page: @page)
+              @pagy, @results = pagy(@user.cited_specimens_by_article(@article.id), items: search_size, page: @page)
               haml :'profile/citation'
             else
               status 404
@@ -312,9 +295,7 @@ module Sinatra
           app.get '/profile/refresh.json' do
             protected!
             content_type "application/json", charset: 'utf-8'
-            user = User.find(@user[:id])
-            user.update_profile
-            update_session
+            @user.update_profile
             cache_clear "fragments/#{user.identifier}"
             { message: "ok" }.to_json
           end
@@ -356,9 +337,8 @@ module Sinatra
               @page = (params[:page] || 1).to_i
 
               @viewed_user = find_user(params[:id])
-              current_user = User.find(@user[:id])
 
-              if @viewed_user == current_user
+              if @viewed_user == @user
                 redirect "/profile/candidates"
               end
 
@@ -405,7 +385,7 @@ module Sinatra
             protected!
             if params[:id].is_orcid? || params[:id].is_wiki_id?
               @viewed_user = find_user(params[:id])
-              upload_file(user_id: @viewed_user.id, created_by: @user[:id])
+              upload_file(user_id: @viewed_user.id, created_by: @user.id)
               haml :'help/upload'
             else
               status 404

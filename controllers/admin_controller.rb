@@ -130,13 +130,13 @@ module Sinatra
 
           app.get '/admin/user/:id/specimens.json' do
             admin_protected!
-            user = find_user(params[:id])
+            admin_user = find_user(params[:id])
             content_type "application/ld+json", charset: 'utf-8'
             ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
             begin
               dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignore_cols.include?(column)}
                                           .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o) }]
-              id_url = user.orcid ? "https://orcid.org/#{user.orcid}" : "https://www.wikidata.org/wiki/#{user.wikidata}"
+              id_url = admin_user.orcid ? "https://orcid.org/#{admin_user.orcid}" : "https://www.wikidata.org/wiki/#{admin_user.wikidata}"
               {
                 "@context": {
                   "@vocab": "http://schema.org/",
@@ -146,12 +146,12 @@ module Sinatra
                 }.merge(dwc_contexts),
                 "@type": "Person",
                 "@id": id_url,
-                givenName: user.given,
-                familyName: user.family,
-                alternateName: user.other_names.split("|"),
+                givenName: admin_user.given,
+                familyName: admin_user.family,
+                alternateName: admin_user.other_names.split("|"),
                 "@reverse": {
-                  identified: user.identifications_enum,
-                  recorded: user.recordings_enum
+                  identified: admin_user.identifications_enum,
+                  recorded: admin_user.recordings_enum
                 }
               }.to_json
             rescue
@@ -162,8 +162,8 @@ module Sinatra
 
           app.get '/admin/user/:id/specimens.csv' do
             admin_protected!
-            user = find_user(params[:id])
-            records = user.visible_occurrences
+            admin_user = find_user(params[:id])
+            records = admin_user.visible_occurrences
             csv_stream_headers
             body csv_stream_occurrences(records)
           end
@@ -329,7 +329,7 @@ module Sinatra
             data = occurrence_ids.map{|o| { 
                 user_id: req[:user_id].to_i,
                 occurrence_id: o.to_i,
-                created_by: @user[:id],
+                created_by: @user.id,
                 action: action,
                 visible: visible
               }
@@ -347,7 +347,7 @@ module Sinatra
             uo = UserOccurrence.new
             uo.user_id = req[:user_id].to_i
             uo.occurrence_id = params[:occurrence_id].to_i
-            uo.created_by = @user[:id].to_i
+            uo.created_by = @user.id
             uo.action = action
             uo.visible = visible
             uo.save
@@ -398,9 +398,9 @@ module Sinatra
           app.get '/admin/refresh.json' do
             admin_protected!
             content_type "application/json", charset: 'utf-8'
-            user = User.find(params[:user_id].to_i)
-            user.update_profile
-            cache_clear "fragments/#{user.identifier}"
+            admin_user = User.find(params[:user_id].to_i)
+            admin_user.update_profile
+            cache_clear "fragments/#{admin_user.identifier}"
             { message: "ok" }.to_json
           end
 
@@ -408,14 +408,14 @@ module Sinatra
             admin_protected!
             content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
-            user = User.find(params[:user_id].to_i)
-            user.is_public = req[:is_public]
+            admin_user = User.find(params[:user_id].to_i)
+            admin_user.is_public = req[:is_public]
             if req[:is_public]
-              user.made_public = Time.now
+              admin_user.made_public = Time.now
             end
-            user.save
-            user.update_profile
-            cache_clear "fragments/#{user.identifier}"
+            admin_user.save
+            admin_user.update_profile
+            cache_clear "fragments/#{admin_user.identifier}"
             { message: "ok" }.to_json
           end
 

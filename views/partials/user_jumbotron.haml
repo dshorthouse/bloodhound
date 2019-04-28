@@ -44,7 +44,7 @@
 
   - if Sinatra::Application.settings.base_url && !locals[:search] && @viewed_user.can_comment?
     %div{class:"text-right"}
-      %img{src: "/images/comments.png", alt:"Field notes"}
+      %i{class:"fas fa-comments"}
       %a{href: "#{Sinatra::Application.settings.base_url}/#{@viewed_user.identifier}/comments#disqus_thread", class:"disqus-comment-count", "data-disqus-identifier":"#{@viewed_user.identifier}"} Field notes
 
   - if locals[:search]

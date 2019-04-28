@@ -11,10 +11,10 @@
     %h5
       %a{href: "/#{locals[:user].identifier}"} #{locals[:user].fullname_reverse}
   %div{class: "card-body"}
-    - if locals[:user].country
-      %p{class:"small text-muted mt-0 mb-0"} #{locals[:user].country.split("|").join("; ")}
     - if locals[:user].wikidata
       %p{class:"small text-muted mt-0 mb-0"}= format_lifespan(locals[:user])
+    - if locals[:user].country
+      %p{class:"small text-muted mt-0 mb-0"} #{locals[:user].country.split("|").join("; ")}
     %p{class:"card-text mt-2"} #{statement}
     %div{class: "d-flex"}
       %div{class: "small text-right text-muted mr-2"}
