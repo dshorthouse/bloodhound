@@ -23,15 +23,16 @@
       %div{class: "row"}
         - group.each do |o|
           - if o.nil?
-            %div{class: "col-sm"}
+            %div{class: "col-sm p-0"}
           - else
             - org = Organization.find(o[:_id].to_i)
-            %div{class: "col-sm"}
+            %div{class: "col-sm p-0"}
               - if !o.nil?
-                %div{class: "card", style:"margin:20px"}
+                %div{class: "card m-3"}
                   %h5{class: "card-header"}
                     %a{href: "/organization/#{org.identifier}"} #{org.name}
                   %div{class: "card-body"}
+                    %p{class:"text-muted"} #{org.address}
                     %div{class: "row"}
                       %div{class: "col small text-left text-muted"}
                       %div{class: "col small text-right text-muted"}
@@ -39,7 +40,5 @@
                         - color = count == 0 ? "light" : "success"
                         %span{class:"badge badge-#{color}"} #{number_with_delimiter(count)}
                         #{'member'.pluralize(count)}
-                    %p{class:"card-text",style:"margin-top:5px;"}
-                      #{org.address}
 
     = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

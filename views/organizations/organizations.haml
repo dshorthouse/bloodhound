@@ -23,12 +23,13 @@
   - @results.in_groups_of(3).each do |group|
     %div{class: "row"}
       - group.each do |o|
-        %div{class: "col-sm"}
+        %div{class: "col-sm p-0"}
           - if !o.nil?
-            %div{class: "card", style:"margin:20px"}
+            %div{class: "card m-3"}
               %h5{class: "card-header"}
                 %a{href: "/organization/#{o.identifier}"} #{o.name}
               %div{class: "card-body"}
+                %p{class:"text-muted"} #{o.address}
                 %div{class: "row"}
                   %div{class: "col small text-left text-muted"}
                   %div{class: "col small text-right text-muted"}
@@ -36,7 +37,5 @@
                     - color = count == 0 ? "light" : "success"
                     %span{class:"badge badge-#{color}"} #{number_with_delimiter(count)}
                     #{'member'.pluralize(count)}
-                %p{class:"card-text",style:"margin-top:5px;"}
-                  #{o.address}
 
   = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

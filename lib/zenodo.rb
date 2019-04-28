@@ -91,13 +91,21 @@ module Bloodhound
       response[:metadata][:prereserve_doi]
     end
 
-    def add_file(id:, file_path:)
-      filename = File.basename(file_path)
+    def add_file(id:, file_path:, file_name: nil)
+      filename = file_name ||= File.basename(file_path)
       io = File.new(file_path, "r")
       mime_type = FileMagic.new(FileMagic::MAGIC_MIME).file(file_path)
       upload = Faraday::UploadIO.new io, mime_type, filename
       response = access_token.post(add_file_url(id), { body: { filename: filename, file: upload }})
       JSON.parse(response.body).deep_symbolize_keys
+    end
+
+    def add_file_enum(id:, enum:, file_name:)
+      temp = Tempfile.new
+      enum.each { |line| temp << line }
+      temp.close
+      add_file(id: id, file_path: temp.path, file_name: file_name)
+      temp.unlink
     end
 
     def delete_file(id:, file_id:)
@@ -111,6 +119,7 @@ module Bloodhound
       get_deposit(id: new_id)
     end
 
+    # concept DOI is returned as [:conceptdoi] whereas version DOI is [:doi]
     def publish(id:)
       response = access_token.post(publish_url(id))
       JSON.parse(response.body).deep_symbolize_keys
