@@ -14,11 +14,10 @@
 = haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "specimens" }
 
 - if @results.empty?
-  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  %div{class: "alert alert-warning", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
     Specimens have not yet been claimed.
 
-- if !@results.empty?
-
+- else
   %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
     %div{class: "col col-9"}
       #{@admin_user.fullname} has claimed #{number_with_delimiter(@total)} specimens.

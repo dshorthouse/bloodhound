@@ -14,7 +14,7 @@
 = haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "citations" }
 
 - if @results.empty?
-  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  %div{class: "alert alert-warning", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
     Publications that made use of #{@admin_user.fullname}'s specimen data have not yet been recorded by the Global Biodiversity Information Facility (GBIF).
 - else
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}

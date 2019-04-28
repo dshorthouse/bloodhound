@@ -16,10 +16,11 @@
 
 = haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "overview" }
 
-%div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-  - if @total[:number_identified] == 0 && @total[:number_recorded] == 0
+- if @total[:number_identified] == 0 && @total[:number_recorded] == 0
+  %div{class: "alert alert-warning", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
     Specimens have not yet been claimed
-  - else
+- else
+  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
     %ul
       - if @total[:number_identified] > 0
         %li Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}
