@@ -80,6 +80,11 @@ module Sinatra
             { message: "ok" }.to_json
           end
 
+          app.get '/profile/settings' do
+            protected!
+            haml :'profile/settings'
+          end
+
           app.get '/profile/specimens' do
             protected!
 

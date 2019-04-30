@@ -1,0 +1,38 @@
+-content_for :title do
+  Settings
+
+-content_for :scripts do
+  %script{src:"/js/application.js"}
+  %script{src:"/js/profile.js"}
+  :javascript
+    $(function() {
+        Application.init(#{@user.id}, "POST", "/profile");
+        Profile.init();
+    });
+
+-content_for :jumbotron do
+  = haml :'partials/profile_jumbotron', layout: false
+
+%div{class:"d-flex flex-column"}
+  %h4
+    %i{class:"fas fa-cog"}
+    Settings
+  %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: @user.is_public?, class:"btn-claim" }
+  - if @user.is_public?
+    %a{href: "/#{@user[:orcid]}", target: "_blank"}
+      Public Profile
+      %i{class:"fas fa-external-link-alt"}
+  %a{ href:"/profile/refresh.json?user_id=#{@user.id}", class:"profile-refresh"} Refresh ORCID Data
+  - if !@user.zenodo_access_token
+    %a{href:"/auth/zenodo", role:"button", class:"btn btn-x-sm btn-outline-info"} Archive in Zendo
+
+  - if @user.zenodo_doi
+    %a{href:"https://doi.org/#{@user.zenodo_doi}"}
+      %img{src:"https://zenodo.org/badge/DOI/#{@user.zenodo_doi}.svg"}
+
+%div{class:"row justify-content-center"}
+  %div{class:"alert alert-success alert-dismissible fade show text-center col-md-6", role: "alert"}
+    ORCID Data was refreshed.
+    %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+      %span{"aria-hidden":"true"} &times;
+    

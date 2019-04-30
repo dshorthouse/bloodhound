@@ -62,11 +62,16 @@
           %ul{class: "navbar-nav"}
             - if authorized?
               %li{class: "nav-item"}
-                %a{ href: "/help-others", class: "nav-link#{locals[:active_page] == "help" ? " active" : nil}"} Help Others
+                %a{ href: "/help-others", class: "nav-link#{locals[:active_page] == "help" ? " active" : nil}"}
+                  %i{class:"fas fa-user-friends"}
+                  Help Others
               %li{class: "nav-item"}
-                %a{ href: "/profile", id: "linked-button", role: "button", class: "btn btn-outline-light" }= @user.fullname
-              %li{class: "nav-item"}
-                %a{ href: "/logout", class: "nav-link" } Logout
+                %div{class:"dropdown"}
+                  %button{class:"btn btn-outline-light dropdown-toggle", type:"button", "data-toggle": "dropdown", "aria-haspopup": "true", "aria-expanded": "false"}= @user.fullname
+                  %div{class:"dropdown-menu"}
+                    %a{href:"/profile", class:"dropdown-item"} Profile
+                    %a{href:"/profile/settings", class:"dropdown-item"} Settings
+                    %a{ href: "/logout", class: "dropdown-item" } Logout
             - else
               %li
                 %a{ href:"/auth/orcid", role: "button", class: "btn btn-outline-light connect-orcid-button" }

@@ -24,14 +24,10 @@
       %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
       identified #{number_with_delimiter(@pagy.count)} #{'specimen'.pluralize(@pagy.count)}
     %div{class: "col col-3 text-right"}
-      - if @viewed_user.zenodo_doi
-        %a{href: "https://doi.org/#{@viewed_user.zenodo_doi}"}
-          %img{src: "https://zenodo.org/badge/DOI/#{@viewed_user.zenodo_doi}.svg", alt:"DO"}
-      - else
-        %a{href: "/#{@viewed_user.identifier}/specimens.csv"}
-          %img{src: "/images/csv-icon.png", width:24, alt: "CSV download", style:"margin-right:0.5rem"}
-        %a{href: "/#{@viewed_user.identifier}/specimens.json"}
-          %img{src: "/images/json-icon.png", width:24, alt: "JSON download"}
+      %a{href: "/#{@viewed_user.identifier}/specimens.csv"}
+        %img{src: "/images/csv-icon.png", width:24, alt: "CSV download", style:"margin-right:0.5rem"}
+      %a{href: "/#{@viewed_user.identifier}/specimens.json"}
+        %img{src: "/images/json-icon.png", width:24, alt: "JSON download"}
 
   %div{class:"table-responsive-lg"}
     %table{class:"table table-hover table-sm"}
