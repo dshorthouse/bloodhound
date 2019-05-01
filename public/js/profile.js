@@ -29,7 +29,7 @@ var Profile = (function($, window) {
           data: {},
           type: 'DELETE'
         }).done(function(data) {
-          //console.log(data);
+          location.reload();
         });
       });
       $('#user-image').on('change', function(e) {
@@ -62,7 +62,7 @@ var Profile = (function($, window) {
               contentType: false,
               cache: false
           }).done(function(data) {
-            //console.log(data);
+            location.reload();
           });
         }
       });

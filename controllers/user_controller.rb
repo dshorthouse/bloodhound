@@ -73,7 +73,7 @@ module Sinatra
           app.delete '/profile/image' do
             protected!
             if @user.image_url
-              FileUtils.rm(File.join(root, "public", "images", "users", @user.image_url))
+              FileUtils.rm(File.join(root, "public", "images", "users", @user.image_url)) rescue nil
             end
             @user.image_url = nil
             @user.save

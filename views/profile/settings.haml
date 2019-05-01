@@ -14,9 +14,7 @@
   = haml :'partials/profile_jumbotron', layout: false
 
 %div{class:"d-flex flex-column"}
-  %h4
-    %i{class:"fas fa-cog"}
-    Settings
+  %h4 Settings
   %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: @user.is_public?, class:"btn-claim" }
   - if @user.is_public?
     %a{href: "/#{@user[:orcid]}", target: "_blank"}

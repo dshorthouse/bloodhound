@@ -47,9 +47,12 @@ module Sinatra
         !@user.nil? && is_admin?
       end
 
-      def profile_image(user)
+      def profile_image(user, size=nil)
         img = "/images/photo.png"
         cloud_img = "https://abekpgaoen.cloudimg.io/height/200/x/"
+        if size == "thumbnail"
+          cloud_img = "https://abekpgaoen.cloudimg.io/crop/24x24/n/"
+        end
         if user.image_url
           if user.wikidata
             img =  cloud_img + user.image_url
