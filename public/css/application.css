@@ -210,14 +210,19 @@ dl.citation{
 /* PROFILE IMAGE */
 #profile-image span {
   display:block;
+  position:absolute;
+  bottom:0px;
+  width: 200px;
+  margin-left:-100px;
+  left:50%;
 }
 #profile-upload-option span {
   display:inline;
   color:inherit;
   background-color:transparent;
+  position:relative;
 }
 #profile-image {
-  cursor:pointer;
   text-align:center;
   position:relative;
   height:200px;
@@ -232,6 +237,7 @@ dl.citation{
   cursor:pointer;
   height:100%;
   width:100%;
+  z-index:10;
 }
 .image-placeholder {
   background-color:transparent;
@@ -245,6 +251,8 @@ dl.citation{
   color:#fff;
   width:300px;
   background-color:#A9A9A9;
+  margin-bottom:0px;
+  position:relative !important;
 }
 #profile-upload-option {
   background-color:#A9A9A9;

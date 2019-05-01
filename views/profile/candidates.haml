@@ -3,17 +3,17 @@
 
 -content_for :scripts do
   %script{src: "/js/application.js"}
-  %script{src:"/js/profile.js"}
   :javascript
     $(function() {
       Application.init(#{@user.id}, "POST", "/profile");
-      Profile.init();
     });
 
--content_for :jumbotron do
-  = haml :'partials/profile_jumbotron', layout: false
-
-= haml :'partials/profile_tabs', layout: false, locals: { active_page: "candidates" }
+%div{class:"container-fluid"}
+  %div{class:"row"}
+    %div{class:"col-12 col-md-4"}
+      %h3{class:"display-6"}= @user.fullname
+    %div{class:"col-12 col-md-8"}
+      = haml :'partials/profile_tabs', layout: false, locals: { active_page: "candidates" }
 
 = haml :'partials/upload_claim_modal', layout: false, locals: { csv_download_url: "/profile/candidates.csv", csv_upload_url: "/profile/upload-claims"}
 

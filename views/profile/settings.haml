@@ -10,27 +10,68 @@
         Profile.init();
     });
 
--content_for :jumbotron do
-  = haml :'partials/profile_jumbotron', layout: false
+%div{class:"container-fluid"}
+  %div{class:"row"}
+    %div{class:"col-4 text-center"}
+      = haml :'partials/profile_jumbotron', layout: false, locals: { active_page: "settings" }
+    %div{class:"col-8"}
+      = haml :'partials/profile_tabs', layout: false, locals: { active_page: nil }
 
-%div{class:"d-flex flex-column"}
-  %h4 Settings
-  %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: @user.is_public?, class:"btn-claim" }
-  - if @user.is_public?
-    %a{href: "/#{@user[:orcid]}", target: "_blank"}
-      Public Profile
-      %i{class:"fas fa-external-link-alt"}
-  %a{ href:"/profile/refresh.json?user_id=#{@user.id}", class:"profile-refresh"} Refresh ORCID Data
-  - if !@user.zenodo_access_token
-    %a{href:"/auth/zenodo", role:"button", class:"btn btn-x-sm btn-outline-info"} Archive in Zendo
+      %div{class:"container citation-wrapper"}
+        %h3 Settings
+        %div{class:"row"}
+          %div{class:"col-md"}
+            %div{class:"card"}
+              %h5{class:"card-header"} Public Availability
+              %div{class:"card-body"}
+                %p{class:"card-text"}
+                  Include your claims for public consumption in
+                  %a{href: "/profiles"}
+                    Profiles
+                  and include your claims in a bulk
+                  = succeed "." do
+                    %a{href: "/developers"} data download
+                  Expose links to your ORCID account through Google Chrome and Firefox
+                  = succeed "." do
+                    %a{href:"/integrations"} extensions 
+                %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "medium", checked: @user.is_public?, class:"btn-claim" }
+                - if @user.is_public?
+                  %a{href: "/#{@user[:orcid]}", target: "_blank"}
+                    Public Profile
+                    %i{class:"fas fa-external-link-alt"}
 
-  - if @user.zenodo_doi
-    %a{href:"https://doi.org/#{@user.zenodo_doi}"}
-      %img{src:"https://zenodo.org/badge/DOI/#{@user.zenodo_doi}.svg"}
+          %div{class:"col-md"}
+            %div{class:"card"}
+              %h5{class:"card-header"} Archive on Zenodo
+              %div{class:"card-body"}
+                %p{class:"card-text"}
+                  Connect your ORCID account to
+                  %a{href:"https://zenodo.org/", target:"_blank"}
+                    Zenodo
+                    %i{class:"fas fa-external-link-alt"}
+                  where snapshots of your data are automatically stored, DataCite DOIs are assigned, and then included as a new citable Work in your ORCID account.
+                %p
+                  - if !@user.zenodo_access_token
+                    %a{href:"/auth/zenodo", role:"button", class:"btn btn-x-sm btn-outline-info"} Archive in Zenodo
+                  - if @user.zenodo_doi
+                    %a{href:"https://doi.org/#{@user.zenodo_doi}"}
+                      %img{src:"https://zenodo.org/badge/DOI/#{@user.zenodo_doi}.svg"}
 
-%div{class:"row justify-content-center"}
-  %div{class:"alert alert-success alert-dismissible fade show text-center col-md-6", role: "alert"}
-    ORCID Data was refreshed.
-    %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
-      %span{"aria-hidden":"true"} &times;
-    
+        %div{class:"row"}
+          %div{class:"col-md"}
+            %div{class:"card"}
+              %h5{class:"card-header"}
+                %img{src:"/images/orcid_24x24.png", alt: "ORCID"}
+                ORCID
+              %div{class:"card-body"}
+                %p{class:"card-text"} Pull new updates to your name, aliases, keywords, country, education, and employment from your ORCID account
+                %p
+                  %a{ href:"/profile/refresh.json?user_id=#{@user.id}", class:"profile-refresh"}
+                    %i{class: "fas fa-sync-alt"}
+                    Refresh ORCID Data
+                %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
+                  ORCID Data was refreshed.
+                  %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+                    %span{"aria-hidden":"true"} &times;
+
+          %div{class:"col-md"}
