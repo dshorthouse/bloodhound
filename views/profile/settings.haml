@@ -12,9 +12,9 @@
 
 %div{class:"container-fluid"}
   %div{class:"row"}
-    %div{class:"col-12 col-xl-4 text-center sidebar"}
+    %div{class:"col-12 col-lg-4 text-center sidebar"}
       = haml :'partials/profile_jumbotron', layout: false, locals: { active_page: "settings" }
-    %div{class:"col-12 col-xl-8"}
+    %div{class:"col-12 col-lg-8"}
       = haml :'partials/profile_tabs', layout: false, locals: { active_page: nil }
 
       %div{class:"container citation-wrapper"}
@@ -53,13 +53,16 @@
                     Zenodo
                     %i{class:"fas fa-external-link-alt"}
                   where versioned snapshots of your claims will be automatically stored and a DataCite DOI assigned.
-                %p
-                  - if @user.zenodo_access_token.empty?
+                - if @user.zenodo_access_token.empty?
+                  %p
                     %a{href:"/auth/zenodo", role:"button", class:"btn btn-x-sm btn-outline-info"}
                       Integrate with Zenodo
-                  - elsif !@user.zenodo_access_token.empty? && !@user.zenodo_doi
+                - elsif !@user.zenodo_access_token.empty? && !@user.zenodo_doi
+                  %p{class:"alert alert-success"}
+                    %i{class:"fas fa-check-circle"}
                     Your account is now linked and data will be pushed within the hour
-                  - if @user.zenodo_doi
+                - if @user.zenodo_doi
+                  %p
                     %a{href:"https://doi.org/#{@user.zenodo_doi}"}
                       %img{src:"https://zenodo.org/badge/DOI/#{@user.zenodo_doi}.svg"}
 

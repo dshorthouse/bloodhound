@@ -3,7 +3,8 @@
   %div{id:"profile-image", class:"image-placeholder rounded mx-auto d-block align-self-center align-items-center #{bg_class}"}
     %img{src:"#{profile_image(@user)}"}
     - if locals[:active_page] == "settings"
-      %span Change profile photo
+      %span
+        %a{href:"#"} Change profile photo
       %ul{id:"profile-upload-option", class:"list-group"}
         %li{class:"list-group-item profile-upload-option-list"}
           %input{name:"user-image", id:"user-image", type:"file", accept:"image/x-png,image/jpeg"}

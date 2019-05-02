@@ -217,7 +217,7 @@ dl.citation{
   left:50%;
 }
 #profile-upload-option span {
-  display:inline;
+  display:block;
   color:inherit;
   background-color:transparent;
   position:relative;
@@ -253,6 +253,9 @@ dl.citation{
   background-color:#A9A9A9;
   margin-bottom:0px;
   position:relative !important;
+}
+.profile-image-bg span a {
+  color:#fff;
 }
 #profile-upload-option {
   background-color:#A9A9A9;
@@ -318,5 +321,5 @@ dl.citation{
 }
 
 @media (mid-width: @screen-xl-min) {
-  .sidebar { max-width: 400px; }
+  .sidebar { max-width: 300px; }
 }
