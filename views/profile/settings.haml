@@ -47,24 +47,32 @@
             %div{class:"card"}
               %h5{class:"card-header"} Make Your Claims Citable
               %div{class:"card-body"}
-                %p{class:"card-text"}
-                  Connect your account to
-                  %a{href:"https://zenodo.org/", target:"_blank"}
-                    Zenodo
-                    %i{class:"fas fa-external-link-alt"}
-                  where versioned snapshots of your claims will be automatically stored and a DataCite DOI assigned. You may include this in your professional resume.
-                - if @user.zenodo_access_token.empty?
+                - if !@user.zenodo_concept_doi
+                  %p{class:"card-text"}
+                    Connect your account to
+                    %a{href:"https://zenodo.org/", target:"_blank"}
+                      Zenodo
+                      %i{class:"fas fa-external-link-alt"}
+                    where versioned snapshots of your claims will be automatically stored and a DataCite DOI assigned. You may include this in your professional resume.
+                  - if @user.zenodo_access_token.empty?
+                    %p{class:"card-text"}
+                      %a{href:"/auth/zenodo", role:"button", class:"btn btn-x-sm btn-outline-info"}
+                        Integrate with Zenodo
+                  - elsif !@user.zenodo_access_token.empty?
+                    %p{class:"alert alert-success"}
+                      %i{class:"fas fa-check-circle"}
+                      Your account is now linked and data will be pushed within the hour
+
+                - else @user.zenodo_concept_doi
+                  %p{class:"card-text"}
+                    Your profile is linked to
+                    %a{href:"https://doi.org/#{@user.zenodo_concept_doi}", target:"_blank"}
+                      Zenodo
+                      %i{class:"fas fa-external-link-alt"}
+                    and your claims are successfully being versioned and archived.
                   %p
-                    %a{href:"/auth/zenodo", role:"button", class:"btn btn-x-sm btn-outline-info"}
-                      Integrate with Zenodo
-                - elsif !@user.zenodo_access_token.empty? && !@user.zenodo_doi
-                  %p{class:"alert alert-success"}
-                    %i{class:"fas fa-check-circle"}
-                    Your account is now linked and data will be pushed within the hour
-                - if @user.zenodo_doi
-                  %p
-                    %a{href:"https://doi.org/#{@user.zenodo_doi}"}
-                      %img{src:"https://zenodo.org/badge/DOI/#{@user.zenodo_doi}.svg"}
+                    %a{href:"https://doi.org/#{@user.zenodo_concept_doi}"}
+                      %img{src:"https://zenodo.org/badge/DOI/#{@user.zenodo_concept_doi}.svg"}
 
         %div{class:"row"}
           %div{class:"col-md"}

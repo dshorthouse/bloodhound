@@ -22,6 +22,15 @@ a:hover, .page-link:hover{
   padding-left:0.75rem;
   padding-right:0.75rem;
 }
+#home-jumbotron{
+  background-image: url('/images/curiosities.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#home-jumbotron h1{
+  color:#D3633C;
+  text-shadow:-1px -1px 0 #222,1px -1px 0 #222,-1px 1px 0 #222,1px 3px 0 #222;
+}
 #main{
   padding-top:1rem;
 }

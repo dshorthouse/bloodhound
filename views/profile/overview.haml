@@ -32,15 +32,15 @@
             - if @total[:number_helped] > 0
               %li Helped #{number_with_delimiter(@total[:number_helped])} #{'user'.pluralize(@total[:number_helped])} claim a total of #{number_with_delimiter(@total[:number_claims_given])} #{'specimen'.pluralize(@total[:number_claims_given])}
 
-          - if @user.zenodo_doi
+          - if @user.zenodo_concept_doi
             %h2 For Your Resume
             %p{class:"citation"}
               #{@user.fullname_reverse}. #{DateTime.now.year}. Natural history specimens collected and/or identified and deposited. [Data set]. Zenodo.
-              %a{href: "https://doi.org/#{@user.zenodo_doi}"}
-                https://doi.org/#{@user.zenodo_doi}
+              %a{href: "https://doi.org/#{@user.zenodo_concept_doi}"}
+                https://doi.org/#{@user.zenodo_concept_doi}
             %h5 HTML
             %div{class:"alert alert-secondary"}
               %pre{class:"p-0 m-0"}
-                &lt;a href="https://doi.org/10.5281/zenodo.2652588"&gt;&lt;img src="https://zenodo.org/badge/DOI/10.5281/zenodo.2652588.svg" alt="DOI"&gt;&lt;/a&gt;
-            %a{href:"https://doi.org/#{@user.zenodo_doi}"}
-              %img{src:"https://zenodo.org/badge/DOI/#{@user.zenodo_doi}.svg"}
+                &lt;a href="https://doi.org/#{@user.zenodo_concept_doi}"&gt;&lt;img src="https://zenodo.org/badge/DOI/#{@user.zenodo_concept_doi}.svg" alt="DOI"&gt;&lt;/a&gt;
+            %a{href:"https://doi.org/#{@user.zenodo_concept_doi}"}
+              %img{src:"https://zenodo.org/badge/DOI/#{@user.zenodo_concept_doi}.svg"}
