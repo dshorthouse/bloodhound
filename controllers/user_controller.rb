@@ -41,7 +41,7 @@ module Sinatra
             @user.zenodo_access_token = session_data[:info][:access_token_hash]
             @user.save
             session[:omniauth][:zenodo] = true
-            redirect '/profile'
+            redirect '/profile/settings'
           end
 
           app.get '/profile' do

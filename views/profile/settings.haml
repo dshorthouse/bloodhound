@@ -12,9 +12,9 @@
 
 %div{class:"container-fluid"}
   %div{class:"row"}
-    %div{class:"col-4 text-center"}
+    %div{class:"col-12 col-xl-4 text-center sidebar"}
       = haml :'partials/profile_jumbotron', layout: false, locals: { active_page: "settings" }
-    %div{class:"col-8"}
+    %div{class:"col-12 col-xl-8"}
       = haml :'partials/profile_tabs', layout: false, locals: { active_page: nil }
 
       %div{class:"container citation-wrapper"}
@@ -25,34 +25,40 @@
               %h5{class:"card-header"} Public Availability
               %div{class:"card-body"}
                 %p{class:"card-text"}
-                  Include your claims for public consumption in
-                  %a{href: "/profiles"}
-                    Profiles
-                  and include your claims in a bulk
+                  Include your account in all public
                   = succeed "." do
-                    %a{href: "/developers"} data download
-                  Expose links to your ORCID account through Google Chrome and Firefox
+                    %a{href: "/profiles"} Profiles
+                  Your claims will be included in a bulk
+                  %a{href: "/developers"}
+                    data download
+                  and exposed through Google Chrome and Firefox
                   = succeed "." do
-                    %a{href:"/integrations"} extensions 
-                %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "medium", checked: @user.is_public?, class:"btn-claim" }
-                - if @user.is_public?
-                  %a{href: "/#{@user[:orcid]}", target: "_blank"}
-                    Public Profile
-                    %i{class:"fas fa-external-link-alt"}
+                    %a{href:"/integrations"} extensions
+                %div{class:"row"}
+                  %div{class:"col"}
+                    %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "medium", checked: @user.is_public?, class:"btn-claim" }
+                  %div{class:"col text-right"}
+                    - if @user.is_public?
+                      %a{href: "/#{@user[:orcid]}", target: "_blank"}
+                        Public Profile
+                        %i{class:"fas fa-external-link-alt"}
 
           %div{class:"col-md"}
             %div{class:"card"}
-              %h5{class:"card-header"} Archive on Zenodo
+              %h5{class:"card-header"} Make Your Data Citable
               %div{class:"card-body"}
                 %p{class:"card-text"}
-                  Connect your ORCID account to
+                  Connect your account to
                   %a{href:"https://zenodo.org/", target:"_blank"}
                     Zenodo
                     %i{class:"fas fa-external-link-alt"}
-                  where snapshots of your data are automatically stored, DataCite DOIs are assigned, and then included as a new citable Work in your ORCID account.
+                  where versioned snapshots of your claims will be automatically stored and a DataCite DOI assigned.
                 %p
-                  - if !@user.zenodo_access_token
-                    %a{href:"/auth/zenodo", role:"button", class:"btn btn-x-sm btn-outline-info"} Archive in Zenodo
+                  - if @user.zenodo_access_token.empty?
+                    %a{href:"/auth/zenodo", role:"button", class:"btn btn-x-sm btn-outline-info"}
+                      Integrate with Zenodo
+                  - elsif !@user.zenodo_access_token.empty? && !@user.zenodo_doi
+                    Your account is now linked and data will be pushed within the hour
                   - if @user.zenodo_doi
                     %a{href:"https://doi.org/#{@user.zenodo_doi}"}
                       %img{src:"https://zenodo.org/badge/DOI/#{@user.zenodo_doi}.svg"}
@@ -64,11 +70,11 @@
                 %img{src:"/images/orcid_24x24.png", alt: "ORCID"}
                 ORCID
               %div{class:"card-body"}
-                %p{class:"card-text"} Pull new updates to your name, aliases, keywords, country, education, and employment from your ORCID account
+                %p{class:"card-text"} Pull new updates to your name, aliases, keywords, country, education, and employment from your ORCID account. This happens once a week, but you may wish to do it now.
                 %p
-                  %a{ href:"/profile/refresh.json?user_id=#{@user.id}", class:"profile-refresh"}
+                  %a{ href:"/profile/refresh.json?user_id=#{@user.id}", role:"button", class:"btn btn-x-sm btn-outline-success profile-refresh"}
                     %i{class: "fas fa-sync-alt"}
-                    Refresh ORCID Data
+                    Refresh
                 %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
                   ORCID Data was refreshed.
                   %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}

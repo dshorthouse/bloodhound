@@ -316,3 +316,7 @@ dl.citation{
   .text-lg-center { text-align: center; }
   .text-lg-justify { text-align: justify; }
 }
+
+@media (mid-width: @screen-xl-min) {
+  .sidebar { max-width: 400px; }
+}
