@@ -10,9 +10,9 @@
 
 %div{class:"container-fluid"}
   %div{class:"row"}
-    %div{class:"col-12 col-md-4"}
+    %div{class:"col-12 col-lg-4"}
       %h3{class:"display-6"}= @user.fullname
-    %div{class:"col-12 col-md-8"}
+    %div{class:"col-12 col-lg-8"}
       = haml :'partials/profile_tabs', layout: false, locals: { active_page: "specimens" }
 
 - if @results.empty?
