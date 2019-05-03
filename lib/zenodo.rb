@@ -100,6 +100,14 @@ module Bloodhound
       JSON.parse(response.body).deep_symbolize_keys
     end
 
+    def add_file_string(id:, string:, file_name:)
+      temp = Tempfile.new
+      temp.write(string)
+      temp.close
+      add_file(id: id, file_path: temp.path, file_name: file_name)
+      temp.unlink
+    end
+
     def add_file_enum(id:, enum:, file_name:)
       temp = Tempfile.new
       enum.each { |line| temp << line }

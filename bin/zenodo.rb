@@ -31,7 +31,8 @@ if options[:new]
     id = doi_id[:recid]
     csv = Bloodhound::IO.csv_stream_occurrences(u.visible_occurrences)
     z.add_file_enum(id: id, enum: csv, file_name: u.orcid + ".csv")
-    #TODO: add JSON-LD document, but have to stream it out as done with csv
+    json = Bloodhound::IO.jsonld_stream(u)
+    z.add_file_string(id: id, string: json, file_name: u.orcid + ".json")
     pub = z.publish(id: id)
     u.zenodo_doi = pub[:doi]
     u.zenodo_concept_doi = pub[:conceptdoi]

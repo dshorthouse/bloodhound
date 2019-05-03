@@ -477,55 +477,6 @@ module Sinatra
         headers.delete("Content-Length")
       end
 
-      def user_identifications_json_enum(user)
-        ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
-        Enumerator.new do |y|
-          user.identifications.find_each do |o|
-            y << { "@type": "PreservedSpecimen",
-                   "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
-                   sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
-                 }.merge(o.occurrence.attributes.reject {|column| ignore_cols.include?(column)})
-          end
-        end
-      end
-
-      def user_recordings_json_enum(user)
-        ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
-        Enumerator.new do |y|
-          user.recordings.find_each do |o|
-            y << { "@type": "PreservedSpecimen",
-                   "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
-                   sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
-                 }.merge(o.occurrence.attributes.reject {|column| ignore_cols.include?(column)})
-          end
-        end
-      end
-
-      def user_json_ld(user)
-        ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
-        id_url = user.orcid ? "https://orcid.org/#{user.orcid}" : "https://www.wikidata.org/wiki/#{user.wikidata}"
-        dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignore_cols.include?(column)}
-                                    .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o) }]
-        {
-          "@context": {
-            "@vocab": "http://schema.org/",
-            identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
-            recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
-            PreservedSpecimen: "http://rs.tdwg.org/dwc/terms/PreservedSpecimen"
-          }.merge(dwc_contexts),
-          "@type": "Person",
-          "@id": id_url,
-          givenName: user.given,
-          familyName: user.family,
-          alternateName: user.other_names.split("|"),
-          sameAs: id_url,
-          "@reverse": {
-            identified: user_identifications_json_enum(user),
-            recorded: user_recordings_json_enum(user)
-          }
-        }
-      end
-
       # from https://stackoverflow.com/questions/24897465/determining-encoding-for-a-file-in-ruby
       def detect_mime_encoding(file_path)
         mt = FileMagic.new(:mime_type)

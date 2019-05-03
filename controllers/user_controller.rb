@@ -138,7 +138,7 @@ module Sinatra
             cache_control :no_cache
             headers.delete("Content-Length")
             content_type "application/ld+json", charset: 'utf-8'
-            Oj.dump(user_json_ld(@user))
+            ::Bloodhound::IO.jsonld_stream(@user)
           end
 
           app.get '/profile/download.csv' do
@@ -372,9 +372,12 @@ module Sinatra
           app.get '/:id/specimens.json' do
             content_type "application/ld+json", charset: 'utf-8'
             if params[:id].is_orcid? || params[:id].is_wiki_id?
+              viewed_user = find_user(params[:id])
+              attachment "#{viewed_user.orcid}.json"
+              cache_control :no_cache
+              headers.delete("Content-Length")
               begin
-                viewed_user = find_user(params[:id])
-                Oj.dump(user_json_ld(viewed_user))
+                ::Bloodhound::IO.jsonld_stream(viewed_user)
               rescue
                 status 404
                 {}.to_json

@@ -131,33 +131,11 @@ module Sinatra
           app.get '/admin/user/:id/specimens.json' do
             admin_protected!
             admin_user = find_user(params[:id])
+            attachment "#{admin_user.identifier}.json"
+            cache_control :no_cache
+            headers.delete("Content-Length")
             content_type "application/ld+json", charset: 'utf-8'
-            ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
-            begin
-              dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignore_cols.include?(column)}
-                                          .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o) }]
-              id_url = admin_user.orcid ? "https://orcid.org/#{admin_user.orcid}" : "https://www.wikidata.org/wiki/#{admin_user.wikidata}"
-              {
-                "@context": {
-                  "@vocab": "http://schema.org/",
-                  identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
-                  recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
-                  PreservedSpecimen: "http://rs.tdwg.org/dwc/terms/PreservedSpecimen"
-                }.merge(dwc_contexts),
-                "@type": "Person",
-                "@id": id_url,
-                givenName: admin_user.given,
-                familyName: admin_user.family,
-                alternateName: admin_user.other_names.split("|"),
-                "@reverse": {
-                  identified: admin_user.identifications_enum,
-                  recorded: admin_user.recordings_enum
-                }
-              }.to_json
-            rescue
-              status 404
-              {}.to_json
-            end
+            ::Bloodhound::IO.jsonld_stream(admin_user)
           end
 
           app.get '/admin/user/:id/specimens.csv' do
@@ -165,7 +143,7 @@ module Sinatra
             admin_user = find_user(params[:id])
             records = admin_user.visible_occurrences
             csv_stream_headers
-            body csv_stream_occurrences(records)
+            body ::Bloodhound::IO.csv_stream_occurrences(records)
           end
 
           app.get '/admin/user/:id/support' do
