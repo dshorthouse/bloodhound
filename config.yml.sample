@@ -49,6 +49,13 @@ test:
   orcid_authorize_url: 'https://orcid.org/oauth/authorize'
   orcid_token_url: 'https://pub.orcid.org/oauth/token'
   orcid_keywords: ['taxonomy','taxonomist','mycology','zoology','botany','systematics','phylogenetics']
+  zenodo_sandbox: true
+  zenodo_api_url: 'https://sandbox.zenodo.org/api/'
+  zenodo_key: ''
+  zenodo_secret: ''
+  zenodo_site: 'https://sandbox.zenodo.org'
+  zenodo_authorize_url: 'https://sandbox.zenodo.org/oauth/authorize'
+  zenodo_token_url: 'https://sandbox.zenodo.org/oauth/token'
   elastic_server: 'http://localhost:9200'
   elastic_agent_index: 'bloodhound_agents'
   elastic_user_index: 'bloodhound_users'

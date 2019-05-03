@@ -53,7 +53,7 @@
                     %a{href:"https://zenodo.org/", target:"_blank"}
                       Zenodo
                       %i{class:"fas fa-external-link-alt"}
-                    where versioned snapshots of your claims will be automatically stored and a DataCite DOI assigned. You may include this in your professional resume.
+                    where versioned snapshots of your claims will be automatically stored and a DataCite DOI assigned. Once connected, a citation will be provided for inclusion in your professional resume.
                   - if @user.zenodo_access_token.empty?
                     %p{class:"card-text"}
                       %a{href:"/auth/zenodo", role:"button", class:"btn btn-x-sm btn-outline-info"}
