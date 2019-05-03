@@ -1,0 +1,86 @@
+-content_for :title do
+  Settings
+
+-content_for :scripts do
+  %script{src:"/js/application.js"}
+  %script{src:"/js/profile.js"}
+  :javascript
+    $(function() {
+        Application.init(#{@admin_user.id}, "PUT", "/admin");
+        Profile.init("/admin/user/#{@admin_user.identifier}");
+    });
+
+%div{class:"container-fluid"}
+  %div{class:"row"}
+    %div{class:"col-12 col-lg-4 text-center sidebar alert-warning pt-3"}
+      = haml :'partials/admin_profile_jumbotron', layout: false, locals: { active_page: "settings" }
+    %div{class:"col-12 col-lg-8"}
+      = haml :'partials/admin_user_tabs', layout: false, locals: { active_page: nil }
+
+      %div{class:"container citation-wrapper"}
+        %h3 Settings
+        %div{class:"row"}
+          %div{class:"col-md"}
+            %div{class:"card"}
+              %h5{class:"card-header"} Public Availability
+              %div{class:"card-body"}
+                %p{class:"card-text"}
+                  Include your account in public
+                  = succeed "." do
+                    %a{href: "/profiles"} Profiles
+                  Your claims will be included in a bulk
+                  %a{href: "/developers"}
+                    data download
+                  and exposed through Google Chrome and Firefox
+                  = succeed "." do
+                    %a{href:"/integrations"} extensions
+                %div{class:"row"}
+                  %div{class:"col"}
+                    %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "medium", checked: @admin_user.is_public?, class:"btn-claim" }
+                  %div{class:"col text-right"}
+                    - if @admin_user.is_public?
+                      %a{href: "/#{@admin_user.identifier}", target: "_blank"}
+                        Public Profile
+                        %i{class:"fas fa-external-link-alt"}
+
+          %div{class:"col-md"}
+            %div{class:"card"}
+              %h5{class:"card-header"} Make Claims Citable
+              %div{class:"card-body"}
+                - if !@admin_user.zenodo_concept_doi
+                  %p{class:"card-text"}
+                    Only the user may coordinate these actions.
+                - else
+                  %p{class:"card-text"}
+                    Profile is linked to
+                    %a{href:"https://doi.org/#{@admin_user.zenodo_concept_doi}", target:"_blank"}
+                      Zenodo
+                      %i{class:"fas fa-external-link-alt"}
+                    and claims are versioned and archived.
+                  %p
+                    %a{href:"https://doi.org/#{@admin_user.zenodo_concept_doi}"}
+                      %img{src:"https://zenodo.org/badge/DOI/#{@admin_user.zenodo_concept_doi}.svg"}
+
+        %div{class:"row"}
+          %div{class:"col-md"}
+            %div{class:"card"}
+              %h5{class:"card-header"}
+                - if @admin_user.orcid
+                  %img{src:"/images/orcid_24x24.png", alt: "ORCID"}
+                  ORCID
+                - else
+                  %img{src:"/images/wikidata_24x24.png", alt: "Wikidata"}
+                  Wikidata
+              %div{class:"card-body"}
+                %p{class:"card-text"} Pull new updates to name, aliases, keywords, country, education, and employment from the ORCID account or other items if from Wikidata.
+                %p
+                  %a{ href:"/admin/refresh.json?user_id=#{@admin_user.id}", role:"button", class:"btn btn-x-sm btn-outline-success profile-refresh"}
+                    %i{class: "fas fa-sync-alt"}
+                    Refresh
+                %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
+                  - locale = @admin_user.orcid ? "ORCID" : "Wikidata"
+                  #{locale} Data was refreshed.
+                  %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+                    %span{"aria-hidden":"true"} &times;
+
+          %div{class:"col-md"}

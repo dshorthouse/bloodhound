@@ -58,6 +58,7 @@ elsif options[:all]
     files.each do |file_id|
       z.delete_file(id: id, file_id: file_id)
     end
+
     csv = Bloodhound::IO.csv_stream_occurrences(u.visible_occurrences)
     z.add_file_enum(id: id, enum: csv, file_name: u.orcid + ".csv")
     json = Bloodhound::IO.jsonld_stream(u)

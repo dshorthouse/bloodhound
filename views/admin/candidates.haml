@@ -8,16 +8,18 @@
       Application.init(#{@admin_user.id}, "POST", "/admin");
     });
 
--content_for :jumbotron do
-  = haml :'partials/admin_profile_jumbotron', layout: false
+%div{class:"container-fluid"}
+  %div{class:"row"}
+    %div{class:"col-12 col-lg-4 alert-warning mb-2"}
+      %h3{class:"display-6"}= @admin_user.fullname
+    %div{class:"col-12 col-lg-8"}
+      = haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "candidates" }
 
 - alert_class = "info"
 - placeholder = @admin_user.fullname
 - if !@searched_user.nil?
   - alert_class = "warning"
   - placeholder = @searched_user.fullname
-
-= haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "candidates" }
 
 = haml :'partials/upload_claim_modal', layout: false, locals: { csv_download_url: "/admin/user/#{@admin_user.identifier}/candidates.csv?relaxed=1", csv_upload_url: "/admin/user/#{@admin_user.identifier}/upload-claims", user: @admin_user}
 

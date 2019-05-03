@@ -11,23 +11,25 @@
         Application.init(#{@admin_user.id}, "PUT", "/admin");
     });
 
--content_for :jumbotron do
-  = haml :'partials/admin_profile_jumbotron', layout: false
+%div{class:"container-fluid"}
+  %div{class:"row"}
+    %div{class:"col-12 col-lg-4 text-center sidebar alert-warning pt-3"}
+      = haml :'partials/admin_profile_jumbotron', layout: false
+    %div{class:"col-12 col-lg-8"}
+      = haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "overview" }
 
-= haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "overview" }
-
-- if @total[:number_identified] == 0 && @total[:number_recorded] == 0
-  %div{class: "alert alert-warning", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-    Specimens have not yet been claimed
-- else
-  %div{class:"container-fluid mt-3"}
-    %h4 Summary
-    %ul
-      - if @total[:number_identified] > 0
-        %li Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}
-      - if @total[:number_recorded] > 0
-        %li Collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])} from at least #{number_with_delimiter(@total[:number_countries])} #{'country'.pluralize(@total[:number_countries])}
-      - if @total[:number_specimens_cited] > 0
-        %li #{number_with_delimiter(@total[:number_specimens_cited])} #{'specimen'.pluralize(@total[:number_specimens_cited])} used in #{number_with_delimiter(@total[:number_articles])} published #{'work'.pluralize(@total[:number_articles])}
-      - if @total[:number_helped] > 0
-        %li Helped #{number_with_delimiter(@total[:number_helped])} #{'user'.pluralize(@total[:number_helped])} claim a total of #{number_with_delimiter(@total[:number_claims_given])} #{'specimen'.pluralize(@total[:number_claims_given])}
+      - if @total[:number_identified] == 0 && @total[:number_recorded] == 0
+        %div{class: "alert alert-warning", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+          Specimens have not yet been claimed
+      - else
+        %div{class:"container-fluid mt-3"}
+          %h4 Summary
+          %ul
+            - if @total[:number_identified] > 0
+              %li Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}
+            - if @total[:number_recorded] > 0
+              %li Collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])} from at least #{number_with_delimiter(@total[:number_countries])} #{'country'.pluralize(@total[:number_countries])}
+            - if @total[:number_specimens_cited] > 0
+              %li #{number_with_delimiter(@total[:number_specimens_cited])} #{'specimen'.pluralize(@total[:number_specimens_cited])} used in #{number_with_delimiter(@total[:number_articles])} published #{'work'.pluralize(@total[:number_articles])}
+            - if @total[:number_helped] > 0
+              %li Helped #{number_with_delimiter(@total[:number_helped])} #{'user'.pluralize(@total[:number_helped])} claim a total of #{number_with_delimiter(@total[:number_claims_given])} #{'specimen'.pluralize(@total[:number_claims_given])}

@@ -39,7 +39,7 @@
                     %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "medium", checked: @user.is_public?, class:"btn-claim" }
                   %div{class:"col text-right"}
                     - if @user.is_public?
-                      %a{href: "/#{@user[:orcid]}", target: "_blank"}
+                      %a{href: "/#{@user.orcid}", target: "_blank"}
                         Public Profile
                         %i{class:"fas fa-external-link-alt"}
 
@@ -63,7 +63,7 @@
                       %i{class:"fas fa-check-circle"}
                       Your account is now linked and data will be pushed within the hour
 
-                - else @user.zenodo_concept_doi
+                - else
                   %p{class:"card-text"}
                     Your profile is linked to
                     %a{href:"https://doi.org/#{@user.zenodo_concept_doi}", target:"_blank"}

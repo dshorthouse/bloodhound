@@ -111,6 +111,36 @@ module Sinatra
             haml :'admin/overview', locals: { active_page: "administration" }
           end
 
+          app.post '/admin/user/:id/image' do
+            admin_protected!
+            @admin_user = find_user(params[:id])
+            file_name = upload_image
+            if file_name
+              @admin_user.image_url = file_name
+              @admin_user.save
+              { message: "ok" }.to_json
+            else
+              { message: "failed" }.to_json
+            end
+          end
+
+          app.delete '/admin/user/:id/image' do
+            admin_protected!
+            @admin_user = find_user(params[:id])
+            if @admin_user.image_url
+              FileUtils.rm(File.join(root, "public", "images", "users", @admin_user.image_url)) rescue nil
+            end
+            @admin_user.image_url = nil
+            @admin_user.save
+            { message: "ok" }.to_json
+          end
+
+          app.get '/admin/user/:id/settings' do
+            admin_protected!
+            @admin_user = find_user(params[:id])
+            haml :'admin/settings', locals: { active_page: "administration" }
+          end
+
           app.get '/admin/user/:id/specimens' do
             admin_protected!
             @admin_user = find_user(params[:id])

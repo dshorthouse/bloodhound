@@ -6,7 +6,11 @@ var Profile = (function($, window) {
 
   var _private = {
 
-    init: function() {
+    user_id: "",
+    path: "",
+    init: function(path) {
+      this.path = typeof path !== 'undefined' ? path : "/profile";
+
       var popup = $('#profile-upload-option'), self = this;
 
       $('#profile-image').on('click', function() {
@@ -25,7 +29,7 @@ var Profile = (function($, window) {
                            .find("img").attr({width:"0px", height:"0px"})
                            .attr({src:"/images/photo.png", width:"48px", height:"96px"});
         $.ajax({
-          url: '/profile/image',
+          url: self.path + '/image',
           data: {},
           type: 'DELETE'
         }).done(function(data) {
@@ -55,7 +59,7 @@ var Profile = (function($, window) {
           var data = new FormData();
           data.append('file', $('#user-image')[0].files[0]);
           $.ajax({
-              url: '/profile/image',
+              url: self.path + '/image',
               data: data,
               processData: false,
               type: 'POST',
@@ -78,8 +82,8 @@ var Profile = (function($, window) {
   };
 
   return {
-    init: function() {
-      _private.init();
+    init: function(path) {
+      _private.init(path);
     }
   };
 
