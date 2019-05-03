@@ -23,7 +23,6 @@
     A total of #{number_with_delimiter(@total)} #{'publication'.pluralize(@total)} made use of your specimen data downloaded from the Global Biodiversity Information Facility (GBIF).
 
   %div{class:"citation-wrapper"}
-    %h2 Specimen Data Used
     - @results.each do |article|
       %div{class: "card"}
         %div{class: "card-header"}
