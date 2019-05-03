@@ -116,7 +116,10 @@ CREATE TABLE `users` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NULL DEFAULT NULL,
   `visited` timestamp NULL DEFAULT NULL,
-  `is_admin` tinyint(1) NOT NULL DEFAULT '0'
+  `is_admin` tinyint(1) NOT NULL DEFAULT '0',
+  `zenodo_access_token` text,
+  `zenodo_doi` varchar(255) DEFAULT NULL,
+  `zenodo_concept_doi` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `user_occurrences` (
