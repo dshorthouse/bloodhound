@@ -40,6 +40,7 @@ gem 'wikidata-client'
 gem 'ruby-filemagic'
 gem 'sparql-client'
 gem 'rubysl-securerandom'
+gem 'oj'
 
 group :production do
 end

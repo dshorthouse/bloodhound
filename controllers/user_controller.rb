@@ -134,47 +134,18 @@ module Sinatra
 
           app.get '/profile/download.json' do
             protected!
+            attachment "#{@user.orcid}.json"
+            cache_control :no_cache
+            headers.delete("Content-Length")
             content_type "application/ld+json", charset: 'utf-8'
-            ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
-            dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignore_cols.include?(column)}
-                                        .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o) }]
-            {
-              "@context": {
-                "@vocab": "http://schema.org/",
-                identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
-                recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
-                PreservedSpecimen: "http://rs.tdwg.org/dwc/terms/PreservedSpecimen"
-              }.merge(dwc_contexts),
-              "@type": "Person",
-              "@id": "https://orcid.org/#{@user.orcid}",
-              sameAs: "https://orcid.org/#{@user.orcid}",
-              givenName: @user.given,
-              familyName: @user.family,
-              alternateName: @user.other_names.split("|"),
-              "@reverse": {
-                identified: @user.identifications
-                                       .map{|o| {
-                                           "@type": "PreservedSpecimen",
-                                           "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
-                                           sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
-                                         }.merge(o.occurrence.attributes.reject {|column| ignore_cols.include?(column) })
-                                       },
-                recorded: @user.recordings
-                                       .map{|o| {
-                                           "@type": "PreservedSpecimen",
-                                           "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
-                                           sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
-                                         }.merge(o.occurrence.attributes.reject {|column| ignore_cols.include?(column) })
-                                       }
-              }
-            }.to_json
+            Oj.dump(user_json_ld(@user))
           end
 
           app.get '/profile/download.csv' do
             protected!
             records = @user.visible_occurrences
             csv_stream_headers
-            body csv_stream_occurrences(records)
+            body ::Bloodhound::IO.csv_stream_occurrences(records)
           end
 
           app.get '/profile/candidate-count.json' do
@@ -193,7 +164,7 @@ module Sinatra
             agent_ids = candidate_agents(@user).pluck(:id)
             records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @user.user_occurrences.select(:occurrence_id)).limit(5_000)
             csv_stream_headers("bloodhound-candidates")
-            body csv_stream_candidates(records)
+            body ::Bloodhound::IO.csv_stream_candidates(records)
           end
 
           app.get '/profile/candidates' do
@@ -380,7 +351,7 @@ module Sinatra
               @viewed_user = find_user(params[:id])
               agent_ids = candidate_agents(@viewed_user).pluck(:id)
               records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @viewed_user.user_occurrences.select(:occurrence_id)).limit(5_000)
-              body csv_stream_candidates(records)
+              body ::Bloodhound::IO.csv_stream_candidates(records)
             else
               status 404
             end
@@ -400,31 +371,10 @@ module Sinatra
 
           app.get '/:id/specimens.json' do
             content_type "application/ld+json", charset: 'utf-8'
-            ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
             if params[:id].is_orcid? || params[:id].is_wiki_id?
               begin
                 viewed_user = find_user(params[:id])
-                id_url = viewed_user.orcid ? "https://orcid.org/#{viewed_user.orcid}" : "https://www.wikidata.org/wiki/#{viewed_user.wikidata}"
-                dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignore_cols.include?(column)}
-                                            .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o) }]
-                {
-                  "@context": {
-                    "@vocab": "http://schema.org/",
-                    identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
-                    recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
-                    PreservedSpecimen: "http://rs.tdwg.org/dwc/terms/PreservedSpecimen"
-                  }.merge(dwc_contexts),
-                  "@type": "Person",
-                  "@id": id_url,
-                  givenName: viewed_user.given,
-                  familyName: viewed_user.family,
-                  alternateName: viewed_user.other_names.split("|"),
-                  sameAs: id_url,
-                  "@reverse": {
-                    identified: viewed_user.identifications_enum,
-                    recorded: viewed_user.recordings_enum
-                  }
-                }.to_json
+                Oj.dump(user_json_ld(viewed_user))
               rescue
                 status 404
                 {}.to_json
@@ -441,7 +391,7 @@ module Sinatra
                 csv_stream_headers
                 @viewed_user = find_user(params[:id])
                 records = @viewed_user.visible_occurrences
-                body csv_stream_occurrences(records)
+                body ::Bloodhound::IO.csv_stream_occurrences(records)
               rescue
                 status 404
               end

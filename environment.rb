@@ -54,6 +54,7 @@ require 'wikidata'
 require 'filemagic'
 require 'sparql/client'
 require 'ostruct'
+require 'oj'
 
 Hashie.logger = Logger.new(nil)
 

@@ -75,32 +75,8 @@ class User < ActiveRecord::Base
     visible_occurrences.where(qry_identified)
   end
 
-  def identifications_enum
-    ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
-    Enumerator.new do |y|
-      identifications.find_each do |o|
-        y << { "@type": "PreservedSpecimen",
-               "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
-               sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
-             }.merge(o.occurrence.attributes.reject {|column| ignore_cols.include?(column)})
-      end
-    end
-  end
-
   def recordings
     visible_occurrences.where(qry_recorded)
-  end
-
-  def recordings_enum
-    ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
-    Enumerator.new do |y|
-      recordings.find_each do |o|
-        y << { "@type": "PreservedSpecimen",
-               "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
-               sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
-             }.merge(o.occurrence.attributes.reject {|column| ignore_cols.include?(column)})
-      end
-    end
   end
 
   def identifications_recordings

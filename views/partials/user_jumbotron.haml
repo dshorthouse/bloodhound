@@ -51,8 +51,8 @@
     %div{class:"col"}
     %div{class:"col text-center"}
       - if @viewed_user.zenodo_doi
-        %a{href:"https://doi.org/#{@user.zenodo_doi}"}
-          %img{src:"https://zenodo.org/badge/DOI/#{@user.zenodo_doi}.svg"}
+        %a{href:"https://doi.org/#{@viewed_user.zenodo_doi}"}
+          %img{src:"https://zenodo.org/badge/DOI/#{@viewed_user.zenodo_doi}.svg"}
     %div{class:"col text-right"}
       - if Sinatra::Application.settings.base_url && !locals[:search] && @viewed_user.can_comment?
         %i{class:"fas fa-comments"}

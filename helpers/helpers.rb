@@ -450,10 +450,6 @@ module Sinatra
         new_name
       end
 
-      def cycle
-        %w{even odd}[@_cycle = ((@_cycle || -1) + 1) % 2]
-      end
-
       def checked_tag(user_action, action)
         (user_action == action) ? "checked" : ""
       end
@@ -474,13 +470,6 @@ module Sinatra
         @user && @user.is_admin? ? true : false
       end
 
-      def to_csv(model, records)
-        CSV.generate do |csv|
-          csv << model.attribute_names
-          records.each { |r| csv << r.attributes.values }
-        end
-      end
-
       def csv_stream_headers(file_name = "download")
         content_type "application/csv", charset: 'utf-8'
         attachment !params[:id].nil? ? "#{params[:id]}.csv" : "#{file_name}.csv"
@@ -488,36 +477,53 @@ module Sinatra
         headers.delete("Content-Length")
       end
 
-      def csv_stream_occurrences(occurrences)
+      def user_identifications_json_enum(user)
+        ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
         Enumerator.new do |y|
-          header = ["action"].concat(Occurrence.attribute_names - ["dateIdentified_processed", "eventDate_processed"])
-          y << CSV::Row.new(header, header, true).to_s
-          if !occurrences.empty?
-            occurrences.find_each do |o|
-              attributes = o.occurrence.attributes
-              attributes.delete("dateIdentified_processed")
-              attributes.delete("eventDate_processed")
-              data = [o.action].concat(attributes.values)
-              y << CSV::Row.new(header, data).to_s
-            end
+          user.identifications.find_each do |o|
+            y << { "@type": "PreservedSpecimen",
+                   "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
+                   sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
+                 }.merge(o.occurrence.attributes.reject {|column| ignore_cols.include?(column)})
           end
         end
       end
 
-      def csv_stream_candidates(occurrences)
+      def user_recordings_json_enum(user)
+        ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
         Enumerator.new do |y|
-          header = ["action"].concat(Occurrence.attribute_names - ["dateIdentified_processed", "eventDate_processed"]).concat(["not me"])
-          y << CSV::Row.new(header, header, true).to_s
-          if !occurrences.empty?
-            occurrences.each do |o|
-              attributes = o.occurrence.attributes
-              attributes.delete("dateIdentified_processed")
-              attributes.delete("eventDate_processed")
-              data = [""].concat(attributes.values).concat([""])
-              y << CSV::Row.new(header, data).to_s
-            end
+          user.recordings.find_each do |o|
+            y << { "@type": "PreservedSpecimen",
+                   "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
+                   sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
+                 }.merge(o.occurrence.attributes.reject {|column| ignore_cols.include?(column)})
           end
         end
+      end
+
+      def user_json_ld(user)
+        ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
+        id_url = user.orcid ? "https://orcid.org/#{user.orcid}" : "https://www.wikidata.org/wiki/#{user.wikidata}"
+        dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignore_cols.include?(column)}
+                                    .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o) }]
+        {
+          "@context": {
+            "@vocab": "http://schema.org/",
+            identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
+            recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
+            PreservedSpecimen: "http://rs.tdwg.org/dwc/terms/PreservedSpecimen"
+          }.merge(dwc_contexts),
+          "@type": "Person",
+          "@id": id_url,
+          givenName: user.given,
+          familyName: user.family,
+          alternateName: user.other_names.split("|"),
+          sameAs: id_url,
+          "@reverse": {
+            identified: user_identifications_json_enum(user),
+            recorded: user_recordings_json_enum(user)
+          }
+        }
       end
 
       # from https://stackoverflow.com/questions/24897465/determining-encoding-for-a-file-in-ruby

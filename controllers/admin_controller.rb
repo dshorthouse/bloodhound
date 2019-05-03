@@ -192,7 +192,7 @@ module Sinatra
             agent_ids = candidate_agents(@admin_user).pluck(:id)
             records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @admin_user.user_occurrences.select(:occurrence_id))
             csv_stream_headers
-            body csv_stream_candidates(records)
+            body ::Bloodhound::IO.csv_stream_candidates(records)
           end
 
           app.get '/admin/user/:id/candidates' do
