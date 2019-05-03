@@ -289,6 +289,14 @@ dl.citation{
   position:relative;
 }
 
+#network-nav a.nav-link {
+  color:#D3633C;
+}
+
+#network-nav a.active {
+  color:#495057;
+}
+
 .pagination {
   margin-top:0.75rem;
 }

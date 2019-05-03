@@ -492,28 +492,13 @@ module Sinatra
             end
           end
 
-          app.get '/:id/network' do
-            if params[:id].is_orcid? || params[:id].is_wiki_id?
-              @viewed_user = find_user(params[:id])
-              if @viewed_user && @viewed_user.is_public?
-                haml :'public/network', locals: { active_page: "roster" }
-              else
-                status 404
-                haml :oops
-              end
-            else
-              status 404
-              haml :oops
-            end
-          end
-
           app.get '/:id/co-collectors' do
             if params[:id].is_orcid? || params[:id].is_wiki_id?
               @viewed_user = find_user(params[:id])
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
                 @pagy, @results = pagy(@viewed_user.recorded_with, page: page)
-                haml :'public/co_collectors', locals: { active_page: "roster" }
+                haml :'public/co_collectors', locals: { active_page: "roster", active_tab: "co_collectors" }
               else
                 status 404
                 haml :oops
@@ -530,7 +515,7 @@ module Sinatra
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
                 @pagy, @results = pagy(@viewed_user.identified_for, page: page)
-                haml :'public/identified_for', locals: { active_page: "roster" }
+                haml :'public/identified_for', locals: { active_page: "roster", active_tab: "identified_for" }
               else
                 status 404
                 haml :oops
@@ -547,7 +532,7 @@ module Sinatra
               if @viewed_user && @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
                 @pagy, @results = pagy(@viewed_user.identified_by, page: page)
-                haml :'public/identifications_by', locals: { active_page: "roster" }
+                haml :'public/identifications_by', locals: { active_page: "roster", active_tab: "identifications_by" }
               else
                 status 404
                 haml :oops
