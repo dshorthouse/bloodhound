@@ -88,12 +88,14 @@ module Bloodhound
       headers = { "Content-Type": "application/json"}
       creators = [{ name: name, orcid: orcid }]
       body = {
-        metadata: { upload_type: "dataset", 
+        metadata: {
+          upload_type: "dataset", 
           title: "Natural history specimens collected and/or identified and deposited.", 
           creators: creators,
           description: "Natural history specimen data collected and/or identified by #{name}, <a href=\"https://orcid.org/#{orcid}\">https://orcid.org/#{orcid}</a>. Claims were made on Bloodhound, <a href=\"http://bloodhound-tracker.net\">https://bloodhound-tracker.net</a> using specimen data from the Global Biodiversity Information Facility, <a href=\"https://gbif.org\">https://gbif.org</a>.",
           access_right: "open",
-          license: "cc-zero"
+          license: "cc-zero",
+          keywords: ["specimen", "natural history", "taxonomy"]
         }
       }
       raw_response = access_token.post(new_deposit_url, { body: body.to_json, headers: headers })

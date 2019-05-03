@@ -37,7 +37,7 @@ class BLOODHOUND < Sinatra::Base
       }
 
       provider :zenodo, settings.zenodo_key, settings.zenodo_secret,
-        :sandbox => true,
+        :sandbox => settings.zenodo_sandbox,
         :authorize_params => {
           :client_id => settings.zenodo_key,
           :redirect_uri => settings.base_url + '/auth/zenodo/callback'
