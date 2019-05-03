@@ -40,12 +40,20 @@ module Bloodhound
       "/api/deposit/depositions/#{id}/files"
     end
 
+    def list_files_url(id)
+      "/api/deposit/depositions/#{id}/files"
+    end
+
     def delete_file_url(id, file_id)
       "/api/deposit/depositions/#{id}/files/#{file_id}"
     end
 
     def new_version_url(id)
       "/api/deposit/depositions/#{id}/actions/newversion"
+    end
+
+    def discard_version_url(id)
+      "/api/deposit/depositions/#{id}/actions/discard"
     end
 
     def publish_url(id)
@@ -67,9 +75,11 @@ module Bloodhound
       JSON.parse(response.body).map(&:deep_symbolize_keys)
     end
 
+    # Returns {:doi=>"10.5281/zenodo.2652235", :recid=>2652235}
     def get_deposit(id:)
-      response = access_token.get(deposit_url(id))
-      JSON.parse(response.body).deep_symbolize_keys
+      raw_response = access_token.get(deposit_url(id))
+      response = JSON.parse(raw_response.body).deep_symbolize_keys
+      response[:metadata][:prereserve_doi]
     end
 
     # Input, name: "Shorthouse, David", orcid: "0000-0001-7618-5230"
@@ -89,6 +99,11 @@ module Bloodhound
       raw_response = access_token.post(new_deposit_url, { body: body.to_json, headers: headers })
       response = JSON.parse(raw_response.body).deep_symbolize_keys
       response[:metadata][:prereserve_doi]
+    end
+
+    def list_files(id:)
+      raw_response = access_token.get(list_files_url(id))
+      JSON.parse(raw_response.body).map(&:deep_symbolize_keys)
     end
 
     def add_file(id:, file_path:, file_name: nil)
@@ -121,10 +136,15 @@ module Bloodhound
     end
 
     def new_version(id:)
-      response = access_token.post(new_version_url(id))
-      response = JSON.parse(response.body).deep_symbolize_keys
+      raw_response = access_token.post(new_version_url(id))
+      response = JSON.parse(raw_response.body).deep_symbolize_keys
       new_id = response[:links][:latest_draft].split("/").last.to_i
       get_deposit(id: new_id)
+    end
+
+    def discard_version(id:)
+      raw_response = access_token.post(discard_version_url(id))
+      JSON.parse(raw_response.body).deep_symbolize_keys
     end
 
     # concept DOI is returned as [:conceptdoi] whereas version DOI is [:doi]
