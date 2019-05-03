@@ -109,6 +109,15 @@ table td.selector{
   background-color: rgba(0, 0, 0, 0.075);
 }
 
+#admin-tabs .active{
+  background-color:transparent;
+  border-bottom-color:#fff3cd;
+}
+
+#tabs-column .active{
+  border-bottom-color:#fff;
+}
+
 h3 {
   margin-top:0.5em;
 }

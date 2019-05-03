@@ -9,9 +9,12 @@
     });
 
 -content_for :jumbotron do
-  = haml :'partials/admin_profile_jumbotron', layout: false
-
-= haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "help" }
+  %div{class:"jumbotron jumbotron-fluid alert-warning"}
+    %div{class:"row"}
+      %div{class:"col-12 col-lg-4 alert-warning mb-2"}
+        %h3{class:"display-6"}= @admin_user.fullname
+      %div{class:"col-12 col-lg-8"}
+        = haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "help" }
 
 - if !@error.nil?
   %div{class: "alert alert-danger", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}

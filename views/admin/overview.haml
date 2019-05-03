@@ -15,7 +15,7 @@
   %div{class:"row"}
     %div{class:"col-12 col-lg-4 text-center sidebar alert-warning pt-3"}
       = haml :'partials/admin_profile_jumbotron', layout: false
-    %div{class:"col-12 col-lg-8"}
+    %div{id:"tabs-column", class:"col-12 col-lg-8"}
       = haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "overview" }
 
       - if @total[:number_identified] == 0 && @total[:number_recorded] == 0
@@ -23,7 +23,7 @@
           Specimens have not yet been claimed
       - else
         %div{class:"container-fluid mt-3"}
-          %h4 Summary
+          %h3 Summary
           %ul
             - if @total[:number_identified] > 0
               %li Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}
