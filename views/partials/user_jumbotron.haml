@@ -11,7 +11,7 @@
   %p{class:" text-center text-muted p-0"}= format_lifespan(@viewed_user)
 
 - if !@viewed_user.keywords.blank?
-  %p{class: "text-center text-muted font-italic"}
+  %p{class: "text-center text-muted font-italic pt-2"}
     #{@viewed_user.keywords.split("|").join(", ")}
 
 %p{class: "orcid text-lg-left p-0 m-0"}
