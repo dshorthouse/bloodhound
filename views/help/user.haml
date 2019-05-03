@@ -9,7 +9,7 @@
     });
 
 -content_for :jumbotron do
-  = haml :'partials/user_jumbotron', layout: false, locals: { search: true }
+  = haml :'partials/help_others_jumbotron', layout: false
 
 - if @results.empty?
   %div{class: "alert alert-warning", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
