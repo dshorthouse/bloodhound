@@ -492,6 +492,21 @@ module Sinatra
             end
           end
 
+          app.get '/:id/network' do
+            if params[:id].is_orcid? || params[:id].is_wiki_id?
+              @viewed_user = find_user(params[:id])
+              if @viewed_user && @viewed_user.is_public?
+                haml :'public/network', locals: { active_page: "roster" }
+              else
+                status 404
+                haml :oops
+              end
+            else
+              status 404
+              haml :oops
+            end
+          end
+
           app.get '/:id/co-collectors' do
             if params[:id].is_orcid? || params[:id].is_wiki_id?
               @viewed_user = find_user(params[:id])

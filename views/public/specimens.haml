@@ -7,63 +7,66 @@
       DISQUSWIDGETS.getCount({ reset: true });
     });
 
--content_for :jumbotron do
-  = haml :'partials/user_jumbotron', layout: false
+%div{class:"container-fluid"}
+  %div{class:"row"}
+    %div{class:"col-12 col-lg-4 text-center sidebar"}
+      = haml :'partials/user_jumbotron', layout: false
+    %div{class:"col-12 col-lg-8"}
+      - if @viewed_user.is_public?
+        = haml :'partials/user_tabs', layout: false, locals: { active_page: "specimens" }
 
-= haml :'partials/user_tabs', layout: false, locals: { active_page: 'specimens' }
+        - if @results.empty?
+          %div{class: "alert alert-warning", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+            Specimens have not yet been claimed.
 
-- if @results.empty?
-  %div{class: "alert alert-warning", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-    Specimens have not yet been claimed.
+        - if !@results.empty?
+          %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em;padding-left:0.1em;padding-right:0.1em"}
+            %div{class: "col col-9"}
+              %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
+              collected or
+              %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+              identified #{number_with_delimiter(@pagy.count)} #{'specimen'.pluralize(@pagy.count)}
+            %div{class: "col col-3 text-right"}
+              %a{href: "/#{@viewed_user.identifier}/specimens.csv"}
+                %img{src: "/images/csv-icon.png", width:24, alt: "CSV download", style:"margin-right:0.5rem"}
+              %a{href: "/#{@viewed_user.identifier}/specimens.json"}
+                %img{src: "/images/json-icon.png", width:24, alt: "JSON download"}
 
-- if !@results.empty?
-  %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em;padding-left:0.1em;padding-right:0.1em"}
-    %div{class: "col col-9"}
-      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
-      collected or
-      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-      identified #{number_with_delimiter(@pagy.count)} #{'specimen'.pluralize(@pagy.count)}
-    %div{class: "col col-3 text-right"}
-      %a{href: "/#{@viewed_user.identifier}/specimens.csv"}
-        %img{src: "/images/csv-icon.png", width:24, alt: "CSV download", style:"margin-right:0.5rem"}
-      %a{href: "/#{@viewed_user.identifier}/specimens.json"}
-        %img{src: "/images/json-icon.png", width:24, alt: "JSON download"}
+          %div{class:"table-responsive-lg"}
+            %table{class:"table table-hover table-sm"}
+              %thead{class: "thead-light"}
+                %tr
+                  %th{scope: "col", style:"min-width:65px"}
+                  %th{scope: "col"} Scientific Name
+                  %th{scope: "col"} Collected By
+                  %th{scope: "col"} Identified By
+                  %th{scope: "col"} Date Collected
+                  %th{scope: "col"} Date Identified
+                  %th{scope: "col"} Institution
+                  %th{scope: "col"} Catalog Number
+                  %th{scope: "col"} Type Status
 
-  %div{class:"table-responsive-lg"}
-    %table{class:"table table-hover table-sm"}
-      %thead{class: "thead-light"}
-        %tr
-          %th{scope: "col", style:"min-width:65px"}
-          %th{scope: "col"} Scientific Name
-          %th{scope: "col"} Collected By
-          %th{scope: "col"} Identified By
-          %th{scope: "col"} Date Collected
-          %th{scope: "col"} Date Identified
-          %th{scope: "col"} Institution
-          %th{scope: "col"} Catalog Number
-          %th{scope: "col"} Type Status
+              %tbody
+                - @results.each do |uo|
+                  - o = uo.occurrence
+                  %tr
+                    %td
+                      - if uo.action == "recorded"
+                        %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+                      - elsif uo.action == "identified"
+                        %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+                      - else
+                        %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+                        %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+                    %td
+                      - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
+                      %a{href: "https://www.gbif.org/occurrence/#{o.id}", target: "_blank" } #{scientific_name}
+                    %td #{o.recordedBy}
+                    %td #{o.identifiedBy}
+                    %td #{o.eventDate || o.year}
+                    %td #{o.dateIdentified}
+                    %td #{o.institutionCode}
+                    %td #{o.catalogNumber}
+                    %td #{o.typeStatus}
 
-      %tbody
-        - @results.each do |uo|
-          - o = uo.occurrence
-          %tr
-            %td
-              - if uo.action == "recorded"
-                %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
-              - elsif uo.action == "identified"
-                %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-              - else
-                %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
-                %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-            %td
-              - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
-              %a{href: "https://www.gbif.org/occurrence/#{o.id}", target: "_blank" } #{scientific_name}
-            %td #{o.recordedBy}
-            %td #{o.identifiedBy}
-            %td #{o.eventDate || o.year}
-            %td #{o.dateIdentified}
-            %td #{o.institutionCode}
-            %td #{o.catalogNumber}
-            %td #{o.typeStatus}
-
-  = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
+          = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

@@ -339,5 +339,5 @@ dl.citation{
 }
 
 @media (mid-width: @screen-xl-min) {
-  .sidebar { max-width: 300px; }
+  .sidebar { max-width: 350px; }
 }

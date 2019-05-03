@@ -1,0 +1,16 @@
+- content_for(:title, "#{@viewed_user.fullname}")
+
+- content_for :scripts do
+  %script{id:"dsq-count-scr", src:"//#{Sinatra::Application.settings.disqus_shortname}.disqus.com/count.js"}
+  :javascript
+    $(function() {
+      DISQUSWIDGETS.getCount({reset: true});
+    });
+
+%div{class:"container-fluid"}
+  %div{class:"row"}
+    %div{class:"col-12 col-lg-4 text-center sidebar"}
+      = haml :'partials/user_jumbotron', layout: false
+    %div{class:"col-12 col-lg-8"}
+      - if @viewed_user.is_public?
+        = haml :'partials/user_tabs', layout: false, locals: { active_page: "network" }
