@@ -22,7 +22,9 @@ OptionParser.new do |opts|
 end.parse!
 
 if options[:new]
-  User.where.not(orcid: nil).where.not(zenodo_access_token: nil).find_each do |u|
+  User.where.not(orcid: nil)
+      .where.not(zenodo_access_token: nil)
+      .where(zenodo_doi: nil).find_each do |u|
     z = Bloodhound::Zenodo.new(hash: u.zenodo_access_token)
     u.zenodo_access_token = z.refresh_token
     u.save
