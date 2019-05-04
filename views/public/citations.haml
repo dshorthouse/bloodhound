@@ -31,7 +31,7 @@
                     #{article.citation}
                     %a{href: "https://doi.org/#{article.doi}"} https://doi.org/#{article.doi}
                 %div{class: "card-body"}
-                  %p{class:"card-text",style:"margin-top:5px;"} #{article.abstract}
+                  %p{class:"card-text text-muted",style:"margin-top:5px;"} #{article.abstract}
                   %div{class: "small"}
                     %span{class: "badge badge-success badge-pill citation-correction"} #{number_with_delimiter(article.user_specimen_count(@viewed_user.id))}
                     %a{href: "/#{@viewed_user.identifier}/citation/#{article.id}"} #{'specimen'.pluralize(article.user_specimen_count(@viewed_user.id))}
