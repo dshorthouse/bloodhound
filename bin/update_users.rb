@@ -119,17 +119,17 @@ elsif options[:logged]
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:all]
-  User.find_each do |u|
+  User.order(:family).find_each do |u|
     u.update_profile
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:update_wikidata]
-  User.where.not(wikidata: nil).find_each do |u|
+  User.where.not(wikidata: nil).order(:family).find_each do |u|
     u.update_profile
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:update_orcid]
-  User.where.not(orcid: nil).find_each do |u|
+  User.where.not(orcid: nil).order(:family).find_each do |u|
     u.update_profile
     puts "#{u.fullname_reverse}".green
   end
