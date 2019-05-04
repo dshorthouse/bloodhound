@@ -45,7 +45,8 @@ if options[:new]
     u.save
   end
 elsif options[:all]
-  User.where.not(zenodo_doi: nil).find_each do |u|
+  #TODO: what is periodicity? trigger?
+  User.where.not(zenodo_doi: nil).limit(3).find_each do |u|
     z = Bloodhound::Zenodo.new(hash: u.zenodo_access_token)
     u.zenodo_access_token = z.refresh_token
     u.save
