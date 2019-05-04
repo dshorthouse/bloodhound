@@ -43,6 +43,7 @@ if options[:new]
     u.zenodo_doi = pub[:doi]
     u.zenodo_concept_doi = pub[:conceptdoi]
     u.save
+    puts "#{u.fullname_reverse}".green
   end
 elsif options[:all]
   #TODO: what is periodicity? trigger?
@@ -68,8 +69,10 @@ elsif options[:all]
       pub = z.publish(id: id)
       u.zenodo_doi = pub[:doi]
       u.save
+      puts "#{u.fullname_reverse}".green
     rescue
       z.discard_version(id: id)
+      puts "#{u.fullname_reverse}".red
     end
   end
 end
