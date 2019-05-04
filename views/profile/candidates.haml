@@ -12,7 +12,7 @@
   %div{class:"row"}
     %div{class:"col-12 col-lg-4"}
       %h3{class:"display-6"}= @user.fullname
-    %div{class:"col-12 col-lg-8"}
+    %div{class:"col-12 col-lg-8 mt-2"}
       = haml :'partials/profile_tabs', layout: false, locals: { active_page: "candidates" }
 
 = haml :'partials/upload_claim_modal', layout: false, locals: { csv_download_url: "/profile/candidates.csv", csv_upload_url: "/profile/upload-claims"}
