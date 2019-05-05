@@ -29,7 +29,7 @@
               %div{class: "col"}
                 - if @recordings_at.empty? && !@identifications_at.empty?
                   %h4{class: "d-flex justify-content-between list-header"} Specimens Identified
-                  %div{class: "d-flex justify-content-between list-header h4"}
+                  %div{class: "d-flex justify-content-between list-header h5"}
                     %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@identifications_at.count)} #{'organization'.pluralize(@identifications_at.count)}
                     %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@identifications_at.values.inject(0){|sum,x| sum + x })} specimens
                   %ul{class: "list-group"}
@@ -39,7 +39,7 @@
                         %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
                 - elsif !@recordings_at.empty?
                   %h4{class: "d-flex justify-content-between list-header"} Specimens Collected
-                  %div{class: "d-flex justify-content-between list-header h4"}
+                  %div{class: "d-flex justify-content-between list-header h5"}
                     %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@recordings_at.count)} #{'organization'.pluralize(@recordings_at.count)}
                     %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@recordings_at.values.inject(0){|sum,x| sum + x })} specimens
                   %ul{class: "list-group"}
@@ -50,7 +50,7 @@
               %div{class: "col"}
                 - if !@recordings_at.empty? && !@identifications_at.empty?
                   %h4{class: "d-flex justify-content-between list-header"} Specimens Identified
-                  %div{class: "d-flex justify-content-between list-header h4"}
+                  %div{class: "d-flex justify-content-between list-header h5"}
                     %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@identifications_at.count)} #{'organization'.pluralize(@identifications_at.count)}
                     %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@identifications_at.values.inject(0){|sum,x| sum + x })} specimens
                   %ul{class: "list-group"}
