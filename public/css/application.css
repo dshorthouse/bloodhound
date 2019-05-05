@@ -312,6 +312,9 @@ dl.citation{
   .display-2 {
     font-size:3.5rem;
   }
+  .container-fluid {
+    padding:5px !important;
+  }
 }
 @media (max-width: 767px) {
   .button-login{display:inline-block;}
