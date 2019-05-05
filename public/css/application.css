@@ -233,6 +233,7 @@ dl.citation{
   width: 200px;
   margin-left:-100px;
   left:50%;
+  background-color:#fff;
 }
 #profile-upload-option span {
   display:block;
@@ -268,7 +269,7 @@ dl.citation{
 .profile-image-bg span {
   color:#fff;
   width:300px;
-  background-color:#A9A9A9;
+  background-color:transparent !important;
   margin-bottom:0px;
   position:relative !important;
 }
