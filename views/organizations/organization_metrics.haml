@@ -49,7 +49,7 @@
         %div{class: "col"}
           - if @others_recorded.empty? && !@others_identified.empty?
             %h4{class: "d-flex justify-content-between list-header"} Specimens Identified
-            %div{class: "d-flex justify-content-between list-header h4"}
+            %div{class: "d-flex justify-content-between list-header h5"}
               %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_identified.count)} #{'organization'.pluralize(@others_identified.count)}
               %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_identified.values.inject(0){|sum,x| sum + x })} specimens
             %ul{class: "list-group"}
@@ -59,7 +59,7 @@
                   %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
           - elsif !@others_recorded.empty?
             %h4{class: "d-flex justify-content-between list-header"} Specimens Collected
-            %div{class: "d-flex justify-content-between list-header h4"}
+            %div{class: "d-flex justify-content-between list-header h5"}
               %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_recorded.count)} #{'organization'.pluralize(@others_recorded.count)}
               %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_recorded.values.inject(0){|sum,x| sum + x })} specimens
             %ul{class: "list-group"}
@@ -70,7 +70,7 @@
         %div{class: "col"}
           - if !@others_recorded.empty? && !@others_identified.empty?
             %h4{class: "d-flex justify-content-between list-header"} Specimens Identified
-            %div{class: "d-flex justify-content-between list-header h4"}
+            %div{class: "d-flex justify-content-between list-header h5"}
               %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_identified.count)} #{'organization'.pluralize(@others_identified.count)}
               %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@others_identified.values.inject(0){|sum,x| sum + x })} specimens
             %ul{class: "list-group"}
