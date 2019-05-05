@@ -56,7 +56,7 @@
         = haml :'partials/user_tabs', layout: false, locals: { active_page: "overview" }
 
         %div{class: "alert alert-info justify-content-between row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-          %div{class:"col-10"}
+          %div{class:"col-8 col-md-10"}
             - if @total[:number_recorded] == 0 && @total[:number_identified] == 0
               Identified or collected specimens have not yet been recorded.
             - else
@@ -67,8 +67,8 @@
                   Collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])}
                   - if @total[:country_counts].count > 0 
                     from at least #{@total[:country_counts].count} #{'country'.pluralize(@total[:country_counts].count)}
-          %div{class:"col-2"}
-            Claim progress
+          %div{class:"col-4 col-md-2"}
+            Progress
             %div{class:"progress", style:"border:1px solid rgba(0,0,0,.125);inline"}
               %div{id:"progress-bar", class:"progress-bar bg-info", role:"progressbar", style:"width: 0%;inline", "aria-valuenow":"0", "aria-valuemin":"0", "aria-valuemax":"100"}
 

@@ -307,8 +307,8 @@ dl.citation{
   }
 }
 
-@media (max-width: 400px) {
-  .display-3 {
+@media (max-width: 450px) {
+  .display-2 {
     font-size:3.5rem;
   }
 }
