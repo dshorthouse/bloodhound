@@ -44,7 +44,7 @@
     %a{href: "#{Sinatra::Application.settings.base_url}/#{@viewed_user.identifier}/comments#disqus_thread", class:"disqus-comment-count", "data-disqus-identifier":"#{@viewed_user.identifier}"} Field notes
 
 - if @viewed_user.zenodo_doi
-  %p{class:"citation text-lg-left mt-5 small"}
+  %p{class:"citation text-lg-left mt-3 small"}
     #{@viewed_user.fullname_reverse}. #{DateTime.now.year}. Natural history specimens collected and/or identified and deposited. [Data set]. Zenodo.
     %a{href: "https://doi.org/#{@viewed_user.zenodo_concept_doi}"}
       https://doi.org/#{@viewed_user.zenodo_concept_doi}
