@@ -33,10 +33,16 @@
     #{@viewed_user.current_organization.address}
 
 - if !@viewed_user.country.blank?
-  %p{class:"text-lg-left p-0 m-0"}
-    %i{class:"fas fa-globe"}
-    %a{href:"/country/#{@viewed_user.country_code}"}
-      #{@viewed_user.country}
+  - country_codes = @viewed_user.country_code.split("|")
+  - @viewed_user.country.split("|").each_with_index do |v,i|
+    - if !country_codes[i].nil?
+      %p{class:"text-lg-left p-0 m-0"}
+        %i{class:"fas fa-globe"}
+        %a{href:"/country/#{country_codes[i]}"} #{v}
+    - else
+      %p{class:"text-lg-left p-0 m-0"}
+        %i{class:"fas fa-globe"}
+        #{v}
 
 - if Sinatra::Application.settings.base_url && @viewed_user.can_comment?
   %p{class:"text-lg-left"}
