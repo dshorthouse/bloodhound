@@ -41,7 +41,7 @@
             %div{class:"card"}
               %h5{class:"card-header"} Citable Claims
               %div{class:"card-body"}
-                - if @admin_user.zenodo_access_token
+                - if !@admin_user.zenodo_access_token.empty?
                   %p{class:"card-text"}
                     User has created a link to Zenodo
                 - if @admin_user.zenodo_concept_doi
