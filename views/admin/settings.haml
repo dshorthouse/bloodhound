@@ -25,15 +25,9 @@
               %h5{class:"card-header"} Public Availability
               %div{class:"card-body"}
                 %p{class:"card-text"}
-                  Include your account in public
+                  Include the account in public
                   = succeed "." do
                     %a{href: "/profiles"} Profiles
-                  Your claims will be included in a bulk
-                  %a{href: "/developers"}
-                    data download
-                  and exposed through Google Chrome and Firefox
-                  = succeed "." do
-                    %a{href:"/integrations"} extensions
                 %div{class:"row"}
                   %div{class:"col"}
                     %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "medium", checked: @admin_user.is_public?, class:"btn-claim" }
@@ -45,18 +39,12 @@
 
           %div{class:"col-md"}
             %div{class:"card"}
-              %h5{class:"card-header"} Make Claims Citable
+              %h5{class:"card-header"} Citable Claims
               %div{class:"card-body"}
-                - if !@admin_user.zenodo_concept_doi
+                - if @admin_user.zenodo_access_token
                   %p{class:"card-text"}
-                    Only the user may coordinate these actions.
-                - else
-                  %p{class:"card-text"}
-                    Profile is linked to
-                    %a{href:"https://doi.org/#{@admin_user.zenodo_concept_doi}", target:"_blank"}
-                      Zenodo
-                      %i{class:"fas fa-external-link-alt"}
-                    and claims are versioned and archived.
+                    User has created a link to Zenodo
+                - if @admin_user.zenodo_concept_doi
                   %p
                     %a{href:"https://doi.org/#{@admin_user.zenodo_concept_doi}"}
                       %img{src:"https://zenodo.org/badge/DOI/#{@admin_user.zenodo_concept_doi}.svg"}
