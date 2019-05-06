@@ -44,6 +44,9 @@
                 - if !@admin_user.zenodo_access_token.empty?
                   %p{class:"card-text"}
                     User has created a link to Zenodo
+                - else
+                  %p{class:"card-text"}
+                    User has not yet created a link to Zenodo
                 - if @admin_user.zenodo_concept_doi
                   %p
                     %a{href:"https://doi.org/#{@admin_user.zenodo_concept_doi}"}
