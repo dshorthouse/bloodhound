@@ -17,4 +17,4 @@
         - count = locals[:user].all_occurrences_count
         - color = count == 0 ? "light" : "success"
         %span{class:"badge badge-#{color}"} #{number_with_delimiter(count)}
-        #{'specimen'.pluralize(count)}
+        #{'specimen'.pluralize(count)} claimed
