@@ -54,6 +54,6 @@
     #{@viewed_user.fullname_reverse}. #{DateTime.now.year}. Natural history specimens collected and/or identified and deposited. [Data set]. Zenodo.
     %a{href: "https://doi.org/#{@viewed_user.zenodo_concept_doi}"}
       https://doi.org/#{@viewed_user.zenodo_concept_doi}
-  %p{class:"text-left"}
+  %p
     %a{href:"https://doi.org/#{@viewed_user.zenodo_concept_doi}"}
       %img{src:"https://zenodo.org/badge/DOI/#{@viewed_user.zenodo_concept_doi}.svg"}
