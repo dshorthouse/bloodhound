@@ -1,46 +1,47 @@
-%form{id:"form-wrapper", method: :post, action: "/", enctype: "multipart/form-data", "accept-charset": "UTF-8", class: "form"}
-  - bg_class = @user.image_url ? "" : "profile-image-bg" 
-  %div{id:"profile-image", class:"image-placeholder rounded mx-auto d-block align-self-center align-items-center #{bg_class}"}
-    %img{src:"#{profile_image(@user)}"}
-    - if locals[:active_page] == "settings"
-      %span
-        %a{href:"#"} Change profile photo
-      %ul{id:"profile-upload-option", class:"list-group"}
-        %li{class:"list-group-item profile-upload-option-list"}
-          %input{name:"user-image", id:"user-image", type:"file", accept:"image/x-png,image/jpeg"}
-          %span Upload
-        %li{id:"profile-remove", class:"list-group-item profile-upload-option-list"} Remove
-        %li{id:"profile-cancel", class:"list-group-item profile-upload-option-list"} Cancel
+%div{class:"col-12 col-lg-4 text-center sidebar"}
+  %form{id:"form-wrapper", method: :post, action: "/", enctype: "multipart/form-data", "accept-charset": "UTF-8", class: "form"}
+    - bg_class = @user.image_url ? "" : "profile-image-bg" 
+    %div{id:"profile-image", class:"image-placeholder rounded mx-auto d-block align-self-center align-items-center #{bg_class}"}
+      %img{src:"#{profile_image(@user)}"}
+      - if locals[:active_page] == "settings"
+        %span
+          %a{href:"#"} Change profile photo
+        %ul{id:"profile-upload-option", class:"list-group"}
+          %li{class:"list-group-item profile-upload-option-list"}
+            %input{name:"user-image", id:"user-image", type:"file", accept:"image/x-png,image/jpeg"}
+            %span Upload
+          %li{id:"profile-remove", class:"list-group-item profile-upload-option-list"} Remove
+          %li{id:"profile-cancel", class:"list-group-item profile-upload-option-list"} Cancel
 
-%h3{class:"display-6"}= @user.fullname
+  %h3{class:"display-6"}= @user.fullname
 
-- if !@user.other_names.blank?
-  %p{class:"text-center text-muted p-0 m-0"} #{@user.other_names.split("|").join("; ")}
+  - if !@user.other_names.blank?
+    %p{class:"text-center text-muted p-0 m-0"} #{@user.other_names.split("|").join("; ")}
 
-- if !@user.keywords.blank?
-  %p{class: "text-center text-muted font-italic pt-2"}
-    #{@user.keywords.split("|").join(", ")}
+  - if !@user.keywords.blank?
+    %p{class: "text-center text-muted font-italic pt-2"}
+      #{@user.keywords.split("|").join(", ")}
 
-%p{class: "orcid text-lg-left p-0 mt-4"}
-  %a{href: "https://orcid.org/#{@user.orcid}"}
-    %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-      %a{href: "https://orcid.org/#{@user.orcid}"} https://orcid.org/#{@user.orcid}
+  %p{class: "orcid text-lg-left p-0 mt-4"}
+    %a{href: "https://orcid.org/#{@user.orcid}"}
+      %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
+        %a{href: "https://orcid.org/#{@user.orcid}"} https://orcid.org/#{@user.orcid}
 
-- if !@user.current_organization.nil?
-  %p{class: "text-lg-left p-0 m-0"}
-    - path = @user.current_organization.identifier
-    %i{class:"fas fa-building"}
-    = succeed "," do
-      %a{href: "/organization/#{path}"} #{@user.current_organization.name}
-    #{@user.current_organization.address}
+  - if !@user.current_organization.nil?
+    %p{class: "text-lg-left p-0 m-0"}
+      - path = @user.current_organization.identifier
+      %i{class:"fas fa-building"}
+      = succeed "," do
+        %a{href: "/organization/#{path}"} #{@user.current_organization.name}
+      #{@user.current_organization.address}
 
-- if !@user.country.blank?
-  %p{class:"text-lg-left p-0 m-0"}
-    %i{class:"fas fa-globe"}
-    #{@user.country}
+  - if !@user.country.blank?
+    %p{class:"text-lg-left p-0 m-0"}
+      %i{class:"fas fa-globe"}
+      #{@user.country}
 
-- if locals[:active_page] != "settings"
-  %p{class:"mt-3"}
-    %a{href:"/profile/settings"}
-      %i{class:"fas fa-cog"}
-      Settings
+  - if locals[:active_page] != "settings"
+    %p{class:"m-0"}
+      %a{href:"/profile/settings"}
+        %i{class:"fas fa-cog"}
+        Settings

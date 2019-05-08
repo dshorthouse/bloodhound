@@ -9,8 +9,7 @@
 
 %div{class:"container-fluid"}
   %div{class:"row"}
-    %div{class:"col-12 col-lg-4 text-center sidebar"}
-      = haml :'partials/user_jumbotron', layout: false
+    = haml :'partials/user_jumbotron', layout: false
     %div{class:"col-12 col-lg-8 mt-2"}
       - if @viewed_user.is_public?
         = haml :'partials/user_tabs', layout: false, locals: { active_page: "deposits" }

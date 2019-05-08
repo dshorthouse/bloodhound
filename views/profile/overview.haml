@@ -10,8 +10,7 @@
 
 %div{class:"container-fluid"}
   %div{class:"row"}
-    %div{class:"col-12 col-lg-4 text-center sidebar"}
-      = haml :'partials/profile_jumbotron', layout: false
+    = haml :'partials/profile_jumbotron', layout: false
     %div{class:"col-12 col-lg-8 mt-2"}
       = haml :'partials/profile_tabs', layout: false, locals: { active_page: "profile" }
 
