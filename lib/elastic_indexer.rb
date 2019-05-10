@@ -171,6 +171,11 @@ module Bloodhound
                 type: "custom",
                 tokenizer: "whitespace",
                 filter: ["lowercase", "asciifolding", :autocomplete]
+              },
+              institution_codes: {
+                type: "custom",
+                tokenizer: "keyword",
+                filter: ["lowercase"]
               }
             }
           }
@@ -190,6 +195,12 @@ module Bloodhound
                 type: 'text',
                 search_analyzer: :organization_search,
                 analyzer: :organization_index,
+                norms: false
+              },
+              institution_codes: {
+                type: 'text',
+                search_analyzer: :institution_codes,
+                analyzer: :institution_codes,
                 norms: false
               },
               isni: { type: 'text', index: false },
@@ -248,7 +259,8 @@ module Bloodhound
       {
         id: org.identifier,
         name: org.name,
-        address: org.address
+        address: org.address,
+        institution_codes: org.institution_codes
       }
     end
 
@@ -336,6 +348,7 @@ module Bloodhound
         id: o.id,
         name: o.name,
         address: o.address,
+        institution_codes: o.institution_codes,
         isni: o.isni,
         grid: o.grid,
         ringgold: o.ringgold,

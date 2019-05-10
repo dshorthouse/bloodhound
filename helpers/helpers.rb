@@ -328,7 +328,7 @@ module Sinatra
             multi_match: {
               query: search,
               type: :best_fields,
-              fields: ["name^3", "address"]
+              fields: ["institution_codes^5", "name^3", "address"]
             }
           }
         }
@@ -369,6 +369,7 @@ module Sinatra
             score: n[:_score],
             name: n[:_source][:name],
             address: n[:_source][:address],
+            institution_codes: n[:_source][:institution_codes],
             isni: n[:_source][:isni],
             ringgold: n[:_source][:ringgold],
             grid: n[:_source][:grid],
