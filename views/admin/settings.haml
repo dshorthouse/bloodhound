@@ -26,7 +26,7 @@
                 %p{class:"card-text"}
                   Include the account in public
                   = succeed "." do
-                    %a{href: "/profiles"} Profiles
+                    %a{href: "/roster"} Profiles
                 %div{class:"row"}
                   %div{class:"col"}
                     %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "medium", checked: @admin_user.is_public?, class:"btn-claim" }
