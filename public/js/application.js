@@ -60,14 +60,14 @@ var Application = (function($, window) {
           name: "agent",
           limit: 10,
           source : this.data_sources.agent.ttAdapter(),
-          display : "name"
+          display : "fullname_reverse"
         }
         ).on("typeahead:select", function(obj, datum) {
           if (self.path === "/admin") {
             var identifier = window.location.pathname.split("/")[3];
             window.location.href = "/admin/user/" + identifier + "/candidates/agent/" + datum.id;
           } else if (self.path === "/agents") {
-            window.location.href = "/agents?q=" + encodeURI(datum.name);
+            window.location.href = "/agents?q=" + encodeURI(datum.fullname_reverse);
           } else {
             window.location.href = "/profile/candidates/agent/" + datum.id;
           }
@@ -80,7 +80,7 @@ var Application = (function($, window) {
         {
           name: "user",
           source : this.data_sources.user.ttAdapter(),
-          display : "name"
+          display : "fullname_reverse"
         }
         ).on("typeahead:select", function(obj, datum) {
           var identifier = datum.orcid || datum.wikidata;
@@ -96,7 +96,7 @@ var Application = (function($, window) {
             highlight: true
           },
           {
-            name: "user",
+            name: "organization",
             source : this.data_sources.organization.ttAdapter(),
             display : "name"
           }

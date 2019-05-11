@@ -303,24 +303,18 @@ module Sinatra
       end
 
       def build_name_query(search)
-        parsed = Namae.parse search
-        name = DwcAgent.clean(parsed[0]) rescue { family: nil, given: nil }
-        family = !name[:family].nil? ? name[:family] : ""
-        given = !name[:given].nil? ? name[:given] : ""
         {
           query: {
-            bool: {
-              must: [
-                match: { "family" => family }
-              ],
-              should: [
-                { match: { "family" => search } },
-                { match: { "given" => given } }
-              ]
+            multi_match: {
+              query: search,
+              type: :cross_fields,
+              fields: ["given", "family", "fullname"],
+              operator: :and
             }
           }
         }
       end
+
 
       def build_organization_query(search)
         {
@@ -345,8 +339,8 @@ module Sinatra
         @results.map{ |n|
           { id: n[:_source][:id],
             score: n[:_score],
-            name: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", "),
-            fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(" ")
+            fullname: n[:_source][:fullname],
+            fullname_reverse: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", ")
           }
         }
       end
@@ -357,8 +351,8 @@ module Sinatra
             score: n[:_score],
             orcid: n[:_source][:orcid],
             wikidata: n[:_source][:wikidata],
-            name: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", "),
-            fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(" ")
+            fullname: n[:_source][:fullname],
+            fullname_reverse: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", "),
           }
         }
       end

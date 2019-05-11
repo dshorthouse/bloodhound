@@ -27,7 +27,7 @@
     %ul{class: "list-unstyled"}
       - @formatted_results.each do |o|
         %li
-          %a{href: "/agent/#{o[:id]}"} #{o[:name]}
+          %a{href: "/agent/#{o[:id]}"} #{o[:fullname_reverse]}
           %small{class: "text-muted"} [Score: #{o[:score]}]
 
     = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

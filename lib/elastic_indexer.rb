@@ -59,6 +59,11 @@ module Bloodhound
                 type: "custom",
                 tokenizer: "keyword",
                 filter: ["lowercase", "asciifolding", :autocomplete]
+              },
+              fullname: {
+                type: "custom",
+                tokenizer: "whitespace",
+                filter: ["lowercase", "asciifolding", :autocomplete]
               }
             }
           }
@@ -78,6 +83,12 @@ module Bloodhound
                 type: 'text',
                 search_analyzer: :given_search,
                 analyzer: :given_index,
+                norms: false
+              },
+              fullname: {
+                type: 'text',
+                search_analyzer: :fullname,
+                analyzer: :fullname,
                 norms: false
               }
             }
@@ -119,6 +130,11 @@ module Bloodhound
                 type: "custom",
                 tokenizer: "keyword",
                 filter: ["lowercase", "asciifolding", :autocomplete]
+              },
+              fullname: {
+                type: "custom",
+                tokenizer: "whitespace",
+                filter: ["lowercase", "asciifolding", :autocomplete]
               }
             }
           }
@@ -140,6 +156,12 @@ module Bloodhound
                 type: 'text',
                 search_analyzer: :given_search,
                 analyzer: :given_index,
+                norms: false
+              },
+              fullname: {
+                type: 'text',
+                search_analyzer: :fullname,
+                analyzer: :fullname,
                 norms: false
               }
             }
@@ -251,7 +273,8 @@ module Bloodhound
       {
         id: a.id,
         family: a.family,
-        given: a.given
+        given: a.given,
+        fullname: a.fullname
       }
     end
 
@@ -335,7 +358,8 @@ module Bloodhound
         orcid: u.orcid,
         wikidata: u.wikidata,
         family: u.family,
-        given: u.given
+        given: u.given,
+        fullname: u.fullname
       }
     end
 
