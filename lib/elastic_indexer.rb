@@ -48,21 +48,16 @@ module Bloodhound
               family_search: {
                 type: "custom",
                 tokenizer: "keyword",
-                filter: ["lowercase", "asciifolding"]
+                filter: ["lowercase", "asciifolding", :autocomplete]
               },
               given_index: {
                 type: "custom",
                 tokenizer: "keyword",
-                filter: ["lowercase", "asciifolding", :autocomplete]
+                filter: ["lowercase", "asciifolding"]
               },
               given_search: {
                 type: "custom",
                 tokenizer: "keyword",
-                filter: ["lowercase", "asciifolding", :autocomplete]
-              },
-              fullname: {
-                type: "custom",
-                tokenizer: "whitespace",
                 filter: ["lowercase", "asciifolding", :autocomplete]
               }
             }
@@ -75,21 +70,32 @@ module Bloodhound
               family: {
                 type: 'text',
                 fielddata: true,
-                search_analyzer: :family_search,
+                search_analyzer: :family_index,
                 analyzer: :family_index,
-                norms: false
+                norms: false,
+                fields: {
+                  edge: {
+                    type: 'text',
+                    fielddata: true,
+                    search_analyzer: :family_search,
+                    analyzer: :family_search,
+                    norms: false,
+                  }
+                }
               },
               given: {
                 type: 'text',
-                search_analyzer: :given_search,
+                search_analyzer: :given_index,
                 analyzer: :given_index,
-                norms: false
-              },
-              fullname: {
-                type: 'text',
-                search_analyzer: :fullname,
-                analyzer: :fullname,
-                norms: false
+                norms: false,
+                fields: {
+                  edge: {
+                    type: 'text',
+                    search_analyzer: :given_search,
+                    analyzer: :given_search,
+                    norms: false
+                  }
+                }
               }
             }
           }
@@ -119,21 +125,16 @@ module Bloodhound
               family_search: {
                 type: "custom",
                 tokenizer: "keyword",
-                filter: ["lowercase", "asciifolding"]
+                filter: ["lowercase", "asciifolding", :autocomplete]
               },
               given_index: {
                 type: "custom",
                 tokenizer: "keyword",
-                filter: ["lowercase", "asciifolding", :autocomplete]
+                filter: ["lowercase", "asciifolding"]
               },
               given_search: {
                 type: "custom",
                 tokenizer: "keyword",
-                filter: ["lowercase", "asciifolding", :autocomplete]
-              },
-              fullname: {
-                type: "custom",
-                tokenizer: "whitespace",
                 filter: ["lowercase", "asciifolding", :autocomplete]
               }
             }
@@ -148,21 +149,32 @@ module Bloodhound
               family: {
                 type: 'text',
                 fielddata: true,
-                search_analyzer: :family_search,
+                search_analyzer: :family_index,
                 analyzer: :family_index,
-                norms: false
+                norms: false,
+                fields: {
+                  edge: {
+                    type: 'text',
+                    fielddata: true,
+                    search_analyzer: :family_search,
+                    analyzer: :family_search,
+                    norms: false,
+                  }
+                }
               },
               given: {
                 type: 'text',
-                search_analyzer: :given_search,
+                search_analyzer: :given_index,
                 analyzer: :given_index,
-                norms: false
-              },
-              fullname: {
-                type: 'text',
-                search_analyzer: :fullname,
-                analyzer: :fullname,
-                norms: false
+                norms: false,
+                fields: {
+                  edge: {
+                    type: 'text',
+                    search_analyzer: :given_search,
+                    analyzer: :given_search,
+                    norms: false
+                  }
+                }
               }
             }
           }
@@ -273,8 +285,7 @@ module Bloodhound
       {
         id: a.id,
         family: a.family,
-        given: a.given,
-        fullname: a.fullname
+        given: a.given
       }
     end
 
@@ -358,8 +369,7 @@ module Bloodhound
         orcid: u.orcid,
         wikidata: u.wikidata,
         family: u.family,
-        given: u.given,
-        fullname: u.fullname
+        given: u.given
       }
     end
 

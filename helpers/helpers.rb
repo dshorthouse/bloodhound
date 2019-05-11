@@ -272,13 +272,22 @@ module Sinatra
       end
 
       def build_name_query(search)
+        #TODO: eliminate this parsing step entirely
+        # See https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#type-cross-fields
+        parsed = Namae.parse search
+        name = DwcAgent.clean(parsed[0]) rescue { family: nil, given: nil }
+        family = !name[:family].nil? ? name[:family] : ""
+        given = !name[:given].nil? ? name[:given] : ""
         {
           query: {
-            multi_match: {
-              query: search,
-              type: :cross_fields,
-              fields: ["given", "family", "fullname"],
-              operator: :and
+            bool: {
+              must: [
+                match: { "family" => family }
+              ],
+              should: [
+                { match: { "family" => search } },
+                { match: { "given" => given } }
+              ]
             }
           }
         }
@@ -308,7 +317,7 @@ module Sinatra
         @results.map{ |n|
           { id: n[:_source][:id],
             score: n[:_score],
-            fullname: n[:_source][:fullname],
+            fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(", "),
             fullname_reverse: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", ")
           }
         }
@@ -320,7 +329,7 @@ module Sinatra
             score: n[:_score],
             orcid: n[:_source][:orcid],
             wikidata: n[:_source][:wikidata],
-            fullname: n[:_source][:fullname],
+            fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(", "),
             fullname_reverse: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", "),
           }
         }
