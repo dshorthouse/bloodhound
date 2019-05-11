@@ -93,20 +93,9 @@ module Sinatra
         @results = results[:hits]
       end
 
-      def search_agents(family, given = nil)
+      def search_agents(search)
         client = Elasticsearch::Client.new
-        body = {
-          query: {
-            bool: {
-              must: [
-                match: { "family" => family }
-              ],
-              should: [
-                { match: { "given" => given } }
-              ]
-            }
-          }
-        }
+        body = build_name_query(search)
         response = client.search index: settings.elastic_agent_index, type: "agent", size: 25, body: body
         results = response["hits"].deep_symbolize_keys
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) } rescue []
@@ -130,20 +119,9 @@ module Sinatra
         @results = results[:hits]
       end
 
-      def search_users(family, given = nil)
+      def search_users(search)
         client = Elasticsearch::Client.new
-        body = {
-          query: {
-            bool: {
-              must: [
-                match: { "family" => family }
-              ],
-              should: [
-                { match: { "given" => given } }
-              ]
-            }
-          }
-        }
+        body = build_name_query(search)
         response = client.search index: settings.elastic_user_index, type: "user", body: body
         results = response["hits"].deep_symbolize_keys
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) } rescue []
@@ -180,22 +158,13 @@ module Sinatra
       end
 
       def candidate_agents(user)
-        agents = search_agents(user.family, user.given)
+        agents = search_agents(user.fullname)
 
         if !user.other_names.nil?
           user.other_names.split("|").each do |other_name|
             if !other_name.include?(" ") && other_name != user.family
               other_name = [other_name, user.family].join(" ")
-            end
-            begin
-              parsed = Namae.parse other_name.gsub(/\./, ".\s")
-              name = DwcAgent.clean(parsed[0])
-              family = !name[:family].nil? ? name[:family] : nil
-              given = !name[:given].nil? ? name[:given] : nil
-              if !family.nil?
-                agents.concat search_agents(family, given)
-              end
-            rescue
+              agents.concat search_agents(other_name)
             end
           end
         end
