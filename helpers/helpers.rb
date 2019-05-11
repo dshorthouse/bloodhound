@@ -164,8 +164,8 @@ module Sinatra
           user.other_names.split("|").each do |other_name|
             if !other_name.include?(" ") && other_name != user.family
               other_name = [other_name, user.family].join(" ")
-              agents.concat search_agents(other_name)
             end
+            agents.concat search_agents(other_name)
           end
         end
 
