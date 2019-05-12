@@ -273,6 +273,24 @@ module Sinatra
       end
 
       def build_name_query(search)
+        parsed = Namae.parse search
+        name = DwcAgent.clean(parsed[0]) rescue { family: nil, given: nil }
+        family = !name[:family].nil? ? name[:family] : ""
+        given = !name[:given].nil? ? name[:given] : ""
+        {
+          query: {
+            bool: {
+              must: [
+                match: { "family" => family }
+              ],
+              should: [
+                { match: { "family.edge" => search } },
+                { match: { "given.edge" => given } }
+              ]
+            }
+          }
+        }
+=begin
         {
           query: {
             bool: {
@@ -298,6 +316,7 @@ module Sinatra
             }
           }
         }
+=end
       end
 
 
