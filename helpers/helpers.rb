@@ -169,6 +169,7 @@ module Sinatra
           end
         end
 
+        #TODO: this does not accommodate the other_names properly, eg when given portion in other_names is a nickname, entirely different from user.given - need to redo this
         if !params.has_key?(:relaxed) || params[:relaxed] == "0"
           agents.delete_if do |key,value|
             !user.given.nil? && !key[:given].nil? && DwcAgent.similarity_score(key[:given], user.given) == 0
@@ -272,21 +273,27 @@ module Sinatra
       end
 
       def build_name_query(search)
-        #TODO: eliminate this parsing step entirely
-        # See https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#type-cross-fields
-        parsed = Namae.parse search
-        name = DwcAgent.clean(parsed[0]) rescue { family: nil, given: nil }
-        family = !name[:family].nil? ? name[:family] : ""
-        given = !name[:given].nil? ? name[:given] : ""
         {
           query: {
             bool: {
-              must: [
-                match: { "family" => family }
-              ],
               should: [
-                { match: { "family" => search } },
-                { match: { "given" => given } }
+                {
+                  multi_match: {
+                    query:      search,
+                    type:       :cross_fields,
+                    analyzer:   :standard,
+                    fields:     ["given", "family^3"],
+                    minimum_should_match: "50%"
+                  }
+                },
+                {
+                  multi_match: {
+                    query:      search,
+                    type:       :cross_fields,
+                    analyzer:   :standard,
+                    fields:     [ "given.edge", "family.edge^3" ]
+                  }
+                }
               ]
             }
           }
@@ -317,7 +324,7 @@ module Sinatra
         @results.map{ |n|
           { id: n[:_source][:id],
             score: n[:_score],
-            fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(", "),
+            fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(" "),
             fullname_reverse: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", ")
           }
         }
@@ -329,7 +336,7 @@ module Sinatra
             score: n[:_score],
             orcid: n[:_source][:orcid],
             wikidata: n[:_source][:wikidata],
-            fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(", "),
+            fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(" "),
             fullname_reverse: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", "),
           }
         }
