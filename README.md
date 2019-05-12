@@ -96,6 +96,7 @@ Unfortunately, gbifIDs are not persistent. These occasionally disappear through 
 
       DELETE uo FROM user_occurrences uo LEFT JOIN occurrences o ON uo.occurrence_id = o.gbifID WHERE o.gbifID IS NULL;
       DELETE ao FROM article_occurrences ao LEFT JOIN occurrences o ON ao.occurrence_id = o.gbifID WHERE o.gbifID IS NULL;
+      DELETE a FROM articles a LEFT JOIN article_occurrences ao ON ao.article_id = a.id WHERE ao.article_id IS NULL;
 
 Other considerations are how to get MySQL dump files back on the server. For fastest execution, dump separate tables into each dump file.
 
