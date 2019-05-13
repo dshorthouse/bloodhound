@@ -153,7 +153,7 @@ module Sinatra
             content_type "application/json"
             return { count: 0}.to_json if @user.family.nil?
 
-            agent_ids = candidate_agents(@user).map{|a| a[:id] if a[:score] >= 10 }.compact
+            agent_ids = candidate_agents(@user).map{|a| a[:id] }.compact
             count = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @user.user_occurrences.select(:occurrence_id))
                                                        .count
             { count: count }.to_json
@@ -177,7 +177,7 @@ module Sinatra
               @results = []
               @total = nil
             else
-              id_scores = candidate_agents(@user).map{|a| { id: a[:id], score: a[:score] } if a[:score] >= 10 }.compact
+              id_scores = candidate_agents(@user).map{|a| { id: a[:id], score: a[:score] } }.compact
 
               if !id_scores.empty?
                 ids = id_scores.map{|a| a[:id]}
@@ -322,7 +322,7 @@ module Sinatra
                 @results = []
                 @total = nil
               else
-                id_scores = candidate_agents(@viewed_user).map{|a| { id: a[:id], score: a[:score] } if a[:score] >= 10 }.compact
+                id_scores = candidate_agents(@viewed_user).map{|a| { id: a[:id], score: a[:score] } }.compact
                 if !id_scores.empty?
                   ids = id_scores.map{|a| a[:id]}
                   nodes = AgentNode.where(agent_id: ids)
@@ -580,7 +580,7 @@ module Sinatra
 
             viewed_user = find_user(params[:id])
             claimed = viewed_user.all_occurrences_count
-            agent_ids = candidate_agents(viewed_user).map{|a| a[:id] if a[:score] >= 10 }.compact
+            agent_ids = candidate_agents(viewed_user).map{|a| a[:id] }.compact
             unclaimed = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: viewed_user.user_occurrences.select(:occurrence_id))
                                                            .count
             { claimed: claimed, unclaimed: unclaimed }.to_json

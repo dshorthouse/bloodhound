@@ -50,7 +50,7 @@ module Sinatra
         @results.map{ |n|
           { id: n[:_source][:id],
             score: n[:_score],
-            fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(" "),
+            fullname: n[:_source][:fullname],
             fullname_reverse: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", ")
           }
         }
@@ -62,7 +62,7 @@ module Sinatra
             score: n[:_score],
             orcid: n[:_source][:orcid],
             wikidata: n[:_source][:wikidata],
-            fullname: [n[:_source][:given].presence, n[:_source][:family].presence].compact.join(" "),
+            fullname: n[:_source][:fullname],
             fullname_reverse: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", "),
           }
         }

@@ -47,7 +47,7 @@ module Sinatra
         body = build_name_query(search)
         response = client.search index: settings.elastic_agent_index, type: "agent", size: 25, body: body
         results = response["hits"].deep_symbolize_keys
-        results[:hits].map{|n| n[:_source].merge(score: n[:_score]) } rescue []
+        results[:hits].map{|n| n[:_source].merge(score: n[:_score]) }.compact rescue []
       end
 
       def search_user
@@ -66,14 +66,6 @@ module Sinatra
 
         @pagy = Pagy.new(count: results[:total], items: 30, page: page)
         @results = results[:hits]
-      end
-
-      def search_users(search)
-        client = Elasticsearch::Client.new
-        body = build_name_query(search)
-        response = client.search index: settings.elastic_user_index, type: "user", body: body
-        results = response["hits"].deep_symbolize_keys
-        results[:hits].map{|n| n[:_source].merge(score: n[:_score]) } rescue []
       end
 
       def find_user(id)
@@ -109,20 +101,36 @@ module Sinatra
       def candidate_agents(user)
         agents = search_agents(user.fullname)
 
+        given_names = [user.given]
+
         if !user.other_names.nil?
           user.other_names.split("|").each do |other_name|
             if !other_name.include?(" ") && other_name != user.family
               other_name = [other_name, user.family].join(" ")
             end
             agents.concat search_agents(other_name)
+            given = Namae.parse(other_name)[0].given rescue nil
+            given_names << given if !given.nil?
           end
         end
 
-        #TODO: accommodate the other_names when given portion in other_names is a nickname, entirely different from user.given
+        #Remove wildly different search results if not a relaxed view
         if !params.has_key?(:relaxed) || params[:relaxed] == "0"
-          agents.delete_if do |key,value|
-            !user.given.nil? && !key[:given].nil? && DwcAgent.similarity_score(key[:given], user.given) == 0
+          keepers = []
+          agents.each do |a|
+            #Keep if no given name
+            if a[:given].nil?
+              keepers << a
+              next
+            end
+            #Keep if agent given name is similar to a provided given name
+            given_names.each do |g|
+              if DwcAgent.similarity_score(g, a[:given]) > 0
+                keepers << a
+              end
+            end
           end
+          agents.delete_if{|a| !keepers.include?(a)}
         end
         agents.compact.uniq
       end
