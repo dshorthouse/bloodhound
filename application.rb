@@ -55,7 +55,11 @@ class BLOODHOUND < Sinatra::Base
   use Rack::GoogleAnalytics, :tracker => settings.google_analytics
 
   helpers Sinatra::ContentFor
+  helpers Sinatra::Bloodhound::Formatters
   helpers Sinatra::Bloodhound::Helpers
+  helpers Sinatra::Bloodhound::Queries
+  helpers Sinatra::Bloodhound::Security
+  helpers Sinatra::Bloodhound::Uploaders
 
   register Sinatra::Bloodhound::Controller::ApplicationController
   register Sinatra::Bloodhound::Controller::AdminController
