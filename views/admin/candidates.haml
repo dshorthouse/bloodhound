@@ -22,12 +22,17 @@
   - alert_class = "warning"
   - placeholder = @searched_user.fullname
 
-= haml :'partials/upload_claim_modal', layout: false, locals: { csv_download_url: "/admin/user/#{@admin_user.identifier}/candidates.csv?relaxed=1", csv_upload_url: "/admin/user/#{@admin_user.identifier}/upload-claims", user: @admin_user}
+= haml :'partials/upload_claim_modal', layout: false, locals: { csv_download_url: "/admin/user/#{@admin_user.identifier}/candidates.csv?relaxed=0", csv_upload_url: "/admin/user/#{@admin_user.identifier}/upload-claims", user: @admin_user}
 
 - if @results.empty?
   %div{class: "alert alert-warning row", role:"alert", style:"margin-left:0.1em;margin-right:0.1em"}
     %div{class: "col col-12 col-sm-12 col-m-8 col-lg-8"}
       Bloodhound did not sniff any specimens indexed by the Global Biodiversity Information Facility (GBIF) that were collected or identified.
+
+      %div{class:"form-check d-inline-flex"}
+        - checked = params[:relaxed] == "1" ? "checked" : nil
+        %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
+        %label{for:"relaxed", class:"relaxed"} Make less exact
     %div{class:"col col-12 col-sm-8 col-m-6 col-lg-4"}
       %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
         %div{class: "inputs search-agent form-group"}
@@ -39,6 +44,12 @@
       = succeed "." do
         Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for 
         %span{class:"font-weight-bold"} #{placeholder}
+      %div{class:"form-check d-inline-flex"}
+        - checked = params[:relaxed] == "1" ? "checked" : nil
+        %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
+        %label{for:"relaxed", class:"relaxed"} Make less exact
+
+      %br
       Choose
       %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
       collected, 

@@ -124,13 +124,20 @@ var Application = (function($, window) {
       });
     },
     activate_radios: function(){
-      var self = this;
+      var self = this, url = "", identifier = "";
+
+	    if (self.path === "/profile") {
+	      url = self.path + "/candidates";
+	    } else if (self.path === "/admin") {
+        identifier = window.location.pathname.split("/")[3];
+	      url = self.path + "/user/" + identifier + "/candidates"
+	    }
 
       $("#relaxed").on("change", function() {
         if ($(this).prop("checked")) {
-          window.location.href = "/profile/candidates?relaxed=1";
+          window.location.href = url + "?relaxed=1";
         } else {
-          window.location.href = "/profile/candidates";
+          window.location.href = url;
         }
         return false;
       });
@@ -295,14 +302,11 @@ var Application = (function($, window) {
       });
     },
     candidate_counter: function() {
-      var self = this, relaxed = 0;
+      var self = this;
       if (self.path === "/profile" || (self.path === "/admin" && self.user_id)) {
-        if (self.path === "/admin") {
-          relaxed = this.getParameterByName("relaxed");
-        }
         $.ajax({
           method: "GET",
-          url: self.path + "/candidate-count.json?relaxed=" + relaxed + "&user_id=" + self.user_id
+          url: self.path + "/candidate-count.json?relaxed=0&user_id=" + self.user_id
         }).done(function(data) {
           if (data.count > 0 && data.count <= 50) {
             $(".badge-notify").text(data.count).show();
@@ -311,15 +315,6 @@ var Application = (function($, window) {
           }
         });
       }
-    },
-    getParameterByName(name, url) {
-        if (!url) url = window.location.href;
-        name = name.replace(/[\[\]]/g, '\\$&');
-        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
   };
 
