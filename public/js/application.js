@@ -298,7 +298,7 @@ var Application = (function($, window) {
       var self = this, relaxed = 0;
       if (self.path === "/profile" || (self.path === "/admin" && self.user_id)) {
         if (self.path === "/admin") {
-          relaxed = 1;
+          relaxed = this.getParameterByName("relaxed");
         }
         $.ajax({
           method: "GET",
@@ -311,6 +311,15 @@ var Application = (function($, window) {
           }
         });
       }
+    },
+    getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
   };
 

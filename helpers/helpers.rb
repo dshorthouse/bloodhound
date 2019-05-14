@@ -130,9 +130,9 @@ module Sinatra
               end
             end
           end
-          agents.delete_if{|a| !keepers.include?(a)}
+          agents.delete_if{|a| !keepers.include?(a) || a[:score] < 30 }
         end
-        agents.compact.uniq
+        agents.compact.uniq.sort_by{|a| a[:score]}.reverse
       end
 
       def occurrences_by_score(id_scores, user)
