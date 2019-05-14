@@ -154,7 +154,7 @@ module Sinatra
       end
 
       def search_size
-        if [25,100,250].include?(params[:per].to_i)
+        if [25,50,100,250].include?(params[:per].to_i)
           params[:per].to_i
         else
           25
