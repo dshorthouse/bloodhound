@@ -17,7 +17,7 @@
       = haml :'partials/profile_tabs', layout: false, locals: { active_page: nil }
 
       %div{class:"container-fluid citation-wrapper"}
-        %h3 Settings
+        %h4 Settings
         %div{class:"row"}
           %div{class:"col-md"}
             %div{class:"card"}
@@ -35,7 +35,7 @@
                     %a{href:"/integrations"} extensions
                 %div{class:"row"}
                   %div{class:"col"}
-                    %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "medium", checked: @user.is_public?, class:"btn-claim" }
+                    %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: @user.is_public?, class:"btn-claim" }
                   %div{class:"col text-right"}
                     - if @user.is_public?
                       %a{href: "/#{@user.orcid}", target: "_blank"}
@@ -55,7 +55,7 @@
                     where versioned snapshots of your claims will be automatically stored and a DataCite DOI assigned. Once connected, a citation will be provided for inclusion in your professional resume.
                   - if @user.zenodo_access_token.empty?
                     %p{class:"card-text"}
-                      %a{href:"/auth/zenodo", role:"button", class:"btn btn-x-sm btn-outline-info"}
+                      %a{href:"/auth/zenodo", role:"button", class:"btn btn-sm btn-outline-info"}
                         Integrate with Zenodo
                   - elsif !@user.zenodo_access_token.empty?
                     %p{class:"alert alert-success"}
@@ -82,7 +82,7 @@
               %div{class:"card-body"}
                 %p{class:"card-text"} Pull new updates to your name, aliases, keywords, country, education, and employment from your ORCID account.
                 %p
-                  %a{ href:"/profile/refresh.json?user_id=#{@user.id}", role:"button", class:"btn btn-x-sm btn-outline-success profile-refresh"}
+                  %a{ href:"/profile/refresh.json?user_id=#{@user.id}", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
                     %i{class: "fas fa-sync-alt"}
                     Refresh
                 %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}

@@ -20,7 +20,7 @@
 
       - else
         %div{class:"container-fluid mt-3"}
-          %h3 Summary
+          %h4 Summary
           %ul
             - if @total[:number_identified] > 0
               %li Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}
@@ -32,7 +32,7 @@
               %li Helped #{number_with_delimiter(@total[:number_helped])} #{'user'.pluralize(@total[:number_helped])} claim a total of #{number_with_delimiter(@total[:number_claims_given])} #{'specimen'.pluralize(@total[:number_claims_given])}
 
           - if @user.zenodo_concept_doi
-            %h3 For Your Resume
+            %h4 For Your Resume
             %p{class:"citation"}
               #{@user.fullname_reverse}. #{DateTime.now.year}. Natural history specimens collected and/or identified and deposited. [Data set]. Zenodo.
               %a{href: "https://doi.org/#{@user.zenodo_concept_doi}"}
