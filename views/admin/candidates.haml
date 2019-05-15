@@ -44,10 +44,11 @@
       = succeed "." do
         Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for 
         %span{class:"font-weight-bold"} #{placeholder}
-      %div{class:"form-check d-inline-flex"}
-        - checked = params[:relaxed] == "1" ? "checked" : nil
-        %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
-        %label{for:"relaxed", class:"relaxed"} Make less exact
+      - if @searched_user.nil?
+        %div{class:"form-check d-inline-flex"}
+          - checked = params[:relaxed] == "1" ? "checked" : nil
+          %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
+          %label{for:"relaxed", class:"relaxed"} Make less exact
 
       %br
       Choose
