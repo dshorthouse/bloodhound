@@ -76,15 +76,18 @@ class Organization < ActiveRecord::Base
   end
 
   def others_specimens_by_year(type = "recorded", year = DateTime.now.year)
+    date_field = type == "recorded" ? "eventDate_processed" : "dateIdentified_processed"
+
     current = Occurrence.joins("JOIN user_occurrences ON user_occurrences.occurrence_id = occurrences.gbifID JOIN users u ON u.id = user_occurrences.user_id JOIN user_organizations uo ON uo.user_id = u.id")
                   .where("user_occurrences.visible = 1")
                   .where("user_occurrences.action LIKE ?", "%#{type}%")
                   .where("uo.organization_id = ?", id)
                   .where("uo.end_year IS NULL")
                   .where("uo.start_year <= ?", year)
-                  .where("YEAR(occurrences.dateIdentified_processed) = ?", year)
+                  .where("YEAR(occurrences.#{date_field}) = ?", year)
                   .where("occurrences.institutionCode IS NOT NULL")
                   .where("occurrences.institutionCode NOT IN (?)", institution_codes)
+
     past = Occurrence.joins("JOIN user_occurrences ON user_occurrences.occurrence_id = occurrences.gbifID JOIN users u ON u.id = user_occurrences.user_id JOIN user_organizations uo ON uo.user_id = u.id")
                   .where("user_occurrences.visible = 1")
                   .where("user_occurrences.action LIKE ?", "%#{type}%")
@@ -93,9 +96,10 @@ class Organization < ActiveRecord::Base
                   .where("uo.start_year IS NOT NULL")
                   .where("uo.start_year >= ?", year)
                   .where("uo.end_year <= ?", year)
-                  .where("YEAR(occurrences.dateIdentified_processed) = ?", year)
+                  .where("YEAR(occurrences.#{date_field}) = ?", year)
                   .where("occurrences.institutionCode IS NOT NULL")
                   .where("occurrences.institutionCode NOT IN (?)", institution_codes)
+
     combined = current.union_all(past)
                       .distinct
                       .unscope(:order)
