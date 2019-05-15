@@ -213,6 +213,7 @@ module Sinatra
           end
 
           app.get '/organization/:id/metrics' do
+            @year = params[:year] || nil
             organization_metrics
             haml :'organizations/organization_metrics', locals: { active_page: "organizations", active_tab: "organization-metrics" }
           end

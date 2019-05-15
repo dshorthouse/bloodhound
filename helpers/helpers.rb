@@ -225,8 +225,13 @@ module Sinatra
 
       def organization_metrics
         organization_redirect("/metrics")
-        @others_recorded = @organization.users_others_specimens_recorded
-        @others_identified = @organization.users_others_specimens_identified
+        if Organization::METRICS_YEAR_RANGE.to_a.include?(@year.to_i)
+          @others_recorded = @organization.others_specimens_by_year("recorded", @year)
+          @others_identified = @organization.others_specimens_by_year("identified", @year)
+        else
+          @others_recorded = @organization.others_specimens("recorded")
+          @others_identified = @organization.others_specimens("identified")
+        end
       end
 
     end
