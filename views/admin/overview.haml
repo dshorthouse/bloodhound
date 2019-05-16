@@ -22,7 +22,7 @@
           Specimens have not yet been claimed
       - else
         %div{class:"container-fluid mt-3"}
-          %h3 Summary
+          %h4 Summary
           %ul
             - if @total[:number_identified] > 0
               %li Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}
