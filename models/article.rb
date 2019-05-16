@@ -2,7 +2,7 @@ class Article < ActiveRecord::Base
 
   has_many :article_occurrences
   has_many :occurrences, through: :article_occurrences, source: :occurrence
-  
+
   serialize :gbif_dois, Array
   serialize :gbif_downloadkeys, Array
 

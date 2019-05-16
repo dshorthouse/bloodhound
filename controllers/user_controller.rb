@@ -242,7 +242,6 @@ module Sinatra
           app.get '/profile/citations' do
             protected!
             page = (params[:page] || 1).to_i
-            @total = @user.articles_citing_specimens.count
             @pagy, @results = pagy(@user.articles_citing_specimens, page: page)
             haml :'profile/citations'
           end

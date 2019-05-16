@@ -234,6 +234,10 @@ module Sinatra
         end
       end
 
+      def organization_articles
+        organization_redirect("/citations")
+        @organization.articles
+      end
     end
   end
 end

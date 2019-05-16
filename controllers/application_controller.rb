@@ -215,7 +215,15 @@ module Sinatra
           app.get '/organization/:id/metrics' do
             @year = params[:year] || nil
             organization_metrics
-            haml :'organizations/organization_metrics', locals: { active_page: "organizations", active_tab: "organization-metrics" }
+            haml :'organizations/metrics', locals: { active_page: "organizations", active_tab: "organization-metrics" }
+          end
+
+          app.get '/organization/:id/citations' do
+            page = (params[:page] || 1).to_i
+            @articles = organization_articles
+            @pagy, @results = pagy(@articles, page: page)
+            
+            haml :'organizations/citations', locals: { active_page: "organizations", active_tab: "organization-articles" }
           end
 
           app.get '/roster' do

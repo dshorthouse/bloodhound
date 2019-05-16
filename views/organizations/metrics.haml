@@ -37,12 +37,12 @@
 
   - if @others_recorded.empty? && @others_identified.empty? && @year.nil?
     %div{class: "alert alert-warning", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-      Past and present personnel have not yet claimed specimens that they collected or identified while affiliated with #{@organization.name} and that are now curated at other organizations.
+      Current and previous personnel have not yet claimed specimens now curated at other organizations that they collected or identified while affiliated with #{@organization.name}.
 
   - else
 
     %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-      Past and present personnel have claimed specimens that they collected or identified while affiliated with #{@organization.name} and that are now curated at the following organizations.
+      Current and previous personnel have claimed specimens now curated at the following organizations that they collected or identified while affiliated with #{@organization.name}.
 
     %div{class: "container-fluid"}
 

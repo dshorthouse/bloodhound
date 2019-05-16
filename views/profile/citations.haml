@@ -20,7 +20,7 @@
     Use of your specimen data has not yet been recorded.
 - else
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-    A total of #{number_with_delimiter(@total)} #{'publication'.pluralize(@total)} made use of your specimen data downloaded from the Global Biodiversity Information Facility (GBIF).
+    A total of #{number_with_delimiter(@pagy.count)} #{'publication'.pluralize(@pagy.count)} made use of your specimen data downloaded from the Global Biodiversity Information Facility (GBIF).
 
   %div{class:"citation-wrapper"}
     - @results.each do |article|

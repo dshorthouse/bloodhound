@@ -1,7 +1,9 @@
-%ul{class: "nav nav-tabs"}
+%ul{class: "nav nav-tabs mb-3"}
   %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_tab] == "organization-current" ? " active" : nil}", href: "/organization/#{@organization.identifier}"} Current
   %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_tab] == "organization-past" ? " active" : nil}", href: "/organization/#{@organization.identifier}/past"} Previous
   %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_tab] == "organization-metrics" ? " active" : nil}", href: "/organization/#{@organization.identifier}/metrics"} Metrics
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_tab] == "organization-articles" ? " active" : nil}", href: "/organization/#{@organization.identifier}/citations"} Science Enabled
