@@ -127,7 +127,7 @@ class Organization < ActiveRecord::Base
                   .where("(YEAR(occurrences.eventDate_processed) >= user_organizations.start_year AND YEAR(occurrences.eventDate_processed) <= user_organizations.end_year) OR (YEAR(occurrences.dateIdentified_processed) >= user_organizations.start_year AND YEAR(occurrences.dateIdentified_processed) <= user_organizations.end_year)")
 
     current.union_all(past).select(:id, :doi, :citation, :abstract, :created, "group_concat( DISTINCT user_id) AS user_ids")
-           .group(:id)
+           .group(:id, :doi, :citation, :abstract, :created)
            .distinct
            .order(created: :desc)
   end
