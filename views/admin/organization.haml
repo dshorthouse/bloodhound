@@ -17,6 +17,12 @@
 %form{id:"form-org-wrapper", method: "POST", action: "/admin/organization/#{@organization.id}", "accept-charset" => "UTF-8", class: "helpers"}
 
   %div{class:"form-group"}
+    %label{for:"name"} Name
+    %input{type:"text", class:"form-control", id:"name", value:"#{@organization.name}", name:"name"}
+  %div{class:"form-group"}
+    %label{for:"name"} Address
+    %input{type:"text", class:"form-control", id:"address", value:"#{@organization.address}", name:"address"}
+  %div{class:"form-group"}
     %label{for:"isni"} ISNI
     %input{type:"text", class:"form-control", id:"isni", value:"#{@organization.isni}", name:"isni"}
     - if !@organization.isni.blank?

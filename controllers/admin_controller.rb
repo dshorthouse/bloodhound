@@ -47,12 +47,16 @@ module Sinatra
           app.post '/admin/organization/:id' do
             admin_protected!
             @organization = Organization.find(params[:id])
+            name = params[:name].blank? ? nil : params[:name]
+            address = params[:address].blank? ? nil : params[:address]
             isni = params[:isni].blank? ? nil : params[:isni]
             grid = params[:grid].blank? ? nil : params[:grid]
             ringgold = params[:ringgold].blank? ? nil : params[:ringgold]
             wikidata = params[:wikidata].blank? ? nil : params[:wikidata]
             institution_codes = params[:institution_codes].empty? ? nil : params[:institution_codes].split("|").map(&:strip)
             data = {
+              name: name,
+              address: address,
               isni: isni,
               grid: grid,
               ringgold: ringgold,
