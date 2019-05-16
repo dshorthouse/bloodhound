@@ -29,7 +29,7 @@
                     %a{href: "/roster"} Profiles
                 %div{class:"row"}
                   %div{class:"col"}
-                    %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "medium", checked: @admin_user.is_public?, class:"btn-claim" }
+                    %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: @admin_user.is_public?, class:"btn-claim" }
                   %div{class:"col text-right"}
                     - if @admin_user.is_public?
                       %a{href: "/#{@admin_user.identifier}", target: "_blank"}
@@ -64,7 +64,7 @@
               %div{class:"card-body"}
                 %p{class:"card-text"} Pull new updates to name, aliases, keywords, country, education, and employment from the ORCID account or other items if from Wikidata.
                 %p
-                  %a{ href:"/admin/refresh.json?user_id=#{@admin_user.id}", role:"button", class:"btn btn-x-sm btn-outline-success profile-refresh"}
+                  %a{ href:"/admin/refresh.json?user_id=#{@admin_user.id}", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
                     %i{class: "fas fa-sync-alt"}
                     Refresh
                 %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
