@@ -32,19 +32,21 @@
   %a{href: "http://rs.tdwg.org/dwc/terms/#recordedBy"} recordedBy 
   (collector) or 
   %a{href: "http://rs.tdwg.org/dwc/terms/#identifiedBy"} identifiedBy 
-  Darwin Core fields. Names of collectors and determiners are parsed and cleaned using the test-driven
+  Darwin Core fields and are refreshed every few weeks. Names of collectors and determiners are parsed and cleaned using the test-driven
   %a{href: "https://github.com/dshorthouse/dwc_agent"} dwc_agent ruby gem 
   available for free integration in other projects. Similarity of people names is scored using a graph theory method outlined by 
   %a{href: "https://orcid.org/0000-0002-7101-9767"} R.D.M. Page 
-  and incorporated as a method in the dwc_agent gem. These scores are used to help expand the search for candidate specimens, presented in order of greatest to least probable. If you declared alternate names in your ORCID account such as a maiden name or if aliases are mentioned in wikidata profiles, these are used to search for candidate specimen records. Processing 186M specimen records is an intensive though repeatable process using MIT-licensed,
+  and incorporated as a method in the dwc_agent gem. These scores are used to help expand the search for candidate specimens, presented in order of greatest to least probable. If you declared alternate names in your ORCID account such as a maiden name or if aliases are mentioned in wikidata profiles, these are used to search for candidate specimen records. Processing 187M specimen records is an intensive though repeatable process using MIT-licensed,
   %a{href: "https://github.com/dshorthouse/bloodhound"} open source code.
 
 %p
-  Specimens used in the analyses for published papers are found by downloading cited data packages (less than 100MB zipped) that GBIF serves on behalf of the research community and then reattributed to collectors or determiners. This is comparable to the common practice in taxonomy whereby authors of new species descriptions acknowledge the critical role collectors play in biodiversity science.
+  Specimens used in the analyses for published papers are found by downloading cited data packages (less than 100MB zipped) that GBIF serves on behalf of the research community and then reattributed to collectors or determiners. The outcome is comparable to the common practice in taxonomy whereby authors of new species descriptions acknowledge the critical role collectors play in museum and biodiversity science.
 
 %h3 Citation & Archival
 
 %p
   From the settings panel in your account, you may connect with
   %a{href:"https://zenodo.org/"} Zenodo
-  using your ORCID credentials in two clicks. Once you make the set-it-and-forget-it connection, Bloodhound will push your specimen data into Zenodo, an industry-recognized, stable, longterm, versioned archive and will provide you with a DataCite DOI. Your Zenodo token is cached in Bloodhound and every week on your behalf, a new version of your specimen data are pushed to Zenodo if you have made new claims since the last version. You will also get a linked DataCite DOI badge on your Bloodhound profile page and a formatted citation for your professional resume. The data package stored in Zenodo consists of a csv file and a JSON-LD document, preparing the way for future Linked Data integrations. If you configure your ORCID account to listen to DataCite as a source of new data, you will automatically receive a new work entry in your ORCID account that points to the archive of your specimen data.
+  in two clicks using your ORCID credentials. Once you make this
+  %em set-it-and-forget-it
+  connection, Bloodhound pushes your specimen data into this industry-recognized, stable, longterm, versioned archive and mints a new DataCite DOI. Your Zenodo token is cached in Bloodhound and every week on your behalf, a new version of your specimen data is pushed to Zenodo if you have made new claims since the last version was pushed. You will also get a linked DataCite DOI badge on your Bloodhound profile page and a formatted citation for your professional resume. The data package stored in Zenodo consists of a csv file and a JSON-LD document, preparing the way for future Linked Data integrations. If you configure your ORCID account to listen to DataCite as a source of new data, you will automatically receive a new work entry in your ORCID account that points to the archive of your specimen data.
