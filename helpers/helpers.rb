@@ -238,6 +238,42 @@ module Sinatra
         organization_redirect("/citations")
         @organization.articles
       end
+
+      def trainers
+        sql = "SELECT
+                a.uid AS id, (a.count_claimed - b.count_own) AS num_claimed, d.num_helped AS num_helped
+              FROM
+                (SELECT
+                   created_by AS uid, COUNT(id) AS count_claimed
+                 FROM
+                   user_occurrences
+                 GROUP BY created_by
+                 ) a
+              JOIN (
+                SELECT
+                  user_id AS uid, COUNT(id) AS count_own
+                FROM
+                  user_occurrences
+                GROUP BY user_id
+                ) b ON a.uid = b.uid
+              JOIN (
+                SELECT
+                  c.user_id AS uid, count(c.created_by) AS num_helped
+                FROM (
+                  SELECT
+                    DISTINCT user_id, created_by
+                  FROM `user_occurrences`
+                  ) c 
+                GROUP BY
+                  c.created_by
+                ) d ON d.uid = a.uid
+              WHERE
+                (a.count_claimed - b.count_own) > 0
+              ORDER BY
+                num_claimed DESC"
+        @results = ActiveRecord::Base.connection.execute(sql)
+      end
+
     end
   end
 end

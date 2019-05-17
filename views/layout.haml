@@ -50,15 +50,14 @@
               %a{ href: "/", class:"nav-link#{locals[:active_page] == "home" ? " active" : nil}" }
                 %i{class:"fas fa-home"}
                 Home
-            - if admin_authorized?
-              %li{class: "nav-item"}
-                %a{ href: "/admin", class:"nav-link#{locals[:active_page] == "administration" ? " active" : nil}" }
-                  %i{class:"fas fa-users-cog"}
-                  Administration
             %li{class: "nav-item"}
               %a{ href: "/roster", class:"nav-link#{locals[:active_page] == "roster" ? " active" : nil}" }
                 %i{class:"fas fa-users"}
                 Profiles
+            %li{class: "nav-item"}
+              %a{ href: "/trainers", class: "nav-link#{locals[:active_page] == "trainers" ? " active" : nil}"}
+                %i{class:"fas fa-bone"}
+                Trainers
             %li{class: "nav-item"}
               %a{ href: "/organizations", class:"nav-link#{locals[:active_page] == "organizations" ? " active" : nil}" }
                 %i{class:"fas fa-building"}
@@ -77,6 +76,7 @@
                 %a{ href: "/help-others", class: "nav-link#{locals[:active_page] == "help" ? " active" : nil}"}
                   %i{class:"fas fa-hands-helping"}
                   Help Others
+            - if authorized?
               %li{class: "nav-item"}
                 %div{class:"btn-group"}
                   %a{class:"btn btn-outline-light", href:"/profile", role:"button"}
@@ -103,6 +103,10 @@
                     %a{href:"/profile/settings", class:"dropdown-item"}
                       %i{class:"fas fa-cog"}
                       Settings
+                    - if admin_authorized?
+                      %a{href: "/admin", class:"dropdown-item"}
+                        %i{class:"fas fa-users-cog"}
+                        Administration
                     %a{ href: "/logout", class: "dropdown-item" }
                       %i{class:"fas fa-sign-out-alt"}
                       Logout

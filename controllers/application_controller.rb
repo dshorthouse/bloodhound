@@ -62,6 +62,11 @@ module Sinatra
             end
           end
 
+          app.get '/trainers' do
+            trainers
+            haml :'trainers', locals: { active_page: "trainers" }
+          end
+
           app.get '/developers' do
             file = File.join(root, "public", "data", "bloodhound-public-claims.csv.gz")
             @compressed_file_size = (File.size(file).to_f / 2**20).round(2) rescue nil
