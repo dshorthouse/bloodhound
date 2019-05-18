@@ -26,7 +26,7 @@
                   - if u.country
                     %p{class:"small text-muted mt-0 mb-0"} #{u.country.split("|").join("; ")}
                   %div{class: "d-flex mt-4"}
-                    %div{class: "small text-right text-muted mr-2"}
+                    %div{class: "small text-muted"}
                       Helped
                       %span{class:"badge badge-light"} #{number_with_delimiter(u.helped_count)}
                       #{'person'.pluralize(u.helped_count)} claim
