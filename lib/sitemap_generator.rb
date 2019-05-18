@@ -16,9 +16,11 @@ module Bloodhound
       @map.add '/countries'
       @map.add '/get-started'
       @map.add '/developers'
+      @map.add '/how-it-works'
       @map.add '/integrations'
       @map.add '/organizations'
       @map.add '/roster'
+      @map.add '/trainers'
     end
 
     def add_users
@@ -40,6 +42,7 @@ module Bloodhound
         @map.add "/organization/#{o.identifier}"
         @map.add "/organization/#{o.identifier}/past"
         @map.add "/organization/#{o.identifier}/metrics"
+        @map.add "/organization/#{o.identifier}/citations"
       end
     end
 
