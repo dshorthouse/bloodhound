@@ -258,7 +258,7 @@ module Sinatra
                 ) b ON a.uid = b.uid
               JOIN (
                 SELECT
-                  c.user_id AS uid, count(c.created_by) AS num_helped
+                  ANY_VALUE(c.user_id) AS uid, count(c.created_by) AS num_helped
                 FROM (
                   SELECT
                     DISTINCT user_id, created_by
