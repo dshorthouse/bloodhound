@@ -31,6 +31,7 @@ module Sinatra
             user.update(visited: Time.now)
             session[:omniauth] = OpenStruct.new({ id: user.id })
             cache_clear "fragments/#{user.identifier}"
+            cache_clear "fragments/#{user.identifier}-trainer"
             redirect '/profile'
           end
 
@@ -272,6 +273,7 @@ module Sinatra
             content_type "application/json", charset: 'utf-8'
             @user.update_profile
             cache_clear "fragments/#{@user.identifier}"
+            cache_clear "fragments/#{@user.identifier}-trainer"
             { message: "ok" }.to_json
           end
 

@@ -413,6 +413,7 @@ module Sinatra
             admin_user = User.find(params[:user_id].to_i)
             admin_user.update_profile
             cache_clear "fragments/#{admin_user.identifier}"
+            cache_clear "fragments/#{admin_user.identifier}-trainer"
             { message: "ok" }.to_json
           end
 
