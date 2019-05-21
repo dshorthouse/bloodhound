@@ -27,6 +27,10 @@ class User < ActiveRecord::Base
     can_comment
   end
 
+  def made_claim?
+    visible_user_occurrences.count > 0
+  end
+
   def identifier
     orcid || wikidata
   end
