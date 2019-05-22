@@ -16,13 +16,10 @@ module Bloodhound
                                                           .map(&:to_i)
 
         agents.each do |a|
-          begin
-            agent = Agent.find_or_create_by({
-              family: a[:family].to_s,
-              given: a[:given].to_s })
-          rescue
-            retry
-          end
+          agent = Agent.create_or_find_by({
+            family: a[:family].to_s,
+            given: a[:given].to_s
+          })
           if !gbifIDs_recordedBy.empty?
             data = gbifIDs_recordedBy.map{|r| {
               occurrence_id: r,
@@ -43,7 +40,7 @@ module Bloodhound
       agents = []
       DwcAgent.parse(raw).each do |n|
         agent = DwcAgent.clean(n)
-        if !agent[:family].nil? && agent[:family].length >= 3
+        if !agent[:family].nil? && agent[:family].length >= 2
           agents << agent
         end
       end
