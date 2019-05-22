@@ -45,6 +45,15 @@ module Sinatra
             redirect '/profile/settings'
           end
 
+          app.delete '/auth/zenodo' do
+            protected!
+            @user.zenodo_access_token = nil
+            @user.zenodo_doi = nil
+            @user.zenodo_concept_doi = nil
+            @user.save
+            { message: "ok" }.to_json
+          end
+
           app.get '/profile' do
             protected!
             @total = {

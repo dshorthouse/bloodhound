@@ -70,6 +70,16 @@ var Profile = (function($, window) {
           });
         }
       });
+      $('#zenodo-disconnect').on('click', function() {
+        $.ajax({
+          url: '/auth/zenodo',
+          type: 'DELETE',
+          data: {}
+        }).done(function(data) {
+          $('#zenodoModal').modal('hide');
+          location.reload();
+        });
+      });
     },
     calculateAspectRatioFit: function(srcWidth, srcHeight) {
       var ratio = 1;
