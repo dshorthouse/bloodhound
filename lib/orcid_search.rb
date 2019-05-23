@@ -8,8 +8,9 @@ module Bloodhound
     end
 
     def populate_new_users(doi = nil)
+      existing = existing_orcids + destroyed_users
       found_orcids = !doi.nil? ? search_orcids_by_doi(doi) : search_orcids_by_keyword
-      (found_orcids.to_a - existing_orcids).each do |orcid|
+      (found_orcids.to_a - existing).each do |orcid|
         create_user(orcid)
       end
     end
@@ -85,6 +86,10 @@ module Bloodhound
 
     def existing_orcids
       User.pluck(:orcid)
+    end
+
+    def destroyed_users
+      DestroyedUser.pluck(:identifier)
     end
 
     def create_user(orcid)

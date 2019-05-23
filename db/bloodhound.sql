@@ -1,4 +1,6 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -29,6 +31,11 @@ CREATE TABLE `article_occurrences` (
   `article_id` int(11) NOT NULL,
   `occurrence_id` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE `destroyed_users` (
+  `id` int(11) NOT NULL,
+  `identifier` varchar(25) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `occurrences` (
   `gbifID` int(11) UNSIGNED NOT NULL,
@@ -160,6 +167,10 @@ ALTER TABLE `article_occurrences`
   ADD KEY `article_idx` (`article_id`),
   ADD KEY `occurrence_idx` (`occurrence_id`);
 
+ALTER TABLE `destroyed_users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `identifier_idx` (`identifier`);
+
 ALTER TABLE `occurrences`
   ADD PRIMARY KEY (`gbifID`) USING BTREE,
   ADD KEY `typeStatus_idx` (`typeStatus`(256));
@@ -218,6 +229,9 @@ ALTER TABLE `articles`
 ALTER TABLE `article_occurrences`
   MODIFY `id` bigint(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE `destroyed_users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 ALTER TABLE `organizations`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
@@ -232,6 +246,7 @@ ALTER TABLE `user_occurrences`
 
 ALTER TABLE `user_organizations`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

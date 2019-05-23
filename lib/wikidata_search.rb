@@ -90,7 +90,7 @@ module Bloodhound
     end
 
     def populate_new_users
-      existing = existing_wikicodes
+      existing = existing_wikicodes + destroyed_users
       @sparql.query(wikidata_people_query).each_solution do |solution|
         wikicode = solution.to_h[:item].to_s.match(/Q[0-9]{1,}/).to_s
         next if existing.include? wikicode
@@ -174,6 +174,10 @@ module Bloodhound
 
     def existing_wikicodes
       User.pluck(:wikidata)
+    end
+
+    def destroyed_users
+      DestroyedUser.pluck(:identifier)
     end
 
     def find_country_code(name)

@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
 
   after_create :update_profile, :add_search
   after_update :update_search
-  after_destroy :remove_search
+  after_destroy :remove_search, :create_destroyed_user
 
   def is_public?
     is_public
@@ -357,6 +357,10 @@ class User < ActiveRecord::Base
       es.delete_user(self)
     rescue
     end
+  end
+
+  def create_destroyed_user
+    DestroyedUser.create({ identifier: self.identifier })
   end
 
 end

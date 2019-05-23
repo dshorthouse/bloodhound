@@ -115,6 +115,13 @@ module Sinatra
             haml :'admin/overview', locals: { active_page: "administration" }
           end
 
+          app.delete '/admin/user/:id' do
+            admin_protected!
+            @admin_user = User.find(params[:id])
+            @admin_user.destroy
+            redirect '/admin/users'
+          end
+
           app.post '/admin/user/:id/image' do
             admin_protected!
             @admin_user = find_user(params[:id])
