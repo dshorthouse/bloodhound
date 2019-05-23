@@ -44,6 +44,7 @@
           %th{scope: "col"} Catalog Number
           %th{scope: "col"} Type Status
           %th{scope: "col", class:"btn-selector-wide"}
+            %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"} Not them
 
       %tbody
         - @results.each do |o|
@@ -77,6 +78,7 @@
             %th{scope: "col"} Catalog Number
             %th{scope: "col"} Type Status
             %th{scope: "col"}
+              %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"} Not them
 
   - if @total > 25
     = haml :'partials/page_size', layout: false

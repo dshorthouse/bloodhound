@@ -79,9 +79,9 @@
           %th{scope: "col"} Institution
           %th{scope: "col"} Catalog Number
           %th{scope: "col"} Type Status
-          %th{scope: "col", class:"btn-selector"}
+          %th{scope: "col", class:"btn-selector-wide"}
             - if @searched_user.nil?
-              %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"} Not me
+              %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"} Not them
 
       %tbody
         - @results.each do |o|
@@ -100,7 +100,7 @@
             %td #{o.typeStatus}
             %td
               - if @searched_user.nil?
-                %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{o.id}"} Not me
+                %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{o.id}"} Not them
 
       - if @total > 25
         %tfoot{class: "thead-light"}
@@ -117,7 +117,7 @@
             %th{scope: "col"} Type Status
             %th{scope: "col"}
               - if @searched_user.nil?
-                %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"} Not me
+                %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"} Not them
 
   - if @total > 25
     = haml :'partials/page_size', layout: false
