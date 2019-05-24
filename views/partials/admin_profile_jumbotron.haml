@@ -49,6 +49,10 @@
       #{@admin_user.country}
 
   - if locals[:active_page] != "settings"
+    - if !@admin_user.is_public?
+      %p{class:"m-2"}
+        %i{class:"fas fa-lock"}
+        Profile is private
     %p{class:"mb-0"}
       %a{href:"/admin/user/#{@admin_user.identifier}/settings"}
         %i{class:"fas fa-cog"}
