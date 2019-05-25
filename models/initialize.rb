@@ -18,6 +18,8 @@ module Sinatra
             timeout: app.settings.timeout
           )
 
+          ActiveRecord::Base.send :include, Sinatra::Bloodhound::RelationMethods
+
           if app.settings.environment == :development
             ActiveRecord::Base.logger = Logger.new(STDOUT)
           end
