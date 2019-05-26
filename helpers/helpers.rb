@@ -244,6 +244,7 @@ module Sinatra
                        .where("user_occurrences.user_id != user_occurrences.created_by")
                        .where(user_occurrences: { visible: true })
                        .distinct
+                       .order(:family)
       end
 
     end
