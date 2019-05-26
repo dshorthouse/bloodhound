@@ -89,17 +89,4 @@ class Agent < ActiveRecord::Base
     recordings.union_all(determinations)
   end
 
-  def aka
-    (
-      Agent.where(canonical_id: id).where.not(id: id).pluck(:given, :family) | 
-      Agent.where(canonical_id: canonical_id).where.not(id: id).pluck(:given, :family)
-    ).map{|a| { family: a[1], given: a[0]}}
-  end
-
-  def network
-    network = Bloodhound::AgentNetwork.new(self)
-    network.build
-    network.to_vis
-  end
-
 end
