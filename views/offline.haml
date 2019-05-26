@@ -25,17 +25,16 @@
     %link{href: "/css/bootstrap.min.css", rel: "stylesheet", type: "text/css", crossorigin: "anonymous"}
     %link{href: "/css/application.css", rel: "stylesheet", type: "text/css"}
 
-  %body
-    %nav{class:"navbar navbar-expand-md navbar-dark bg-dark"}
-      %a{class:"navbar-brand", href:"/"}
-        %img{src: "/images/logo.png", height:48, alt: "Bloodhound"}
+  %body{class:"d-flex flex-column"}
+    %header
+      %nav{class:"navbar navbar-expand-md navbar-dark bg-dark"}
+        %a{class:"navbar-brand", href:"/"}
+          %img{src: "/images/logo.png", height:48, alt: "Bloodhound"}
 
-    %div{class: "jumbotron jumbotron-fluid d-flex flex-wrap"}
-      %div{class: "mr-auto p-2"}
-        %h1{class: "display-3"} Bloodhound
-        %p.lead Claim the natural history specimens you collected or identified, track their use in new science, and help acknowledge your peers, mentors, and organizations.
+      %div{id:"home-jumbotron", class: "jumbotron"}
+        %h1{class: "display-2"} Bloodhound
 
-    %main{id:"main"}
+    %main{id:"main", role:"main", class:"mb-5"}
       %div{class: "container-fluid"}
         %div{class: "alert alert-warning row", role:"alert", style:"margin-left:0.1em;margin-right:0.1em"}
           Bloodhound is currently offline, following the scent of new data.
