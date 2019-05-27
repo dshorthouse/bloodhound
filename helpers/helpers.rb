@@ -240,11 +240,14 @@ module Sinatra
       end
 
       def trainers
-        @results = User.joins(:claims)
-                       .where("user_occurrences.user_id != user_occurrences.created_by")
-                       .where(user_occurrences: { visible: true })
-                       .distinct
-                       .order(:family)
+        results = User.joins(:claims)
+                      .where("user_occurrences.user_id != user_occurrences.created_by")
+                      .where(user_occurrences: { visible: true })
+                      .pluck(:id)
+                      .uniq
+                      .map{|u| User.find(u)}
+                      .sort_by{|u| u.family}
+        @pagy, @results  = pagy_array(results, items: 30)
       end
 
     end
