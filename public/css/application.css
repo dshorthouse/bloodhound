@@ -156,14 +156,18 @@ div.list-header{
   background-color: transparent;
   border-bottom:0px;
 }
-.card-header h5{
+.card-header h5 {
   margin-bottom:0px;
 }
 .card-body {
   padding:0rem 1.25rem 0.8rem;
 }
-.card-text{
+.card-text {
   margin-top:5px;
+}
+.card-img-profile {
+  border-radius:50%;
+  margin-right:0.5rem;
 }
 
 /* CALLOUTS */

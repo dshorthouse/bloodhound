@@ -9,7 +9,10 @@
 %div{class: "card my-3"}
   %div{class: "card-header"}
     %h5
-      %a{href: "/#{locals[:user].identifier}"} #{locals[:user].fullname_reverse}
+      %a{href: "/#{locals[:user].identifier}"}
+        - if locals[:user].image_url
+          %img{src:"#{profile_image(locals[:user], 'medium')}", alt:"#{locals[:user].fullname}", class:"card-img-profile"}
+        #{locals[:user].fullname_reverse}
   %div{class: "card-body"}
     - if locals[:user].wikidata
       %p{class:"small text-muted mt-0 mb-0"}= format_lifespan(locals[:user])

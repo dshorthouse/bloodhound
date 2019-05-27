@@ -35,6 +35,10 @@ OptionParser.new do |opts|
     options[:logged] = true
   end
 
+  opts.on("-i", "--public", "Update all public accounts") do
+    options[:public] = true
+  end
+
   opts.on("-u", "--update-orcid", "Update all ORCID accounts.") do
     options[:update_orcid] = true
   end
@@ -107,30 +111,42 @@ if options[:wikidata]
     u.destroy
     puts "#{u.wikidata} destroyed. Missing either family name, birth or death date".red
   else
+    cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse} created/updated".green
   end
 elsif options[:orcid]
   u = User.find_or_create_by({ orcid: options[:orcid] })
   u.update_profile
+  cache_clear "fragments/#{u.identifier}"
   puts "#{u.fullname_reverse} created/updated".green
 elsif options[:logged]
   User.where.not(visited: nil).find_each do |u|
     u.update_profile
+    cache_clear "fragments/#{u.identifier}"
+    puts "#{u.fullname_reverse}".green
+  end
+elsif options[:public]
+  User.where(is_public: true).find_each do |u|
+    u.update_profile
+    cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:all]
   User.order(:family).find_each do |u|
     u.update_profile
+    cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:update_wikidata]
   User.where.not(wikidata: nil).order(:family).find_each do |u|
     u.update_profile
+    cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:update_orcid]
   User.where.not(orcid: nil).order(:family).find_each do |u|
     u.update_profile
+    cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
   end
 end
