@@ -269,6 +269,10 @@ module Bloodhound
       @client.update index: @settings.elastic_organization_index, type: 'organization', id: org.id, body: doc
     end
 
+    def delete_organization(org)
+      @client.delete index: @settings.elastic_organization_index, type: 'organization', id: org.id
+    end
+
     def refresh_agent_index
       @client.indices.refresh index: @settings.elastic_agent_index
     end

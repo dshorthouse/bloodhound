@@ -7,6 +7,8 @@ class Organization < ActiveRecord::Base
   after_create :add_search
   after_update :update_search
 
+  after_destroy :remove_search
+
   METRICS_YEAR_RANGE = (2005..DateTime.now.year)
 
   def self.active_user_organizations
@@ -183,6 +185,14 @@ class Organization < ActiveRecord::Base
   def update_search
     es = Bloodhound::ElasticIndexer.new
     es.update_organization(self)
+  end
+
+  def remove_search
+    es = Bloodhound::ElasticIndexer.new
+    begin
+      es.delete_organization(self)
+    rescue
+    end
   end
 
 end
