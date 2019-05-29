@@ -13,7 +13,7 @@ addons:
 services:
   - mysql
 install:
-  - gem install bundler -v 1.16.6
+  - gem install bundler -v 2.0.1
   - bundle install
 before_script:
   - cp config.yml.sample config.yml
