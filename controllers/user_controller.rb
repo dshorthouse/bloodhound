@@ -286,11 +286,13 @@ module Sinatra
             { message: "ok" }.to_json
           end
 
-          app.destroy '/profile/destroy' do
+          app.delete '/profile/destroy' do
             protected!
+            @user.destroy_all_traces
             @user.destroy
             cache_clear "fragments/#{@user.identifier}"
             cache_clear "fragments/#{@user.identifier}-trainer"
+            session.clear
             redirect '/'
           end
 

@@ -327,6 +327,12 @@ class User < ActiveRecord::Base
     cited_specimens.where(article_occurrences: { article_id: article_id })
   end
 
+  def destroy_all_traces
+    user_occurrences.destroy_all
+    claims.destroy_all
+    user_organizations.destroy_all
+  end
+
   private
 
   def set_update_time
