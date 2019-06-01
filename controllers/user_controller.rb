@@ -288,7 +288,6 @@ module Sinatra
 
           app.delete '/profile/destroy' do
             protected!
-            @user.destroy_all_traces
             @user.destroy
             cache_clear "fragments/#{@user.identifier}"
             cache_clear "fragments/#{@user.identifier}-trainer"

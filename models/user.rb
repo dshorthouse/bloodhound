@@ -1,12 +1,12 @@
 class User < ActiveRecord::Base
   serialize :zenodo_access_token, Hash
 
-  has_many :user_occurrences
+  has_many :user_occurrences, dependent: :delete_all
   has_many :occurrences, -> { distinct }, through: :user_occurrences, source: :occurrence
-  has_many :claims, foreign_key: :created_by, class_name: "UserOccurrence"
+  has_many :claims, foreign_key: :created_by, class_name: "UserOccurrence", dependent: :delete_all
   has_many :claimed_occurrences, through: :claims, source: :occurrence
 
-  has_many :user_organizations
+  has_many :user_organizations, dependent: :delete_all
   has_many :organizations, through: :user_organizations, source: :organization
 
   before_update :set_update_time
@@ -327,12 +327,6 @@ class User < ActiveRecord::Base
     cited_specimens.where(article_occurrences: { article_id: article_id })
   end
 
-  def destroy_all_traces
-    user_occurrences.destroy_all
-    claims.destroy_all
-    user_organizations.destroy_all
-  end
-
   private
 
   def set_update_time
@@ -366,7 +360,7 @@ class User < ActiveRecord::Base
   end
 
   def create_destroyed_user
-    DestroyedUser.create({ identifier: self.identifier })
+    DestroyedUser.find_or_create_by({ identifier: self.identifier })
   end
 
 end
