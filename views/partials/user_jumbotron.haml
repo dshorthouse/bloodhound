@@ -34,7 +34,7 @@
       #{@viewed_user.current_organization.address}
 
   - if !@viewed_user.country.blank?
-    - country_codes = @viewed_user.country_code.split("|")
+    - country_codes = @viewed_user.country_code.split("|") rescue []
     - @viewed_user.country.split("|").each_with_index do |v,i|
       - if !country_codes[i].nil? && !country_codes[i].empty?
         %p{class:"text-lg-left p-0 m-0"}
