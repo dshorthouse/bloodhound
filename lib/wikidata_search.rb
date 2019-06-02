@@ -173,11 +173,11 @@ module Bloodhound
     end
 
     def existing_wikicodes
-      User.pluck(:wikidata)
+      User.pluck(:wikidata).compact
     end
 
     def destroyed_users
-      DestroyedUser.pluck(:identifier)
+      DestroyedUser.pluck(:identifier).compact
     end
 
     def find_country_code(name)

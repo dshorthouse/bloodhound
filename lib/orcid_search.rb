@@ -85,11 +85,11 @@ module Bloodhound
     end
 
     def existing_orcids
-      User.pluck(:orcid)
+      User.pluck(:orcid).compact
     end
 
     def destroyed_users
-      DestroyedUser.pluck(:identifier)
+      DestroyedUser.pluck(:identifier).compact
     end
 
     def create_user(orcid)
