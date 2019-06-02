@@ -1,12 +1,12 @@
 class Agent < ActiveRecord::Base
 
-  has_many :occurrence_determiners, dependent: :destroy
+  has_many :occurrence_determiners, dependent: :delete_all
   has_many :determinations, through: :occurrence_determiners, source: :occurrence
 
-  has_many :occurrence_recorders, dependent: :destroy
+  has_many :occurrence_recorders, dependent: :delete_all
   has_many :recordings, through: :occurrence_recorders, source: :occurrence
 
-  has_many :taxon_determiners, dependent: :destroy
+  has_many :taxon_determiners, dependent: :delete_all
   has_many :determined_taxa, through: :taxon_determiners, source: :taxon
 
   def self.enqueue(file_path)

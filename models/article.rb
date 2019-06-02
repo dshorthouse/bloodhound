@@ -1,6 +1,6 @@
 class Article < ActiveRecord::Base
 
-  has_many :article_occurrences
+  has_many :article_occurrences, dependent: :delete_all
   has_many :occurrences, through: :article_occurrences, source: :occurrence
 
   serialize :gbif_dois, Array
