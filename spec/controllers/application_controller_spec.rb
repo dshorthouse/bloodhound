@@ -61,6 +61,11 @@ describe "Bloodhound Application" do
     expect(last_response).to be_ok
   end
 
+  it "should allow accessing the trainers page" do
+    get '/trainers'
+    expect(last_response).to be_ok
+  end
+
   it "should allow accessing the about user rss feed" do
     get '/user.rss'
     expect(last_response).to be_ok
