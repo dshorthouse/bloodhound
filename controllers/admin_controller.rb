@@ -119,6 +119,8 @@ module Sinatra
             admin_protected!
             @admin_user = User.find(params[:id])
             @admin_user.destroy
+            cache_clear "fragments/#{@admin_user.identifier}"
+            cache_clear "fragments/#{@admin_user.identifier}-trainer"
             redirect '/admin/users'
           end
 
