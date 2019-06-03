@@ -35,6 +35,7 @@ class BLOODHOUND < Sinatra::Base
         :site => settings.orcid_site,
         :authorize_url => settings.orcid_authorize_url,
         :token_url => settings.orcid_token_url,
+        :token_method => :post,
         :scope => '/authenticate'
       }
 
