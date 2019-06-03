@@ -4,20 +4,45 @@
 -content_for :stylesheets do
   %link{rel:"alternate", type:"application/rss+xml", title:"RSS Feed for New User Profiles", href:"/user.rss"}
 
+-content_for :scripts do
+  %script{src: "/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init("", "GET", "/roster");
+    });
+    
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
       %h2 Public Profiles
       %p.lead.text-muted
         Users who share their profiles and deceased natural historians others have helped to acknowledge
+    = haml :'partials/user_search', layout: false
 
-%div{class:"container-fluid"}
-  - @results.in_groups_of(3).each do |group|
-    %div{class: "row"}
-      - group.each do |u|
-        %div{class: "col-sm"}
-          - if !u.nil?
-            - cache_fragment(u.identifier) do
-              = haml :'partials/user_card', layout: false, locals: { user: u }
+- if @results.empty? && params[:q] && params[:q].present?
+  %div{class: "alert alert-danger", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    No one found by the name
+    %span{class: "font-weight-bold"}
+      :escaped
+        #{params[:q]}
 
-  = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
+- else
+  - if params[:q] && params[:q].present?
+    %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+      #{@pagy.count} search results for
+      %span{class: "font-weight-bold"}
+        :escaped
+          #{params[:q]}
+
+  %div{class:"container-fluid"}
+    - @results.in_groups_of(3).each do |group|
+      %div{class: "row"}
+        - group.each do |u|
+          %div{class: "col-sm"}
+            - if !u.nil?
+              - if params[:q] && params[:q].present?
+                - u = User.find(u[:_id])
+              - cache_fragment(u.identifier) do
+                = haml :'partials/user_card', layout: false, locals: { user: u }
+
+    = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

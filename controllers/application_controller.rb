@@ -232,7 +232,11 @@ module Sinatra
           end
 
           app.get '/roster' do
-            roster
+            if params[:q] && params[:q].present?
+              search_user
+            else
+              roster
+            end
             haml :roster, locals: { active_page: "roster" }
           end
 

@@ -86,6 +86,8 @@ var Application = (function($, window) {
           var identifier = datum.orcid || datum.wikidata;
           if (self.path === "/admin") {
             window.location.href = "/admin/user/" + identifier;
+          } else if (self.path === "/roster") {
+            window.location.href = "/" + identifier;
           } else {
             window.location.href = "/help-others/" + identifier;
           }
