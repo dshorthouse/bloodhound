@@ -10,7 +10,7 @@ module Sinatra
             multi_match: {
               query:      search,
               type:       :cross_fields,
-              analyzer:   :fullname_search,
+              analyzer:   :fullname_index,
               fields:     ["family^3", "given", "*.edge"],
             }
           }

@@ -45,7 +45,7 @@ module Sinatra
       def search_agents(search)
         client = Elasticsearch::Client.new
         body = build_name_query(search)
-        response = client.search index: settings.elastic_agent_index, type: "agent", size: 30, body: body
+        response = client.search index: settings.elastic_agent_index, type: "agent", size: 25, body: body
         results = response["hits"].deep_symbolize_keys
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) }.compact rescue []
       end

@@ -53,12 +53,12 @@ module Bloodhound
               fullname_index: {
                 type: "custom",
                 tokenizer: "standard",
-                filter: ["lowercase", "asciifolding", :autocomplete]
+                filter: ["lowercase", "asciifolding"]
               },
               fullname_search: {
                 type: "custom",
                 tokenizer: "standard",
-                filter: ["lowercase", "asciifolding"]
+                filter: ["lowercase", "asciifolding", :autocomplete]
               }
             }
           }
@@ -132,12 +132,12 @@ module Bloodhound
               fullname_index: {
                 type: "custom",
                 tokenizer: "standard",
-                filter: ["lowercase", "asciifolding", :autocomplete]
+                filter: ["lowercase", "asciifolding"]
               },
               fullname_search: {
                 type: "custom",
                 tokenizer: "standard",
-                filter: ["lowercase", "asciifolding"]
+                filter: ["lowercase", "asciifolding", :autocomplete]
               }
             }
           }
