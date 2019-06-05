@@ -74,8 +74,8 @@ module Bloodhound
                 fields: {
                   edge: {
                     type: 'text',
-                    analyzer: :name_part_search,
                     search_analyzer: :name_part_search,
+                    analyzer: :name_part_search,
                     norms: false,
                   }
                 }
@@ -87,8 +87,8 @@ module Bloodhound
                 fields: {
                   edge: {
                     type: 'text',
-                    analyzer: :name_part_search,
                     search_analyzer: :name_part_search,
+                    analyzer: :name_part_search,
                     norms: false,
                   }
                 }
