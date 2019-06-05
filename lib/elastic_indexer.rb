@@ -45,6 +45,11 @@ module Bloodhound
                 tokenizer: "keyword",
                 filter: ["lowercase", "asciifolding"]
               },
+              name_part_search: {
+                type: "custom",
+                tokenizer: "keyword",
+                filter: ["lowercase", "asciifolding", :autocomplete]
+              },
               fullname_index: {
                 type: "custom",
                 tokenizer: "standard",
@@ -66,11 +71,27 @@ module Bloodhound
                 type: 'text',
                 analyzer: :name_part_index,
                 norms: false,
+                fields: {
+                  edge: {
+                    type: 'text',
+                    analyzer: :name_part_search,
+                    search_analyzer: :name_part_search,
+                    norms: false,
+                  }
+                }
               },
               given: {
                 type: 'text',
                 analyzer: :name_part_index,
                 norms: false,
+                fields: {
+                  edge: {
+                    type: 'text',
+                    analyzer: :name_part_search,
+                    search_analyzer: :name_part_search,
+                    norms: false,
+                  }
+                }
               },
               fullname: {
                 type: 'text',

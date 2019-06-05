@@ -124,13 +124,13 @@ module Sinatra
               next
             end
             #Keep if agent given name is similar to a provided given name
-            given_names.each do |g|
+            given_names.uniq.each do |g|
               if DwcAgent.similarity_score(g, a[:given]) > 0
                 keepers << a
               end
             end
           end
-          agents.delete_if{|a| !keepers.include?(a) || a[:score] < 30 }
+          agents.delete_if{|a| !keepers.include?(a) }
         end
         agents.compact.uniq.sort_by{|a| a[:score]}.reverse
       end
