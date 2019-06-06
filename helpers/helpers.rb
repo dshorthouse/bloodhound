@@ -130,7 +130,7 @@ module Sinatra
               end
             end
           end
-          agents.delete_if{|a| !keepers.include?(a) || a[:score] < 30 }
+          agents.delete_if{|a| !keepers.include?(a) || a[:score] < 40 }
         end
         agents.compact.uniq.sort_by{|a| a[:score]}.reverse
       end

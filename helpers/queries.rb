@@ -11,7 +11,7 @@ module Sinatra
               query:      search,
               type:       :cross_fields,
               analyzer:   :fullname_index,
-              fields:     ["family^3", "given", "*.edge"],
+              fields:     ["family^5", "given^3", "*.edge"],
             }
           }
         }
