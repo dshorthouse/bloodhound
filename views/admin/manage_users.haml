@@ -1,0 +1,38 @@
+-content_for :title do
+  All Users
+
+-content_for :scripts do
+  %script{src: "/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init("", "POST", "/admin");
+    });
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid alert-warning"}
+    %h2 Add Account
+
+    %form{id:"form-user-wrapper", method: "post", action: "/admin/user/add", "accept-charset" => "UTF-8", class:"helpers"}
+      %div{class:"d-flex flex-sm-row flex-column p-3"}
+        %div{class:"form-group"}
+          %label{for: "identifier", class:"font-weight-bold"}= "Add ORCID or Wikidata QID"
+          %input{class: "orcid-add", type: :text, name: "identifier", placeholder: "0000-0001-2345-6789", size:"12"}
+
+          %input{type: :submit, class:"btn btn-success mt-3", value: "Submit"}
+
+- if !@new_user.nil?
+  %div{class: "row"}
+    %div{class: "col-sm-8 col-md-6 col-xl-6"}
+      - if !@new_user[:slug].nil?
+        %div{class:"alert alert-success alert-dismissible fade show", role: "alert", style:"display:block"}
+          %span{class:"font-weight-bold"}
+            %a{href: "/admin/user/#{@new_user[:slug]}"} #{@new_user[:fullname]}
+          was created or updated
+          %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+            %span{"aria-hidden":"true"} &times;
+      - else
+        %div{class:"alert alert-danger alert-dismissible fade show", role: "alert", style:"display:block"}
+          %span{class:"font-weight-bold"}
+            #{@new_user[:fullname]} not created because family name, birth or death date were missing
+          %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+            %span{"aria-hidden":"true"} &times;

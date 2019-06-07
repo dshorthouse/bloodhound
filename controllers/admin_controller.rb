@@ -73,31 +73,44 @@ module Sinatra
 
           app.get '/admin/users' do
             admin_protected!
-            @new_user = session[:new_user]
-            session[:new_user] = nil
             sort = params[:sort] || nil
             order = params[:order] || nil
             admin_roster
             haml :'admin/roster', locals: { active_page: "administration", sort: sort, order: order }
           end
 
+          app.get '/admin/users/search' do
+            admin_protected!
+            search_user
+            haml :'admin/user_search', locals: { active_page: "administration" }
+          end
+
+          app.get '/admin/users/manage' do
+            admin_protected!
+            @new_user = session[:new_user]
+            session[:new_user] = nil
+            haml :'admin/manage_users', locals: { active_page: "administration" }
+          end
+
           app.post '/admin/user/add' do
             admin_protected!
-            if params[:orcid] && params[:orcid].is_orcid?
-              new_user = User.find_or_create_by({ orcid: params[:orcid] })
-              new_user.update_profile
-              session[:new_user] = { fullname: new_user.fullname, slug: new_user.orcid }
-            elsif params[:wikidata] && params[:wikidata].is_wiki_id?
-              new_user = User.find_or_create_by({ wikidata: params[:wikidata] })
-              new_user.update_profile
-              if !new_user.complete_wikicontent?
-                new_user.destroy
-                session[:new_user] = { fullname: params[:wikidata], slug: nil }
-              else
-                session[:new_user] = { fullname: new_user.fullname, slug: new_user.wikidata }
+            if params[:identifier]
+              if params[:identifier].is_orcid?
+                new_user = User.find_or_create_by({ orcid: params[:identifier] })
+                new_user.update_profile
+                session[:new_user] = { fullname: new_user.fullname, slug: new_user.orcid }
+              elsif params[:identifier].is_wiki_id?
+                new_user = User.find_or_create_by({ wikidata: params[:identifier] })
+                new_user.update_profile
+                if !new_user.complete_wikicontent?
+                  new_user.destroy
+                  session[:new_user] = { fullname: params[:wikidata], slug: nil }
+                else
+                  session[:new_user] = { fullname: new_user.fullname, slug: new_user.wikidata }
+                end
               end
             end
-            redirect '/admin/users'
+            redirect '/admin/users/manage'
           end
 
           app.get '/admin/user/:id' do

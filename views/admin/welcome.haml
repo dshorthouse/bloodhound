@@ -10,15 +10,15 @@
     %div{class:"col-md"}
       %div{class:"card"}
         %h5{class:"card-header"}
-          %a{href:"/admin/users"} Accounts
+          %a{href:"/admin/users"} Browse Accounts
         %div{class:"card-body"}
-          %p{class:"card-text"} View a paginated and ordered list of accounts. This includes when last logged in, public status, and links to manage each account. Accounts can also be added using a valid ORCID or a wikidata identifier.
+          %p{class:"card-text"} View and search through a paginated and ordered list of accounts. This includes when last logged in, public status, and links to manage each account.
     %div{class:"col-md"}
       %div{class:"card"}
         %h5{class:"card-header"}
-          %a{href:"/admin/articles"} Articles
+          %a{href:"/admin/users/manage"} Add Account
         %div{class:"card-body"}
-          %p{class:"card-text"} View a paginated and ordered list of latest references indexed by GBIF. This includes the number of specimens used in the study and the number of specimens claimed by users.
+          %p{class:"card-text"} Add new accounts using ORCID IDs or wikidata QIDs.
   %div{class:"row"}
     %div{class:"col-md"}
       %div{class:"card"}
@@ -27,3 +27,8 @@
         %div{class:"card-body"}
           %p{class:"card-text"} View a paginated and ordered list of organizations from ORCID accounts. This includes their isni, ringgold, GRID, and wikidata identifiers.
     %div{class:"col-md"}
+      %div{class:"card"}
+        %h5{class:"card-header"}
+          %a{href:"/admin/articles"} Articles
+        %div{class:"card-body"}
+          %p{class:"card-text"} View a paginated and ordered list of latest references indexed by GBIF. This includes the number of specimens used in the study and the number of specimens claimed by users.
