@@ -313,9 +313,10 @@ class User < ActiveRecord::Base
   end
 
   def articles_citing_specimens
-    Article.joins(article_occurrences: :user_occurrences)
-           .where(user_occurrences: { user_id: id, visible: true })
-           .distinct
+    subq = Article.joins(article_occurrences: :user_occurrences)
+                  .where(user_occurrences: { user_id: id, visible: true })
+                  .distinct
+    Article.select('*').from(subq).order(created: :desc)
   end
 
   def cited_specimens
