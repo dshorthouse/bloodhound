@@ -313,7 +313,6 @@ class User < ActiveRecord::Base
   end
 
   def articles_citing_specimens
-    Article.where(id: )
     Article.joins(article_occurrences: :user_occurrences)
            .where(user_occurrences: { user_id: id, visible: true })
            .distinct
