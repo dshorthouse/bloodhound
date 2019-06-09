@@ -5,7 +5,9 @@
   = haml :'partials/agent_jumbotron', layout: false
 
 %div{class: "alert alert-warning", role:"alert", style:"margin-left:0.1em;margin-right:0.1em;margin-top:0px;"}
-  Sniffed #{number_with_delimiter(@pagy.count)} specimens for #{@agent.fullname}. Not all available columns are shown. Because Bloodhound is always improving on its ability to find agents in specimen data, this URL is unreliable for linking.
+  Sniffed #{number_with_delimiter(@pagy.count)} specimens for #{@agent.fullname}. Not all available columns are shown.
+  %br
+  Because Bloodhound is always improving on its ability to find agents in specimen data, this URL is unreliable for linking.
     
 %div{class:"table-responsive-lg"}
   %table{class:"table table-hover table-sm"}
