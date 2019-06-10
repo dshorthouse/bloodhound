@@ -145,7 +145,7 @@ module Bloodhound
 
     def wiki_user_data(wikicode)
       wiki_user = Wikidata::Item.find(wikicode)
-      parsed = Namae.parse(wiki_user.title)[0] rescue nil
+      parsed = DwcAgent.parse(wiki_user.title)[0] rescue nil
       family = parsed.family rescue nil
       given = parsed.given rescue nil
       country = wiki_user.properties("P27").compact.map(&:title).join("|") rescue nil
