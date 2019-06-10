@@ -329,23 +329,22 @@ module Sinatra
             admin_protected!
             @admin_user = find_user(params[:id])
             @article = Article.find(params[:article_id])
-            if @article
-              @page = (params[:page] || 1).to_i
-              @total = @admin_user.cited_specimens_by_article(@article.id).count
-
-              if @page*search_size > @total
-                bump_page = @total % search_size.to_i != 0 ? 1 : 0
-                @page = @total/search_size.to_i + bump_page
-              end
-
-              @page = 1 if @page <= 0
-
-              @pagy, @results = pagy(@admin_user.cited_specimens_by_article(@article.id), page: @page, items: search_size)
-              haml :'admin/citation', locals: { active_page: "administration" }
-            else
-              status 404
-              haml :oops
+            if !@article
+              halt 404, haml(:oops)
             end
+
+            @page = (params[:page] || 1).to_i
+            @total = @admin_user.cited_specimens_by_article(@article.id).count
+
+            if @page*search_size > @total
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
+            end
+
+            @page = 1 if @page <= 0
+
+            @pagy, @results = pagy(@admin_user.cited_specimens_by_article(@article.id), page: @page, items: search_size)
+            haml :'admin/citation', locals: { active_page: "administration" }
           end
 
           app.post '/admin/user-occurrence/bulk.json' do

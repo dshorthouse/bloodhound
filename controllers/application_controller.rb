@@ -224,11 +224,14 @@ module Sinatra
           end
 
           app.get '/organization/:id/citations' do
-            page = (params[:page] || 1).to_i
-            @articles = organization_articles
-            @pagy, @results = pagy(@articles, page: page)
-            
-            haml :'organizations/citations', locals: { active_page: "organizations", active_tab: "organization-articles" }
+            begin
+              page = (params[:page] || 1).to_i
+              @articles = organization_articles
+              @pagy, @results = pagy(@articles, page: page)
+              haml :'organizations/citations', locals: { active_page: "organizations", active_tab: "organization-articles" }
+            rescue Pagy::OverflowError
+              halt 404, haml(:oops)
+            end
           end
 
           app.get '/roster' do

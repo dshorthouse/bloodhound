@@ -23,6 +23,18 @@ module Sinatra
         Sinatra::Application.settings.root
       end
 
+      def check_identifier
+        if !params[:id].is_orcid? && !params[:id].is_wiki_id?
+          halt 404, haml(:oops)
+        end
+      end
+
+      def check_user_public
+        if !@viewed_user && !@viewed_user.is_public?
+          halt 404, haml(:oops)
+        end
+      end
+
       def search_agent
         @results = []
         filters = []
