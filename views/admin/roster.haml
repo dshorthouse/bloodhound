@@ -29,6 +29,8 @@
           %a{href: "/admin/users?order=created&sort=#{sort}"} Created
         %th{scope: "col"}
           %a{href: "/admin/users?order=is_public&sort=#{sort}"} Is Public?
+        %th{scope: "col"}
+          %a{href: "/admin/users?order=zenodo_concept_doi&sort=#{sort}"} DOI
         %th{scope: "col"} ORCID/Wikidata
 
     %tbody
@@ -44,6 +46,9 @@
               %span{class: "text-success"} #{u.is_public}
             - else
               #{u.is_public}
+          %td
+            - if u.zenodo_concept_doi
+              %a{href: "https://doi.org/#{u.zenodo_concept_doi}"} #{u.zenodo_concept_doi}
           %td
             - if u.orcid
               %a{href: "https://orcid.org/#{u.orcid}"}
