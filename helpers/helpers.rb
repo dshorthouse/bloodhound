@@ -121,7 +121,7 @@ module Sinatra
               other_name = [other_name, user.family].join(" ")
             end
             agents.concat search_agents(other_name)
-            given = Namae.parse(other_name)[0].given rescue nil
+            given = DwcAgent.parse(other_name)[0].given rescue nil
             given_names << given if !given.nil?
           end
         end
