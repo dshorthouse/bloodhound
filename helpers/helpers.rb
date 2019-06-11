@@ -80,13 +80,16 @@ module Sinatra
         @results = results[:hits]
       end
 
-      def helped_users
-        subq = User.joins(:user_occurrences)
-                   .where.not(wikidata: nil)
-                   .where(user_occurrences: { visible: true })
-                   .where("users.id != user_occurrences.created_by")
-                   .distinct
-        @pagy, @results = pagy(User.select('*').from(subq).order(:family))
+      def latest_claims
+        #WIP
+        qry = UserOccurrence.select("user_id, created_by, #{Arel.sql('MAX(created)')}")
+                            .where(visible: true)
+                            .where("user_occurrences.user_id != user_occurrences.created_by")
+                            .group(:user_id, :created_by)
+                            .order(Arel.sql("MAX(created) DESC"))
+                            .distinct
+
+        @pagy, @results = pagy(qry)
       end
 
       def find_user(id)
