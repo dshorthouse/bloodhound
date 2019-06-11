@@ -81,7 +81,7 @@ module Sinatra
 
           app.get '/admin/users/helped' do
             admin_protected!
-            helped_users
+            latest_claims
             haml :'admin/user_helped', locals: { active_page: "administration" }
           end
 

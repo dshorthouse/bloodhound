@@ -16,7 +16,9 @@
         %th{scope: "col"} Last Helped
 
     %tbody
-      - @results.each do |u|
+      - @results.each do |claim|
+        - u = User.find(claim.user_id)
+        - h = User.find(claim.created_by)
         %tr
           %td 
             %a{href: "/admin/user/#{u.identifier}"} #{u.fullname_reverse}
@@ -26,8 +28,8 @@
             - else
               #{u.is_public}
           %td
-            #{u.claims_received.first.claimant.fullname_reverse}
+            #{h.fullname_reverse}
           %td
-            #{u.claims_received.first.created}
+            #{claim.latest}
 
 = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
