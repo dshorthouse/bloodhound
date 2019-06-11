@@ -1,6 +1,15 @@
 -content_for :title do
   Helped Accounts
 
+- content_for :scripts do
+  %script{src: "/js/progress-bar.js"}
+  :javascript
+    $(function() {
+      $('.progress-bar').each(function() {
+        ProgressBar.init($(this).attr("id").split("_").pop());
+      });
+    });
+
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid alert-warning d-flex flex-wrap"}
     %div{class:"mr-auto"}
@@ -11,6 +20,7 @@
     %thead{class: "thead-light"}
       %tr
         %th{scope: "col"} Account
+        %th{scope: "col"} Progress
         %th{scope: "col"} Is Public?
         %th{scope: "col"} Last Helped By
         %th{scope: "col"} Last Helped
@@ -22,6 +32,9 @@
         %tr
           %td 
             %a{href: "/admin/user/#{u.identifier}"} #{u.fullname_reverse}
+          %td
+            %div{class:"progress", style:"border:1px solid rgba(0,0,0,.125);inline"}
+              %div{id:"progress-bar_#{u.identifier}", class:"progress-bar bg-info", role:"progressbar", style:"width: 0%;inline", "aria-valuenow":"0", "aria-valuemin":"0", "aria-valuemax":"100"}
           %td
             - if u.is_public?
               %span{class: "text-success"} #{u.is_public}
