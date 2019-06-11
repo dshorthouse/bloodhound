@@ -79,6 +79,12 @@ module Sinatra
             haml :'admin/roster', locals: { active_page: "administration", sort: sort, order: order }
           end
 
+          app.get '/admin/users/helped' do
+            admin_protected!
+            helped_users
+            haml :'admin/user_helped', locals: { active_page: "administration" }
+          end
+
           app.get '/admin/users/search' do
             admin_protected!
             search_user

@@ -10,15 +10,18 @@
     %div{class:"col-md"}
       %div{class:"card"}
         %h5{class:"card-header"}
-          %a{href:"/admin/users"} Browse Accounts
+          %a{href:"/admin/users"} Accounts
         %div{class:"card-body"}
           %p{class:"card-text"} View and search through a paginated and ordered list of accounts. This includes when last logged in, public status, and links to manage each account.
+          %p
+            %a{href:"/admin/users", role:"button", class:"btn btn-sm btn-outline-primary profile-refresh"} List
+            %a{href:"/admin/users/manage", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"} Add
     %div{class:"col-md"}
       %div{class:"card"}
         %h5{class:"card-header"}
-          %a{href:"/admin/users/manage"} Add Account
+          %a{href:"/admin/users/helped"} Helped Wikidata Accounts
         %div{class:"card-body"}
-          %p{class:"card-text"} Add new accounts using ORCID IDs or wikidata QIDs.
+          %p{class:"card-text"} View a paginated and ordered list of wikidata accounts (deceased people) whose specimens have been claimed by authenticated users.
   %div{class:"row"}
     %div{class:"col-md"}
       %div{class:"card"}

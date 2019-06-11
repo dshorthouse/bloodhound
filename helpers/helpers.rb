@@ -80,6 +80,15 @@ module Sinatra
         @results = results[:hits]
       end
 
+      def helped_users
+        subq = User.joins(:user_occurrences)
+                   .where.not(wikidata: nil)
+                   .where(user_occurrences: { visible: true })
+                   .where("users.id != user_occurrences.created_by")
+                   .distinct
+        @pagy, @results = pagy(User.select('*').from(subq).order(:family))
+      end
+
       def find_user(id)
         if id.is_orcid?
           User.find_by_orcid(id)

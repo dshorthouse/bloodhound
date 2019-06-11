@@ -1,0 +1,33 @@
+-content_for :title do
+  Helped Wikidata Accounts
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid alert-warning d-flex flex-wrap"}
+    %div{class:"mr-auto"}
+      %h2 Helped Wikidata Accounts
+
+%div{class:"table-responsive-lg"}
+  %table{class:"table table-hover table-sm"}
+    %thead{class: "thead-light"}
+      %tr
+        %th{scope: "col"} Account
+        %th{scope: "col"} Is Public?
+        %th{scope: "col"} Last Helped By
+        %th{scope: "col"} Last Helped
+
+    %tbody
+      - @results.each do |u|
+        %tr
+          %td 
+            %a{href: "/admin/user/#{u.identifier}"} #{u.fullname_reverse}
+          %td
+            - if u.is_public?
+              %span{class: "text-success"} #{u.is_public}
+            - else
+              #{u.is_public}
+          %td
+            #{u.claims_received.first.claimant.fullname_reverse}
+          %td
+            #{u.claims_received.first.created}
+
+= pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
