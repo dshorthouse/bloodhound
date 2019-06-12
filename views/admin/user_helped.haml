@@ -30,7 +30,12 @@
         - u = User.find(claim.user_id)
         - h = User.find(claim.created_by)
         %tr
-          %td 
+          %td
+            %a{href: "/admin/user/#{u.identifier}"}
+            - if u.orcid
+              %img{src: "/images/orcid_16x16.png", alt:"ORCID iD"}
+            - else
+              %img{src: "/images/wikidata_16x16.png", alt:"Wikidata iD"}
             %a{href: "/admin/user/#{u.identifier}"} #{u.fullname_reverse}
           %td
             %div{class:"progress", style:"border:1px solid rgba(0,0,0,.125);inline"}
