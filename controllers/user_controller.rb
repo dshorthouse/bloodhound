@@ -309,6 +309,12 @@ module Sinatra
             haml :'help/others', locals: { active_page: "help" }
           end
 
+          app.get '/help-others/progress' do
+            protected!
+            latest_claims
+            haml :'help/progress', locals: { active_page: "help" }
+          end
+
           app.get '/help-others/country/:country_code' do
             protected!
             country_code = params[:country_code]

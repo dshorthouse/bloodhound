@@ -25,6 +25,11 @@ a:hover, .page-link:hover{
   padding-left:0.75rem;
   padding-right:0.75rem;
 }
+.alert-warning-light {
+    color: #856404;
+    background-color: #fff9e5;
+    border-color: #ffeeba;
+}
 #home-jumbotron{
   background-image: url('/images/curiosities.jpg');
   background-size: cover;

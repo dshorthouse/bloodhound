@@ -9,7 +9,7 @@
     });
 
 -content_for :jumbotron do
-  %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
+  %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap alert-warning-light"}
     %div{class: "mr-auto p-2"}
       %h2 Help Claim Specimens
     = haml :'partials/help_others_search', layout: false
@@ -39,6 +39,12 @@
         Search on 
         %a{href:"https://www.wikidata.org"} Wikidata
         and ensure they have a birth and death date accurate to the day
+
+  %ul{class: "nav nav-tabs pl-2"}
+    %li{class: "nav-item"}
+      %a{class: "nav-link active", href: "/help-others"} By Country
+    %li{class: "nav-item"}
+      %a{class: "nav-link", href: "/help-others/progress"} Progress
 
   = haml :'partials/help_others_countries', layout: false
 
