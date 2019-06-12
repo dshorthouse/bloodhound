@@ -41,6 +41,15 @@ module Sinatra
         img
       end
 
+      def signature_image(user)
+        img = "/images/signature.png"
+        cloud_img = "https://abekpgaoen.cloudimg.io/height/100/x/"
+        if user.signature_url
+          img =  cloud_img + user.signature_url
+        end
+        img
+      end
+
       def format_agent(n)
         { id: n[:_source][:id],
           score: n[:_score],

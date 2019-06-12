@@ -152,9 +152,14 @@ module Bloodhound
       country_code = wiki_user.properties("P27").compact.map{|a| find_country_code(a.title) || "" }.compact.join("|").presence rescue nil
       keywords = wiki_user.properties("P106").compact.map(&:title).join("|") rescue nil
       image_url = nil
+      signature_url = nil
       image = wiki_user.image.value rescue nil
       if image
         image_url = "http://commons.wikimedia.org/wiki/Special:FilePath/" << URI.encode(wiki_user.image.value)
+      end
+      signature = wiki_user.properties("P109").first.value rescue nil
+      if signature
+        signature_url = "http://commons.wikimedia.org/wiki/Special:FilePath/" << URI.encode(signature)
       end
       other_names = wiki_user.aliases.values.compact.map{|a| a.map{|b| b.value if b.language == "en"}.compact}.flatten.uniq.join("|") rescue nil
       date_born = Date.parse(wiki_user.properties("P569").compact.map{|a| a.value.time if a.precision_key == :day}.compact.first) rescue nil
@@ -167,6 +172,7 @@ module Bloodhound
         country_code: country_code,
         keywords: keywords,
         image_url: image_url,
+        signature_url: signature_url,
         date_born: date_born,
         date_died: date_died
       }

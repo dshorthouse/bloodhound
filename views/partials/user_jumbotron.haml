@@ -15,6 +15,11 @@
     %p{class: "text-center text-muted font-italic pt-2"}
       #{@viewed_user.keywords.split("|").join(", ")}
 
+  - if @viewed_user.signature_url
+    %div{id:"signature-image", class:"rounded mx-auto d-block align-self-center align-items-center"}
+      %img{src:"#{signature_image(@viewed_user)}", itemprop:"image"}
+  
+
   %p{class: "orcid text-lg-left p-0 mt-4"}
     - if @viewed_user.orcid
       %a{href: "https://orcid.org/#{@viewed_user.orcid}", itemprop:"sameAs"}
