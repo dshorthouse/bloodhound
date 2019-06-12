@@ -4,7 +4,7 @@
   %script{id:"dsq-count-scr", src:"//#{Sinatra::Application.settings.disqus_shortname}.disqus.com/count.js"}
   :javascript
     $(function() {
-      DISQUSWIDGETS.getCount({reset: true});
+      DISQUSWIDGETS.getCount({ reset: true });
     });
 
 %div{class:"container-fluid"}
@@ -15,10 +15,7 @@
         = haml :'partials/user_tabs', layout: false
 
       %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-        - if @viewed_user.wikidata
-          Share an anecdote about a collecting trip, event or other memory you recall about #{@viewed_user.fullname}
-        - else
-          Share an anecdote about a collecting trip, event or anything else.
+        Share an anecdote about a collecting trip, event or anything else.
 
       - if Sinatra::Application.settings.disqus_shortname
         %div{id: "disqus_thread"}

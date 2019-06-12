@@ -16,10 +16,10 @@
 
         - if @results.empty?
           %div{class: "alert alert-warning", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-            Publications that used #{@viewed_user.given}'s specimen data have not yet been recorded by the Global Biodiversity Information Facility (GBIF).
+            Publications have not yet been recorded by the Global Biodiversity Information Facility (GBIF).
         - else
           %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-            #{number_with_delimiter(@pagy.count)} #{'publication'.pluralize(@pagy.count)} used #{@viewed_user.given}'s specimen data from the Global Biodiversity Information Facility (GBIF).
+            #{number_with_delimiter(@pagy.count)} #{'publication'.pluralize(@pagy.count)} used specimen data from the Global Biodiversity Information Facility (GBIF).
 
           %div{class:"citation-wrapper"}
             %h4 Science Enabled by Specimen Data

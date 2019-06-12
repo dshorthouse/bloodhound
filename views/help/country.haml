@@ -26,6 +26,6 @@
         - group.each do |u|
           %div{class: "col-sm"}
             - if !u.nil?
-              = haml :'partials/user_card_dynamic', layout: false, locals: { user: u }
+              = haml :'partials/user_card_dynamic', layout: false, locals: { user: u, path: "help-others" }
 
   = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

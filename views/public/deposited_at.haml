@@ -4,7 +4,7 @@
   %script{id:"dsq-count-scr", src:"//#{Sinatra::Application.settings.disqus_shortname}.disqus.com/count.js"}
   :javascript
     $(function() {
-      DISQUSWIDGETS.getCount({reset: true});
+      DISQUSWIDGETS.getCount({ reset: true });
     });
 
 %div{class:"container-fluid"}
@@ -21,7 +21,7 @@
         - if !@recordings_at.empty? || !@identifications_at.empty?
 
           %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-            Specimens deposited and curated at the following institution(s).
+            Specimens deposited and curated at the following institution(s):
 
           %div{class: "container-fluid"}
             %div{class: "row"}

@@ -4,7 +4,7 @@
   %script{id:"dsq-count-scr", src:"//#{Sinatra::Application.settings.disqus_shortname}.disqus.com/count.js"}
   :javascript
     $(function() {
-      DISQUSWIDGETS.getCount({reset: true});
+      DISQUSWIDGETS.getCount({ reset: true });
     });
 
 %div{class:"container-fluid"}
@@ -20,7 +20,7 @@
 
         - if !@families_identified.empty? || !@families_recorded.empty?
           %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-            Collected or identified specimens in the following Families.
+            Collected or identified specimens in the following Families:
 
           %div{class: "container-fluid"}
             %div{class: "row"}

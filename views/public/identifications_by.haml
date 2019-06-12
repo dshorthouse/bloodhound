@@ -4,7 +4,7 @@
   %script{id:"dsq-count-scr", src:"//#{Sinatra::Application.settings.disqus_shortname}.disqus.com/count.js"}
   :javascript
     $(function() {
-      DISQUSWIDGETS.getCount({reset: true});
+      DISQUSWIDGETS.getCount({ reset: true });
     });
 
 %div{class:"container-fluid"}
@@ -26,7 +26,7 @@
 
         - if @results.empty?
           %div{class: "alert alert-warning", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-            Identifications made to #{@viewed_user.given}'s collected specimens have not yet been recorded.
+            Identifications made to collected specimens have not yet been recorded.
         - else
           %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
             Has collected specimens later identified by:
