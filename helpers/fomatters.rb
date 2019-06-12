@@ -43,7 +43,7 @@ module Sinatra
 
       def signature_image(user)
         img = "/images/signature.png"
-        cloud_img = "https://abekpgaoen.cloudimg.io/height/100/x/"
+        cloud_img = "https://abekpgaoen.cloudimg.io/height/80/x/"
         if user.signature_url
           img =  cloud_img + user.signature_url
         end

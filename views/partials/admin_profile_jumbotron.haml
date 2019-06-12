@@ -1,8 +1,8 @@
 %div{class:"col-12 col-lg-4 text-center sidebar alert-warning pt-3 pb-3"}
   %form{id:"form-wrapper", method: :post, action: "/", enctype: "multipart/form-data", "accept-charset": "UTF-8", class: "form"}
     - bg_class = @admin_user.image_url ? "" : "profile-image-bg" 
-    %div{id:"profile-image", class:"image-placeholder rounded mx-auto d-block align-self-center align-items-center #{bg_class}"}
-      %img{src:"#{profile_image(@admin_user)}"}
+    %div{id:"profile-image", class:"image-placeholder mx-auto d-block align-self-center align-items-center #{bg_class}"}
+      %img{src:"#{profile_image(@admin_user)}", class:"rounded mx-auto d-block"}
       - if locals[:active_page] == "settings"
         %span
           %a{href:"#"} Change profile photo
@@ -24,6 +24,10 @@
   - if !@admin_user.keywords.blank?
     %p{class: "text-center text-muted font-italic"}
       #{@admin_user.keywords.split("|").join(", ")}
+
+  - if @admin_user.signature_url
+    %div{id:"signature-image", class:"mx-auto d-block align-self-center align-items-center"}
+      %img{src:"#{signature_image(@admin_user)}", class:"mx-auto d-block", itemprop:"image"}
 
   %p{class: "orcid text-lg-left p-0 mt-4"}
     - if @admin_user.orcid
