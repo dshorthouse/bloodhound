@@ -20,7 +20,7 @@
     %thead{class: "thead-light"}
       %tr
         %th{scope: "col"}
-          %a{href: "/admin/users?order=family&sort=#{sort}"} Users
+          %a{href: "/admin/users?order=family&sort=#{sort}"} Account
         %th{scope: "col"}
           %a{href: "/admin/users?order=country&sort=#{sort}"} Country
         %th{scope: "col"}
@@ -28,15 +28,19 @@
         %th{scope: "col"}
           %a{href: "/admin/users?order=created&sort=#{sort}"} Created
         %th{scope: "col"}
-          %a{href: "/admin/users?order=is_public&sort=#{sort}"} Is Public?
+          %a{href: "/admin/users?order=is_public&sort=#{sort}"} Public
         %th{scope: "col"}
           %a{href: "/admin/users?order=zenodo_concept_doi&sort=#{sort}"} DOI
-        %th{scope: "col"} ORCID/Wikidata
 
     %tbody
       - @results.each do |u|
         %tr
-          %td 
+          %td
+            %a{href: "/admin/user/#{u.identifier}"}
+            - if u.orcid
+              %img{src: "/images/orcid_16x16.png", alt:"ORCID iD"}
+            - else
+              %img{src: "/images/wikidata_16x16.png", alt:"Wikidata iD"}
             %a{href: "/admin/user/#{u.identifier}"} #{u.fullname_reverse}
           %td #{u.country}
           %td #{u.visited}
@@ -49,14 +53,5 @@
           %td
             - if u.zenodo_concept_doi
               %a{href: "https://doi.org/#{u.zenodo_concept_doi}"} #{u.zenodo_concept_doi}
-          %td
-            - if u.orcid
-              %a{href: "https://orcid.org/#{u.orcid}"}
-                %img{src: "/images/orcid_16x16.png", alt:"ORCID iD"}
-              %a{href: "https://orcid.org/#{u.orcid}"} https://orcid.org/#{u.orcid}
-            - else
-              %a{href: "https://www.wikidata.org/wiki/#{u.wikidata}"}
-                %img{src: "/images/wikidata_16x16.png", alt:"Wikidata iD"}
-              %a{href: "https://www.wikidata.org/wiki/#{u.wikidata}"} https://www.wikidata.org/wiki/#{u.wikidata}
 
 = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
