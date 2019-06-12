@@ -81,11 +81,12 @@ module Sinatra
       end
 
       def latest_claims
-        qry = UserOccurrence.select("user_id, created_by, #{Arel.sql('MAX(created)')} AS latest")
+        qry = UserOccurrence.select("user_id, created_by, created")
+                            .includes(:user, :claimant)
                             .where(visible: true)
                             .where("user_occurrences.user_id != user_occurrences.created_by")
                             .group(:user_id, :created_by)
-                            .order(Arel.sql("MAX(created) DESC"))
+                            .order(created: :desc)
 
         @pagy, @results = pagy(qry)
       end

@@ -34,8 +34,8 @@
 
     %tbody
       - @results.each do |claim|
-        - u = User.find(claim.user_id)
-        - h = User.find(claim.created_by)
+        - u = claim.user
+        - h = claim.claimant
         %tr
           %td
             %a{href: "/help-others/#{u.identifier}"}
@@ -55,6 +55,6 @@
           %td
             #{h.fullname_reverse}
           %td
-            #{claim.latest}
+            #{claim.created}
 
 = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
