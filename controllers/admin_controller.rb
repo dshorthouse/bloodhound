@@ -109,8 +109,8 @@ module Sinatra
                 new_user = User.find_or_create_by({ wikidata: params[:identifier] })
                 new_user.update_profile
                 if !new_user.complete_wikicontent?
+                  session[:new_user] = { fullname: params[:identifier], slug: nil }
                   new_user.destroy
-                  session[:new_user] = { fullname: params[:wikidata], slug: nil }
                 else
                   session[:new_user] = { fullname: new_user.fullname, slug: new_user.wikidata }
                 end
