@@ -81,7 +81,7 @@ module Sinatra
       end
 
       def latest_claims
-        qry = UserOccurrence.select("user_id, created_by, created")
+        qry = UserOccurrence.select("user_id, created_by, #{Arel.sql("ANY_VALUE(created)")} as created")
                             .includes(:user, :claimant)
                             .where(visible: true)
                             .where("user_occurrences.user_id != user_occurrences.created_by")
