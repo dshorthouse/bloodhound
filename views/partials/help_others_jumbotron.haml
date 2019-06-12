@@ -10,7 +10,7 @@
           %img{src:"#{profile_image(@viewed_user)}", class:"rounded mx-auto d-block", alt:"#{@viewed_user.fullname}"}
       - if @viewed_user.signature_url
         %div{id:"signature-image", class:"mx-auto d-block align-self-center align-items-center"}
-          %img{src:"#{signature_image(@viewed_user)}", class:"mx-auto d-block", itemprop:"image", alt:"#{@viewed_user.fullname} signature"}
+          %img{src:"#{signature_image(@viewed_user)}", class:"mx-auto d-block img-fluid", itemprop:"image", alt:"#{@viewed_user.fullname} signature"}
 
     %div{class:"col-12 col-md-6"}
 
