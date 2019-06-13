@@ -34,26 +34,24 @@
 
     %tbody
       - @results.each do |claim|
-        - u = claim.user
-        - h = claim.claimant
         %tr
           %td
-            %a{href: "/help-others/#{u.identifier}"}
-            - if u.orcid
+            %a{href: "/help-others/#{claim.user.identifier}"}
+            - if claim.user.orcid
               %img{src: "/images/orcid_16x16.png", alt:"ORCID iD"}
             - else
               %img{src: "/images/wikidata_16x16.png", alt:"Wikidata iD"}
-            %a{href: "/help-others/#{u.identifier}"} #{u.fullname_reverse}
+            %a{href: "/help-others/#{claim.user.identifier}"} #{claim.user.fullname_reverse}
           %td
             %div{class:"progress", style:"border:1px solid rgba(0,0,0,.125);inline"}
-              %div{id:"progress-bar_#{u.identifier}", class:"progress-bar bg-info", role:"progressbar", style:"width: 0%;inline", "aria-valuenow":"0", "aria-valuemin":"0", "aria-valuemax":"100"}
+              %div{id:"progress-bar_#{claim.user.identifier}", class:"progress-bar bg-info", role:"progressbar", style:"width: 0%;inline", "aria-valuenow":"0", "aria-valuemin":"0", "aria-valuemax":"100"}
           %td
-            - if u.is_public?
-              %span{class: "text-success"} #{u.is_public}
+            - if claim.user.is_public?
+              %span{class: "text-success"} #{claim.user.is_public}
             - else
-              #{u.is_public}
+              #{claim.user.is_public}
           %td
-            #{h.fullname_reverse}
+            #{claim.claimant.fullname_reverse}
           %td
             #{claim.created}
 
