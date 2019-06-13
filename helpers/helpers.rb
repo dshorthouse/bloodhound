@@ -85,7 +85,7 @@ module Sinatra
                               .group(:user_id)
         qry = UserOccurrence.select(:user_id, :created_by, :created)
                             .includes(:user, :claimant)
-                            .joins("INNER JOIN (SELECT MAX(id) as id, MAX(created) FROM user_occurrences GROUP BY user_id) AS o ON user_occurrences.id = o.id")
+                            .joins("INNER JOIN (#{subq.to_sql}) AS o ON user_occurrences.id = o.id")
                             .where("user_occurrences.user_id != user_occurrences.created_by")
                             .where(visible: true)
                             .order(created: :desc)
