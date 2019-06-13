@@ -132,19 +132,22 @@ elsif options[:public]
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:all]
-  User.order(:family).find_each do |u|
+  User.find_each do |u|
     u.update_profile
     cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:update_wikidata]
-  User.where.not(wikidata: nil).order(:family).find_each do |u|
+  wikidata_lib = Bloodhound::WikidataSearch.new
+  User.where.not(wikidata: nil).find_each do |u|
     u.update_profile
+    data = wikidata_lib.wiki_user_data(u.wikidata)
+    u.update(data)
     cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:update_orcid]
-  User.where.not(orcid: nil).order(:family).find_each do |u|
+  User.where.not(orcid: nil).find_each do |u|
     u.update_profile
     cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
