@@ -51,7 +51,8 @@ val df1 = spark.
     option("ignoreLeadingWhiteSpace", "true").
     load("/Users/dshorthouse/Downloads/GBIF Data/verbatim.txt").
     select(verbatimTerms.map(col): _*).
-    filter(coalesce($"identifiedBy",$"recordedBy").isNotNull)
+    filter(coalesce($"identifiedBy",$"recordedBy").isNotNull).
+    where(!$"scientificName".contains("BOLD:"))
 
 //optionally save the DataFrame to disk so we don't have to do the above again
 df1.write.mode("overwrite").parquet("verbatim")
