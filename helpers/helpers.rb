@@ -81,10 +81,10 @@ module Sinatra
       end
 
       def latest_claims
-        qry = UserOccurrence.select("users.id AS user_id, user_occurrences.created_by AS created_by, MAX(user_occurrences.created) AS created")
+        qry = UserOccurrence.select("user_occurrences.user_id AS user_id, MAX(user_occurrences.created_by) AS created_by, MAX(user_occurrences.created) AS created")
                   .joins(:user)
                   .preload(:user, :claimant)
-                  .group("users.id, user_occurrences.created_by, user_occurrences.user_id")
+                  .group("user_occurrences.user_id")
                   .where("user_occurrences.visible = true")
                   .where("user_occurrences.user_id != user_occurrences.created_by")
                   .order(Arel.sql("MAX(user_occurrences.created) DESC"))
