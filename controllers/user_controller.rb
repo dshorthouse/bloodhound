@@ -154,7 +154,7 @@ module Sinatra
           app.get '/profile/download.csv' do
             protected!
             records = @user.visible_occurrences
-            csv_stream_headers
+            csv_stream_headers(@user.orcid)
             body ::Bloodhound::IO.csv_stream_occurrences(records)
           end
 
