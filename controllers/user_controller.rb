@@ -384,12 +384,12 @@ module Sinatra
 
           app.get '/:id/specimens.json' do
             content_type "application/ld+json", charset: 'utf-8'
-            if params[:id].is_orcid? || params[:id].is_wiki_id?
+            if !params[:id].is_orcid? && !params[:id].is_wiki_id?
               halt 404, {}.to_json
             end
 
             viewed_user = find_user(params[:id])
-            attachment "#{viewed_user.orcid}.json"
+            attachment "#{viewed_user.identifier}.json"
             cache_control :no_cache
             headers.delete("Content-Length")
             begin
@@ -401,7 +401,9 @@ module Sinatra
           end
 
           app.get '/:id/specimens.csv' do
-            check_identifier
+            if !params[:id].is_orcid? && !params[:id].is_wiki_id?
+              halt 404, [].to_csv
+            end
             begin
               csv_stream_headers
               @viewed_user = find_user(params[:id])
