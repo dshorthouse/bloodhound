@@ -81,8 +81,14 @@ module Sinatra
 
           app.get '/admin/users/helped' do
             admin_protected!
-            latest_claims
-            haml :'admin/user_helped', locals: { active_page: "administration" }
+            latest_claims("living")
+            haml :'admin/user_helped', locals: { active_page: "administration", active_tab: "living" }
+          end
+
+          app.get '/admin/users/helped/deceased' do
+            admin_protected!
+            latest_claims("deceased")
+            haml :'admin/user_helped', locals: { active_page: "administration", active_tab: "deceased" }
           end
 
           app.get '/admin/users/search' do
