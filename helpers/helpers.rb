@@ -80,13 +80,15 @@ module Sinatra
         @results = results[:hits]
       end
 
-      def latest_claims
+      def latest_claims(type = "living")
+        user_type = (type == "living") ? { orcid: nil } : { wikidata: nil }
         qry = UserOccurrence.select("user_occurrences.user_id AS user_id, MAX(user_occurrences.created_by) AS created_by, MAX(user_occurrences.created) AS created")
                   .joins(:user)
                   .preload(:user, :claimant)
                   .group("user_occurrences.user_id")
                   .where("user_occurrences.visible = true")
                   .where("user_occurrences.user_id != user_occurrences.created_by")
+                  .where.not(users: user_type)
                   .order(Arel.sql("MAX(user_occurrences.created) DESC"))
         @pagy, @results = pagy(qry)
       end

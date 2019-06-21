@@ -22,6 +22,14 @@
   %li{class: "nav-item"}
     %a{class: "nav-link active", href: "/help-others/progress"} Progress
 
+%div{class:"container-fluid"}
+  %nav{id:"network-nav", class:"navbar navbar-light navbar-expand bg-light"}
+    %ul{class:"navbar-nav"}
+      %li{class:"nav-item"}
+        %a{class:"nav-link#{locals[:active_tab] == "living" ? " active" : nil}", href:"/help-others/progress"} Living
+      %li{class:"nav-item"}
+        %a{class:"nav-link#{locals[:active_tab] == "deceased" ? " active" : nil}", href:"/help-others/progress/deceased"} Deceased
+
 %div{class:"table-responsive-lg mt-4"}
   %table{class:"table table-hover table-sm"}
     %thead{class: "thead-light"}

@@ -66,6 +66,8 @@ class BLOODHOUND < Sinatra::Base
 
   register Sinatra::Bloodhound::Controller::ApplicationController
   register Sinatra::Bloodhound::Controller::AdminController
+  register Sinatra::Bloodhound::Controller::HelpingController
+  register Sinatra::Bloodhound::Controller::ProfileController
   register Sinatra::Bloodhound::Controller::UserController
   register Sinatra::Bloodhound::Controller::UserOccurrenceController
 
