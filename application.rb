@@ -9,6 +9,9 @@ class BLOODHOUND < Sinatra::Base
   Encoding.default_internal = Encoding::UTF_8
   Encoding.default_external = Encoding::UTF_8
 
+  register Sinatra::I18nSupport
+  load_locales File.join(root, 'config', 'locales')
+
   register Sinatra::ConfigFile
   config_file File.join(root, 'config.yml')
 

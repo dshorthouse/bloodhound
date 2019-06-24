@@ -13,18 +13,18 @@
     %h1{class: "display-2"} Bloodhound
 
 %div{class:"container-fluid"}
-  %p{class:"lead"} Claim the natural history specimens you collected or identified, track their use in new science, and help acknowledge your peers, mentors, and organizations.
+  %p{class:"lead"}= I18n.t('home.tagline')
   %p{id: "profile-buttons"}
-    %a{href:"/get-started", role: "button", class:"btn btn-lg btn-outline-success"} Get started
+    %a{href:"/get-started", role: "button", class:"btn btn-lg btn-outline-success"}= I18n.t('home.get_started')
     - if !authorized?
       %a{ href:"/auth/orcid", role: "button", class: "btn btn-lg btn-outline-success button-login connect-orcid-button" }
         %img{ alt: "ORCID logo", height:24, width:24, class:"orcid-id-logo", src:"/images/orcid_24x24.png"}
         Log in with ORCID
     - else
-      %a{ href:"/profile", id: "candidates-button", role: "button", class: "btn btn-lg btn-outline-success" } Your Profile
+      %a{ href:"/profile", id: "candidates-button", role: "button", class: "btn btn-lg btn-outline-success" }= I18n.t('home.your_profile')
 
 - if !@results.empty?
-  %h2{class: "text-center"} Sample Profiles
+  %h2{class: "text-center"}= I18n.t('home.sample_profiles')
 
   %div{class:"container"}
   - @results.in_groups_of(3).each do |group|
