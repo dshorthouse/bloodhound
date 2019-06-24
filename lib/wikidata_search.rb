@@ -13,7 +13,8 @@ module Bloodhound
 
     def initialize
       @settings = Sinatra::Application.settings
-      @sparql = SPARQL::Client.new("https://query.wikidata.org/sparql")
+      headers = { 'User-Agent' => 'Bloodhound/1.0' }
+      @sparql = SPARQL::Client.new("https://query.wikidata.org/sparql", headers: headers)
     end
 
     def wikidata_people_query
