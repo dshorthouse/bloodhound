@@ -52,8 +52,7 @@ module Sinatra
             @results = []
             begin
               @country = IsoCountryCodes.find(country_code)
-              users = User.where.not(orcid: nil)
-                          .where("country_code LIKE ?", "%#{country_code}%").order(:family)
+              users = User.where("country_code LIKE ?", "%#{country_code}%").order(:family)
               @pagy, @results = pagy(users, items: 30)
               haml :'countries/country', locals: { active_page: "countries" }
             rescue

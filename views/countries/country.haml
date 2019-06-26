@@ -8,7 +8,9 @@
       %p.lead.text-muted
         From countries stated in
         %a{href:"https://orcid.org"} ORCID
-        accounts 
+        or
+        %a{href: "https://www.wikidata.org"} Wikidata
+        accounts
 
 - if @results.empty?
   %div{class: "alert alert-warning", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
