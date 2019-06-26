@@ -14,7 +14,6 @@ module Sinatra
             end
 
             viewed_user = find_user(params[:id])
-            attachment "#{viewed_user.identifier}.json"
             cache_control :no_cache
             headers.delete("Content-Length")
             begin
