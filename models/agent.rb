@@ -10,7 +10,9 @@ class Agent < ActiveRecord::Base
   has_many :determined_taxa, through: :taxon_determiners, source: :taxon
 
   def self.enqueue(file_path)
-    Sidekiq::Client.enqueue(Bloodhound::AgentWorker, file_path)
+    CSV.foreach(file_path, :headers => true) do |row|
+      Sidekiq::Client.enqueue(Bloodhound::AgentWorker, row)
+    end
   end
 
   def fullname

@@ -6,7 +6,9 @@ class Taxon < ActiveRecord::Base
   has_many :occurrences, through: :taxon_occurrences, source: :occurrence
 
   def self.enqueue(file_path)
-    Sidekiq::Client.enqueue(Bloodhound::TaxonWorker, file_path)
+    CSV.foreach(file_path, :headers => true) do |row|
+      Sidekiq::Client.enqueue(Bloodhound::TaxonWorker, row)
+    end
   end
 
 end

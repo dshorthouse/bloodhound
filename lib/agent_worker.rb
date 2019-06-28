@@ -5,33 +5,31 @@ module Bloodhound
     include Sidekiq::Worker
     sidekiq_options queue: :agent
 
-    def perform(file_path)
-      CSV.foreach(file_path, :headers => true) do |row|
-        agents = parse(row["agents"])
-        gbifIDs_recordedBy = row["gbifIDs_recordedBy"].tr('[]', '')
-                                                      .split(',')
-                                                      .map(&:to_i)
-        gbifIDs_identifiedBy = row["gbifIDs_identifiedBy"].tr('[]', '')
-                                                          .split(',')
-                                                          .map(&:to_i)
+    def perform(row)
+      agents = parse(row["agents"])
+      gbifIDs_recordedBy = row["gbifIDs_recordedBy"].tr('[]', '')
+                                                    .split(',')
+                                                    .map(&:to_i)
+      gbifIDs_identifiedBy = row["gbifIDs_identifiedBy"].tr('[]', '')
+                                                        .split(',')
+                                                        .map(&:to_i)
 
-        agents.each do |a|
-          agent = Agent.create_or_find_by({
-            family: a[:family].to_s,
-            given: a[:given].to_s
-          })
-          if !gbifIDs_recordedBy.empty?
-            data = gbifIDs_recordedBy.map{|r| {
-              occurrence_id: r,
-              agent_id: agent.id }}
-            OccurrenceRecorder.import data, batch_size: 2500, validate: false
-          end
-          if !gbifIDs_identifiedBy.empty?
-            data = gbifIDs_identifiedBy.map{|r| {
-              occurrence_id: r,
-              agent_id: agent.id }}
-            OccurrenceDeterminer.import data, batch_size: 2500, validate: false
-          end
+      agents.each do |a|
+        agent = Agent.create_or_find_by({
+          family: a[:family].to_s,
+          given: a[:given].to_s
+        })
+        if !gbifIDs_recordedBy.empty?
+          data = gbifIDs_recordedBy.map{|r| {
+            occurrence_id: r,
+            agent_id: agent.id }}
+          OccurrenceRecorder.import data, batch_size: 2500, validate: false
+        end
+        if !gbifIDs_identifiedBy.empty?
+          data = gbifIDs_identifiedBy.map{|r| {
+            occurrence_id: r,
+            agent_id: agent.id }}
+          OccurrenceDeterminer.import data, batch_size: 2500, validate: false
         end
       end
     end
