@@ -6,7 +6,7 @@ module Bloodhound
     sidekiq_options queue: :taxon
 
     def perform(row)
-      taxon = Taxon.create_or_find_by(family: row["family"].strip)
+      taxon = Taxon.create_or_find_by(family: row["family"].to_s.strip)
       data = row["gbifIDs_family"].tr('[]', '')
                         .split(',')
                         .map{|r| { occurrence_id: r.to_i, taxon_id: taxon.id } }

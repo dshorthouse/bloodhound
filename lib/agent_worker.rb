@@ -9,8 +9,8 @@ module Bloodhound
       agents = parse(row["agents"])
       agents.each do |a|
         agent = Agent.create_or_find_by({
-          family: a[:family].to_s,
-          given: a[:given].to_s
+          family: a[:family].to_s.strip,
+          given: a[:given].to_s.strip
         })
         recs = row["gbifIDs_recordedBy"]
                   .tr('[]', '')
