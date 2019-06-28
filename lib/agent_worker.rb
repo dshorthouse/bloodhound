@@ -7,29 +7,24 @@ module Bloodhound
 
     def perform(row)
       agents = parse(row["agents"])
-      gbifIDs_recordedBy = row["gbifIDs_recordedBy"].tr('[]', '')
-                                                    .split(',')
-                                                    .map(&:to_i)
-      gbifIDs_identifiedBy = row["gbifIDs_identifiedBy"].tr('[]', '')
-                                                        .split(',')
-                                                        .map(&:to_i)
-
       agents.each do |a|
         agent = Agent.create_or_find_by({
           family: a[:family].to_s,
           given: a[:given].to_s
         })
-        if !gbifIDs_recordedBy.empty?
-          data = gbifIDs_recordedBy.map{|r| {
-            occurrence_id: r,
-            agent_id: agent.id }}
-          OccurrenceRecorder.import data, batch_size: 2500, validate: false
+        recs = row["gbifIDs_recordedBy"]
+                  .tr('[]', '')
+                  .split(',')
+                  .map{|r| { occurrence_id: r.to_i, agent_id: agent.id } }
+        ids = row["gbifIDs_identifiedBy"]
+                  .tr('[]', '')
+                  .split(',')
+                  .map{|r| { occurrence_id: r.to_i, agent_id: agent.id } }
+        if !recs.empty?
+          OccurrenceRecorder.import recs, batch_size: 2500, validate: false
         end
-        if !gbifIDs_identifiedBy.empty?
-          data = gbifIDs_identifiedBy.map{|r| {
-            occurrence_id: r,
-            agent_id: agent.id }}
-          OccurrenceDeterminer.import data, batch_size: 2500, validate: false
+        if !ids.empty?
+          OccurrenceDeterminer.import ids, batch_size: 2500, validate: false
         end
       end
     end
