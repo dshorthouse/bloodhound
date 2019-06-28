@@ -41,7 +41,9 @@ if options[:directory]
 
   files.each do |file|
     file_path = File.join(options[:directory], file)
-    Taxon.enqueue(file_path)
+    CSV.foreach(file_path, :headers => true) do |row|
+      Sidekiq::Client.enqueue(Bloodhound::TaxonWorker, row)
+    end
   end
 end
 
@@ -49,13 +51,13 @@ end
 
 AFTER taxon queue is empty of jobs, must execute the following:
 
-  sql = "INSERT INTO 
-          taxon_determiners 
-            (taxon_id, agent_id) 
+  sql = "INSERT INTO
+          taxon_determiners
+            (taxon_id, agent_id)
          SELECT
            t.taxon_id, d.agent_id
-         FROM 
-           occurrence_determiners d 
+         FROM
+           occurrence_determiners d
          JOIN taxon_occurrences t ON d.occurrence_id = t.occurrence_id"
 
   Occurrence.connection.execute(sql)

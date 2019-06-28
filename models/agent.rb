@@ -9,12 +9,6 @@ class Agent < ActiveRecord::Base
   has_many :taxon_determiners, dependent: :delete_all
   has_many :determined_taxa, through: :taxon_determiners, source: :taxon
 
-  def self.enqueue(file_path)
-    CSV.foreach(file_path, :headers => true) do |row|
-      Sidekiq::Client.enqueue(Bloodhound::AgentWorker, row)
-    end
-  end
-
   def fullname
     [given, family].join(" ").strip
   end

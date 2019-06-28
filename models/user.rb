@@ -5,12 +5,10 @@ class User < ActiveRecord::Base
   has_many :occurrences, -> { distinct }, through: :user_occurrences, source: :occurrence
   has_many :claims, foreign_key: :created_by, class_name: "UserOccurrence", dependent: :delete_all
   has_many :claimed_occurrences, through: :claims, source: :occurrence
-
   has_many :user_organizations, dependent: :delete_all
   has_many :organizations, through: :user_organizations, source: :organization
 
   before_update :set_update_time
-
   after_create :update_profile, :add_search
   after_update :update_search
   after_destroy :remove_search, :create_destroyed_user

@@ -6,7 +6,6 @@ class Organization < ActiveRecord::Base
 
   after_create :add_search
   after_update :update_search
-
   after_destroy :remove_search
 
   METRICS_YEAR_RANGE = (2005..DateTime.now.year)

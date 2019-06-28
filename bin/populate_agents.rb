@@ -41,7 +41,9 @@ if options[:directory]
 
   files.each do |file|
     file_path = File.join(options[:directory], file)
-    Agent.enqueue(file_path)
+    CSV.foreach(file_path, :headers => true) do |row|
+      Sidekiq::Client.enqueue(Bloodhound::AgentWorker, row)
+    end
   end
 
 end
