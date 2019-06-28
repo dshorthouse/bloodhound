@@ -2,17 +2,17 @@
 %html{lang: "en", prefix: "og: http://ogp.me/ns#"}
   %head
     %meta{charset: "UTF-8" }/
-    %meta{name:"description", content:"Claim the natural history specimens you collected or identified and track their use in new science"}/
+    %meta{name:"description", content:"#{I18n.t('home.tagline')}"}/
     %meta{name:"keywords", content:"credit,specimens,natural,history,orcid,gbif"}/
     %meta{name:"author", content:"David P. Shorthouse"}/
     %meta{name:"viewport", content:"width=device-width, initial-scale=1"}/
     %meta{name:"twitter:card", content:"summary"}/
     %meta{name:"twitter:site" ,content:"@BloodhoundTrack"}/
-    %meta{name:"twitter:description", content:"Claim the natural history specimens you collected or identified and track their use in new science"}/
+    %meta{name:"twitter:description", content:"#{I18n.t('home.tagline')}"}/
     %meta{name:"twitter:creator", content:"@BloodhoundTrack"}/
     %meta{name:"twitter:image", content:"#{base_url}/images/screenshot.png"}/
     %meta{property:"og:title", content:"#{yield_content(:title)}"}/
-    %meta{property:"og:description", content:"Claim the natural history specimens you collected or identified and track their use in new science"}/
+    %meta{property:"og:description", content:"#{I18n.t('home.tagline')}"}/
     %meta{property:"og:locale", content:"en_US"}/
     %meta{property:"og:type", content:"website"}/
     %meta{property:"og:url", content:"#{base_url}"}/
@@ -37,4 +37,4 @@
     %main{id:"main", role:"main", class:"mb-5"}
       %div{class: "container-fluid"}
         %div{class: "alert alert-warning row", role:"alert", style:"margin-left:0.1em;margin-right:0.1em"}
-          Bloodhound is currently offline, following the scent of new data.
+          = I18n.t('offline.message')

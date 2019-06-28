@@ -11,6 +11,7 @@ class BLOODHOUND < Sinatra::Base
 
   register Sinatra::I18nSupport
   load_locales File.join(root, 'config', 'locales')
+  I18n.available_locales = [:en, :fr]
 
   register Sinatra::ConfigFile
   config_file File.join(root, 'config.yml')
@@ -19,6 +20,7 @@ class BLOODHOUND < Sinatra::Base
   register Sinatra::OutputBuffer
   set :cache_enabled_in, [:development, :production]
 
+  use Rack::Locale
   use Rack::MethodOverride
 
   use Rack::Session::Cookie, :key => 'rack.session',

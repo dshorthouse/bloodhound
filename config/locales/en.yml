@@ -4,3 +4,34 @@ en:
     get_started: Get started
     your_profile: Your profile
     sample_profiles: Sample Profiles
+    orcid_login: Log in with ORCID
+    orcid_logo: ORCID logo
+  layout:
+    profiles: Profiles
+    trainers: Trainers
+    organizations: Organizations
+    countries: Countries
+    agents: Agents
+    help_others: Help Others
+    toggle_dropdown: Toggle Dropdown
+    overview: Overview
+    my_specimens: My specimens
+    discovered: Discovered
+    science_enabled: Science enabled
+    settings: Settings
+    administration: Administration
+    logout: Logout
+    resources: Resources
+    integrations: Integrations
+    for_developers: For Developers
+    about: About
+    rationale: Rationale
+    how_works: How it Works
+    feedback: Feedback
+    twitter: Bloodhound on Twitter
+  oops:
+    not_found: Not found
+  not_authorized:
+    not_authorized: Not authorized or session terminated.
+  offline:
+    message: Bloodhound is currently offline, following the scent of new data.

@@ -156,6 +156,8 @@ GEM
     parsley-store (0.3.4)
     polyglot (0.3.5)
     rack (2.0.7)
+    rack-contrib (2.1.0)
+      rack (~> 2.0)
     rack-google-analytics (1.2.0)
       actionpack
       activesupport
@@ -278,6 +280,7 @@ DEPENDENCIES
   oj
   omniauth-orcid
   pagy
+  rack-contrib
   rack-google-analytics
   rake
   redis
