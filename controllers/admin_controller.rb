@@ -274,7 +274,11 @@ module Sinatra
           app.post '/admin/user/:id/upload-claims' do
             admin_protected!
             @admin_user = find_user(params[:id])
-            upload_file(user_id: @admin_user.id, created_by: @user.id)
+            begin
+              upload_file(user_id: @admin_user.id, created_by: @user.id)
+            rescue => e
+              @error = e.message
+            end
             haml :'admin/upload'
           end
 

@@ -92,7 +92,11 @@ module Sinatra
             protected!
             check_identifier
             @viewed_user = find_user(params[:id])
-            upload_file(user_id: @viewed_user.id, created_by: @user.id)
+            begin
+              upload_file(user_id: @viewed_user.id, created_by: @user.id)
+            rescue => e
+              @error = e.message
+            end
             haml :'help/upload'
           end
 
