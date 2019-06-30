@@ -1,6 +1,6 @@
 fr:
   home:
-    tagline: Réclamez les spécimens que vous avez collectés ou identifiés, suivez leur utilisation dans les nouvelles sciences et aidez à reconnaître vos pairs, vos mentors et vos organisations.
+    tagline: Réclamez les spécimens que vous avez collectés ou identifiés, suivez leur utilisation dans les nouvelles publications scientifiques et aidez à reconnaître vos pairs, vos mentors et vos organismes.
     get_started: Commencer
     your_profile: Votre profil
     sample_profiles: Exemples
@@ -25,9 +25,9 @@ fr:
     for_developers: Pour les informaticiens
     about: À propos
     rationale: Raisonnement
-    how_works: Comment ça march
+    how_works: Comment ça marche
     feedback: Commentaires
-    twitter: Bloodhound sur    Twitter
+    twitter: Bloodhound sur Twitter
   oops:
     not_found: Pas trouvé
   not_authorized:
