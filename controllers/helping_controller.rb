@@ -88,6 +88,14 @@ module Sinatra
             body ::Bloodhound::IO.csv_stream_candidates(records)
           end
 
+          app.post '/help-others/:id/upload-claims' do
+            protected!
+            check_identifier
+            @viewed_user = find_user(params[:id])
+            upload_file(user_id: @viewed_user.id, created_by: @user.id)
+            haml :'help/upload'
+          end
+
         end
 
       end
