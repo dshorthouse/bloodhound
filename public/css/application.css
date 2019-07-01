@@ -319,6 +319,10 @@ dl.citation{
   margin-top:0.75rem;
 }
 
+#helper-navbar {
+  border-bottom: 3px solid #E0E0E0;
+}
+
 @media(max-width: 767px) {
   .form-inline .form-group {
     margin-bottom:1rem;

@@ -27,6 +27,7 @@ var Application = (function($, window) {
       this.activate_switch();
       this.activate_refresh();
       this.candidate_counter();
+      this.helper_navbar();
     },
     bloodhound: function() {
       this.data_sources.agent = this.create_bloodhound("agent");
@@ -314,6 +315,19 @@ var Application = (function($, window) {
             $(".badge-notify").text(data.count).show();
           } else if (data.count > 50) {
             $(".badge-notify").text("50+").show();
+          }
+        });
+      }
+    },
+    helper_navbar: function() {
+      var self = this;
+      if (self.path === "/profile") {
+        var navbar = $('#helper-navbar');
+        $(document).scroll(function() {
+          if ($(this).scrollTop() > $('#helper-info').offset().top) {
+            navbar.removeClass('d-none');
+          } else {
+            navbar.addClass('d-none');
           }
         });
       }
