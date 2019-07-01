@@ -15,7 +15,7 @@
         = haml :'partials/user_tabs', layout: false, locals: { active_page: "citations" }
 
         - if @results.empty?
-          %div{class: "alert alert-warning row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+          %div{class: "alert alert-info row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
             Specimens have not been cited for this research article.
 
         - if !@results.empty?
