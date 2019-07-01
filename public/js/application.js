@@ -321,7 +321,7 @@ var Application = (function($, window) {
     },
     helper_navbar: function() {
       var self = this;
-      if (self.path === "/profile") {
+      if (self.path === "/profile" || self.path === "/admin") {
         var navbar = $('#helper-navbar');
         $(document).scroll(function() {
           if ($(this).scrollTop() > $('#helper-info').offset().top) {

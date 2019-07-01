@@ -21,7 +21,8 @@
     Specimens have not been ignored.
 
 - else
-  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  = haml :'partials/admin_fixed_navbar', layout: false
+  %div{id: "helper-info", class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
     Choose 
     %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
     collected, 
