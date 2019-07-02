@@ -108,7 +108,7 @@
             - else
               %li
                 %a{ href:"/auth/orcid?lang=#{I18n.locale}", role: "button", class: "btn btn-outline-light connect-orcid-button" }
-                  %img{ alt: "#{I18n.t('home.orcid_logo')}", height:24, width:24, class:"orcid-id-logo", src:"/images/orcid_24x24.png"}
+                  %img{ alt: "#{I18n.t('home.orcid_logo')}", height:24, width:24, class:"orcid-id-logo", src:"/images/orcid_24x24.png", class:"mr-2"}
                   = I18n.t('home.orcid_login')
 
       = yield_content :jumbotron
