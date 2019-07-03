@@ -24,10 +24,10 @@ end.parse!
 
 if options[:truncate]
   Neo4j::ActiveBase.current_session.query('MATCH (n) DETACH DELETE n')
+  Sidekiq::Stats.new.reset
 end
 
 if options[:cluster]
-  Sidekiq::Stats.new.reset
   write_graphics = options[:write] ? true : false
   duplicates = Agent.where("family NOT LIKE '%.%'")
                     .where.not(given: ["", nil])
@@ -35,8 +35,8 @@ if options[:cluster]
                     .having('count(*) > 1')
                     .pluck(:id)
                     .uniq
-  duplicates.each do |id|
-    Sidekiq::Client.enqueue(Bloodhound::ClusterWorker, id)
+  duplicates.in_groups_of(1000, false) do |group|
+    Sidekiq::Client.push_bulk({ 'class' => Bloodhound::ClusterWorker, 'args' => group.map{ |i| [i] } })
   end
 
 end

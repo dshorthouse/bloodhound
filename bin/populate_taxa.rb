@@ -41,8 +41,13 @@ if options[:directory]
 
   files.each do |file|
     file_path = File.join(options[:directory], file)
-    CSV.foreach(file_path, :headers => true) do |row|
-      Sidekiq::Client.enqueue(Bloodhound::TaxonWorker, row.to_hash)
+    group = []
+    CSV.foreach(file_path, :headers => true).with_index do |row, i|
+      group << [row.to_hash]
+      next if i % 1000 != 0
+      Sidekiq::Client.push_bulk({ 'class' => Bloodhound::TaxonWorker, 'args' => group })
+      puts "#{file} ... #{i.to_s.green}"
+      group = []
     end
   end
 end
