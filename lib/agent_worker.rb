@@ -15,16 +15,16 @@ module Bloodhound
         recs = row["gbifIDs_recordedBy"]
                   .tr('[]', '')
                   .split(',')
-                  .map{|r| { occurrence_id: r.to_i, agent_id: agent.id } }
+                  .map{|r| [ r.to_i, agent.id ] }
         ids = row["gbifIDs_identifiedBy"]
                   .tr('[]', '')
                   .split(',')
-                  .map{|r| { occurrence_id: r.to_i, agent_id: agent.id } }
+                  .map{|r| [ r.to_i, agent.id ] }
         if !recs.empty?
-          OccurrenceRecorder.import recs, batch_size: 2500, validate: false
+          OccurrenceRecorder.import [:occurrence_id, :agent_id], recs, batch_size: 2500, validate: false
         end
         if !ids.empty?
-          OccurrenceDeterminer.import ids, batch_size: 2500, validate: false
+          OccurrenceDeterminer.import [:occurrence_id, :agent_id], ids, batch_size: 2500, validate: false
         end
       end
     end

@@ -55,7 +55,7 @@
         = haml :'partials/user_tabs', layout: false, locals: { active_page: "overview" }
 
         - if @total[:number_recorded] == 0 && @total[:number_identified] == 0
-          %div{class: "alert alert-warning justify-content-between row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+          %div{class: "alert alert-info justify-content-between row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
             Identified or collected specimens have not yet been recorded.
         - else
           %div{class: "alert alert-info justify-content-between row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
