@@ -46,9 +46,9 @@ if options[:directory]
       group << [row.to_hash]
       next if i % 1000 != 0
       Sidekiq::Client.push_bulk({ 'class' => Bloodhound::AgentWorker, 'args' => group })
-      puts "#{file} ... #{i.to_s.green}"
       group = []
     end
+    puts file.green
   end
 
 end
