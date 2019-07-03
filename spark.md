@@ -182,12 +182,3 @@ familyGroups.select("family", "gbifIDs_family").
     option("escape", "\"").
     csv("family-csv")
 ```
-
-Sample bash script for a LOAD DATA INFILE routine in MySQL:
-
-```bash
-#!/bin/bash
-for filename in /occurrences/*.csv; do
-  mysql -uusername -ppassword --local-infile bloodhound -e "SET FOREIGN_KEY_CHECKS = 0; SET UNIQUE_CHECKS = 0; SET SESSION tx_isolation='READ-UNCOMMITTED'; SET sql_log_bin = 0; LOAD DATA LOCAL INFILE '"$filename"' INTO TABLE occurrences FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n'"
-done
-```
