@@ -97,15 +97,6 @@ val df2 = spark.
 
 val occurrences = df1.join(df2, Seq("gbifID"), "left_outer")
 
-//optionally save the DataFrame to disk so we don't have to do the above again
-occurrences.write.mode("overwrite").save("occurrences")
-
-//load the saved DataFrame, can later skip the above processes and start from here
-val occurrences = spark.
-    read.
-    option("header","true").
-    load("occurrences")
-
 //set some properties for a MySQL connection
 val prop = new java.util.Properties
 prop.setProperty("driver", "com.mysql.cj.jdbc.Driver")
@@ -116,15 +107,6 @@ val url = "jdbc:mysql://localhost:3306/bloodhound?serverTimezone=UTC&useSSL=fals
 
 //write occurrences data to the database
 occurrences.write.mode("append").jdbc(url, "occurrences", prop)
-
-//write occurrences data to 1000 csv files as alternate bulk import (eg for LOAD DATA INFILE)
-occurrences.
-    repartition(1000).
-    write.
-    mode("overwrite").
-    option("quote", "\"").
-    option("escape", "\"").
-    csv("occurrences-csv")
 
 //aggregate recordedBy
 val recordedByGroups = occurrences.
@@ -143,14 +125,7 @@ val unioned = spark.
     read.
     json(recordedByGroups.toJSON.union(identifiedByGroups.toJSON))
 
-//optionally save the DataFrame to disk
-unioned.write.mode("overwrite").save("occurrences-unioned")
-
-//load the saved DataFrame, can later skip all the above processes
-val unioned = spark.
-    read.
-    option("header","true").
-    load("occurrences-unioned")
+//TODO: use scala-redis and push jobs straight away using JSON signature found on https://github.com/mperham/sidekiq/wiki/FAQ
 
 //concatenate arrays into strings
 def stringify(c: Column) = concat(lit("["), concat_ws(",", c), lit("]"))
