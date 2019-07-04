@@ -34,6 +34,15 @@ module Sinatra
             end
           end
 
+          app.get '/agent/:id/specimens.csv' do
+            protected!
+            id = params[:id].to_i
+            agent = Agent.find(id)
+            records = agent.occurrences
+            csv_stream_headers(agent.id)
+            body ::Bloodhound::IO.csv_stream_agent_occurrences(records)
+          end
+
           app.get '/agents' do
             search_agent
             @formatted_results = format_agents
