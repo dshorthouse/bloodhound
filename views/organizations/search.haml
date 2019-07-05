@@ -42,7 +42,10 @@
             - if !o.nil?
               %div{class: "card m-3"}
                 %h5{class: "card-header"}
-                  %a{href: "/organization/#{org.identifier}"} #{org.name}
+                  - if org.image_url
+                    %img{src:"#{organization_image(org, 'medium')}", alt:"#{org.name}", class:"mr-2 rounded float-left"}
+                  %span{class:"clearfix"}
+                    %a{href: "/organization/#{org.identifier}"} #{org.name}
                 %div{class: "card-body"}
                   %p{class:"text-muted"} #{org.address}
                   %div{class: "row"}

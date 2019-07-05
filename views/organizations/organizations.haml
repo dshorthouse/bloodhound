@@ -27,7 +27,10 @@
           - if !o.nil?
             %div{class: "card m-3"}
               %h5{class: "card-header"}
-                %a{href: "/organization/#{o.identifier}"} #{o.name}
+                - if o.image_url
+                  %img{src:"#{organization_image(o, 'medium')}", alt:"#{o.name}", class:"mr-2 rounded float-left"}
+                %span{class:"clearfix"}
+                  %a{href: "/organization/#{o.identifier}"} #{o.name}
               %div{class: "card-body"}
                 %p{class:"text-muted"} #{o.address}
                 %div{class: "row"}

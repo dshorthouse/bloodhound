@@ -41,6 +41,20 @@ module Sinatra
         img
       end
 
+      def organization_image(organization, size=nil)
+        img = nil
+        cloud_img = "https://abekpgaoen.cloudimg.io/height/200/x/"
+        if size == "thumbnail"
+          cloud_img = "https://abekpgaoen.cloudimg.io/crop/24x24/n/"
+        elsif size == "medium"
+          cloud_img = "https://abekpgaoen.cloudimg.io/crop/48x48/n/"
+        end
+        if organization.image_url
+          img = cloud_img + organization.image_url
+        end
+        img
+      end
+
       def signature_image(user)
         img = "/images/signature.png"
         cloud_img = "https://abekpgaoen.cloudimg.io/height/80/x/"
