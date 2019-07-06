@@ -44,7 +44,7 @@ if options[:directory]
     group = []
     CSV.foreach(file_path, headers: true).with_index do |row, i|
       group << [row.to_hash]
-      next if i % 1000 != 0
+      next if i % 100 != 0
       Sidekiq::Client.push_bulk({ 'class' => Bloodhound::AgentWorker, 'args' => group })
       group = []
     end
