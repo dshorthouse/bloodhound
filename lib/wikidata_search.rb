@@ -151,7 +151,7 @@ module Bloodhound
       given = parsed.given rescue nil
       country = wiki_user.properties("P27").compact.map(&:title).join("|") rescue nil
       country_code = wiki_user.properties("P27").compact.map{|a| find_country_code(a.title) || "" }.compact.join("|").presence rescue nil
-      keywords = wiki_user.properties("P106").compact.map(&:title).join("|") rescue nil
+      keywords = wiki_user.properties("P106").map{|k| k.title if !/^Q\d+/.match?(k.title)}.compact.join("|") rescue nil
       image_url = nil
       signature_url = nil
       image = wiki_user.image.value rescue nil
