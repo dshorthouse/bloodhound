@@ -63,3 +63,9 @@
     %p
       %a{href:"https://doi.org/#{@viewed_user.zenodo_concept_doi}"}
         %img{src:"https://zenodo.org/badge/DOI/#{@viewed_user.zenodo_concept_doi}.svg"}
+
+  - if admin_authorized?
+    %p
+      %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
+        %i{class:"fas fa-user-cog"}
+        Settings
