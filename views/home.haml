@@ -18,7 +18,8 @@
     %a{href:"/get-started", role: "button", class:"btn btn-lg btn-outline-success"}= I18n.t('home.get_started')
     - if !authorized?
       %a{ href:"/auth/orcid", role: "button", class: "btn btn-lg btn-outline-success button-login connect-orcid-button" }
-        %img{ alt: "#{I18n.t('home.orcid_logo')}", height:24, width:24, class:"orcid-id-logo mr-2", src:"/images/orcid_24x24.png"}= I18n.t('home.orcid_login')
+        %img{ alt: "#{I18n.t('home.orcid_logo')}", height:24, width:24, class:"orcid-id-logo mr-2", src:"/images/orcid_24x24.png"}
+        = I18n.t('home.orcid_login')
     - else
       %a{ href:"/profile", id: "candidates-button", role: "button", class: "btn btn-lg btn-outline-success" }= I18n.t('home.your_profile')
 
