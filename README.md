@@ -114,7 +114,7 @@ Alternatively, mydumper and myloader can be used to accelerate these tasks.
       mydumper --user root --database bloodhound --tables-list agents,occurrences,occurrence_recorders,occurrence_determiners,taxa,taxon_occurrences,taxon_determiners --compress --no-schemas --threads 8 --outputdir /Users/dshorthouse/Documents/bloodhound_dump
 
       apt-get install mydumper
-      myloader --database bloodhound --user bloodhound --password --threads 8 --directory /home/dshorthouse/bloodhound_restore
+      nohup myloader --database bloodhound --user bloodhound --password --threads 8 --directory /home/dshorthouse/bloodhound_restore &
 
 ## License
 

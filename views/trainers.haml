@@ -21,7 +21,10 @@
               %div{class: "card my-3"}
                 %div{class: "card-header"}
                   %h5
-                    %a{href: "/#{u.identifier}"} #{u.fullname_reverse}
+                    %a{href: "/#{u.identifier}"}
+                      - if u.image_url
+                        %img{src:"#{profile_image(u, 'medium')}", alt:"#{u.fullname}", class:"card-img-profile"}
+                      #{u.fullname_reverse}
                 %div{class: "card-body"}
                   - if u.country
                     %p{class:"small text-muted mt-0 mb-0"} #{u.country.split("|").join("; ")}
