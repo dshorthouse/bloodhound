@@ -1,0 +1,19 @@
+-content_for :title do
+  Donate
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
+    %div{class:"mr-auto p-2"}
+      %h2 Donate
+
+%p
+  Bloodhound was launched in August 2018. Its goal is to help natural historians receive recognition and credit for the effort they put into collecting and depositing specimens in museums throughout the world. The project is now looking to offset its server hosting fees, scale and accelerate its services, and to build new capabilities. Features under development can be found on  
+  = succeed "." do
+    %a{href:"https://github.com/dshorthouse/bloodhound/issues"} GitHub
+
+%p Your one-time or periodic donation will help this project grow and succeeed.
+
+%div{class:"d-flex justify-content-center"}
+  %div{class:"flex-fill mt-2 mr-3 ml-3"}
+    %script{src:"https://donorbox.org/widget.js", paypalExpress: "false"}
+    %iframe{src:"https://donorbox.org/embed/help-support-bloodhound", height:"685px", width:"100%", style:"max-width:500px; min-width:310px; max-height:none!important", seamless:"seamless", name:"donorbox", frameborder:"0", scrolling:"no", allowpaymentrequest: true}

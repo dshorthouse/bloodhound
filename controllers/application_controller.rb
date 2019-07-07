@@ -70,6 +70,10 @@ module Sinatra
             end
           end
 
+          app.get '/donate' do
+            haml :'donate'
+          end
+
           app.get '/trainers' do
             trainers
             haml :'trainers', locals: { active_page: "trainers" }
