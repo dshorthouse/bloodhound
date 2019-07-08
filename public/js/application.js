@@ -292,9 +292,13 @@ var Application = (function($, window) {
     activate_refresh: function(){
       var self = this;
       $("a.profile-refresh").on("click", function() {
+        var button = $(this);
         $.ajax({
             method: "GET",
-            url: self.path + "/refresh.json?user_id=" + self.user_id
+            url: self.path + "/refresh.json?user_id=" + self.user_id,
+            beforeSend: function(xhr) {
+              button.addClass("disabled");
+            }
         }).done(function(data) {
           $(".alert").alert().show();
           $(".alert").on("closed.bs.alert", function () {
