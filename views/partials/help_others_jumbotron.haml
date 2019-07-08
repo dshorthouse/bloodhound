@@ -50,4 +50,10 @@
         %div{class: "text-center text-muted font-italic"}
           #{@viewed_user.keywords.split("|").join(", ")}
 
+      - if admin_authorized?
+        %div{class: "text-center"}
+          %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
+            %i{class:"fas fa-cog"}
+            Settings
+
     %div{class:"col"}
