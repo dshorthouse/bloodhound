@@ -156,7 +156,7 @@ module Bloodhound
       signature_url = nil
       image = wiki_user.image.value rescue nil
       if image
-        image_url = "http://commons.wikimedia.org/wiki/Special:FilePath/" << URI.encode(wiki_user.image.value)
+        image_url = "http://commons.wikimedia.org/wiki/Special:FilePath/" << URI.encode(image)
       end
       signature = wiki_user.properties("P109").first.value rescue nil
       if signature
