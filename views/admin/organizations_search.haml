@@ -20,24 +20,23 @@
       No organizations found.
   - else
     - @results.in_groups_of(3).each do |group|
-      %div{class: "row"}
+      %div{class: "card-deck"}
         - group.each do |o|
           - if o.nil?
-            %div{class: "col-sm"}
+            %div{class:"card", style:"border:0px"}
           - else
             - org = Organization.find(o[:_id].to_i)
-            %div{class: "col-sm"}
-              - if !o.nil?
-                %div{class: "card", style:"margin:20px"}
-                  %h5{class: "card-header"}
-                    %a{href: "/admin/organization/#{org.id}"} #{org.name}
-                  %div{class: "card-body"}
-                    %div{class: "row"}
-                      %div{class: "col small text-left text-muted"}
-                      %div{class: "col small text-right text-muted"}
-                        %span{class:"badge badge-success"} #{number_with_delimiter(org.active_users.count)}
-                        #{'member'.pluralize(org.active_users.count)}
-                    %p{class:"card-text",style:"margin-top:5px;"}
-                      #{org.address}
+            - if !o.nil?
+              %div{class: "card", style:"margin:20px"}
+                %h5{class: "card-header"}
+                  %a{href: "/admin/organization/#{org.id}"} #{org.name}
+                %div{class: "card-body"}
+                  %div{class: "row"}
+                    %div{class: "col small text-left text-muted"}
+                    %div{class: "col small text-right text-muted"}
+                      %span{class:"badge badge-success"} #{number_with_delimiter(org.active_users.count)}
+                      #{'member'.pluralize(org.active_users.count)}
+                  %p{class:"card-text",style:"margin-top:5px;"}
+                    #{org.address}
 
     = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
