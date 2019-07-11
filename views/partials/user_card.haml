@@ -8,7 +8,8 @@
   - statement = statement.slice(0,1).capitalize + statement.slice(1..-1)
 %div{class: "card my-3"}
   %div{class: "card-header"}
-    %h5
+    - title_class = locals[:user].image_url ? "fullheight" : ""
+    %h5{class:title_class}
       - if locals[:user].image_url
         %img{src:"#{profile_image(locals[:user], 'medium')}", alt:"#{locals[:user].fullname}", class:"card-img-profile mr-2 float-left"}
       %span{class:"clearfix"}

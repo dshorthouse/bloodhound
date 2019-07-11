@@ -192,6 +192,10 @@ div.list-header{
 .card-header h5 {
   margin-bottom:0px;
 }
+.card-header h5.fullheight{
+  height:48px;
+  line-height:48px;
+}
 .card-body {
   padding:0rem 1.25rem 0.8rem;
 }

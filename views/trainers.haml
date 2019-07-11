@@ -20,7 +20,8 @@
             - cache_fragment(u.identifier + "-trainer") do
               %div{class: "card my-3"}
                 %div{class: "card-header"}
-                  %h5
+                  - title_class = u.image_url ? "fullheight" : ""
+                  %h5{class: title_class}
                     - if u.image_url
                       %img{src:"#{profile_image(u, 'medium')}", alt:"#{u.fullname}", class:"card-img-profile mr-2 float-left"}
                     %span{class:"clearfix"}
