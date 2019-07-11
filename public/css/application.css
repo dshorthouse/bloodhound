@@ -193,7 +193,7 @@ div.list-header{
   margin-bottom:0px;
 }
 .card-header h5.fullheight{
-  height:48px;
+  min-height:48px;
   line-height:48px;
 }
 .card-body {
