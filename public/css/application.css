@@ -184,6 +184,7 @@ div.list-header{
     top:-5px;
 }
 
+/* CARDS */
 .card-header {
   background-color: transparent;
   border-bottom:0px;
@@ -204,6 +205,11 @@ div.list-header{
 .card-img-profile {
   border-radius:50%;
   margin-right:0.5rem;
+}
+.card-footer{
+  background-color:transparent;
+  border-top:0px;
+  padding-top:0px;
 }
 
 /* CALLOUTS */
@@ -365,24 +371,6 @@ dl.citation{
 @media (max-width: 767px) {
   .button-login{display:inline-block;}
 }
-
-/*
-@media (min-width: 576px) {
-  .card-columns { column-count: 2; }
-}
-
-@media (min-width: 768px) {
-  .card-columns { column-count: 3; }
-}
-
-@media (min-width: 992px) {
-  .card-columns { column-count: 4; }
-}
-
-@media (min-width: 1200px) {
-  .card-columns { column-count: 5; }
-}
-*/
 
 /*
  * Responsive text aligning

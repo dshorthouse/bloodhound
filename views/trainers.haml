@@ -30,11 +30,12 @@
               %div{class: "card-body"}
                 - if u.country
                   %p{class:"small text-muted mt-0 mb-0"} #{u.country.split("|").join("; ")}
-                %div{class: "d-flex mt-4"}
-                  %div{class: "small text-muted"}
-                    Helped
-                    %span{class:"badge badge-light"} #{number_with_delimiter(u.helped_count)}
-                    #{'person'.pluralize(u.helped_count)} claim
-                    %span{class:"badge badge-success"} #{number_with_delimiter(u.claims_given.count)}
-                    #{'specimen'.pluralize(u.claims_given.count)}
+              %div{class: "card-footer d-flex"}
+                %div{class: "small text-muted"}
+                  Helped
+                  %span{class:"badge badge-light"} #{number_with_delimiter(u.helped_count)}
+                  #{'person'.pluralize(u.helped_count)} claim
+                  %span{class:"badge badge-success"} #{number_with_delimiter(u.claims_given.count)}
+                  #{'specimen'.pluralize(u.claims_given.count)}
+
   = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

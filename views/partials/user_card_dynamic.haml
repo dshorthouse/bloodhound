@@ -7,14 +7,14 @@
       %p{class:"small text-muted mt-0 mb-0"}= format_lifespan(locals[:user])
     - if locals[:user].country
       %p{class:"small text-muted mt-0 mb-0"} #{locals[:user].country.split("|").join("; ")}
-    %div{class: "d-flex mt-2"}
-      %div{class: "small text-right text-muted mr-2"}
-        - if locals[:user].is_public?
-          %i{class:"fas fa-users text-success"}
-        - else
-          %i{class:"fas fa-lock"}
-      %div{class: "small text-left text-muted mr-2"}
-        - count = locals[:user].all_occurrences_count
-        - color = count == 0 ? "light" : "success"
-        %span{class:"badge badge-#{color}"} #{number_with_delimiter(count)}
-        #{'specimen'.pluralize(count)} claimed
+  %div{class: "card-footer d-flex"}
+    %div{class: "small text-right text-muted mr-2"}
+      - if locals[:user].is_public?
+        %i{class:"fas fa-users text-success"}
+      - else
+        %i{class:"fas fa-lock"}
+    %div{class: "small text-left text-muted mr-2"}
+      - count = locals[:user].all_occurrences_count
+      - color = count == 0 ? "light" : "success"
+      %span{class:"badge badge-#{color}"} #{number_with_delimiter(count)}
+      #{'specimen'.pluralize(count)} claimed

@@ -31,12 +31,15 @@
                 %h5{class: "card-header"}
                   %a{href: "/admin/organization/#{org.id}"} #{org.name}
                 %div{class: "card-body"}
-                  %div{class: "row"}
-                    %div{class: "col small text-left text-muted"}
-                    %div{class: "col small text-right text-muted"}
-                      %span{class:"badge badge-success"} #{number_with_delimiter(org.active_users.count)}
-                      #{'member'.pluralize(org.active_users.count)}
                   %p{class:"card-text",style:"margin-top:5px;"}
                     #{org.address}
+                %div{class: "card-footer"}
+                  %div{class: "col small text-left text-muted"}
+                  %div{class: "col small text-right text-muted"}
+                    - count = org.active_users.count
+                    - color = count == 0 ? "light" : "success"
+                    %span{class:"badge badge-#{color}"} #{number_with_delimiter(count)}
+                    #{'member'.pluralize(count)}
+
 
     = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

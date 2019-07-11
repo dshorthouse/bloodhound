@@ -47,12 +47,12 @@
                   %a{href: "/organization/#{org.identifier}"} #{org.name}
               %div{class: "card-body"}
                 %p{class:"text-muted"} #{org.address}
-                %div{class: "row"}
-                  %div{class: "col small text-left text-muted"}
-                  %div{class: "col small text-right text-muted"}
-                    - count = org.active_users.count
-                    - color = count == 0 ? "light" : "success"
-                    %span{class:"badge badge-#{color}"} #{number_with_delimiter(count)}
-                    #{'member'.pluralize(count)}
+              %div{class: "card-footer"}
+                %div{class: "col small text-left text-muted"}
+                %div{class: "col small text-right text-muted"}
+                  - count = org.active_users.count
+                  - color = count == 0 ? "light" : "success"
+                  %span{class:"badge badge-#{color}"} #{number_with_delimiter(count)}
+                  #{'member'.pluralize(count)}
 
   = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
