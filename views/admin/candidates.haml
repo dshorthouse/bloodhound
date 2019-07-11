@@ -2,7 +2,7 @@
   #{@admin_user.fullname} Candidate Specimens
 
 -content_for :scripts do
-  %script{src: "/js/application.js"}
+  %script{src:"/js/application.js"}
   :javascript
     $(function() {
       Application.init(#{@admin_user.id}, "POST", "/admin");
