@@ -30,6 +30,10 @@ development:
   google_analytics: ''
   disqus_shortname: ''
   base_url: ''
+  gmail_domain: '',
+  gmail_email: '____@gmail.com'
+  gmail_username: ''
+  gmail_password: ''
 
 test:
   adapter: mysql2
@@ -63,6 +67,10 @@ test:
   google_analytics: ''
   disqus_shortname: ''
   base_url: ''
+  gmail_domain: '',
+  gmail_email: '____@gmail.com'
+  gmail_username: ''
+  gmail_password: ''
 
 production:
   adapter: mysql2
@@ -96,3 +104,7 @@ production:
   google_analytics: ''
   disqus_shortname: ''
   base_url: ''
+  gmail_domain: '',
+  gmail_email: '____@gmail.com'
+  gmail_username: ''
+  gmail_password: ''

@@ -59,7 +59,7 @@
 
         %div{class:"card-deck"}
           %div{class:"card"}
-            %h5{class:"card-header"} Make Your Claims Citable
+            %h5{class:"card-header"} Make Your Data Citable
             %div{class:"card-body"}
               - if !@user.made_claim?
                 %p{class:"card-text"}
@@ -128,7 +128,7 @@
 
           %div{class:"card"}
             %h5{class:"card-header"}
-              Delete My Account
+              Delete Your Account
             %div{class:"card-body"}
               %p{class:"card-text"} Permanently delete your account.
               %button{type: "button", class:"btn btn-sm btn-outline-danger", "data-toggle": "modal", "data-target": "#deleteModal"} Delete

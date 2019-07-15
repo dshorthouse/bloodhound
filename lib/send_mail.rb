@@ -4,10 +4,20 @@ module Bloodhound
   class SendMail
 
     def initialize
+      settings = Sinatra::Application.settings
       Pony.options = {
         charset: 'UTF-8',
-        from: 'no-reply@bloodhound-tracker.net',
-        subject: subject
+        from: settings.gmail_email,
+        subject: subject,
+        via: :smtp,
+        via_options: {
+          address: 'smtp.gmail.com',
+          port: '587',
+          enable_starttls_auto: true,
+          user_name: settings.gmail_username,
+          password: settings.gmail_password,
+          domain: settings.gmail_domain
+        }
       }
     end
 
@@ -28,6 +38,10 @@ module Bloodhound
       end
     end
 
+    def mark_articles_sent
+      Article.where(mail_sent: false).update_all(mail_sent: true)
+    end
+
     def subject
       "Bloodhound :: New articles used your specimen data"
     end
@@ -42,9 +56,9 @@ module Bloodhound
     end
 
     def closing
-      "\n\nWe hope you enjoy using Bloodhound, https://bloodhound-tracker.net.\n"\
-      "Your support is greatly appreciated, https://bloodhound-tracker.net/donate."\
-      "\n\n\nIf you wish to stop receiving these messages, login to your account and adjust the settings in your profile."
+      "\n\n\nWe hope you enjoy Bloodhound, https://bloodhound-tracker.net and find it useful. "\
+      "Your support is greatly appreciated, https://bloodhound-tracker.net/donate.\n"\
+      "If you wish to stop receiving these messages, login to your account and adjust the email notification settings in your profile."
     end
 
     private

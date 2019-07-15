@@ -23,6 +23,11 @@ OptionParser.new do |opts|
     options[:article_id] = article_id
   end
 
+
+  opts.on("-e", "--email", "Send out email notifications to users") do
+    options[:email] = true
+  end
+
   opts.on("-d", "--delete", "Delete irrelevant article_occurrences entries because gbifID no longer exists") do
     options[:delete] = true
   end
@@ -56,4 +61,10 @@ end
 
 if options[:delete]
   tracker.flush_irrelevant_entries
+end
+
+if options[:email]
+  sm = Bloodhound::SendMail.new
+  sm.send_messages
+  sm.mark_articles_sent
 end
