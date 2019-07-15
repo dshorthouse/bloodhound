@@ -71,6 +71,17 @@
                   %span{"aria-hidden":"true"} &times;
 
           %div{class:"card"}
+            %h5{class:"card-header"} Email Notifications
+            %div{class:"card-body"}
+              %p{class:"card-text"}
+                - if @admin_user.wants_mail?
+                  Subscribed with email address,
+                  %strong #{@admin_user.email}
+                - else
+                  Not subscribed.
+
+        %div{class:"card-deck"}
+          %div{class:"card"}
             %h5{class:"card-header"}
               Delete Account
             %div{class:"card-body"}
@@ -91,3 +102,5 @@
                       %button{type:"button", class:"btn btn-sm btn-outline-secondary", "data-dismiss":"modal"} Cancel
                       %input{type: :hidden, name: "_method", value: 'DELETE'}
                       %input{type: :submit, class:"btn btn-sm btn-outline-danger", value:"Delete"}
+
+          %div{class:"card", style:"border:0px"}
