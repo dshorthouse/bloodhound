@@ -28,10 +28,14 @@ module Bloodhound
       users.find_each do |user|
         articles = user_articles(user)
         if articles.count > 0
-          Pony.mail(
-            to: user.email,
-            body: construct_message(user, articles)
-          )
+          begin
+            Pony.mail(
+              to: user.email,
+              body: construct_message(user, articles)
+            )
+          rescue
+            puts "Email failed"
+          end
         end
         user.mail_last_sent = Time.now
         user.save

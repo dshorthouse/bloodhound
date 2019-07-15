@@ -30,7 +30,7 @@ development:
   google_analytics: ''
   disqus_shortname: ''
   base_url: ''
-  gmail_domain: '',
+  gmail_domain: ''
   gmail_email: '____@gmail.com'
   gmail_username: ''
   gmail_password: ''
@@ -67,7 +67,7 @@ test:
   google_analytics: ''
   disqus_shortname: ''
   base_url: ''
-  gmail_domain: '',
+  gmail_domain: ''
   gmail_email: '____@gmail.com'
   gmail_username: ''
   gmail_password: ''
@@ -104,7 +104,7 @@ production:
   google_analytics: ''
   disqus_shortname: ''
   base_url: ''
-  gmail_domain: '',
+  gmail_domain: ''
   gmail_email: '____@gmail.com'
   gmail_username: ''
   gmail_password: ''
