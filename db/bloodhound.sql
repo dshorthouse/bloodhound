@@ -1,6 +1,4 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -11,18 +9,24 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `agents` (
   `id` int(11) NOT NULL,
-  `family` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
-  `given` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT ''
+  `family` varchar(255) COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+  `given` varchar(255) COLLATE utf8mb4_bin NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE `agents_uniq` (
+  `given` varchar(255) COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+  `family` varchar(255) COLLATE utf8mb4_bin NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `articles` (
   `id` int(11) NOT NULL,
-  `doi` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `citation` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `abstract` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `gbif_dois` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `gbif_downloadkeys` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `doi` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `citation` text COLLATE utf8mb4_bin,
+  `abstract` text COLLATE utf8mb4_bin,
+  `gbif_dois` text COLLATE utf8mb4_bin NOT NULL,
+  `gbif_downloadkeys` text COLLATE utf8mb4_bin NOT NULL,
   `processed` tinyint(1) DEFAULT NULL,
+  `mail_sent` tinyint(1) NOT NULL DEFAULT '0',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -34,27 +38,27 @@ CREATE TABLE `article_occurrences` (
 
 CREATE TABLE `destroyed_users` (
   `id` int(11) NOT NULL,
-  `identifier` varchar(25) COLLATE utf8mb4_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `identifier` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `occurrences` (
   `gbifID` bigint(11) UNSIGNED NOT NULL,
-  `occurrenceID` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `dateIdentified` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `decimalLatitude` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `decimalLongitude` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `country` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `countryCode` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `eventDate` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `year` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `family` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `identifiedBy` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `institutionCode` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `collectionCode` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `catalogNumber` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `recordedBy` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `scientificName` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `typeStatus` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `occurrenceID` text COLLATE utf8mb4_bin,
+  `dateIdentified` text COLLATE utf8mb4_bin,
+  `decimalLatitude` text COLLATE utf8mb4_bin,
+  `decimalLongitude` text COLLATE utf8mb4_bin,
+  `country` text COLLATE utf8mb4_bin,
+  `countryCode` varchar(4) COLLATE utf8mb4_bin DEFAULT NULL,
+  `eventDate` text COLLATE utf8mb4_bin,
+  `year` text COLLATE utf8mb4_bin,
+  `family` text COLLATE utf8mb4_bin,
+  `identifiedBy` text COLLATE utf8mb4_bin,
+  `institutionCode` text COLLATE utf8mb4_bin,
+  `collectionCode` text COLLATE utf8mb4_bin,
+  `catalogNumber` text COLLATE utf8mb4_bin,
+  `recordedBy` text COLLATE utf8mb4_bin,
+  `scientificName` text COLLATE utf8mb4_bin,
+  `typeStatus` text COLLATE utf8mb4_bin,
   `dateIdentified_processed` datetime DEFAULT NULL,
   `eventDate_processed` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -71,26 +75,26 @@ CREATE TABLE `occurrence_recorders` (
 
 CREATE TABLE `organizations` (
   `id` int(11) NOT NULL,
-  `isni` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `isni` varchar(120) COLLATE utf8mb4_bin DEFAULT NULL,
   `ringgold` int(11) DEFAULT NULL,
-  `grid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `institution_codes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `wikidata` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `grid` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `address` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `institution_codes` text COLLATE utf8mb4_bin,
+  `wikidata` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
   `latitude` float DEFAULT NULL,
   `longitude` float DEFAULT NULL,
-  `image_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `website` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
+  `image_url` text COLLATE utf8mb4_bin,
+  `website` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `schema_migrations` (
-  `version` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL
+  `version` varchar(255) COLLATE utf8mb4_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `taxa` (
   `id` int(11) NOT NULL,
-  `family` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL
+  `family` varchar(255) COLLATE utf8mb4_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `taxon_determiners` (
@@ -127,7 +131,9 @@ CREATE TABLE `users` (
   `is_admin` tinyint(1) NOT NULL DEFAULT '0',
   `zenodo_access_token` text,
   `zenodo_doi` varchar(255) DEFAULT NULL,
-  `zenodo_concept_doi` varchar(255) DEFAULT NULL
+  `zenodo_concept_doi` varchar(255) DEFAULT NULL,
+  `wants_mail` tinyint(1) NOT NULL DEFAULT '0',
+  `mail_last_sent` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `user_occurrences` (
@@ -157,6 +163,9 @@ CREATE TABLE `user_organizations` (
 ALTER TABLE `agents`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `full_name` (`family`,`given`) USING BTREE;
+
+ALTER TABLE `agents_uniq`
+  ADD UNIQUE KEY `fullname_idx` (`family`,`given`);
 
 ALTER TABLE `articles`
   ADD PRIMARY KEY (`id`),
@@ -249,7 +258,6 @@ ALTER TABLE `user_occurrences`
 
 ALTER TABLE `user_organizations`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
