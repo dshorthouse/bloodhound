@@ -24,7 +24,7 @@ module Bloodhound
     def send_messages
       users = User.where.not(email: nil)
                   .where(wants_mail: true)
-                  .where("mail_last_sent < ?", 6.days.ago)
+                  .where("mail_last_sent < ? OR mail_last_sent IS NULL", 6.days.ago)
       users.find_each do |user|
         articles = user_articles(user)
         if articles.count > 0
