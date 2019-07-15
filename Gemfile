@@ -44,6 +44,8 @@ gem 'ruby-filemagic'
 gem 'sparql-client'
 gem 'rubysl-securerandom'
 gem 'oj'
+gem 'pluck_to_hash'
+gem 'pony'
 
 group :production do
 end

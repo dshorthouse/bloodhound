@@ -19,6 +19,7 @@
       %div{class:"container-fluid citation-wrapper mt-3"}
         %h4 Settings
         %div{class:"card-deck"}
+
           %div{class:"card"}
             %h5{class:"card-header"} Public Availability
             %div{class:"card-body"}
@@ -41,6 +42,22 @@
                       Public Profile
                       %i{class:"fas fa-external-link-alt"}
 
+          %div{class:"card"}
+            %h5{class:"card-header"}
+              %img{src:"/images/orcid_24x24.png", alt: "ORCID"}
+              ORCID
+            %div{class:"card-body"}
+              %p{class:"card-text"} Pull new updates to your name, aliases, keywords, country, education, and employment from your ORCID account.
+              %p
+                %a{ href:"/profile/refresh.json?user_id=#{@user.id}", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
+                  %i{class: "fas fa-sync-alt"}
+                  Refresh
+              %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
+                ORCID Data was refreshed.
+                %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+                  %span{"aria-hidden":"true"} &times;
+
+        %div{class:"card-deck"}
           %div{class:"card"}
             %h5{class:"card-header"} Make Your Claims Citable
             %div{class:"card-body"}
@@ -93,21 +110,21 @@
                           %button{type:"button", class:"btn btn-sm btn-outline-secondary", "data-dismiss":"modal"} Cancel
                           %button{type:"button", class:"btn btn-sm btn-outline-danger", id:"zenodo-disconnect"} Disconnect
 
-        %div{class:"card-deck"}
           %div{class:"card"}
-            %h5{class:"card-header"}
-              %img{src:"/images/orcid_24x24.png", alt: "ORCID"}
-              ORCID
+            %h5{class:"card-header"} Email Notifications
             %div{class:"card-body"}
-              %p{class:"card-text"} Pull new updates to your name, aliases, keywords, country, education, and employment from your ORCID account.
-              %p
-                %a{ href:"/profile/refresh.json?user_id=#{@user.id}", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
-                  %i{class: "fas fa-sync-alt"}
-                  Refresh
-              %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
-                ORCID Data was refreshed.
-                %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
-                  %span{"aria-hidden":"true"} &times;
+              - if @user.email && !@user.email.empty?
+                %p{class:"card-text"}
+                  Receive notification of new publications that made use of data derived from the specimens you identified or collected. Your primary, publicly available email address,
+                  %strong #{@user.email}
+                  comes from your ORCID account.
+                %p
+                  %input{type:"checkbox", id: "toggle-mail", "data-toggle":"toggle", "data-on":"On", "data-off":"Off", "data-onstyle": "success", "data-size": "small", checked: @user.wants_mail?, class:"btn-claim" }
+              - else
+                %p{class:"card-text"}
+                  Receive email notifications of new papers that made use of data derived from the specimens you identified or collected by making your email address publicly available in your ORCID account and then refreshing your ORCID data above.
+
+        %div{class:"card-deck"}
 
           %div{class:"card"}
             %h5{class:"card-header"}
@@ -133,3 +150,5 @@
                         %button{type:"button", class:"btn btn-sm btn-outline-secondary", "data-dismiss":"modal"} Cancel
                         %input{type: :hidden, name: "_method", value: 'DELETE'}
                         %input{type: :submit, class:"btn btn-sm btn-outline-danger", value:"Delete"}
+
+          %div{class:"card", style:"border:0px"}

@@ -29,6 +29,10 @@ class User < ActiveRecord::Base
     visible_user_occurrences.count > 0
   end
 
+  def wants_mail?
+    wants_mail
+  end
+
   def identifier
     orcid || wikidata
   end

@@ -325,15 +325,17 @@ var Application = (function($, window) {
     },
     helper_navbar: function() {
       var self = this;
-      if (self.path === "/profile" || self.path === "/admin") {
-        var navbar = $('#helper-navbar');
-        $(document).scroll(function() {
-          if ($(this).scrollTop() > $('#helper-info').offset().top) {
-            navbar.removeClass('d-none');
-          } else {
-            navbar.addClass('d-none');
-          }
-        });
+      if ($('#helper-info').length && $('#helper-navbar').length) {
+        if (self.path === "/profile" || self.path === "/admin") {
+          var navbar = $('#helper-navbar');
+          $(document).scroll(function() {
+            if ($(this).scrollTop() > $('#helper-info').offset().top) {
+              navbar.removeClass('d-none');
+            } else {
+              navbar.addClass('d-none');
+            }
+          });
+        }
       }
     }
   };

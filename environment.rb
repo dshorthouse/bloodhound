@@ -59,6 +59,8 @@ require 'filemagic'
 require 'sparql/client'
 require 'ostruct'
 require 'oj'
+require 'pluck_to_hash'
+require 'pony'
 
 Hashie.logger = Logger.new(nil)
 
