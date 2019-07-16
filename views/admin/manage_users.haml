@@ -33,6 +33,6 @@
       - else
         %div{class:"alert alert-danger alert-dismissible fade show", role: "alert", style:"display:block"}
           %span{class:"font-weight-bold"} #{@new_user[:fullname]}
-          not created because family name, birth or death date were missing
+          not created because the identifier was incorrectly formatted or in the case of wikidata, the family name and/or precise birth and death dates were missing
           %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
             %span{"aria-hidden":"true"} &times;

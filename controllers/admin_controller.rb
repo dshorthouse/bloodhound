@@ -120,6 +120,8 @@ module Sinatra
                 else
                   session[:new_user] = { fullname: new_user.fullname, slug: new_user.wikidata }
                 end
+              else
+                session[:new_user] = { fullname: params[:identifier], slug: nil }
               end
             end
             redirect '/admin/users/manage'
