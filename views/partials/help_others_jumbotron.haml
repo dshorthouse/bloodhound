@@ -52,23 +52,28 @@
 
       - if authorized? && !@viewed_user.is_public? && !@viewed_user.wikidata.nil?
         %div{class: "text-center"}
-          %button{type: "button", class:"btn btn-sm btn-outline-success", "data-toggle": "modal", "data-target": "#publicModal"}
+          %button{type: "button", class:"btn btn-sm btn-outline-success", "data-toggle": "modal", "data-target": "#helperPublicModal"}
             %i{class:"fas fa-unlock"}
             Make Profile Public
 
-          %div{class:"modal fade text-left", id:"publicModal", tabindex:"-1", role:"dialog", "aria-labelledby":"publicModal", "aria-hidden":"true"}
+          %div{class:"modal fade text-left", id:"helperPublicModal", tabindex:"-1", role:"dialog", "aria-labelledby":"helperPublicModal", "aria-hidden":"true"}
             %div{class:"modal-dialog", role:"document"}
               %div{class:"modal-content"}
                 %div{class:"modal-header"}
-                  %h5{class:"modal-title", id:"publicLabel"}
+                  %h5{class:"modal-title", id:"helperPublicLabel"}
                     %i{class:"fas fa-unlock"}
                     Make Profile Public
                   %button{type:"button", class:"close", "data-dismiss":"modal", "aria-label":"Close"}
                     %span{"aria-hidden":"true"} &times;
                 %div{class:"modal-body"}
-                  Would you like to make #{@viewed_user.fullname}'s profile publicly available? An automated Tweet from
-                  %a{href:"https://twitter.com/BloodhoundTrack", target:"_blank"} @BloodhoundTrack
-                  will be sent announcing the new profile.
+                  %p
+                    Would you like to make #{@viewed_user.fullname}'s profile publicly available? An automated Tweet from
+                    %a{href:"https://twitter.com/BloodhoundTrack", target:"_blank"} @BloodhoundTrack
+                    will be sent announcing the new profile.
+                  %p{id:"helpers-list", style:"display:none;"}
+                    The following trainers have also helped claim #{@viewed_user.fullname}'s specimens:
+                    %br
+                    %br
                   
                 %div{class:"modal-footer"}
                   %form{action: "/help-others/#{@viewed_user.identifier}/visibility", method: :post}
@@ -78,7 +83,7 @@
           
           - if admin_authorized?
             %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
-              %i{class:"fas fa-cog"}
+              %i{class:"fas fa-user-cog"}
               Settings
 
     %div{class:"col"}

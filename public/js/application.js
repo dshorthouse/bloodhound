@@ -17,10 +17,11 @@ var Application = (function($, window) {
     method: "POST",
     spinner: "<div class=\"spinner-grow\" role=\"status\"><span class=\"sr-only\">Loading...</span></div>",
     data_sources: { agent: {}, user : {}, organization : {} },
-    init: function(user_id, method, path) {
+    init: function(user_id, method, path, identifier) {
       this.user_id = typeof user_id !== 'undefined' ? user_id : "";
       this.method = typeof method !== 'undefined' ? method : "POST";
       this.path = typeof path !== 'undefined' ? path : "";
+      this.identifier = typeof identifier !== 'undefined' ? identifier : "";
       this.bloodhound();
       this.typeahead();
       this.activate_radios();
@@ -28,6 +29,7 @@ var Application = (function($, window) {
       this.activate_refresh();
       this.candidate_counter();
       this.helper_navbar();
+      this.helper_modal();
     },
     bloodhound: function() {
       this.data_sources.agent = this.create_bloodhound("agent");
@@ -337,12 +339,33 @@ var Application = (function($, window) {
           });
         }
       }
+    },
+    helper_modal: function() {
+      var self = this, helper_list = "";
+      $('#helperPublicModal').on('show.bs.modal', function (event) {
+        $.ajax({
+          method: "GET",
+          url: "/help-others/" + self.identifier + "/helpers.json"
+        }).done(function(data) {
+          if (data.helpers.length > 0) {
+            helper_list = $.map(data.helpers, function(i) {
+              var email = "";
+              if (i.email.length > 0) {
+                email = " (" + i.email + ")";
+              }
+              return i.given + " " + i.family + email;
+            });
+            console.log(helper_list.join(", "));
+            $("#helpers-list").append(helper_list.join(", ")).show();
+          }
+        });
+      });
     }
   };
 
   return {
-    init: function(user_id, method, path) {
-      _private.init(user_id, method, path);
+    init: function(user_id, method, path, identifier) {
+      _private.init(user_id, method, path, identifier);
     }
   };
 

@@ -131,6 +131,18 @@ module Sinatra
             end
           end
 
+          app.get '/help-others/:id/helpers.json' do
+            protected!
+            check_identifier
+            viewed_user = find_user(params[:id])
+            if !viewed_user
+              halt 404, haml(:oops)
+            end
+            content_type "application/json", charset: 'utf-8'
+            helpers = viewed_user.helped_by - [@user]
+            { helpers: helpers }.to_json
+          end
+
         end
 
       end

@@ -5,21 +5,22 @@
   %script{src: "/js/application.js"}
   :javascript
     $(function() {
-      Application.init(#{@viewed_user.id}, "POST", "/profile");
+      Application.init(#{@viewed_user.id}, "POST", "/profile", "#{@viewed_user.identifier}");
     });
 
 -content_for :jumbotron do
   = haml :'partials/help_others_jumbotron', layout: false
 
 - if @made_public
-  %div{class: "row"}
-    %div{class: "col-sm-8 col-md-6 col-xl-6"}
-      %div{class:"alert alert-success alert-dismissible fade show", role: "alert", style:"display:block"}
-        %span{class:"font-weight-bold"}
-          %a{href: "/#{@viewed_user.identifier}"} #{@viewed_user.fullname}'s
-        profile is now publicly available.
-        %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
-          %span{"aria-hidden":"true"} &times;
+  %div{class:"alert alert-success alert-dismissible fade show", role: "alert", style:"display:block"}
+    Thank you for your help!
+    %a{href: "/#{@viewed_user.identifier}"}
+      #{@viewed_user.fullname}'s
+    profile is now publicly available and visible in
+    = succeed "." do
+      %a{href:"/roster"} Profiles
+    %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+      %span{"aria-hidden":"true"} &times;
 
 - if @results.empty?
   %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}

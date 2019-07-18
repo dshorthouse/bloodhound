@@ -179,7 +179,7 @@ class User < ActiveRecord::Base
   end
 
   def helped_by
-    claims_received.map(&:user).uniq
+    claims_received.map(&:claimant).uniq
   end
 
   def country_counts
