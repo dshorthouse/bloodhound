@@ -350,13 +350,14 @@ var Application = (function($, window) {
           if (data.helpers.length > 0) {
             helper_list = $.map(data.helpers, function(i) {
               var email = "";
-              if (i.email.length > 0) {
+              if (i.email && i.email.length > 0) {
                 email = " (" + i.email + ")";
               }
               return i.given + " " + i.family + email;
             });
-            console.log(helper_list.join(", "));
             $("#helpers-list").append(helper_list.join(", ")).show();
+          } else {
+            $("#helpers-list-none").show();
           }
         });
       });

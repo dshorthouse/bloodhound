@@ -71,9 +71,11 @@
                     %a{href:"https://twitter.com/BloodhoundTrack", target:"_blank"} @BloodhoundTrack
                     will be sent announcing the new profile.
                   %p{id:"helpers-list", style:"display:none;"}
-                    The following trainers have also helped claim #{@viewed_user.fullname}'s specimens:
+                    Other trainers have also helped claim #{@viewed_user.fullname}'s specimens:
                     %br
                     %br
+                  %p{id:"helpers-list-none", style:"display:none;"}
+                    No other trainers have helped claim #{@viewed_user.fullname}'s specimens.
                   
                 %div{class:"modal-footer"}
                   %form{action: "/help-others/#{@viewed_user.identifier}/visibility", method: :post}
@@ -81,9 +83,10 @@
                     %input{type: :hidden, name: "_method", value: 'PUT'}
                     %input{type: :submit, class:"btn btn-sm btn-outline-success", value:"Yes, Make Public"}
           
-          - if admin_authorized?
-            %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
-              %i{class:"fas fa-user-cog"}
-              Settings
+      - if admin_authorized?
+        %div{class:"text-center"}
+          %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
+            %i{class:"fas fa-user-cog"}
+            Settings
 
     %div{class:"col"}
