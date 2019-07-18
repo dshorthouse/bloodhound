@@ -46,11 +46,16 @@ module Sinatra
           app.get '/help-others/:id' do
             protected!
             check_identifier
+            @made_public = session[:made_public]
+            session[:made_public] = false
 
             occurrence_ids = []
             @page = (params[:page] || 1).to_i
 
             @viewed_user = find_user(params[:id])
+            if !@viewed_user
+              halt 404, haml(:oops)
+            end
 
             if @viewed_user == @user
               redirect "/profile/candidates"
@@ -83,6 +88,10 @@ module Sinatra
             csv_stream_headers
             check_identifier
             @viewed_user = find_user(params[:id])
+            if !@viewed_user
+              halt 404, haml(:oops)
+            end
+
             agent_ids = candidate_agents(@viewed_user).pluck(:id)
             records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @viewed_user.user_occurrences.select(:occurrence_id)).limit(5_000)
             body ::Bloodhound::IO.csv_stream_candidates(records)
@@ -92,12 +101,34 @@ module Sinatra
             protected!
             check_identifier
             @viewed_user = find_user(params[:id])
+            if !@viewed_user
+              halt 404, haml(:oops)
+            end
+
             begin
               upload_file(user_id: @viewed_user.id, created_by: @user.id)
             rescue => e
               @error = e.message
             end
             haml :'help/upload'
+          end
+
+          app.put '/help-others/:id/visibility' do
+            protected!
+            check_identifier
+            @viewed_user = find_user(params[:id])
+            if !@viewed_user
+              halt 404, haml(:oops)
+            end
+            
+            if !@viewed_user.is_public
+              @viewed_user.is_public = true
+              @viewed_user.made_public = Time.now
+              @viewed_user.save
+              cache_clear "fragments/#{@viewed_user.identifier}"
+              session[:made_public] = true
+              redirect "/help-others/#{@viewed_user.identifier}"
+            end
           end
 
         end

@@ -50,10 +50,35 @@
         %div{class: "text-center text-muted font-italic"}
           #{@viewed_user.keywords.split("|").join(", ")}
 
-      - if admin_authorized?
+      - if authorized? && !@viewed_user.is_public? && !@viewed_user.wikidata.nil?
         %div{class: "text-center"}
-          %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
-            %i{class:"fas fa-cog"}
-            Settings
+          %button{type: "button", class:"btn btn-sm btn-outline-success", "data-toggle": "modal", "data-target": "#publicModal"}
+            %i{class:"fas fa-unlock"}
+            Make Profile Public
+
+          %div{class:"modal fade text-left", id:"publicModal", tabindex:"-1", role:"dialog", "aria-labelledby":"publicModal", "aria-hidden":"true"}
+            %div{class:"modal-dialog", role:"document"}
+              %div{class:"modal-content"}
+                %div{class:"modal-header"}
+                  %h5{class:"modal-title", id:"publicLabel"}
+                    %i{class:"fas fa-unlock"}
+                    Make Profile Public
+                  %button{type:"button", class:"close", "data-dismiss":"modal", "aria-label":"Close"}
+                    %span{"aria-hidden":"true"} &times;
+                %div{class:"modal-body"}
+                  Would you like to make #{@viewed_user.fullname}'s profile publicly available? An automated Tweet from
+                  %a{href:"https://twitter.com/BloodhoundTrack", target:"_blank"} @BloodhoundTrack
+                  will be sent announcing the new profile.
+                  
+                %div{class:"modal-footer"}
+                  %form{action: "/help-others/#{@viewed_user.identifier}/visibility", method: :post}
+                    %button{type:"button", class:"btn btn-sm btn-outline-secondary", "data-dismiss":"modal"} Not yet
+                    %input{type: :hidden, name: "_method", value: 'PUT'}
+                    %input{type: :submit, class:"btn btn-sm btn-outline-success", value:"Yes, Make Public"}
+          
+          - if admin_authorized?
+            %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
+              %i{class:"fas fa-cog"}
+              Settings
 
     %div{class:"col"}
