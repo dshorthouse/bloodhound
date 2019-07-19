@@ -354,6 +354,11 @@ dl.citation{
   border-bottom: 3px solid #E0E0E0;
 }
 
+#helperPublicModal .modal-content {
+  color:#212529;
+  background-color:#fff;
+}
+
 @media(max-width: 767px) {
   .form-inline .form-group {
     margin-bottom:1rem;
