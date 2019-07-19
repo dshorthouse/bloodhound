@@ -95,7 +95,7 @@ if options[:file]
       u = User.find_or_create_by({ orcid: row[0] })
     end
     u.update_profile
-    if u.is_wikidata? && !u.complete_wikicontent?
+    if u.wikidata && !u.complete_wikicontent?
       u.delete
       puts "#{u.wikidata} deleted. Missing either family name, birth or death date".red
     else
