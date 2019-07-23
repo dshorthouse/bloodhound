@@ -83,10 +83,16 @@
                     %input{type: :hidden, name: "_method", value: 'PUT'}
                     %input{type: :submit, class:"btn btn-sm btn-outline-success", value:"Yes, Make Public"}
           
-      - if admin_authorized?
-        %div{class:"text-center"}
-          %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
-            %i{class:"fas fa-cog"}
-            Settings
+      - if authorized?
+        %div{class: "text-center"}
+          - if @viewed_user.is_public?
+            %a{href: "/#{@viewed_user.identifier}", class: "mr-2"}
+              %i{class:"fas fa-user"}
+              Public Profile
+      
+          - if admin_authorized?
+            %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
+              %i{class:"fas fa-cog"}
+              Settings
 
     %div{class:"col"}

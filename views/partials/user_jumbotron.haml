@@ -64,8 +64,13 @@
       %a{href:"https://doi.org/#{@viewed_user.zenodo_concept_doi}"}
         %img{src:"https://zenodo.org/badge/DOI/#{@viewed_user.zenodo_concept_doi}.svg"}
 
-  - if admin_authorized?
+  - if authorized?
     %p
-      %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
-        %i{class:"fas fa-cog"}
-        Settings
+      %a{href: "/help-others/#{@viewed_user.identifier}", class: "mr-2"}
+        %i{class:"fas fa-hands-helping"}
+        Help Claim
+  
+      - if admin_authorized?
+        %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
+          %i{class:"fas fa-cog"}
+          Settings
