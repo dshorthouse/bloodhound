@@ -41,12 +41,13 @@
       #{@user.country}
 
   - if locals[:active_page] != "settings"
-    - if !@user.is_public?
-      %p{class:"m-3"}
-        %span{class:"alert alert-warning"}
-          %i{class:"fas fa-lock"}
-          Your profile is private
-    %p{class:"m-0"}
-      %a{href:"/profile/settings"}
-        %i{class:"fas fa-cog"}
-        Settings
+    %div{class:"mt-3 pt-3 border-top"}
+      - if !@user.is_public?
+        %p{class:"m-3"}
+          %span{class:"alert alert-warning"}
+            %i{class:"fas fa-lock"}
+            Your profile is private
+      %p{class:"m-0"}
+        %a{href:"/profile/settings"}
+          %i{class:"fas fa-cog"}
+          Settings

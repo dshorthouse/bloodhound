@@ -51,37 +51,32 @@
           #{@viewed_user.keywords.split("|").join(", ")}
 
       - if authorized? && !@viewed_user.is_public? && !@viewed_user.wikidata.nil?
-        %div{class: "text-center"}
-          %button{type: "button", class:"btn btn-sm btn-outline-success", "data-toggle": "modal", "data-target": "#helperPublicModal"}
-            %i{class:"fas fa-unlock"}
-            Make Profile Public
-
-          %div{class:"modal fade text-left", id:"helperPublicModal", tabindex:"-1", role:"dialog", "aria-labelledby":"helperPublicModal", "aria-hidden":"true"}
-            %div{class:"modal-dialog", role:"document"}
-              %div{class:"modal-content"}
-                %div{class:"modal-header"}
-                  %h5{class:"modal-title", id:"helperPublicLabel"}
-                    %i{class:"fas fa-unlock"}
-                    Make Profile Public
-                  %button{type:"button", class:"close", "data-dismiss":"modal", "aria-label":"Close"}
-                    %span{"aria-hidden":"true"} &times;
-                %div{class:"modal-body"}
-                  %p
-                    Would you like to make #{@viewed_user.fullname}'s profile publicly available? An automated Tweet from
-                    %a{href:"https://twitter.com/BloodhoundTrack", target:"_blank"} @BloodhoundTrack
-                    will be sent announcing the new profile.
-                  %p{id:"helpers-list", style:"display:none;"}
-                    Other trainers have also helped claim #{@viewed_user.fullname}'s specimens:
-                    %br
-                    %br
-                  %p{id:"helpers-list-none", style:"display:none;"}
-                    No other trainers have helped claim #{@viewed_user.fullname}'s specimens.
-                  
-                %div{class:"modal-footer"}
-                  %form{action: "/help-others/#{@viewed_user.identifier}/visibility", method: :post}
-                    %button{type:"button", class:"btn btn-sm btn-outline-secondary", "data-dismiss":"modal"} Not yet
-                    %input{type: :hidden, name: "_method", value: 'PUT'}
-                    %input{type: :submit, class:"btn btn-sm btn-outline-success", value:"Yes, Make Public"}
+        %div{class:"modal fade text-left", id:"helperPublicModal", tabindex:"-1", role:"dialog", "aria-labelledby":"helperPublicModal", "aria-hidden":"true"}
+          %div{class:"modal-dialog", role:"document"}
+            %div{class:"modal-content"}
+              %div{class:"modal-header"}
+                %h5{class:"modal-title", id:"helperPublicLabel"}
+                  %i{class:"fas fa-unlock"}
+                  Make Profile Public
+                %button{type:"button", class:"close", "data-dismiss":"modal", "aria-label":"Close"}
+                  %span{"aria-hidden":"true"} &times;
+              %div{class:"modal-body"}
+                %p
+                  Would you like to make #{@viewed_user.fullname}'s profile publicly available? An automated Tweet from
+                  %a{href:"https://twitter.com/BloodhoundTrack", target:"_blank"} @BloodhoundTrack
+                  will be sent announcing the new profile.
+                %p{id:"helpers-list", style:"display:none;"}
+                  Other trainers have also helped claim #{@viewed_user.fullname}'s specimens:
+                  %br
+                  %br
+                %p{id:"helpers-list-none", style:"display:none;"}
+                  No other trainers have helped claim #{@viewed_user.fullname}'s specimens.
+                
+              %div{class:"modal-footer"}
+                %form{action: "/help-others/#{@viewed_user.identifier}/visibility", method: :post}
+                  %button{type:"button", class:"btn btn-sm btn-outline-secondary", "data-dismiss":"modal"} Not yet
+                  %input{type: :hidden, name: "_method", value: 'PUT'}
+                  %input{type: :submit, class:"btn btn-sm btn-outline-success", value:"Yes, Make Public"}
           
       - if authorized?
         %div{class: "text-center"}
@@ -89,6 +84,10 @@
             %a{href: "/#{@viewed_user.identifier}", class: "mr-2"}
               %i{class:"fas fa-user"}
               Public Profile
+          - else
+            %button{type: "button", class:"btn btn-sm btn-outline-success", "data-toggle": "modal", "data-target": "#helperPublicModal"}
+              %i{class:"fas fa-unlock"}
+              Make Profile Public
       
           - if admin_authorized?
             %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
