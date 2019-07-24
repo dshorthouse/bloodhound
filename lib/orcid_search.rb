@@ -168,6 +168,7 @@ module Bloodhound
         address: address,
         ringgold: ringgold,
         grid: grid,
+        wikidata: nil,
         start_year: start_year,
         start_month: start_month,
         start_day: start_day,

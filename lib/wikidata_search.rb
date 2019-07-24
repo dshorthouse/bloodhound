@@ -165,6 +165,12 @@ module Bloodhound
       other_names = wiki_user.aliases.values.compact.map{|a| a.map{|b| b.value if b.language == "en"}.compact}.flatten.uniq.join("|") rescue nil
       date_born = Date.parse(wiki_user.properties("P569").compact.map{|a| a.value.time if a.precision_key == :day}.compact.first) rescue nil
       date_died = Date.parse(wiki_user.properties("P570").compact.map{|a| a.value.time if a.precision_key == :day}.compact.first) rescue nil
+
+      require "byebug"
+      byebug
+      
+      organizations = []
+
       {
         family: family,
         given: given,
@@ -175,7 +181,8 @@ module Bloodhound
         image_url: image_url,
         signature_url: signature_url,
         date_born: date_born,
-        date_died: date_died
+        date_died: date_died,
+        organizations: organizations
       }
     end
 

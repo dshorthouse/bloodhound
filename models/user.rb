@@ -279,30 +279,7 @@ class User < ActiveRecord::Base
     orcid_lib = Bloodhound::OrcidSearch.new
     data = orcid_lib.account_data(orcid)
     data[:organizations].each do |org|
-      next if org[:grid].nil? && org[:ringgold].nil?
-      if !org[:grid].nil?
-        organization = Organization.find_by_grid(org[:grid])
-      elsif !org[:ringgold].nil?
-        organization = Organization.find_by_ringgold(org[:ringgold].to_i)
-      end
-      if organization.nil?
-        organization = Organization.create(
-                         ringgold: org[:ringgold],
-                         grid: org[:grid],
-                         name: org[:name],
-                         address: org[:address]
-                       )
-      end
-      UserOrganization.create({
-        user_id: id,
-        organization_id: organization.id,
-        start_year: org[:start_year],
-        start_month: org[:start_month],
-        start_day: org[:start_day],
-        end_year: org[:end_year],
-        end_month: org[:end_month],
-        end_day: org[:end_day]
-      })
+      update_affiliation(org)
     end
 
     update(data.except!(:organizations))
@@ -311,7 +288,40 @@ class User < ActiveRecord::Base
   def update_wikidata_profile
     wikidata_lib = Bloodhound::WikidataSearch.new
     data = wikidata_lib.wiki_user_data(wikidata)
-    update(data)
+    data[:organizations].each do |org|
+      update_affiliation(org)
+    end
+    update(data.except!(:organizations))
+  end
+
+  def update_affiliation(org)
+    next if org[:wikidata].nil? && org[:grid].nil? && org[:ringgold].nil?
+    if !org[:grid].nil?
+      organization = Organization.find_by_grid(org[:grid])
+    elsif !org[:ringgold].nil?
+      organization = Organization.find_by_ringgold(org[:ringgold].to_i)
+    elsif !org[:wikidata].nil?
+      organization = Organization.find_by_wikidata(org[:wikidata])
+    end
+
+    if organization.nil?
+      organization = Organization.create(
+                       ringgold: org[:ringgold],
+                       grid: org[:grid],
+                       name: org[:name],
+                       address: org[:address]
+                     )
+    end
+    UserOrganization.create({
+      user_id: id,
+      organization_id: organization.id,
+      start_year: org[:start_year],
+      start_month: org[:start_month],
+      start_day: org[:start_day],
+      end_year: org[:end_year],
+      end_month: org[:end_month],
+      end_day: org[:end_day]
+    })
   end
 
   def articles_citing_specimens
