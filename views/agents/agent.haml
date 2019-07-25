@@ -4,7 +4,7 @@
 -content_for :jumbotron do
   = haml :'partials/agent_jumbotron', layout: false
 
-%div{class: "alert alert-warning", role:"alert", style:"margin-left:0.1em;margin-right:0.1em;margin-top:0px;"}
+%div{class: "alert alert-warning tiny-margins", role:"alert", style:"margin-top:0px;"}
   %div{class:"row"}
     %div{class: "col col-9"}
       Sniffed #{number_with_delimiter(@pagy.count)} specimens for #{@agent.fullname}. Not all available columns are shown.

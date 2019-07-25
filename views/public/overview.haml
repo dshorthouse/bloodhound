@@ -58,7 +58,7 @@
           %div{class: "alert alert-info justify-content-between row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
             Identified or collected specimens have not yet been recorded.
         - else
-          %div{class: "alert alert-info justify-content-between row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+          %div{class: "alert alert-info justify-content-between row tiny-margins", role: "alert"}
             %div{class:"col-8 col-md-10 pl-0"}
               - if @total[:number_identified] > 0
                 Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}.

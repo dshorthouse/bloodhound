@@ -23,14 +23,14 @@
       %span{"aria-hidden":"true"} &times;
 
 - if @results.empty?
-  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  %div{class: "alert alert-info tiny-margins", role: "alert"}
     Did not sniff any specimens indexed by the Global Biodiversity Information Facility (GBIF) or all #{@viewed_user.fullname}'s specimens might have already been claimed.
 - else
   = haml :'partials/upload_claim_modal', layout: false, locals: { csv_download_url: "/help-others/#{@viewed_user.identifier}/candidates.csv", csv_upload_url: "/help-others/#{@viewed_user.identifier}/upload-claims", user: @viewed_user}
 
   = haml :'partials/help_fixed_navbar', layout: false
 
-  %div{id:"helper-info", class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  %div{id:"helper-info", class: "alert alert-info tiny-margins", role: "alert"}
     Help attribute #{number_with_delimiter(@total, delimeter: ",")} specimens to
     %span{class:"font-weight-bold"} #{@viewed_user.fullname}.
     Choose

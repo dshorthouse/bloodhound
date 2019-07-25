@@ -17,7 +17,7 @@
         = haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "help" }
 
 - if !@error.nil?
-  %div{class: "alert alert-danger", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  %div{class: "alert alert-danger tiny-margins", role: "alert"}
     #{@error}
     %a{href: "/admin/user/#{@admin_user.identifier}/candidates"} Try again.
 

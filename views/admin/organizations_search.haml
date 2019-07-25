@@ -16,7 +16,7 @@
 
 %div{class:"container-fluid"}
   - if @results.empty?
-    %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    %div{class: "alert alert-info tiny-margins", role: "alert"}
       No organizations found.
   - else
     - @results.in_groups_of(3).each do |group|

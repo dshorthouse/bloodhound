@@ -15,7 +15,7 @@
       = haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "overview" }
 
       - if @total[:number_identified] == 0 && @total[:number_recorded] == 0
-        %div{class: "alert alert-warning", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+        %div{class: "alert alert-warning tiny-margins", role: "alert"}
           Specimens have not yet been claimed
         - if @total[:number_helped] > 0
           %div{class:"container-fluid mt-3"}

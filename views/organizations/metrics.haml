@@ -17,12 +17,12 @@
   %h3{class:"mt-3"} Impact on Activities in Other Organizations
 
   - if @others_recorded.empty? && @others_identified.empty? && @year.nil?
-    %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    %div{class: "alert alert-info tiny-margins", role: "alert"}
       Current and previous personnel have not yet claimed specimens now curated at other organizations that they collected or identified while affiliated with #{@organization.name}.
 
   - else
 
-    %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    %div{class: "alert alert-info tiny-margins", role: "alert"}
       Current and previous personnel have claimed specimens now curated at the following organizations that they collected or identified while affiliated with #{@organization.name}.
 
     %div{class: "container-fluid"}

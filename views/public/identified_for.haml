@@ -25,10 +25,10 @@
                 %a{class:"nav-link#{locals[:active_tab] == "identifications_by" ? " active" : nil}", href:"/#{@viewed_user.identifier}/identifications-by"} Identifications By
 
         - if @results.empty?
-          %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+          %div{class: "alert alert-info tiny-margins", role: "alert"}
             Identifications made to others' collected specimens have not yet been recorded.
         - else
-          %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+          %div{class: "alert alert-info tiny-margins", role: "alert"}
             Has identified specimens collected by:
 
           %div{class:"container-fluid"}

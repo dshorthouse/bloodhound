@@ -20,7 +20,7 @@
     = haml :'partials/user_search', layout: false
 
 - if @results.empty? && params[:q] && params[:q].present?
-  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  %div{class: "alert alert-info tiny-margins", role: "alert"}
     No one found by the name
     %span{class: "font-weight-bold"}
       :escaped
@@ -28,7 +28,7 @@
 
 - else
   - if params[:q] && params[:q].present?
-    %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    %div{class: "alert alert-info tiny-margins", role: "alert"}
       #{@pagy.count} search results for
       %span{class: "font-weight-bold"}
         :escaped

@@ -15,12 +15,12 @@
         = haml :'partials/user_tabs', layout: false, locals: { active_page: "deposits" }
 
         - if @recordings_at.empty? && @identifications_at.empty? 
-          %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+          %div{class: "alert alert-info tiny-margins", role: "alert"}
             Institutions have not yet been recorded.
 
         - if !@recordings_at.empty? || !@identifications_at.empty?
 
-          %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+          %div{class: "alert alert-info tiny-margins", role: "alert"}
             Specimens deposited and curated at the following institution(s):
 
           %div{class: "container-fluid"}

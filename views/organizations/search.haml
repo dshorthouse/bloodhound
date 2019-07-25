@@ -19,13 +19,13 @@
     = haml :'partials/organization_search', layout: false
 
 - if @results.empty?
-  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  %div{class: "alert alert-info tiny-margins", role: "alert"}
     No organizations found for 
     %span{class: "font-weight-bold"}
       :escaped
         #{params[:q]}
 - else
-  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  %div{class: "alert alert-info tiny-margins", role: "alert"}
     #{@pagy.count} search results for
     %span{class: "font-weight-bold"}
       :escaped
@@ -40,11 +40,13 @@
           - org = Organization.find(o[:_id].to_i)
           - if !o.nil?
             %div{class: "card m-3"}
-              %h5{class: "card-header"}
-                - if org.image_url
-                  %img{src:"#{organization_image(org, 'medium')}", alt:"#{org.name}", class:"mr-2 rounded float-left"}
-                %span{class:"clearfix"}
-                  %a{href: "/organization/#{org.identifier}"} #{org.name}
+              %div{class: "card-header"}
+                - title_class = org.image_url ? "fullheight" : ""
+                %h5{class: title_class}
+                  - if org.image_url
+                    %img{src:"#{organization_image(org, 'medium')}", alt:"#{org.name}", class:"mr-2 rounded float-left"}
+                  %span{class:"clearfix"}
+                    %a{href: "/organization/#{org.identifier}"} #{org.name}
               %div{class: "card-body"}
                 %p{class:"text-muted"} #{org.address}
               %div{class: "card-footer"}

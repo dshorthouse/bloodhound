@@ -116,8 +116,13 @@ table td.selector{
 .alert-dismissible{
   display:none;
 }
-.alert{margin-top:1rem;}
-
+.alert{
+  margin-top:1rem;
+}
+.tiny-margins{
+  margin-left:0.1em;
+  margin-right:0.1em;
+}
 .card-hover:hover{
   background-color: rgba(0, 0, 0, 0.075);
 }

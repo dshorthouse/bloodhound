@@ -14,7 +14,7 @@
       - if @viewed_user.is_public?
         = haml :'partials/user_tabs', layout: false
 
-      %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+      %div{class: "alert alert-info tiny-margins", role: "alert"}
         Share an anecdote about a collecting trip, event or anything else.
 
       - if Sinatra::Application.settings.disqus_shortname

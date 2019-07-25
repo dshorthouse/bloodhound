@@ -15,14 +15,14 @@
     = haml :'partials/help_others_search', layout: false
 
 - if @results.empty? && params[:q] && !params[:q].empty?
-  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  %div{class: "alert alert-info tiny-margins", role: "alert"}
     No one found by the name
     %span{class: "font-weight-bold"}
       :escaped
         #{params[:q]}
 
 - if @results.empty? || params[:q].nil?
-  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  %div{class: "alert alert-info tiny-margins", role: "alert"}
     Is the person you're looking for not here?
     %ul
       %li
@@ -49,7 +49,7 @@
   = haml :'partials/help_others_countries', layout: false
 
 - else
-  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  %div{class: "alert alert-info tiny-margins", role: "alert"}
     #{@pagy.count} search results for
     %span{class: "font-weight-bold"}
       :escaped

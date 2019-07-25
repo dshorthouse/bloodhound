@@ -15,7 +15,7 @@
     %div{class:"col-12 col-lg-8 mt-2"}
       = haml :'partials/profile_tabs', layout: false, locals: { active_page: "ignored" }
 
-%div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+%div{class: "alert alert-info tiny-margins", role: "alert"}
   - if @results.empty?
     Specimen records you marked as "Not me" will appear here.
 

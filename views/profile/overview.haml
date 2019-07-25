@@ -15,7 +15,7 @@
       = haml :'partials/profile_tabs', layout: false, locals: { active_page: "profile" }
 
       - if @total[:number_identified] == 0 && @total[:number_recorded] == 0
-        %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+        %div{class: "alert alert-info tiny-margins", role: "alert"}
           Claim your specimens under the "Discovered" tab to build your profile and start tracking your citations.
         - if @total[:number_helped] > 0
           %div{class:"container-fluid mt-3"}

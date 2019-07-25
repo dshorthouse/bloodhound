@@ -17,10 +17,10 @@
   %h3{class:"mt-3"} Science Enabled Through Specimens Collected or Identified by Personnel
 
   - if @results.empty?
-    %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    %div{class: "alert alert-info tiny-margins", role: "alert"}
       Publications based on specimens collected or identified by current and previous personnel have not yet been recorded by the Global Biodiversity Information Facility (GBIF).
   - else
-    %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+    %div{class: "alert alert-info tiny-margins", role: "alert"}
       #{number_with_delimiter(@pagy.count)} #{'publication'.pluralize(@pagy.count)} used specimen data downloaded from the Global Biodiversity Information Facility (GBIF) based on specimens collected or identified by current and previous personnel while affiliated with #{@organization.name}.
 
     %div{class:"citation-wrapper"}

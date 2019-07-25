@@ -40,7 +40,7 @@
           %input.typeahead{id: "typeahead-agent", type: :text, name: "q", placeholder: "#{placeholder}", value: "#{params[:q]}"}
 - else
   = haml :'partials/admin_fixed_navbar', layout: false
-  %div{id: "helper-info", class: "alert alert-#{alert_class} row candidates-alert", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  %div{id: "helper-info", class: "alert alert-#{alert_class} row candidates-alert tiny-margins", role: "alert"}
     %div{class: "col col-12 col-sm-12 col-m-8 col-lg-8"}
       = succeed "." do
         Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for 
