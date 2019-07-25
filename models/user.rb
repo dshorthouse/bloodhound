@@ -266,6 +266,7 @@ class User < ActiveRecord::Base
   end
 
   def update_profile
+    UserOrganization.where(user_id: id).destroy_all
     if wikidata
       update_wikidata_profile
     elsif orcid
@@ -274,8 +275,6 @@ class User < ActiveRecord::Base
   end
 
   def update_orcid_profile
-    UserOrganization.where(user_id: id).destroy_all
-
     orcid_lib = Bloodhound::OrcidSearch.new
     data = orcid_lib.account_data(orcid)
     data[:organizations].each do |org|
@@ -295,7 +294,8 @@ class User < ActiveRecord::Base
   end
 
   def update_affiliation(org)
-    next if org[:wikidata].nil? && org[:grid].nil? && org[:ringgold].nil?
+    return if org[:wikidata].nil? && org[:grid].nil? && org[:ringgold].nil?
+
     if !org[:grid].nil?
       organization = Organization.find_by_grid(org[:grid])
     elsif !org[:ringgold].nil?
@@ -308,10 +308,12 @@ class User < ActiveRecord::Base
       organization = Organization.create(
                        ringgold: org[:ringgold],
                        grid: org[:grid],
+                       wikidata: org[:wikidata],
                        name: org[:name],
                        address: org[:address]
                      )
     end
+
     UserOrganization.create({
       user_id: id,
       organization_id: organization.id,

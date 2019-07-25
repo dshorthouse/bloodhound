@@ -12,7 +12,7 @@ module Bloodhound
                 .split(',')
                 .map{|r| [ r.to_i, taxon.id ] }
       if !data.empty?
-        TaxonOccurrence.import [:occurrence_id, :taxon_id],  data, batch_size: 2500, validate: false, on_duplicate_key_ignore: true
+        TaxonOccurrence.import [:occurrence_id, :taxon_id],  data, batch_size: 1000, validate: false, on_duplicate_key_ignore: true
       end
     end
 

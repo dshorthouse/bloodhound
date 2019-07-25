@@ -144,6 +144,25 @@ module Bloodhound
       }
     end
 
+    def parse_wikitime(time, precision)
+      year = nil
+      month = nil
+      day = nil
+      d = Hash[[:year, :month, :day, :hour, :min, :sec].zip(
+        time.scan(/(-?\d+)-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/).first.map(&:to_i)
+      )]
+      if precision > 8
+        year = d[:year]
+      end
+      if precision > 9
+        month = d[:month]
+      end
+      if precision > 10
+        day = d[:day]
+      end
+      { year: year, month: month, day: day }
+    end
+
     def wiki_user_data(wikicode)
       wiki_user = Wikidata::Item.find(wikicode)
       parsed = DwcAgent.parse(wiki_user.title)[0] rescue nil
@@ -166,10 +185,32 @@ module Bloodhound
       date_born = Date.parse(wiki_user.properties("P569").compact.map{|a| a.value.time if a.precision_key == :day}.compact.first) rescue nil
       date_died = Date.parse(wiki_user.properties("P570").compact.map{|a| a.value.time if a.precision_key == :day}.compact.first) rescue nil
 
-      require "byebug"
-      byebug
-      
       organizations = []
+      wiki_user.properties("P108").each do |org|
+        start_time = { year: nil, month: nil, day: nil }
+        end_time = { year: nil, month: nil, day: nil }
+        qualifiers = wiki_user.hash[:claims][:P108].select{|a| a[:mainsnak][:datavalue][:value][:id] == org.id}.first.qualifiers rescue nil
+        if !qualifiers.nil?
+          start_precision = qualifiers[:P580].first.datavalue.value.precision
+          start_time = parse_wikitime(qualifiers[:P580].first.datavalue.value.time, start_precision)
+
+          end_precision = qualifiers[:P582].first.datavalue.value.precision
+          end_time = parse_wikitime(qualifiers[:P582].first.datavalue.value.time, end_precision)
+        end
+        next if end_time[:year].nil?
+        organizations << {
+          name: org.title,
+          wikidata: org.id,
+          ringgold: nil,
+          grid: nil,
+          start_day: start_time[:day],
+          start_month: start_time[:month],
+          start_year: start_time[:year],
+          end_day: end_time[:day],
+          end_month: end_time[:month],
+          end_year: end_time[:year]
+        }
+      end
 
       {
         family: family,
