@@ -142,7 +142,7 @@ elsif options[:all]
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:claimed]
-  User.joins(:user_occurrences).where("user_occurrences.visible = true").find_each do |u|
+  User.joins(:user_occurrences).where("user_occurrences.visible = true").distinct.find_each do |u|
     u.update_profile
     cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
