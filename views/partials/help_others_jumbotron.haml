@@ -84,7 +84,7 @@
             %a{href: "/#{@viewed_user.identifier}", class: "mr-2"}
               %i{class:"fas fa-user"}
               Public Profile
-          - else
+          - if !@viewed_user.is_public? && !@viewed_user.wikidata.nil?
             %button{type: "button", class:"btn btn-sm btn-outline-success", "data-toggle": "modal", "data-target": "#helperPublicModal"}
               %i{class:"fas fa-unlock"}
               Make Profile Public
