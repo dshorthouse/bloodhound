@@ -124,38 +124,38 @@ elsif options[:orcid]
   cache_clear "fragments/#{u.identifier}"
   puts "#{u.fullname_reverse} created/updated".green
 elsif options[:logged]
-  User.where.not(visited: nil).find_each do |u|
+  User.where.not(visited: nil).order(:family).find_each do |u|
     u.update_profile
     cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:public]
-  User.where(is_public: true).find_each do |u|
+  User.where(is_public: true).order(:family).find_each do |u|
     u.update_profile
     cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:all]
-  User.find_each do |u|
+  User.order(:family).find_each do |u|
     u.update_profile
     cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:claimed]
-  User.joins(:user_occurrences).where("user_occurrences.visible = true").distinct.find_each do |u|
+  User.where(id: UserOccurrence.select(:user_id).group(:user_id)).order(:family).find_each do |u|
     u.update_profile
     cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:update_wikidata]
   wikidata_lib = Bloodhound::WikidataSearch.new
-  User.where.not(wikidata: nil).find_each do |u|
+  User.where.not(wikidata: nil).order(:family).find_each do |u|
     u.update_profile
     cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:update_orcid]
-  User.where.not(orcid: nil).find_each do |u|
+  User.where.not(orcid: nil).order(:family).find_each do |u|
     u.update_profile
     cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
