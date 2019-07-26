@@ -51,6 +51,10 @@ OptionParser.new do |opts|
     options[:all] = true
   end
 
+  opts.on("-m", "--claimed", "Update all user accounts that have claimed a specimen.") do
+    options[:claimed] = true
+  end
+
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
@@ -133,6 +137,12 @@ elsif options[:public]
   end
 elsif options[:all]
   User.find_each do |u|
+    u.update_profile
+    cache_clear "fragments/#{u.identifier}"
+    puts "#{u.fullname_reverse}".green
+  end
+elsif options[:claimed]
+  User.joins(:user_occurrences).where("user_occurrences.visible = true").find_each do |u|
     u.update_profile
     cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
