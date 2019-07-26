@@ -141,8 +141,6 @@ elsif options[:update_wikidata]
   wikidata_lib = Bloodhound::WikidataSearch.new
   User.where.not(wikidata: nil).find_each do |u|
     u.update_profile
-    data = wikidata_lib.wiki_user_data(u.wikidata)
-    u.update(data)
     cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
   end

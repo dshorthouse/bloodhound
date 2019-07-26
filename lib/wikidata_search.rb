@@ -191,18 +191,24 @@ module Bloodhound
         end_time = { year: nil, month: nil, day: nil }
         qualifiers = wiki_user.hash[:claims][:P108].select{|a| a[:mainsnak][:datavalue][:value][:id] == org.id}.first.qualifiers rescue nil
         if !qualifiers.nil?
-          start_precision = qualifiers[:P580].first.datavalue.value.precision
-          start_time = parse_wikitime(qualifiers[:P580].first.datavalue.value.time, start_precision)
+          start_precision = qualifiers[:P580].first.datavalue.value.precision rescue nil
+          if !start_precision.nil?
+            start_time = parse_wikitime(qualifiers[:P580].first.datavalue.value.time, start_precision)
+          end
 
-          end_precision = qualifiers[:P582].first.datavalue.value.precision
-          end_time = parse_wikitime(qualifiers[:P582].first.datavalue.value.time, end_precision)
+          end_precision = qualifiers[:P582].first.datavalue.value.precision rescue nil
+          if !end_precision.nil?
+            end_time = parse_wikitime(qualifiers[:P582].first.datavalue.value.time, end_precision)
+          end
         end
+
         next if end_time[:year].nil?
         organizations << {
           name: org.title,
           wikidata: org.id,
           ringgold: nil,
           grid: nil,
+          address: nil,
           start_day: start_time[:day],
           start_month: start_time[:month],
           start_year: start_time[:year],
