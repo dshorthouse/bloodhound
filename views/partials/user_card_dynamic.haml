@@ -1,7 +1,11 @@
 %div{class: "card my-3"}
   %div{class:"card-header"}
-    %h5
-      %a{href: "/#{locals[:path]}/#{locals[:user].identifier}"} #{locals[:user].fullname_reverse}
+    - title_class = locals[:user].image_url ? "fullheight" : ""
+    %h5{class:title_class}
+      - if locals[:user].image_url
+        %img{src:"#{profile_image(locals[:user], 'medium')}", alt:"#{locals[:user].fullname}", class:"card-img-profile mr-2 float-left"}
+      %span{class:"clearfix"}
+        %a{href: "/#{locals[:path]}/#{locals[:user].identifier}"} #{locals[:user].fullname_reverse}
   %div{class: "card-body"}
     - if locals[:user].wikidata
       %p{class:"small text-muted mt-0 mb-0"}= format_lifespan(locals[:user])
