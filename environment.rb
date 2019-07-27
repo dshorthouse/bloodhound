@@ -61,6 +61,8 @@ require 'ostruct'
 require 'oj'
 require 'pluck_to_hash'
 require 'pony'
+require 'mediawiki_api'
+require 'mediawiki_api/wikidata'
 
 Hashie.logger = Logger.new(nil)
 

@@ -341,6 +341,14 @@ class User < ActiveRecord::Base
     cited_specimens.where(article_occurrences: { article_id: article_id })
   end
 
+  def send_wikidata_property
+    return if wikidata.nil?
+    settings = Sinatra::Application.settings
+    wikidata_client = MediawikiApi::Wikidata::WikidataClient.new "https://www.wikidata.org/w/api.php"
+    wikidata_client.log_in "#{settings.wikidata_username}", "#{settings.wikidata_password}"
+    wikidata_client.create_claim "#{wikidata}", "value", "P6944", '"' + "#{wikidata}" + '"'
+  end
+
   private
 
   def set_update_time

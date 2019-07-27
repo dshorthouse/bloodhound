@@ -467,6 +467,9 @@ module Sinatra
             end
             admin_user.save
             admin_user.update_profile
+            if req[:is_public]
+              admin_user.send_wikidata_property
+            end
             cache_clear "fragments/#{admin_user.identifier}"
             { message: "ok" }.to_json
           end

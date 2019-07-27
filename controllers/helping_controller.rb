@@ -122,9 +122,8 @@ module Sinatra
             end
             
             if !@viewed_user.is_public
-              @viewed_user.is_public = true
-              @viewed_user.made_public = Time.now
-              @viewed_user.save
+              @viewed_user.update({ is_public: true, made_public: Time.now })
+              @viewed_user.send_wikidata_property
               cache_clear "fragments/#{@viewed_user.identifier}"
               session[:made_public] = true
               redirect "/help-others/#{@viewed_user.identifier}"

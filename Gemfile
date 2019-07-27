@@ -46,6 +46,8 @@ gem 'rubysl-securerandom'
 gem 'oj'
 gem 'pluck_to_hash'
 gem 'pony'
+gem 'mediawiki_api'
+gem 'mediawiki_api-wikidata'
 
 group :production do
 end
