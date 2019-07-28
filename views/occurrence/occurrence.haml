@@ -1,0 +1,18 @@
+-content_for :title do
+  Occurrence
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
+    %div{class:"mr-auto p-2"}
+      %h2 Specimen Record
+      %p.lead.text-muted
+        From partial data obtained from the
+        %a{href:"https://gbif.org"} Global Biodiversity Information Facility
+        %br
+        View the original record:
+        %a{href:"https://gbif.org/occurrence/#{@occurrence.id}", target:"_blank"} https://gbif.org/occurrence/#{@occurrence.id}
+
+%dl
+  - @occurrence.attributes.each do |key, value|
+    %dt #{key}
+    %dd #{value}

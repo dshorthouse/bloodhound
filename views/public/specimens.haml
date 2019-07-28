@@ -59,7 +59,7 @@
                         %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
                     %td
                       - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
-                      %a{href: "https://www.gbif.org/occurrence/#{o.id}", target: "_blank" } #{scientific_name}
+                      %a{href: "/occurrence/#{o.id}"} #{scientific_name}
                     %td #{o.recordedBy}
                     %td #{o.identifiedBy}
                     %td #{o.eventDate || o.year}
