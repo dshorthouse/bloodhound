@@ -177,6 +177,32 @@ div.list-header{
   line-height:42px;
 }
 
+dl.dl-horizontal {
+  display: table;
+  min-width: 400px;
+}
+dl.dl-horizontal dt, dl.dl-horizontal dd {
+  overflow: visible;
+}
+
+dl.dl-horizontal dt {
+  display: table-cell;
+  text-align: right;
+  white-space: nowrap;
+  font-weight: 700;
+  width:135px;
+}
+dl.dl-horizontal dd {
+  display: table-cell;
+  padding: 2% 5%;
+  width: auto;
+}
+dl.dl-horizontal dd.line-break {
+  display: table-row;
+  margin:0px;
+  padding:0px;
+}
+
 /* BUTTON OVERLAY */
 .badge-item {
     position:relative;
@@ -215,6 +241,10 @@ div.list-header{
   background-color:transparent;
   border-top:0px;
   padding-top:0px;
+}
+.occurrence .card { -ms-flex: 0 0 96%; flex: 0 0 96%;}
+@media(min-width: 1200px) {
+  .occurrence .card { -ms-flex: 0 0 47.7%; flex: 0 0 47.7%; }
 }
 
 /* CALLOUTS */
@@ -364,12 +394,6 @@ dl.citation{
   background-color:#fff;
 }
 
-@media(max-width: 767px) {
-  .form-inline .form-group {
-    margin-bottom:1rem;
-  }
-}
-
 @media (max-width: 450px) {
   .display-2 {
     font-size:3.5rem;
@@ -378,7 +402,11 @@ dl.citation{
     padding:5px !important;
   }
 }
-@media (max-width: 767px) {
+
+@media(max-width: 767px) {
+  .form-inline .form-group {
+    margin-bottom:1rem;
+  }
   .button-login{display:inline-block;}
 }
 
@@ -412,6 +440,6 @@ dl.citation{
   .text-lg-justify { text-align: justify; }
 }
 
-@media (mid-width: @screen-xl-min) {
+@media (min-width: @screen-xl-min) {
   .sidebar { max-width: 350px; }
 }

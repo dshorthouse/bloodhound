@@ -1,8 +1,5 @@
 %div{class:"jumbotron jumbotron-fluid alert-warning-light"}
 
-  %div{class:"d-flex flex-row-reverse"}
-    = haml :'partials/help_others_search', layout: false
-
   %div{class:"row"}
     %div{class:"col"}
       - if @viewed_user.image_url
@@ -17,7 +14,7 @@
       %h2{class:"display-4 text-center"}= @viewed_user.fullname
 
       - if !@viewed_user.other_names.blank?
-        %div{class:"text-center text-muted"} #{@viewed_user.other_names.split("|").join("; ")}
+        %div{class:"text-center text-muted"} #{@viewed_user.other_names.split("|").first(5).  join("; ")}
 
       - if @viewed_user.date_born || @viewed_user.date_died
         %div{class: "text-center text-muted"}

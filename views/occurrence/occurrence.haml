@@ -5,14 +5,94 @@
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
       %h2 Specimen Record
-      %p.lead.text-muted
-        From partial data obtained from the
-        %a{href:"https://gbif.org"} Global Biodiversity Information Facility
-        %br
-        View the original record:
-        %a{href:"https://gbif.org/occurrence/#{@occurrence.id}", target:"_blank"} https://gbif.org/occurrence/#{@occurrence.id}
 
-%dl
-  - @occurrence.attributes.each do |key, value|
-    %dt #{key}
-    %dd #{value}
+%div{class:"alert alert-info mb-4"}
+  From partial data obtained from the
+  %a{href:"https://gbif.org"} Global Biodiversity Information Facility
+  (GBIF).
+  View the original record:
+  %a{href:"https://gbif.org/occurrence/#{@occurrence.id}", target:"_blank"}
+    https://gbif.org/occurrence/#{@occurrence.id}
+    %i{class:"fas fa-external-link-alt"}
+
+%div{class: "card-deck occurrence"}
+  %div{class:"card mb-4"}
+    %div{class:"card-header border-bottom"}
+      %h5 Record
+    %div{class:"card-body mt-2"}
+      %dl{class:"dl-horizontal"}
+        %dt gbifID
+        %dd
+          %a{href: "https://gbif.org/#{@occurrence.id}", target:"_blank"} #{@occurrence.id}
+        %dd{class:"line-break"}
+
+        %dt occurrenceID
+        %dd
+          - if @occurrence.occurrenceID[0..3] == "http"
+            %a{href: "#{@occurrence.occurrenceID}", target:"_blank"} #{@occurrence.occurrenceID ||= "&nbsp;"}
+          - else
+            #{@occurrence.occurrenceID ||= "&nbsp;"}
+        %dd{class:"line-break"}
+
+        %dt institutionCode
+        %dd #{@occurrence.institutionCode ||= "&nbsp;"}
+        %dd{class:"line-break"}
+
+        %dt collectionCode
+        %dd #{@occurrence.collectionCode ||= "&nbsp;"}
+        %dd{class:"line-break"}
+
+        %dt catalogNumber
+        %dd #{@occurrence.catalogNumber ||= "&nbsp;"}
+
+  %div{class:"card mb-4"}
+    %div{class:"card-header border-bottom"}
+      %h5 Location
+    %div{class:"card-body mt-2"}
+      %dl{class:"dl-horizontal"}
+        %dt country
+        %dd #{@occurrence.country ||= "&nbsp;"}
+        %dd{class:"line-break"}
+
+        %dt decimalLatitude
+        %dd #{@occurrence.decimalLatitude ||= "&nbsp;"}
+        %dd{class:"line-break"}
+
+        %dt decimalLongitude
+        %dd #{@occurrence.decimalLongitude ||= "&nbsp;"}
+
+  %div{class:"card mb-4"}
+    %div{class:"card-header border-bottom"}
+      %h5 Event
+    %div{class:"card-body mt-2"}
+      %dl{class:"dl-horizontal"}
+        %dt eventDate
+        %dd #{@occurrence.eventDate ||= "&nbsp;"}
+        %dd{class:"line-break"}
+
+        %dt recordedBy
+        %dd #{@occurrence.recordedBy ||= "&nbsp;"}
+
+  %div{class:"card mb-4"}
+    %div{class:"card-header border-bottom"}
+      %h5 Identification
+    %div{class:"card-body mt-2"}
+      %dl{class:"dl-horizontal"}
+        %dt family
+        %dd #{@occurrence.family ||= "&nbsp;"}
+        %dd{class:"line-break"}
+
+        %dt scientificName
+        %dd #{@occurrence.scientificName ||= "&nbsp;"}
+        %dd{class:"line-break"}
+
+        %dt typeStatus
+        %dd #{@occurrence.typeStatus ||= "&nbsp;"}
+        %dd{class:"line-break"}
+
+        %dt dateIdentified
+        %dd #{@occurrence.dateIdentified ||= "&nbsp;"}
+        %dd{class:"line-break"}
+
+        %dt identifiedBy
+        %dd #{@occurrence.identifiedBy ||= "&nbsp;"}
