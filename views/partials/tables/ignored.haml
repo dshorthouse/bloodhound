@@ -12,6 +12,7 @@
         %th{scope: "col"} Institution
         %th{scope: "col"} Catalog Number
         %th{scope: "col"} Type Status
+        %th{scope: "col"} Trainer
 
     %tbody
       - @results.each do |uo|
@@ -21,7 +22,7 @@
             = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo, klass: "restore-ignored" }
           %td
             - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
-            %a{href: "/occurrence/#{o.id}"} #{scientific_name}
+            %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"} #{scientific_name}
           %td #{o.recordedBy}
           %td #{o.identifiedBy}
           %td #{o.eventDate || o.year}
@@ -29,6 +30,12 @@
           %td #{o.institutionCode}
           %td #{o.catalogNumber}
           %td #{o.typeStatus}
+          %td
+            - if uo.claimant.id != @user.id
+              - if uo.claimant.is_public?
+                %a{href: "/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
+              - else
+                %a{href: "https://orcid.org/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
 
     - if @total > 25
       %tfoot{class: "thead-light"}
@@ -43,6 +50,7 @@
           %th{scope: "col"} Institution
           %th{scope: "col"} Catalog Number
           %th{scope: "col"} Type Status
+          %th{scope: "col"} Trainer
 
 - if @total > 25
   = haml :'partials/page_size', layout: false

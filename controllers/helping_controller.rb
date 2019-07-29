@@ -54,44 +54,67 @@ module Sinatra
             end
           end
 
-          app.get '/help-others/:id/specimens' do
+          app.post '/help-others/user-occurrence/bulk.json' do
             protected!
-            check_identifier
-
-            @viewed_user = find_user(params[:id])
-
-            @page = (params[:page] || 1).to_i
-            @total = @viewed_user.claims_received.count
-
-            if @page*search_size > @total
-              bump_page = @total % search_size.to_i != 0 ? 1 : 0
-              @page = @total/search_size.to_i + bump_page
+            content_type "application/json", charset: 'utf-8'
+            req = JSON.parse(request.body.read).symbolize_keys
+            action = req[:action] rescue nil
+            visible = req[:visible] rescue true
+            occurrence_ids = req[:occurrence_ids].split(",")
+            if !visible
+              UserOccurrence.where(occurrence_id: occurrence_ids)
+                            .where(user_id: req[:user_id].to_i)
+                            .destroy_all
             end
-
-            @page = 1 if @page <= 0
-
-            @pagy, @results = pagy(@viewed_user.claims_received, items: search_size, page: @page)
-            haml :'help/specimens', locals: { active_page: "help" }
+            data = occurrence_ids.map{|o| { 
+                user_id: req[:user_id],
+                occurrence_id: o.to_i,
+                created_by: @user.id,
+                action: action,
+                visible: visible
+              }
+            }
+            UserOccurrence.import data, batch_size: 250, validate: false, on_duplicate_key_ignore: true
+            { message: "ok" }.to_json
           end
 
-          app.get '/help-others/:id/ignored' do
+          app.post '/help-others/user-occurrence/:occurrence_id.json' do
             protected!
-            check_identifier
+            content_type "application/json", charset: 'utf-8'
+            req = JSON.parse(request.body.read).symbolize_keys
+            action = req[:action] rescue nil
+            visible = req[:visible] rescue true
+            uo = UserOccurrence.new
+            uo.user_id = req[:user_id].to_i
+            uo.occurrence_id = params[:occurrence_id].to_i
+            uo.created_by = @user.id
+            uo.action = action
+            uo.visible = visible
+            uo.save
+            { message: "ok", id: uo.id }.to_json
+          end
 
-            @viewed_user = find_user(params[:id])
+          app.put '/help-others/user-occurrence/:id.json' do
+            protected!
+            content_type "application/json", charset: 'utf-8'
+            req = JSON.parse(request.body.read).symbolize_keys
+            uo = UserOccurrence.find_by(id: params[:id])
+            uo.action = req[:action] ||= nil
+            uo.visible = req[:visible] ||= true
+            uo.created_by = @user.id
+            uo.save
+            { message: "ok" }.to_json
+          end
 
-            @page = (params[:page] || 1).to_i
-            @total = @viewed_user.hidden_occurrences_by_others.count
-
-            if @page*search_size > @total
-              bump_page = @total % search_size.to_i != 0 ? 1 : 0
-              @page = @total/search_size.to_i + bump_page
-            end
-
-            @page = 1 if @page <= 0
-
-            @pagy, @results = pagy(@viewed_user.hidden_occurrences_by_others, items: search_size, page: @page) 
-            haml :'help/ignored', locals: { active_page: "help" }
+          app.put '/help-others/user-occurrence/bulk.json' do
+            protected!
+            content_type "application/json", charset: 'utf-8'
+            req = JSON.parse(request.body.read).symbolize_keys
+            occurrence_ids = req[:occurrence_ids].split(",")
+            visible = req[:visible] rescue true
+            UserOccurrence.where(id: occurrence_ids, user_id: req[:user_id].to_i)
+                          .update_all({ action: req[:action], visible: visible, created_by: @user.id })
+            { message: "ok" }.to_json
           end
 
           app.get '/help-others/:id' do
@@ -132,6 +155,46 @@ module Sinatra
             end
 
             haml :'help/user', locals: { active_page: "help" }
+          end
+
+          app.get '/help-others/:id/specimens' do
+            protected!
+            check_identifier
+
+            @viewed_user = find_user(params[:id])
+
+            @page = (params[:page] || 1).to_i
+            @total = @viewed_user.claims_received.count
+
+            if @page*search_size > @total
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
+            end
+
+            @page = 1 if @page <= 0
+
+            @pagy, @results = pagy(@viewed_user.claims_received, items: search_size, page: @page)
+            haml :'help/specimens', locals: { active_page: "help" }
+          end
+
+          app.get '/help-others/:id/ignored' do
+            protected!
+            check_identifier
+
+            @viewed_user = find_user(params[:id])
+
+            @page = (params[:page] || 1).to_i
+            @total = @viewed_user.hidden_occurrences_by_others.count
+
+            if @page*search_size > @total
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
+            end
+
+            @page = 1 if @page <= 0
+
+            @pagy, @results = pagy(@viewed_user.hidden_occurrences_by_others, items: search_size, page: @page) 
+            haml :'help/ignored', locals: { active_page: "help" }
           end
 
           app.get '/help-others/:id/candidates.csv' do

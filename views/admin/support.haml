@@ -44,7 +44,7 @@
           %th{scope: "col"} Institution
           %th{scope: "col"} Catalog Number
           %th{scope: "col"} Type Status
-          %th{scope: "col"} Helper
+          %th{scope: "col"} Trainer
           %th
 
       %tbody
@@ -55,7 +55,7 @@
               = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo }
             %td
               - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
-              %a{href: "/occurrence/#{o.id}"} #{scientific_name}
+              %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"} #{scientific_name}
             %td #{o.recordedBy}
             %td #{o.identifiedBy}
             %td #{o.eventDate || o.year}
@@ -84,7 +84,7 @@
             %th{scope: "col"} Institution
             %th{scope: "col"} Catalog Number
             %th{scope: "col"} Type Status
-            %th{scope: "col"} Helper
+            %th{scope: "col"} Trainer
             %th
 
   - if @total > 25

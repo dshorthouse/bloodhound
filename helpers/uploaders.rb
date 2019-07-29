@@ -38,7 +38,7 @@ module Sinatra
               visible: 1
             })
             @record_count += 1
-          elsif (row[:not_me].downcase == "true" || row[:not_me] == 1)
+          elsif (row[:not_me] && row[:not_me].downcase == "true" || row[:not_me] == 1)
             items << UserOccurrence.new({
               occurrence_id: row[:gbifid],
               user_id: user_id,

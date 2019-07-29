@@ -39,8 +39,8 @@
           %th{scope: "col"} Institution
           %th{scope: "col"} Catalog Number
           %th{scope: "col"} Type Status
-          %th{scope: "col"} Helper
-          %th
+          %th{scope: "col"} Trainer
+          %th{scope: "col", class:"btn-selector-wide"}
 
       %tbody
         - @results.each do |uo|
@@ -50,7 +50,7 @@
               = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo }
             %td
               - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
-              %a{href: "/occurrence/#{o.id}", target: "_blank" } #{scientific_name}
+              %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"} #{scientific_name}
             %td #{o.recordedBy}
             %td #{o.identifiedBy}
             %td #{o.eventDate || o.year}
@@ -64,7 +64,7 @@
               - else
                 %a{href: "https://orcid.org/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
             %td
-              %button{type:"button", class:"btn btn-sm btn-danger remove", "data-occurrence-id":"#{uo.user_occurrence_id}"} Remove
+              %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{uo.user_occurrence_id}"} Not them
 
       - if @total > 25
         %tfoot{class: "thead-light"}

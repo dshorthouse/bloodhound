@@ -20,7 +20,7 @@ module Sinatra
                             .destroy_all
             end
             data = occurrence_ids.map{|o| { 
-                user_id: req[:user_id] ||= @user.id,
+                user_id: @user.id,
                 occurrence_id: o.to_i,
                 created_by: @user.id,
                 action: action,
@@ -38,7 +38,7 @@ module Sinatra
             action = req[:action] rescue nil
             visible = req[:visible] rescue true
             uo = UserOccurrence.new
-            uo.user_id = req[:user_id] ||= @user.id
+            uo.user_id = @user.id
             uo.occurrence_id = params[:occurrence_id]
             uo.created_by = @user.id
             uo.action = action

@@ -21,9 +21,5 @@
     A total of 
     %span{class:"font-weight-bold"} #{number_with_delimiter(@record_count)} #{'record'.pluralize(@record_count)} 
     were handled. Existing claims, if present in your upload, were skipped.
-    - if @viewed_user.is_public?
-      %a{href: "/#{@viewed_user.identifier}/specimens"}
-        View
-      #{@viewed_user.fullname}'s specimens.
-    - else
-      #{@viewed_user.fullname}'s profile has not yet been made public.
+    %a{href: "/help-others/#{@viewed_user.identifier}/specimens"} View
+    #{@viewed_user.fullname}'s specimens.
