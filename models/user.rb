@@ -65,6 +65,12 @@ class User < ActiveRecord::Base
     visible_user_occurrences.includes(:occurrence)
   end
 
+  def hidden_occurrences_by_others
+    hidden_user_occurrences.where.not(created_by: self)
+                           .includes(:occurrence)
+                           .order(created: :desc)
+  end
+  
   def hidden_occurrences
     hidden_user_occurrences.includes(:occurrence).order(created: :desc)
   end

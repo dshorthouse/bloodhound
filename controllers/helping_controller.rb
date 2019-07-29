@@ -17,6 +17,17 @@ module Sinatra
             haml :'help/others', locals: { active_page: "help" }
           end
 
+          app.get '/help-others/candidate-count.json' do
+            protected!
+            content_type "application/json"
+            user = User.find(params[:user_id].to_i)
+            return { count: 0 }.to_json if user.family.nil?
+
+            agent_ids = candidate_agents(user).pluck(:id)
+            count = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: user.user_occurrences.select(:occurrence_id)).count
+            { count: count }.to_json
+          end
+
           app.get '/help-others/progress' do
             protected!
             latest_claims("living")
@@ -41,6 +52,46 @@ module Sinatra
               status 404
               haml :oops
             end
+          end
+
+          app.get '/help-others/:id/specimens' do
+            protected!
+            check_identifier
+
+            @viewed_user = find_user(params[:id])
+
+            @page = (params[:page] || 1).to_i
+            @total = @viewed_user.claims_received.count
+
+            if @page*search_size > @total
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
+            end
+
+            @page = 1 if @page <= 0
+
+            @pagy, @results = pagy(@viewed_user.claims_received, items: search_size, page: @page)
+            haml :'help/specimens', locals: { active_page: "help" }
+          end
+
+          app.get '/help-others/:id/ignored' do
+            protected!
+            check_identifier
+
+            @viewed_user = find_user(params[:id])
+
+            @page = (params[:page] || 1).to_i
+            @total = @viewed_user.hidden_occurrences_by_others.count
+
+            if @page*search_size > @total
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
+            end
+
+            @page = 1 if @page <= 0
+
+            @pagy, @results = pagy(@viewed_user.hidden_occurrences_by_others, items: search_size, page: @page) 
+            haml :'help/ignored', locals: { active_page: "help" }
           end
 
           app.get '/help-others/:id' do

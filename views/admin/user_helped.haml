@@ -19,9 +19,9 @@
   %nav{id:"network-nav", class:"navbar navbar-light navbar-expand bg-light"}
     %ul{class:"navbar-nav"}
       %li{class:"nav-item"}
-        %a{class:"nav-link#{locals[:active_tab] == "living" ? " active" : nil}", href:"/admin/users/helped"} Living
+        %a{class:"nav-link#{locals[:active_tab] == "orcid" ? " active" : nil}", href:"/admin/users/helped"} ORCID
       %li{class:"nav-item"}
-        %a{class:"nav-link#{locals[:active_tab] == "deceased" ? " active" : nil}", href:"/admin/users/helped/deceased"} Deceased
+        %a{class:"nav-link#{locals[:active_tab] == "wikidata" ? " active" : nil}", href:"/admin/users/helped/wikidata"} Wikidata
 
 %div{class:"table-responsive-lg"}
   %table{class:"table table-hover table-sm"}

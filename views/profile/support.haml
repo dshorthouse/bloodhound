@@ -54,7 +54,7 @@
               = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo }
             %td
               - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
-              %a{href: "https://www.gbif.org/occurrence/#{o.gbifID}", target: "_blank" } #{scientific_name}
+              %a{href: "/occurrence/#{o.id}"} #{scientific_name}
             %td #{o.recordedBy}
             %td #{o.identifiedBy}
             %td #{o.eventDate || o.year}

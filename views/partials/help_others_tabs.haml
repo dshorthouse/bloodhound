@@ -1,0 +1,9 @@
+%ul{class: "nav nav-tabs pl-2"}
+  %li{class: "nav-item badge-item"}
+    %a{class: "nav-link#{locals[:active_tab] == "discovered" ? " active" : nil}", href: "/help-others/#{@viewed_user.identifier}"}
+      Discovered
+    %span{class: "badge-notify badge badge-danger badge-pill"}
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_tab] == "specimens" ? " active" : nil}", href: "/help-others/#{@viewed_user.identifier}/specimens"} Claimed
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_tab] == "ignored" ? " active" : nil}", href: "/help-others/#{@viewed_user.identifier}/ignored"} Ignored

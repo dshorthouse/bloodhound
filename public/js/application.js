@@ -312,7 +312,7 @@ var Application = (function($, window) {
     },
     candidate_counter: function() {
       var self = this;
-      if (self.path === "/profile" || (self.path === "/admin" && self.user_id)) {
+      if (self.path === "/profile" || (self.path === "/admin" && self.user_id) || (self.path === "/help-others" && self.user_id)) {
         $.ajax({
           method: "GET",
           url: self.path + "/candidate-count.json?relaxed=0&user_id=" + self.user_id

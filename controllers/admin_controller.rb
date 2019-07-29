@@ -82,13 +82,13 @@ module Sinatra
           app.get '/admin/users/helped' do
             admin_protected!
             latest_claims("living")
-            haml :'admin/user_helped', locals: { active_page: "administration", active_tab: "living" }
+            haml :'admin/user_helped', locals: { active_page: "administration", active_tab: "orcid" }
           end
 
-          app.get '/admin/users/helped/deceased' do
+          app.get '/admin/users/helped/wikidata' do
             admin_protected!
             latest_claims("deceased")
-            haml :'admin/user_helped', locals: { active_page: "administration", active_tab: "deceased" }
+            haml :'admin/user_helped', locals: { active_page: "administration", active_tab: "wikidata" }
           end
 
           app.get '/admin/users/search' do
@@ -287,11 +287,11 @@ module Sinatra
           app.get '/admin/candidate-count.json' do
             admin_protected!
             content_type "application/json", charset: 'utf-8'
-            @admin_user = User.find(params[:user_id].to_i)
-            return { count: 0 }.to_json if @admin_user.family.nil?
+            user = User.find(params[:user_id].to_i)
+            return { count: 0 }.to_json if user.family.nil?
 
-            agent_ids = candidate_agents(@admin_user).pluck(:id)
-            count = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @admin_user.user_occurrences.select(:occurrence_id)).count
+            agent_ids = candidate_agents(user).pluck(:id)
+            count = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: user.user_occurrences.select(:occurrence_id)).count
             { count: count }.to_json
           end
 

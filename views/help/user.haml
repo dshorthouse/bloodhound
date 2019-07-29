@@ -5,7 +5,7 @@
   %script{src: "/js/application.js"}
   :javascript
     $(function() {
-      Application.init(#{@viewed_user.id}, "POST", "/profile", "#{@viewed_user.identifier}");
+      Application.init(#{@viewed_user.id}, "POST", "/help-others", "#{@viewed_user.identifier}");
     });
 
 -content_for :jumbotron do
@@ -20,6 +20,8 @@
       
     %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
       %span{"aria-hidden":"true"} &times;
+
+= haml :'partials/help_others_tabs', layout: false, locals: { active_tab: "discovered" }
 
 - if @results.empty?
   %div{class: "alert alert-info tiny-margins", role: "alert"}
