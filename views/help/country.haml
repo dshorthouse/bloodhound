@@ -12,6 +12,12 @@
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap alert-warning-light"}
     %div{class: "mr-auto p-2"}
       %h2 #{@country.name}
+      %p.lead.text-muted
+        From countries stated in
+        %a{href:"https://orcid.org"} ORCID
+        or
+        %a{href: "https://www.wikidata.org"} Wikidata
+        accounts
     = haml :'partials/help_others_search', layout: false
 
 - if @results.empty?

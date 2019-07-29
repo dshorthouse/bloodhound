@@ -20,13 +20,13 @@ module Sinatra
           app.get '/help-others/progress' do
             protected!
             latest_claims("living")
-            haml :'help/progress', locals: { active_page: "help", active_tab: "living" }
+            haml :'help/progress', locals: { active_page: "help", active_tab: "orcid" }
           end
 
-          app.get '/help-others/progress/deceased' do
+          app.get '/help-others/progress/wikidata' do
             protected!
             latest_claims("deceased")
-            haml :'help/progress', locals: { active_page: "help", active_tab: "deceased" }
+            haml :'help/progress', locals: { active_page: "help", active_tab: "wikidata" }
           end
 
           app.get '/help-others/country/:country_code' do
