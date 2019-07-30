@@ -7,8 +7,8 @@ module Bloodhound
       "IPNI": "P586",
       "Harvard Index of Botanists": "P6264",
       "Entomologists of the World": "P5370",
-      "BHL Creator ID": "P4081",
-      "ZooBank Author ID": "P2006"
+      "ZooBank Author ID": "P2006",
+      "BHL Creator ID": "P4081"
     }
 
     def initialize
@@ -17,13 +17,12 @@ module Bloodhound
       @sparql = SPARQL::Client.new("https://query.wikidata.org/sparql", headers: headers, read_timeout: 120)
     end
 
-    def wikidata_people_query
-      properties_list = PEOPLE_PROPERTIES.values.map{|a| "wdt:#{a}"}.join("|")
+    def wikidata_people_query(property)
       %Q(
           SELECT DISTINCT
             ?item ?itemLabel
           WHERE {
-            ?item #{properties_list} ?id.
+            ?item wdt:#{property} ?id.
             SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
             OPTIONAL { ?item p:P569/psv:P569 [wikibase:timePrecision ?birth_precision; wikibase:timeValue ?birth]
             BIND(if(?birth_precision=11,?birth,if(?birth_precision=10,concat(month(?birth)," ",year(?birth)),year(?birth))) as ?date_of_birth) }
@@ -92,13 +91,18 @@ module Bloodhound
 
     def populate_new_users
       existing = existing_wikicodes + destroyed_users
-      all_wikicodes = {}
-      @sparql.query(wikidata_people_query).each_solution do |solution|
-        wikicode = solution.to_h[:item].to_s.match(/Q[0-9]{1,}/).to_s
-        all_wikicodes[wikicode] = solution.to_h[:itemLabel].to_s
+      new_wikicodes = {}
+      PEOPLE_PROPERTIES.each do |key,property|
+        puts "Polling #{key}...".yellow
+        @sparql.query(wikidata_people_query(property)).each_solution do |solution|
+          wikicode = solution.to_h[:item].to_s.match(/Q[0-9]{1,}/).to_s
+          next if existing.include? wikicode
+          new_wikicodes[wikicode] = solution.to_h[:itemLabel].to_s
+        end
       end
-      (all_wikicodes.keys - existing).each do |wikicode|
-        parsed = Namae.parse(all_wikicodes[wikicode])[0] rescue nil
+
+      new_wikicodes.each do |wikicode|
+        parsed = Namae.parse(new_wikicodes[wikicode])[0] rescue nil
         next if parsed.nil? || parsed.family.nil? || parsed.given.nil?
 
         u = User.find_or_create_by({ wikidata: wikicode })
