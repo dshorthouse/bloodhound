@@ -94,7 +94,6 @@ module Bloodhound
 
     def create_user(orcid)
       u = User.create(orcid: orcid)
-      u.update_profile
       puts "#{u.fullname_reverse}".green
     end
 

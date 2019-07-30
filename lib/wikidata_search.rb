@@ -14,7 +14,7 @@ module Bloodhound
     def initialize
       @settings = Sinatra::Application.settings
       headers = { 'User-Agent' => 'Bloodhound/1.0' }
-      @sparql = SPARQL::Client.new("https://query.wikidata.org/sparql", headers: headers)
+      @sparql = SPARQL::Client.new("https://query.wikidata.org/sparql", headers: headers, read_timeout: 120)
     end
 
     def wikidata_people_query
@@ -92,16 +92,22 @@ module Bloodhound
 
     def populate_new_users
       existing = existing_wikicodes + destroyed_users
+      all_wikicodes = {}
       @sparql.query(wikidata_people_query).each_solution do |solution|
         wikicode = solution.to_h[:item].to_s.match(/Q[0-9]{1,}/).to_s
-        next if existing.include? wikicode
+        all_wikicodes[wikicode] = solution.to_h[:itemLabel].to_s
+      end
+      (all_wikicodes.keys - existing).each do |wikicode|
+        parsed = Namae.parse(all_wikicodes[wikicode])[0] rescue nil
+        next if parsed.nil? || parsed.family.nil? || parsed.given.nil?
 
-        name = solution.to_h[:itemLabel].to_s
-        parsed = Namae.parse(name)[0] rescue nil
-        next if parsed.nil? || parsed[:family].nil? || parsed[:given].nil?
-
-        u = User.create({ wikidata: wikicode })
-        puts u.fullname_reverse.green
+        u = User.find_or_create_by({ wikidata: wikicode })
+        if !u.complete_wikicontent?
+          u.delete
+          puts "#{u.wikidata} deleted. Missing either family name, birth or death date".red
+        else
+          puts u.fullname_reverse.green
+        end
       end
     end
 
@@ -165,7 +171,7 @@ module Bloodhound
 
     def wiki_user_data(wikicode)
       wiki_user = Wikidata::Item.find(wikicode)
-      parsed = DwcAgent.parse(wiki_user.title)[0] rescue nil
+      parsed = Namae.parse(wiki_user.title)[0] rescue nil
       family = parsed.family rescue nil
       given = parsed.given rescue nil
       country = wiki_user.properties("P27").compact.map(&:title).join("|") rescue nil

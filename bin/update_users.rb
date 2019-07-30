@@ -110,7 +110,6 @@ end
 
 if options[:wikidata]
   u = User.find_or_create_by({ wikidata: options[:wikidata] })
-  u.update_profile
   if !u.complete_wikicontent?
     u.delete
     puts "#{u.wikidata} deleted. Missing either family name, birth or death date".red
@@ -120,7 +119,6 @@ if options[:wikidata]
   end
 elsif options[:orcid]
   u = User.find_or_create_by({ orcid: options[:orcid] })
-  u.update_profile
   cache_clear "fragments/#{u.identifier}"
   puts "#{u.fullname_reverse} created/updated".green
 elsif options[:logged]
