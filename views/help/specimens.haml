@@ -17,6 +17,7 @@
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     Bloodhound trainers have not yet helped claim specimens.
 - else
+  = haml :'partials/help_fixed_navbar', layout: false
   %div{id: "helper-info", class: "alert alert-info tiny-margins", role: "alert"}
     Choose 
     %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
