@@ -89,6 +89,23 @@ module Bloodhound
       )
     end
 
+    def wikidata_by_orcid(orcid)
+      %Q(
+        SELECT ?item ?itemLabel ?twitter
+        WHERE {
+          VALUES ?orcid {"#{orcid}"} {
+            ?item wdt:P496 ?orcid .
+          }
+          OPTIONAL {
+            ?item wdt:P2002 ?twitter .
+          }
+          SERVICE wikibase:label {
+            bd:serviceParam wikibase:language "en" .
+          }
+        }
+      )
+    end
+
     def populate_new_users
       existing = existing_wikicodes + destroyed_users
       new_wikicodes = {}
@@ -241,6 +258,14 @@ module Bloodhound
         date_died: date_died,
         organizations: organizations
       }
+    end
+
+    def wiki_user_by_orcid(orcid)
+      data = {}
+      @sparql.query(wikidata_by_orcid(orcid)).each_solution do |solution|
+        data[:twitter] = solution.to_h[:twitter] rescue nil
+      end
+      data
     end
 
     def existing_wikicodes

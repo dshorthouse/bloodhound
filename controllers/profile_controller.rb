@@ -143,6 +143,7 @@ module Sinatra
               @user.made_public = Time.now
             end
             @user.save
+            @user.update_profile
             cache_clear "fragments/#{@user.identifier}"
             { message: "ok"}.to_json
           end

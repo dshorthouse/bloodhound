@@ -286,6 +286,14 @@ class User < ActiveRecord::Base
     data[:organizations].each do |org|
       update_affiliation(org)
     end
+    begin
+      wikidata_lib = Bloodhound::WikidataSearch.new
+      wiki_data = wikidata_lib.wiki_user_by_orcid(orcid)
+      if !wiki_data[:twitter].nil?
+        data[:twitter] = wiki_data[:twitter]
+      end
+    rescue
+    end
     update(data.except!(:organizations))
   end
 
