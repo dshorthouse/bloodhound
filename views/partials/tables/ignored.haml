@@ -31,11 +31,10 @@
           %td #{o.catalogNumber}
           %td #{o.typeStatus}
           %td
-            - if uo.claimant.id != @user.id
-              - if uo.claimant.is_public?
-                %a{href: "/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
-              - else
-                %a{href: "https://orcid.org/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
+            - if uo.claimant.is_public?
+              %a{href: "/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
+            - else
+              %a{href: "https://orcid.org/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
 
     - if @total > 25
       %tfoot{class: "thead-light"}
