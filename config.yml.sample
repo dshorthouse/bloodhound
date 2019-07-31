@@ -34,6 +34,10 @@ development:
   gmail_email: '____@gmail.com'
   gmail_username: ''
   gmail_password: ''
+  twitter_consumer_key: ''
+  twitter_consumer_secret: ''
+  twitter_access_token: '-'
+  twitte_access_token_secret: ''
 
 test:
   adapter: mysql2
@@ -71,6 +75,10 @@ test:
   gmail_email: '____@gmail.com'
   gmail_username: ''
   gmail_password: ''
+  twitter_consumer_key: ''
+  twitter_consumer_secret: ''
+  twitter_access_token: '-'
+  twitte_access_token_secret: ''
 
 production:
   adapter: mysql2
@@ -108,3 +116,7 @@ production:
   gmail_email: '____@gmail.com'
   gmail_username: ''
   gmail_password: ''
+  twitter_consumer_key: ''
+  twitter_consumer_secret: ''
+  twitter_access_token: '-'
+  twitte_access_token_secret: ''

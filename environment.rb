@@ -61,6 +61,7 @@ require 'ostruct'
 require 'oj'
 require 'pluck_to_hash'
 require 'pony'
+require 'twitter'
 
 Hashie.logger = Logger.new(nil)
 

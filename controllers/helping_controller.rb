@@ -240,6 +240,8 @@ module Sinatra
               @viewed_user.update_profile
               cache_clear "fragments/#{@viewed_user.identifier}"
               session[:made_public] = true
+              twitter = Bloodhound::Twitter.new
+              twitter.welcome_user(@viewed_user)
               redirect "/help-others/#{@viewed_user.identifier}"
             end
           end

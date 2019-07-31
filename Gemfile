@@ -46,6 +46,7 @@ gem 'rubysl-securerandom'
 gem 'oj'
 gem 'pluck_to_hash'
 gem 'pony'
+gem 'twitter'
 
 group :production do
 end
