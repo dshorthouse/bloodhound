@@ -462,7 +462,7 @@ module Sinatra
             admin_user.is_public = req[:is_public]
             if req[:is_public]
               admin_user.made_public = Time.now
-              twitter = Bloodhound::Twitter.new
+              twitter = ::Bloodhound::Twitter.new
               twitter.welcome_user(admin_user)
             end
             admin_user.save
