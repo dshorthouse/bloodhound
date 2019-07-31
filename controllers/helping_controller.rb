@@ -94,6 +94,17 @@ module Sinatra
             { message: "ok", id: uo.id }.to_json
           end
 
+          app.put '/help-others/user-occurrence/bulk.json' do
+            protected!
+            content_type "application/json", charset: 'utf-8'
+            req = JSON.parse(request.body.read).symbolize_keys
+            occurrence_ids = req[:occurrence_ids].split(",")
+            visible = req[:visible] rescue true
+            UserOccurrence.where(id: occurrence_ids, user_id: req[:user_id].to_i)
+                          .update_all({ action: req[:action], visible: visible, created_by: @user.id })
+            { message: "ok" }.to_json
+          end
+
           app.put '/help-others/user-occurrence/:id.json' do
             protected!
             content_type "application/json", charset: 'utf-8'
@@ -103,17 +114,6 @@ module Sinatra
             uo.visible = req[:visible] ||= true
             uo.created_by = @user.id
             uo.save
-            { message: "ok" }.to_json
-          end
-
-          app.put '/help-others/user-occurrence/bulk.json' do
-            protected!
-            content_type "application/json", charset: 'utf-8'
-            req = JSON.parse(request.body.read).symbolize_keys
-            occurrence_ids = req[:occurrence_ids].split(",")
-            visible = req[:visible] rescue true
-            UserOccurrence.where(id: occurrence_ids, user_id: req[:user_id].to_i)
-                          .update_all({ action: req[:action], visible: visible, created_by: @user.id })
             { message: "ok" }.to_json
           end
 
