@@ -213,36 +213,12 @@ module Bloodhound
       date_died = Date.parse(wiki_user.properties("P570").compact.map{|a| a.value.time if a.precision_key == :day}.compact.first) rescue nil
 
       organizations = []
-      wiki_user.properties("P108").each do |org|
-        start_time = { year: nil, month: nil, day: nil }
-        end_time = { year: nil, month: nil, day: nil }
-        qualifiers = wiki_user.hash[:claims][:P108].select{|a| a[:mainsnak][:datavalue][:value][:id] == org.id}.first.qualifiers rescue nil
-        if !qualifiers.nil?
-          start_precision = qualifiers[:P580].first.datavalue.value.precision rescue nil
-          if !start_precision.nil?
-            start_time = parse_wikitime(qualifiers[:P580].first.datavalue.value.time, start_precision)
-          end
-
-          end_precision = qualifiers[:P582].first.datavalue.value.precision rescue nil
-          if !end_precision.nil?
-            end_time = parse_wikitime(qualifiers[:P582].first.datavalue.value.time, end_precision)
-          end
+      ["P108", "P1416"].each do |property|
+        wiki_user.properties(property).each do |org|
+          organization = wiki_user_organization(wiki_user, org, property)
+          #next if organization[:end_time][:year].nil?
+          organizations << organization
         end
-
-        next if end_time[:year].nil?
-        organizations << {
-          name: org.title,
-          wikidata: org.id,
-          ringgold: nil,
-          grid: nil,
-          address: nil,
-          start_day: start_time[:day],
-          start_month: start_time[:month],
-          start_year: start_time[:year],
-          end_day: end_time[:day],
-          end_month: end_time[:month],
-          end_year: end_time[:year]
-        }
       end
 
       {
@@ -257,6 +233,37 @@ module Bloodhound
         date_born: date_born,
         date_died: date_died,
         organizations: organizations
+      }
+    end
+
+    def wiki_user_organization(wiki_user, org, property)
+      start_time = { year: nil, month: nil, day: nil }
+      end_time = { year: nil, month: nil, day: nil }
+
+      qualifiers = wiki_user.hash[:claims][property.to_sym].select{|a| a[:mainsnak][:datavalue][:value][:id] == org.id}.first.qualifiers rescue nil
+      if !qualifiers.nil?
+        start_precision = qualifiers[:P580].first.datavalue.value.precision rescue nil
+        if !start_precision.nil?
+          start_time = parse_wikitime(qualifiers[:P580].first.datavalue.value.time, start_precision)
+        end
+
+        end_precision = qualifiers[:P582].first.datavalue.value.precision rescue nil
+        if !end_precision.nil?
+          end_time = parse_wikitime(qualifiers[:P582].first.datavalue.value.time, end_precision)
+        end
+      end
+      {
+        name: org.title,
+        wikidata: org.id,
+        ringgold: nil,
+        grid: nil,
+        address: nil,
+        start_day: start_time[:day],
+        start_month: start_time[:month],
+        start_year: start_time[:year],
+        end_day: end_time[:day],
+        end_month: end_time[:month],
+        end_year: end_time[:year]
       }
     end
 
