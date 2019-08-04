@@ -50,7 +50,17 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
      # Can start 2+ workers, each with 40 threads to help speed-up processing
      $ RACK_ENV=production sidekiq -c 40 -q taxon -r ./environment.rb
 
-Also execute SQL statement at end of [/bin/populate_taxa.rb script](bin/populate_taxa.rb) once queue is finished.
+Also execute following SQL statement once queue is finished:
+
+```
+INSERT INTO
+  taxon_determiners (taxon_id, agent_id)
+SELECT
+  t.taxon_id, d.agent_id
+FROM
+  occurrence_determiners d
+JOIN taxon_occurrences t ON d.occurrence_id = t.occurrence_id
+```
 
 ### Step 4: Cluster Agents & Store in Neo4j
 

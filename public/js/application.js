@@ -135,7 +135,10 @@ var Application = (function($, window) {
 	      url = self.path + "/candidates";
 	    } else if (self.path === "/admin") {
         identifier = window.location.pathname.split("/")[3];
-	      url = self.path + "/user/" + identifier + "/candidates"
+	      url = self.path + "/user/" + identifier + "/candidates";
+	    } else if (self.path === "/help-others") {
+        identifier = window.location.pathname.split("/")[2];
+	      url = self.path + "/" + identifier;
 	    }
 
       $("#relaxed").on("change", function() {

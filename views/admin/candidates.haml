@@ -25,7 +25,7 @@
 = haml :'partials/upload_claim_modal', layout: false, locals: { csv_download_url: "/admin/user/#{@admin_user.identifier}/candidates.csv?relaxed=0", csv_upload_url: "/admin/user/#{@admin_user.identifier}/upload-claims", user: @admin_user}
 
 - if @results.empty?
-  %div{class: "alert alert-info row", role:"alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  %div{class: "alert alert-info row tiny-margins", role:"alert"}
     %div{class: "col col-12 col-sm-12 col-m-8 col-lg-8"}
       Bloodhound did not sniff any specimens indexed by the Global Biodiversity Information Facility (GBIF) that were collected or identified.
 

@@ -33,6 +33,12 @@
 
   %div{id:"helper-info", class: "alert alert-info tiny-margins", role: "alert"}
     Help attribute #{number_with_delimiter(@total, delimeter: ",")} #{'specimen'.pluralize(@total)}.
+
+    %div{class:"form-check d-inline-flex"}
+      - checked = params[:relaxed] == "1" ? "checked" : nil
+      %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
+      %label{for:"relaxed", class:"relaxed"} Make less exact.
+
     Choose
     %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
     collected, 
