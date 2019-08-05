@@ -328,7 +328,6 @@ dl.citation{
   text-align:center;
   position:relative;
   height:200px;
-  width:300px;
   margin-bottom:1rem;
 }
 #profile-image input {
@@ -347,8 +346,9 @@ dl.citation{
   position:relative;
 }
 .profile-image-bg {
-  background-color:#A9A9A9;
+  height:150px !important;
 }
+
 .profile-image-bg span {
   color:#fff;
   width:300px;
@@ -357,14 +357,14 @@ dl.citation{
   position:relative !important;
 }
 .profile-image-bg span a {
-  color:#fff;
+  color:#6c757d;
 }
 #profile-upload-option {
-  background-color:#A9A9A9;
   position:absolute;
   bottom:0;left:0;right:0;
   display:none;
-  width:300px;
+  padding-left:25%;
+  padding-right:25%;
   z-index:1;
 }
 .profile-upload-option-list {
