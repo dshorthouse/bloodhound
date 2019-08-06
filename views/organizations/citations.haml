@@ -28,10 +28,10 @@
         %div{class: "card"}
           %div{class: "card-header"}
             %p{class: "citation card-title"}
-              #{article.citation}
+              #{h(article.citation)}
               %a{href: "https://doi.org/#{article.doi}"} https://doi.org/#{article.doi}
           %div{class: "card-body"}
-            %p{class:"card-text text-muted",style:"margin-top:5px;"} #{article.abstract}
+            %p{class:"card-text text-muted",style:"margin-top:5px;"} #{h(article.abstract)}
             %p
               Specimens collected or identified by: 
               - article.user_ids.split(",").each_with_index do |user_id, index|

@@ -50,14 +50,14 @@
               = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo }
             %td
               - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
-              %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"} #{scientific_name}
-            %td #{o.recordedBy}
-            %td #{o.identifiedBy}
-            %td #{o.eventDate || o.year}
-            %td #{o.dateIdentified}
-            %td #{o.institutionCode}
-            %td #{o.catalogNumber}
-            %td #{o.typeStatus}
+              %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"} #{h(scientific_name)}
+            %td #{h(o.recordedBy)}
+            %td #{h(o.identifiedBy)}
+            %td #{h(o.eventDate || o.year)}
+            %td #{h(o.dateIdentified)}
+            %td #{h(o.institutionCode)}
+            %td #{h(o.catalogNumber)}
+            %td #{h(o.typeStatus)}
             %td
               - if uo.claimant.is_public?
                 %a{href: "/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}

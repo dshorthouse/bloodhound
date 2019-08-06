@@ -21,15 +21,11 @@
 - if @results.empty?
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     No organizations found for 
-    %span{class: "font-weight-bold"}
-      :escaped
-        #{params[:q]}
+    %span{class: "font-weight-bold"} #{h(params[:q])}
 - else
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     #{@pagy.count} search results for
-    %span{class: "font-weight-bold"}
-      :escaped
-        #{params[:q]}
+    %span{class: "font-weight-bold"} #{h(params[:q])}
 
   - @results.in_groups_of(3).each do |group|
     %div{class: "card-deck"}

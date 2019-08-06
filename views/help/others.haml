@@ -17,9 +17,7 @@
 - if @results.empty? && params[:q] && !params[:q].empty?
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     No one found by the name
-    %span{class: "font-weight-bold"}
-      :escaped
-        #{params[:q]}
+    %span{class: "font-weight-bold"} #{h(params[:q])}
 
 - if @results.empty? || params[:q].nil?
   %div{class: "alert alert-info tiny-margins", role: "alert"}
