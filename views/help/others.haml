@@ -28,7 +28,7 @@
           Living:
         Ask them to create an 
         %a{href: "https://orcid.org/register"} ORCID account
-        with a publicly available name. If they assign themselves a keyword 
+        with a publicly available name. If they assign themselves one or more of the keywords 
         %span{class: "font-italic"} #{Sinatra::Application.settings.orcid_keywords.join(", ")}
         to their ORCID account, Bloodhound will add them the following day
       %li
@@ -36,7 +36,9 @@
           Deceased:
         Search on 
         %a{href:"https://www.wikidata.org"} Wikidata
-        and ensure they have a birth and death date accurate to the day
+        and ensure they have a birth and death date accurate to the day and there is a value for any of the properties:
+        %span{class: "font-italic"}> #{::Bloodhound::WikidataSearch::PEOPLE_PROPERTIES.keys.join(", ")}
+        \. Bloodhound will also add them by the following day.
 
   %ul{class: "nav nav-tabs pl-2"}
     %li{class: "nav-item"}
@@ -49,9 +51,7 @@
 - else
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     #{@pagy.count} search results for
-    %span{class: "font-weight-bold"}
-      :escaped
-        #{params[:q]}
+    %span{class: "font-weight-bold"} #{h(params[:q])}
 
   %div{class:"container-fluid"}
     - @results.in_groups_of(3).each do |group|
