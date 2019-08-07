@@ -71,6 +71,13 @@ module Sinatra
             redirect "/admin/organization/#{params[:id]}"
           end
 
+          app.delete '/admin/organization/:id' do
+            admin_protected!
+            organization = Organization.find(params[:id])
+            organization.destroy
+            redirect "/admin/organizations"
+          end
+
           app.get '/admin/users' do
             admin_protected!
             sort = params[:sort] || nil
