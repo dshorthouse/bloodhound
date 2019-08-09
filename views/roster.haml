@@ -20,7 +20,7 @@
     = haml :'partials/user_search', layout: false
 
 - if @results.empty? && params[:q] && params[:q].present?
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
+  %div{class: "alert alert-warning tiny-margins", role: "alert"}
     No one found by the name
     %span{class: "font-weight-bold"} #{h(params[:q])}
 

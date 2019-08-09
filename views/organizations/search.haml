@@ -19,7 +19,7 @@
     = haml :'partials/organization_search', layout: false
 
 - if @results.empty?
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
+  %div{class: "alert alert-warning tiny-margins", role: "alert"}
     No organizations found for 
     %span{class: "font-weight-bold"} #{h(params[:q])}
 - else

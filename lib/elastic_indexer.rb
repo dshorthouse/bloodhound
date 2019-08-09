@@ -179,6 +179,12 @@ module Bloodhound
                 analyzer: :fullname_index,
                 search_analyzer: :fullname_search,
                 norms: false
+              },
+              other_names: {
+                type: 'text',
+                analyzer: :fullname_index,
+                search_analyzer: :fullname_search,
+                norms: false
               }
             }
           }
@@ -372,7 +378,8 @@ module Bloodhound
         wikidata: u.wikidata,
         family: u.family,
         given: u.given,
-        fullname: u.fullname
+        fullname: u.fullname,
+        other_names: u.other_names.split("|").map(&:strip)
       }
     end
 
