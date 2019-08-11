@@ -90,7 +90,7 @@ module Sinatra
                   .where("user_occurrences.user_id != user_occurrences.created_by")
                   .where.not(users: user_type)
                   .order(Arel.sql("MAX(user_occurrences.created) DESC"))
-        @pagy, @results = pagy(qry)
+        @pagy, @results = pagy(qry, items: 20)
       end
 
       def find_user(id)
