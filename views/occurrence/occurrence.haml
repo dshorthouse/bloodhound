@@ -24,7 +24,7 @@
 
         %dt occurrenceID
         %dd
-          - if @occurrence.occurrenceID[0..3] == "http"
+          - if @occurrence.occurrenceID && @occurrence.occurrenceID[0..3] == "http"
             %a{href: "#{@occurrence.occurrenceID}", target:"_blank"} #{@occurrence.occurrenceID}
           - else
             #{h(@occurrence.occurrenceID)}
@@ -67,7 +67,12 @@
         %dd{class:"line-break"}
 
         %dt recordedBy
-        %dd #{h(@occurrence.recordedBy)}
+        %dd
+          #{h(@occurrence.recordedBy)}
+          %p
+          - @occurrence.user_recordings.each do |recorder|
+            %a{href: "/#{recorder.user.identifier}", role:"button", class:"btn btn-outline-secondary"}
+              #{recorder.user.fullname}
 
   %div{class:"card mb-4"}
     %div{class:"card-header border-bottom"}
@@ -91,4 +96,9 @@
         %dd{class:"line-break"}
 
         %dt identifiedBy
-        %dd #{h(@occurrence.identifiedBy)}
+        %dd
+          #{h(@occurrence.identifiedBy)}
+          %p
+          - @occurrence.user_identifications.each do |determiner|
+            %a{href: "/#{determiner.user.identifier}", role:"button", class:"btn btn-outline-secondary"}
+              #{determiner.user.fullname}
