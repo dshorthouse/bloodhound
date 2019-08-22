@@ -118,8 +118,8 @@ module Bloodhound
         end
       end
 
-      new_wikicodes.each do |wikicode|
-        parsed = Namae.parse(new_wikicodes[wikicode])[0] rescue nil
+      new_wikicodes.each do |wikicode, name|
+        parsed = Namae.parse(name)[0] rescue nil
         next if parsed.nil? || parsed.family.nil? || parsed.given.nil?
 
         u = User.find_or_create_by({ wikidata: wikicode })
