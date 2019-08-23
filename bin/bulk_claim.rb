@@ -3,6 +3,8 @@
 require File.dirname(File.dirname(__FILE__)) + '/environment.rb'
 require 'optparse'
 
+ARGV << '-h' if ARGV.empty?
+
 options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: bulk_claim.rb [options]. Assumes collector and determiner are spelled exactly the same."
@@ -31,7 +33,6 @@ OptionParser.new do |opts|
     puts opts
     exit
   end
-
 end.parse!
 
 if !options[:agent_id] || [options[:orcid], options[:wikidata]].compact.empty?

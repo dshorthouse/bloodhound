@@ -3,6 +3,8 @@
 require File.dirname(File.dirname(__FILE__)) + '/environment.rb'
 require 'optparse'
 
+ARGV << '-h' if ARGV.empty?
+
 options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: gbif_citations.rb [options]. Check and import citations of downloaded specimens"
@@ -36,7 +38,6 @@ OptionParser.new do |opts|
     puts opts
     exit
   end
-
 end.parse!
 
 params = { max_size: 100_000_000 }

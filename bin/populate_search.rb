@@ -6,16 +6,11 @@ require 'optparse'
 ARGV << '-h' if ARGV.empty?
 
 options = {}
-
 OptionParser.new do |opts|
   opts.banner = "Usage:populate_search.rb [options]"
 
   opts.on("-r", "--rebuild", "Rebuild the index") do |a|
     options[:rebuild] = true
-  end
-
-  opts.on("-w", "--refresh", "Refresh the index") do |a|
-    options[:refresh] = true
   end
 
   opts.on("-i", "--index [directory]", String, "Rebuild a particular index. Acccepted are agent, user, or organization") do |index|
@@ -26,14 +21,9 @@ OptionParser.new do |opts|
     puts opts
     exit
   end
-
 end.parse!
 
 index = Bloodhound::ElasticIndexer.new
-
-if options[:refresh]
-  index.refresh
-end
 
 if options[:rebuild]
   index.delete_agent_index

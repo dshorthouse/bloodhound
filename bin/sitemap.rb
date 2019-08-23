@@ -4,6 +4,8 @@ require File.dirname(File.dirname(__FILE__)) + '/environment.rb'
 require 'optparse'
 require 'zlib'
 
+ARGV << '-h' if ARGV.empty?
+
 options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: sitemap.rb [options]"

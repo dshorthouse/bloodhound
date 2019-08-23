@@ -3,6 +3,8 @@
 require File.dirname(File.dirname(__FILE__)) + '/environment.rb'
 require 'optparse'
 
+ARGV << '-h' if ARGV.empty?
+
 options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: cluster_agents.rb [options]"
@@ -19,7 +21,6 @@ OptionParser.new do |opts|
     puts opts
     exit
   end
-
 end.parse!
 
 if options[:truncate]
