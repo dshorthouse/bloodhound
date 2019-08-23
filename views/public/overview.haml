@@ -9,7 +9,7 @@
   %script{src: "/js/progress-bar.js"}
   %script{src: "/js/jquery-jvectormap-2.0.3.min.js"}
   %script{src: "/js/jquery-jvectormap-world-mill.js"}
-  %script{id:"dsq-count-scr", src:"//#{Sinatra::Application.settings.disqus_shortname}.disqus.com/count.js"}
+  %script{id:"dsq-count-scr", src:"//#{settings.disqus_shortname}.disqus.com/count.js"}
   - if @viewed_user.is_public? && !@total[:country_counts].empty?
     :javascript
       var countryData=#{@total[:country_counts].to_json};

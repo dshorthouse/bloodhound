@@ -37,7 +37,7 @@ module Sinatra
           if user.wikidata
             img =  cloud_img + user.image_url
           else
-            img = cloud_img + Sinatra::Application.settings.base_url + "/images/users/" + user.image_url
+            img = cloud_img + settings.base_url + "/images/users/" + user.image_url
           end
         end
         img

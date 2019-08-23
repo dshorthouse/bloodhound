@@ -58,16 +58,4 @@ class Occurrence < ActiveRecord::Base
     "user_occurrences.action LIKE '%recorded%'"
   end
 
-  def update_from_gbif
-    begin
-      response = RestClient::Request.execute(
-            method: :get,
-            url: Sinatra::Application.settings.gbif_api + 'occurrence/' + id.to_s,
-          )
-      new_data = JSON.parse(response, :symbolize_names => true)
-      update_attributes(new_data.select{ |key,_| attributes.symbolize_keys.keys.include? key })
-    rescue
-    end
-  end
-
 end

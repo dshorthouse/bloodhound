@@ -7,6 +7,39 @@ module Sinatra
 
         def self.registered(app)
 
+          app.use OmniAuth::Builder do
+            provider :orcid, app.orcid_key, app.orcid_secret,
+              :authorize_params => {
+                :scope => '/authenticate'
+              },
+              :client_options => {
+                :site => app.orcid_site,
+                :authorize_url => app.orcid_authorize_url,
+                :token_url => app.orcid_token_url,
+                :token_method => :post,
+                :scope => '/authenticate'
+              }
+
+            provider :zenodo, app.zenodo_key, app.zenodo_secret,
+              :sandbox => app.zenodo_sandbox,
+              :authorize_params => {
+                :client_id => app.zenodo_key,
+                :redirect_uri => app.base_url + '/auth/zenodo/callback'
+              },
+              :client_options => {
+                :site => app.zenodo_site,
+                :authorize_url => app.zenodo_authorize_url,
+                :token_url => app.zenodo_token_url,
+                :token_method => :post,
+                :scope => 'deposit:write deposit:actions',
+                :redirect_uri => app.base_url + '/auth/zenodo/callback'
+              }
+          end
+
+          app.before do
+            set_session
+          end
+
           #/auth/orcid is automatically added by OmniAuth
           app.get '/auth/orcid/callback' do
             session_data = request.env['omniauth.auth'].deep_symbolize_keys

@@ -8,14 +8,14 @@ module Sinatra
 
         def self.registered(app)
           ActiveRecord::Base.establish_connection(
-            adapter: app.settings.adapter,
-            database: app.settings.database,
-            host: app.settings.host,
-            username: app.settings.username,
-            password: app.settings.password,
-            reconnect: app.settings.reconnect,
-            pool: app.settings.pool,
-            timeout: app.settings.timeout
+            adapter: app.adapter,
+            database: app.database,
+            host: app.host,
+            username: app.username,
+            password: app.password,
+            reconnect: app.reconnect,
+            pool: app.pool,
+            timeout: app.timeout
           )
 
           if app.settings.environment == :development
@@ -27,8 +27,8 @@ module Sinatra
             inflect.irregular 'specimen', 'specimens'
           end
 
-          username = app.settings.neo4j_username
-          password = app.settings.neo4j_password
+          username = app.neo4j_username
+          password = app.neo4j_password
           neo4j_adaptor = Neo4j::Core::CypherSession::Adaptors::HTTP.new("http://#{username}:#{password}@localhost:7474")
           Neo4j::ActiveBase.on_establish_session { Neo4j::Core::CypherSession.new(neo4j_adaptor) }
 

@@ -7,10 +7,6 @@ module Sinatra
 
         def self.registered(app)
 
-          app.before do
-            set_session
-          end
-
           app.get '/' do
             example_profiles
             haml :home, locals: { active_page: "home" }
@@ -115,9 +111,9 @@ module Sinatra
               maker.channel.language = "en"
               maker.channel.author = "Bloodhound"
               maker.channel.updated = Time.now.to_s
-              maker.channel.link = "#{Sinatra::Application.settings.base_url}/user.rss"
+              maker.channel.link = "#{app.base_url}/user.rss"
               maker.channel.title = "Bloodhound New User Feed"
-              maker.channel.description = "New User Feed on #{Sinatra::Application.settings.base_url}"
+              maker.channel.description = "New User Feed on #{app.base_url}"
 
               User.where(is_public: true).where.not(made_public: nil)
                   .where("made_public >= ?", 2.days.ago)
@@ -139,7 +135,7 @@ module Sinatra
                   statement = [id_statement,recorded_statement].compact.join(" and ")
                 end
                 maker.items.new_item do |item|
-                  item.link = "#{Sinatra::Application.settings.base_url}/#{user.identifier}"
+                  item.link = "#{app.base_url}/#{user.identifier}"
                   item.title = "#{user.fullname}"
                   item.description = "#{user.fullname} #{twitter} #{statement}".split.join(" ")
                   item.updated = user.updated

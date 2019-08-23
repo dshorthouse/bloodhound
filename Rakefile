@@ -43,9 +43,10 @@ end
 end
 
 namespace :db do
-  require 'active_record'
-  conf = YAML.load(open(File.join(File.expand_path(File.dirname(__FILE__)), 'config.yml')).read).deep_symbolize_keys
-  env = Sinatra::Application.settings.environment
+  task :load_config do
+    require "./application"
+  end
+
   desc "Migrate the database"
   task(:migrate => :environment) do
     ActiveRecord::Base.logger = Logger.new(STDOUT)

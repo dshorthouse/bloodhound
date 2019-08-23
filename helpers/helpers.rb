@@ -20,7 +20,7 @@ module Sinatra
       end
 
       def root
-        Sinatra::Application.settings.root
+        settings.root
       end
 
       def check_identifier

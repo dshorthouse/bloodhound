@@ -12,7 +12,6 @@ require 'sanitize'
 require 'htmlentities'
 require 'i18n'
 require 'tilt/haml'
-require 'sinatra'
 require 'sinatra/base'
 require 'sinatra/content_for'
 require 'sinatra/cacher'
@@ -62,12 +61,7 @@ require 'twitter'
 
 Hashie.logger = Logger.new(nil)
 
-register Sinatra::ConfigFile
-config_file File.join(File.dirname(__FILE__), 'config.yml')
-
 require_all File.join(File.dirname(__FILE__), 'lib')
 require_all File.join(File.dirname(__FILE__), 'helpers')
 require_all File.join(File.dirname(__FILE__), 'controllers')
 require_all File.join(File.dirname(__FILE__), 'models')
-
-register Sinatra::Bloodhound::Model::Initialize

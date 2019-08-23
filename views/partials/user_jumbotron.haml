@@ -50,10 +50,10 @@
           %i{class:"fas fa-globe"}
           #{v}
 
-  - if Sinatra::Application.settings.base_url && @viewed_user.can_comment?
+  - if settings.base_url && @viewed_user.can_comment?
     %p{class:"text-lg-left"}
       %i{class:"fas fa-comments"}
-      %a{href: "#{Sinatra::Application.settings.base_url}/#{@viewed_user.identifier}/comments#disqus_thread", class:"disqus-comment-count", "data-disqus-identifier":"#{@viewed_user.identifier}"} Field notes
+      %a{href: "#{settings.base_url}/#{@viewed_user.identifier}/comments#disqus_thread", class:"disqus-comment-count", "data-disqus-identifier":"#{@viewed_user.identifier}"} Field notes
 
   - if @viewed_user.zenodo_doi
     %p{class:"citation text-lg-left mt-3 small"}

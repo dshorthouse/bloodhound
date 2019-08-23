@@ -3,27 +3,33 @@
 module Bloodhound
   class ElasticIndexer
 
-    def initialize
+    INDICES = {
+      agents: 'bloodhound_agents',
+      users: 'bloodhound_users',
+      organizations: 'bloodhound_organizations'
+    }
+
+    def initialize(opts = {})
       @client = Elasticsearch::Client.new request_timeout: 5*60
-      @settings = Sinatra::Application.settings
+      @settings = INDICES.merge(opts)
       @processes = 8
     end
 
     def delete_agent_index
-      if @client.indices.exists index: @settings.elastic_agent_index
-        @client.indices.delete index: @settings.elastic_agent_index
+      if @client.indices.exists index: @settings[:agents]
+        @client.indices.delete index: @settings[:agents]
       end
     end
 
     def delete_user_index
-      if @client.indices.exists index: @settings.elastic_user_index
-        @client.indices.delete index: @settings.elastic_user_index
+      if @client.indices.exists index: @settings[:users]
+        @client.indices.delete index: @settings[:users]
       end
     end
 
     def delete_organization_index
-      if @client.indices.exists index: @settings.elastic_organization_index
-        @client.indices.delete index: @settings.elastic_organization_index
+      if @client.indices.exists index: @settings[:organizations]
+        @client.indices.delete index: @settings[:organizations]
       end
     end
 
@@ -103,7 +109,7 @@ module Bloodhound
           }
         }
       }
-      @client.indices.create index: @settings.elastic_agent_index, body: config
+      @client.indices.create index: @settings[:agents], body: config
     end
 
     def create_user_index
@@ -190,7 +196,7 @@ module Bloodhound
           }
         }
       }
-      @client.indices.create index: @settings.elastic_user_index, body: config
+      @client.indices.create index: @settings[:users], body: config
     end
 
     def create_organization_index
@@ -249,7 +255,7 @@ module Bloodhound
           }
         }
       }
-      @client.indices.create index: @settings.elastic_organization_index, body: config
+      @client.indices.create index: @settings[:organizations], body: config
     end
 
     def import_agents
@@ -268,20 +274,20 @@ module Bloodhound
           }
         }
       end
-      @client.bulk index: @settings.elastic_agent_index, type: 'agent', refresh: false, body: agents
+      @client.bulk index: @settings[:agents], type: 'agent', refresh: false, body: agents
     end
 
     def add_agent(a)
-      @client.index index: @settings.elastic_agent_index, type: 'agent', id: a.id, body: agent_document(a)
+      @client.index index: @settings[:agents], type: 'agent', id: a.id, body: agent_document(a)
     end
 
     def update_agent(a)
       doc = { doc: agent_document(a) }
-      @client.update index: @settings.elastic_agent_index, type: 'agent', id: a.id, body: doc
+      @client.update index: @settings[:agents], type: 'agent', id: a.id, body: doc
     end
 
     def delete_agent(a)
-      @client.delete index: @settings.elastic_agent_index, type: 'agent', id: a.id
+      @client.delete index: @settings[:agents], type: 'agent', id: a.id
     end
 
     def agent_document(a)
@@ -309,20 +315,20 @@ module Bloodhound
     end
 
     def add_organization(org)
-      @client.index index: @settings.elastic_organization_index, type: 'organization', id: org.id, body: organization_document(org)
+      @client.index index: @settings[:organizations], type: 'organization', id: org.id, body: organization_document(org)
     end
 
     def update_organization(org)
       doc = { doc: organization_document(org) }
-      @client.update index: @settings.elastic_organization_index, type: 'organization', id: org.id, body: doc
+      @client.update index: @settings[:organizations], type: 'organization', id: org.id, body: doc
     end
 
     def delete_organization(org)
-      @client.delete index: @settings.elastic_organization_index, type: 'organization', id: org.id
+      @client.delete index: @settings[:organizations], type: 'organization', id: org.id
     end
 
     def refresh_agent_index
-      @client.indices.refresh index: @settings.elastic_agent_index
+      @client.indices.refresh index: @settings[:agents]
     end
 
     def import_organizations
@@ -341,7 +347,7 @@ module Bloodhound
           }
         }
       end
-      @client.bulk index: @settings.elastic_user_index, type: 'user', refresh: false, body: users
+      @client.bulk index: @settings[:users], type: 'user', refresh: false, body: users
     end
 
     def import_users
@@ -352,23 +358,23 @@ module Bloodhound
 
     def get_user(u)
       begin
-        @client.get index: @settings.elastic_user_index, type: 'user', id: u.id
+        @client.get index: @settings[:users], type: 'user', id: u.id
       rescue Elasticsearch::Transport::Transport::Errors::NotFound
         nil
       end
     end
 
     def add_user(u)
-      @client.index index: @settings.elastic_user_index, type: 'user', id: u.id, body: user_document(u)
+      @client.index index: @settings[:users], type: 'user', id: u.id, body: user_document(u)
     end
 
     def update_user(u)
       doc = { doc: user_document(u) }
-      @client.update index: @settings.elastic_user_index, type: 'user', id: u.id, body: doc
+      @client.update index: @settings[:users], type: 'user', id: u.id, body: doc
     end
 
     def delete_user(u)
-      @client.delete index: @settings.elastic_user_index, type: 'user', id: u.id
+      @client.delete index: @settings[:users], type: 'user', id: u.id
     end
 
     def user_document(u)
@@ -384,7 +390,7 @@ module Bloodhound
     end
 
     def refresh_user_index
-      @client.indices.refresh index: @settings.elastic_user_index
+      @client.indices.refresh index: @settings[:users]
     end
 
     def organization_document(o)
@@ -411,19 +417,19 @@ module Bloodhound
           }
         }
       end
-      @client.bulk index: @settings.elastic_organization_index, type: 'organization', refresh: false, body: organizations
+      @client.bulk index: @settings[:organizations], type: 'organization', refresh: false, body: organizations
     end
 
     def get_organization(o)
       begin
-        @client.get index: @settings.elastic_user_index, type: 'organization', id: o.id
+        @client.get index: @settings[:users], type: 'organization', id: o.id
       rescue Elasticsearch::Transport::Transport::Errors::NotFound
         nil
       end
     end
 
     def refresh_organization_index
-      @client.indices.refresh index: @settings.elastic_organization_index
+      @client.indices.refresh index: @settings[:organizations]
     end
 
   end
