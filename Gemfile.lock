@@ -54,7 +54,7 @@ GEM
     dwc-archive (1.0.1)
       nokogiri (~> 1.8)
       parsley-store (~> 0.3)
-    dwc_agent (0.3.2)
+    dwc_agent (0.3.3)
       namae (~> 1)
       namecase (~> 2)
     elasticsearch (7.3.0)

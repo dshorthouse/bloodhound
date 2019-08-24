@@ -3,8 +3,13 @@
 module Bloodhound
   class OrcidSearch
 
-    def initialize
-      @settings = Sinatra::Application.settings
+    ORCID = {
+      api_url: "https://pub.orcid.org/v2.1/",
+      keywords: ['taxonomy','taxonomist','mycology','zoology','botany','systematics','phylogenetics']
+    }
+
+    def initialize(opts = {})
+      @settings = ORCID.merge(opts)
     end
 
     def populate_new_users(doi = nil)

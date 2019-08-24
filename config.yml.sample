@@ -37,7 +37,7 @@ development:
   twitter_consumer_key: ''
   twitter_consumer_secret: ''
   twitter_access_token: '-'
-  twitte_access_token_secret: ''
+  twitter_access_token_secret: ''
 
 test:
   adapter: mysql2
@@ -78,7 +78,7 @@ test:
   twitter_consumer_key: ''
   twitter_consumer_secret: ''
   twitter_access_token: '-'
-  twitte_access_token_secret: ''
+  twitter_access_token_secret: ''
 
 production:
   adapter: mysql2
@@ -119,4 +119,4 @@ production:
   twitter_consumer_key: ''
   twitter_consumer_secret: ''
   twitter_access_token: '-'
-  twitte_access_token_secret: ''
+  twitter_access_token_secret: ''

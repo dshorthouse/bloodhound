@@ -12,7 +12,6 @@ module Bloodhound
     }
 
     def initialize
-      @settings = Sinatra::Application.settings
       headers = { 'User-Agent' => 'Bloodhound/1.0' }
       @sparql = SPARQL::Client.new("https://query.wikidata.org/sparql", headers: headers, read_timeout: 120)
     end

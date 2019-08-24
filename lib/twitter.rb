@@ -12,7 +12,7 @@ module Bloodhound
         config.consumer_key        = settings.twitter_consumer_key
         config.consumer_secret     = settings.twitter_consumer_secret
         config.access_token        = settings.twitter_access_token
-        config.access_token_secret = settings.twitte_access_token_secret
+        config.access_token_secret = settings.twitter_access_token_secret
       end
       @base_url = settings.base_url
     end
