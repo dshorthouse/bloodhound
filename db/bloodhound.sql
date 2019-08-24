@@ -11,17 +11,17 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `agents` (
   `id` int(11) NOT NULL,
-  `family` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
-  `given` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT ''
+  `family` varchar(255) COLLATE utf8mb4_bin NOT NULL DEFAULT '',
+  `given` varchar(255) COLLATE utf8mb4_bin NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `articles` (
   `id` int(11) NOT NULL,
-  `doi` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `citation` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `abstract` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `gbif_dois` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `gbif_downloadkeys` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `doi` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `citation` text COLLATE utf8mb4_bin,
+  `abstract` text COLLATE utf8mb4_bin,
+  `gbif_dois` text COLLATE utf8mb4_bin NOT NULL,
+  `gbif_downloadkeys` text COLLATE utf8mb4_bin NOT NULL,
   `processed` tinyint(1) DEFAULT NULL,
   `mail_sent` tinyint(1) NOT NULL DEFAULT '0',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -33,29 +33,36 @@ CREATE TABLE `article_occurrences` (
   `occurrence_id` bigint(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
+CREATE TABLE `ar_internal_metadata` (
+  `key` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `value` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `created_at` datetime(6) NOT NULL,
+  `updated_at` datetime(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
 CREATE TABLE `destroyed_users` (
   `id` int(11) NOT NULL,
-  `identifier` varchar(25) COLLATE utf8mb4_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `identifier` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `occurrences` (
   `gbifID` bigint(11) UNSIGNED NOT NULL,
-  `occurrenceID` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `dateIdentified` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `decimalLatitude` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `decimalLongitude` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `country` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `countryCode` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `eventDate` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `year` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `family` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `identifiedBy` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `institutionCode` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `collectionCode` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `catalogNumber` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `recordedBy` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `scientificName` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `typeStatus` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `occurrenceID` text COLLATE utf8mb4_bin,
+  `dateIdentified` text COLLATE utf8mb4_bin,
+  `decimalLatitude` text COLLATE utf8mb4_bin,
+  `decimalLongitude` text COLLATE utf8mb4_bin,
+  `country` text COLLATE utf8mb4_bin,
+  `countryCode` varchar(4) COLLATE utf8mb4_bin DEFAULT NULL,
+  `eventDate` text COLLATE utf8mb4_bin,
+  `year` text COLLATE utf8mb4_bin,
+  `family` text COLLATE utf8mb4_bin,
+  `identifiedBy` text COLLATE utf8mb4_bin,
+  `institutionCode` text COLLATE utf8mb4_bin,
+  `collectionCode` text COLLATE utf8mb4_bin,
+  `catalogNumber` text COLLATE utf8mb4_bin,
+  `recordedBy` text COLLATE utf8mb4_bin,
+  `scientificName` text COLLATE utf8mb4_bin,
+  `typeStatus` text COLLATE utf8mb4_bin,
   `dateIdentified_processed` datetime DEFAULT NULL,
   `eventDate_processed` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -72,26 +79,26 @@ CREATE TABLE `occurrence_recorders` (
 
 CREATE TABLE `organizations` (
   `id` int(11) NOT NULL,
-  `isni` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `isni` varchar(120) COLLATE utf8mb4_bin DEFAULT NULL,
   `ringgold` int(11) DEFAULT NULL,
-  `grid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `institution_codes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `wikidata` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `grid` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `address` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `institution_codes` text COLLATE utf8mb4_bin,
+  `wikidata` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
   `latitude` float DEFAULT NULL,
   `longitude` float DEFAULT NULL,
-  `image_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `website` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
+  `image_url` text COLLATE utf8mb4_bin,
+  `website` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `schema_migrations` (
-  `version` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL
+  `version` varchar(255) COLLATE utf8mb4_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `taxa` (
   `id` int(11) NOT NULL,
-  `family` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL
+  `family` varchar(255) COLLATE utf8mb4_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `taxon_determiners` (
@@ -116,7 +123,7 @@ CREATE TABLE `users` (
   `country_code` varchar(50) DEFAULT NULL,
   `keywords` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `twitter` varchar(50) DEFAULT NULL,
-  `image_url` varchar(255) DEFAULT NULL,
+  `image_url` text,
   `signature_url` varchar(255) DEFAULT NULL,
   `date_born` date DEFAULT NULL,
   `date_died` date DEFAULT NULL,
@@ -171,6 +178,9 @@ ALTER TABLE `article_occurrences`
   ADD UNIQUE KEY `article_occurrence_idx` (`article_id`,`occurrence_id`),
   ADD KEY `article_idx` (`article_id`),
   ADD KEY `occurrence_idx` (`occurrence_id`);
+
+ALTER TABLE `ar_internal_metadata`
+  ADD PRIMARY KEY (`key`);
 
 ALTER TABLE `destroyed_users`
   ADD PRIMARY KEY (`id`),
@@ -229,31 +239,31 @@ ALTER TABLE `user_organizations`
 
 
 ALTER TABLE `agents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7068825;
 
 ALTER TABLE `articles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6620;
 
 ALTER TABLE `article_occurrences`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3129641695;
 
 ALTER TABLE `destroyed_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 ALTER TABLE `organizations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4841;
 
 ALTER TABLE `taxa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33306;
 
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40449;
 
 ALTER TABLE `user_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7581250;
 
 ALTER TABLE `user_organizations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84872;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
