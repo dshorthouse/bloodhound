@@ -85,10 +85,19 @@
             %button{type: "button", class:"btn btn-sm btn-outline-success", "data-toggle": "modal", "data-target": "#helperPublicModal"}
               %i{class:"fas fa-unlock"}
               Make Profile Public
+
+          %a{ href:"/help-others/refresh.json?user_id=#{@viewed_user.id}", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
+            %i{class: "fas fa-sync-alt"}
+            Refresh Wikidata
       
           - if admin_authorized?
             %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
               %i{class:"fas fa-cog"}
               Settings
+              
+          %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
+            Data from Wikidata was refreshed.
+            %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+              %span{"aria-hidden":"true"} &times;
 
     %div{class:"col"}

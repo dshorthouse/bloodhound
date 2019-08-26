@@ -35,6 +35,16 @@ module Sinatra
             haml :'help/help'
           end
 
+          app.get '/help-others/refresh.json' do
+            protected!
+            content_type "application/json", charset: 'utf-8'
+            user = User.find(params[:user_id].to_i)
+            user.update_profile
+            cache_clear "fragments/#{user.identifier}"
+            cache_clear "fragments/#{user.identifier}-trainer"
+            { message: "ok" }.to_json
+          end
+
           app.get '/help-others/progress' do
             protected!
             latest_claims("living")
