@@ -11,6 +11,9 @@
 tags
 log/*.log
 config.yml
+config/settings/test.yml
+config/settings/development.yml
+config/settings/production.yml
 metastore_db
 derby.log
 agents-unioned-csv
