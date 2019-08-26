@@ -88,7 +88,8 @@
 
           %a{ href:"/help-others/refresh.json?user_id=#{@viewed_user.id}", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
             %i{class: "fas fa-sync-alt"}
-            Refresh Wikidata
+            - locale = @viewed_user.orcid ? "ORCID" : "Wikidata"
+            Refresh #{locale}
       
           - if admin_authorized?
             %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
@@ -96,7 +97,7 @@
               Settings
               
           %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
-            Data from Wikidata was refreshed.
+            Data from #{locale} was refreshed.
             %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
               %span{"aria-hidden":"true"} &times;
 
