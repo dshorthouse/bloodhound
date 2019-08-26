@@ -3,8 +3,8 @@
 module Bloodhound
   class SendMail
 
-    def initialize
-      settings = Sinatra::Application.settings
+    def initialize(opts = {})
+      settings = Settings.merge!(opts)
       Pony.options = {
         charset: 'UTF-8',
         from: settings.gmail_email,

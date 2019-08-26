@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-require File.dirname(File.dirname(__FILE__)) + '/environment.rb'
-require 'optparse'
+require File.dirname(File.dirname(__FILE__)) + '/application.rb'
 require 'zlib'
 
 ARGV << '-h' if ARGV.empty?

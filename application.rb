@@ -13,8 +13,7 @@ class BLOODHOUND < Sinatra::Base
   load_locales File.join(root, 'config', 'locales')
   I18n.available_locales = [:en, :fr]
 
-  register Sinatra::ConfigFile
-  config_file File.join(root, 'config.yml')
+  register Config
 
   register Sinatra::Cacher
   register Sinatra::OutputBuffer
@@ -25,13 +24,42 @@ class BLOODHOUND < Sinatra::Base
 
   use Rack::Session::Cookie, key: 'rack.session',
                              path: '/',
-                             secret: orcid_key
+                             secret: Settings.orcid_key
+
+  use OmniAuth::Builder do
+    provider :orcid, Settings.orcid_key, Settings.orcid_secret,
+      :authorize_params => {
+        :scope => '/authenticate'
+      },
+      :client_options => {
+        :site => Settings.orcid_site,
+        :authorize_url => Settings.orcid_authorize_url,
+        :token_url => Settings.orcid_token_url,
+        :token_method => :post,
+        :scope => '/authenticate'
+      }
+
+    provider :zenodo, Settings.zenodo_key, Settings.zenodo_secret,
+      :sandbox => Settings.zenodo_sandbox,
+      :authorize_params => {
+        :client_id => Settings.zenodo_key,
+        :redirect_uri => Settings.base_url + '/auth/zenodo/callback'
+      },
+      :client_options => {
+        :site => Settings.zenodo_site,
+        :authorize_url => Settings.zenodo_authorize_url,
+        :token_url => Settings.zenodo_token_url,
+        :token_method => :post,
+        :scope => 'deposit:write deposit:actions',
+        :redirect_uri => Settings.base_url + '/auth/zenodo/callback'
+      }
+   end
 
   include Pagy::Backend
   include Pagy::Frontend
   Pagy::VARS[:items] = 30
 
-  use Rack::GoogleAnalytics, tracker: google_analytics
+  use Rack::GoogleAnalytics, tracker: Settings.google_analytics
 
   helpers Sinatra::ContentFor
   helpers Sinatra::Bloodhound::Formatters

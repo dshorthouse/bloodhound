@@ -16,7 +16,7 @@ install:
   - gem install bundler
   - bundle install
 before_script:
-  - cp config.yml.sample config.yml
+  - cp config/settings/test.yml.sample config/settings/test.yml
   - RACK_ENV=test
   - rake db:create:all
   - rake db:schema:load

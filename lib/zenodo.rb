@@ -4,19 +4,16 @@ require 'filemagic'
 module Bloodhound
   class Zenodo
 
-    def initialize(hash:)
+    def initialize(hash:, opts: {})
       @hash = hash
-    end
-
-    def settings
-      Sinatra::Application.settings
+      @settings = Settings.merge!(opts)
     end
 
     def client
-      @client ||= OAuth2::Client.new(settings.zenodo_key, settings.zenodo_secret,
-                      site: settings.zenodo_site,
-                      authorize_url: settings.zenodo_authorize_url,
-                      token_url:  settings.zenodo_token_url,
+      @client ||= OAuth2::Client.new(@settings.zenodo_key, @settings.zenodo_secret,
+                      site: @settings.zenodo_site,
+                      authorize_url: @settings.zenodo_authorize_url,
+                      token_url:  @settings.zenodo_token_url,
                       token_method: :post) do |stack|
                         stack.request :multipart
                         stack.request :url_encoded

@@ -1,0 +1,39 @@
+adapter: mysql2
+host: localhost
+username: root
+password:
+database: bloodhound
+reconnect: true
+pool: 40
+timeout: 5000
+neo4j_username:
+neo4j_password:
+orcid_api_url: 'https://pub.orcid.org/v2.1/'
+orcid_key: ''
+orcid_secret: ''
+orcid_site: 'https://orcid.org'
+orcid_authorize_url: 'https://orcid.org/oauth/authorize'
+orcid_token_url: 'https://pub.orcid.org/oauth/token'
+orcid_keywords: ['taxonomy','taxonomist','entomology','zoology','botany']
+zenodo_sandbox: true
+zenodo_api_url: 'https://sandbox.zenodo.org/api/'
+zenodo_key: ''
+zenodo_secret: ''
+zenodo_site: 'https://sandbox.zenodo.org'
+zenodo_authorize_url: 'https://sandbox.zenodo.org/oauth/authorize'
+zenodo_token_url: 'https://sandbox.zenodo.org/oauth/token'
+elastic_server: 'http://localhost:9200'
+elastic_agent_index: 'bloodhound_agents'
+elastic_user_index: 'bloodhound_users'
+elastic_organization_index: 'bloodhound_organizations'
+google_analytics: ''
+disqus_shortname: ''
+base_url: ''
+gmail_domain: ''
+gmail_email: '____@gmail.com'
+gmail_username: ''
+gmail_password: ''
+twitter_consumer_key: ''
+twitter_consumer_secret: ''
+twitter_access_token: '-'
+twitter_access_token_secret: ''

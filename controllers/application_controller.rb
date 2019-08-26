@@ -76,7 +76,7 @@ module Sinatra
           end
 
           app.get '/developers' do
-            file = File.join(root, "public", "data", "bloodhound-public-claims.csv.gz")
+            file = File.join(app.root, "public", "data", "bloodhound-public-claims.csv.gz")
             @compressed_file_size = (File.size(file).to_f / 2**20).round(2) rescue nil
             haml :developers
           end
@@ -111,9 +111,9 @@ module Sinatra
               maker.channel.language = "en"
               maker.channel.author = "Bloodhound"
               maker.channel.updated = Time.now.to_s
-              maker.channel.link = "#{app.base_url}/user.rss"
+              maker.channel.link = "#{Settings.base_url}/user.rss"
               maker.channel.title = "Bloodhound New User Feed"
-              maker.channel.description = "New User Feed on #{app.base_url}"
+              maker.channel.description = "New User Feed on #{Settings.base_url}"
 
               User.where(is_public: true).where.not(made_public: nil)
                   .where("made_public >= ?", 2.days.ago)
@@ -135,7 +135,7 @@ module Sinatra
                   statement = [id_statement,recorded_statement].compact.join(" and ")
                 end
                 maker.items.new_item do |item|
-                  item.link = "#{app.base_url}/#{user.identifier}"
+                  item.link = "#{Settings.base_url}/#{user.identifier}"
                   item.title = "#{user.fullname}"
                   item.description = "#{user.fullname} #{twitter} #{statement}".split.join(" ")
                   item.updated = user.updated

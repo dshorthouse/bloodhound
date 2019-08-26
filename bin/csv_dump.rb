@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-require File.dirname(File.dirname(__FILE__)) + '/environment.rb'
-require 'optparse'
+require File.dirname(File.dirname(__FILE__)) + '/application.rb'
 require 'zlib'
 
 ARGV << '-h' if ARGV.empty?
@@ -74,7 +73,7 @@ if options[:directory]
     CSV.open(csv_file, 'w') do |csv|
       csv << ["Family", "Given", "wikidata", "ORCID", "URL"]
       users.find_each do |u|
-        csv << [u.family, u.given, u.wikidata, u.orcid, Sinatra::Application.settings.disqus_domain + "/" + u.identifier]
+        csv << [u.family, u.given, u.wikidata, u.orcid, Settings.base_url + "/" + u.identifier]
       end
     end
   end

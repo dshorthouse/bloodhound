@@ -6,8 +6,8 @@ module Bloodhound
     attr_reader :client
     attr_reader :base_url
 
-    def initialize
-      settings = Sinatra::Application.settings
+    def initialize(ops = {})
+      settings = Settings.merge!(opts)
       @client = ::Twitter::REST::Client.new do |config|
         config.consumer_key        = settings.twitter_consumer_key
         config.consumer_secret     = settings.twitter_consumer_secret
