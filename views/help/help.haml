@@ -1,0 +1,68 @@
+-content_for :title do
+  Help Users
+
+-content_for :scripts do
+  %script{src: "/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init("", "GET", "/help-others");
+    });
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap alert-warning-light"}
+    %div{class: "mr-auto p-2"}
+      %h2 Help Claim Specimens
+    = haml :'partials/help_others_search', layout: false
+
+%ul{class: "nav nav-tabs pl-2"}
+  %li{class: "nav-item"}
+    %a{class: "nav-link", href: "/help-others"} By Country
+  %li{class: "nav-item"}
+    %a{class: "nav-link", href: "/help-others/new-people"} New People
+  %li{class: "nav-item"}
+    %a{class: "nav-link", href: "/help-others/progress"} Latest Recipients
+  %li{class: "nav-item"}
+    %a{class: "nav-link active", href: "/help-others/help"} Help / Add
+
+%div{class:"container-fluid mt-4"}
+  %div{class:"alert alert-info tiny-margins", role:"alert"}
+    Couldn't find someone?
+    %ul
+      %li
+        %strong
+          Living:
+        Ask them to create an 
+        %a{href: "https://orcid.org/register"} ORCID account
+        with a publicly available name. If they assign themselves one or more of the keywords 
+        %span{class: "font-italic"} #{Settings.orcid_keywords.join(", ")}
+        to their ORCID account, Bloodhound will add them the following day
+      %li
+        %strong
+          Deceased:
+        Search on 
+        %a{href:"https://www.wikidata.org"} Wikidata
+        and ensure they have a birth and death date accurate to the day and there is a value for any of the properties:
+        %span{class: "font-italic"} #{::Bloodhound::WikidataSearch::PEOPLE_PROPERTIES.keys.join(", ")}
+        \. Bloodhound will also add them by the following day.
+
+%h4 Don't Wish to Wait?
+
+%form{id:"form-user-wrapper", method: "post", action: "/help-others/add", "accept-charset" => "UTF-8", class:"helpers"}
+  %div{class:"d-flex flex-sm-row flex-column p-3"}
+    %div{class:"form-group"}
+      %label{for: "identifier", class:"font-weight-bold"}= "Add ORCID or Wikidata QID"
+      %input{class: "orcid-add", type: :text, name: "identifier", placeholder: "Q1234567", size:"12"}
+      %input{type: :submit, class:"btn btn-success mt-3", value: "Submit"}
+
+- if !@new_user.nil?
+  %div{class: "row"}
+    %div{class: "col-sm-8 col-md-6 col-xl-6"}
+      - if !@new_user[:slug].nil?
+        %div{class:"alert alert-success", role: "alert", style:"display:block"}
+          %span{class:"font-weight-bold"}
+            %a{href: "/help-others/#{@new_user[:slug]}"} #{@new_user[:fullname]}
+          was created or updated.
+      - else
+        %div{class:"alert alert-danger", role: "alert", style:"display:block"}
+          %span{class:"font-weight-bold"} #{@new_user[:fullname]}
+          not created because the identifier was incorrectly formatted or in the case of wikidata, the item is not a human, the family name and/or precise birth and death dates were missing, or the user already exists with an ORCID identifier.

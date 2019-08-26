@@ -15,16 +15,18 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap alert-warning-light"}
     %div{class: "mr-auto p-2"}
-      %h2 Help Progress
+      %h2 Help Claim Specimens for People Actively Receiving Help
     = haml :'partials/help_others_search', layout: false
 
 %ul{class: "nav nav-tabs pl-2"}
   %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/help-others"} Country
-  %li{class: "nav-item"}
-    %a{class: "nav-link active", href: "/help-others/progress"} Recent Claims
+    %a{class: "nav-link", href: "/help-others"} By Country
   %li{class: "nav-item"}
     %a{class: "nav-link", href: "/help-others/new-people"} New People
+  %li{class: "nav-item"}
+    %a{class: "nav-link active", href: "/help-others/progress"} Latest Recipients
+  %li{class: "nav-item"}
+    %a{class: "nav-link", href: "/help-others/help"} Help / Add
 
 %div{class:"container-fluid"}
   %nav{id:"network-nav", class:"navbar navbar-light navbar-expand bg-light"}
@@ -38,9 +40,9 @@
   %table{class:"table table-hover table-sm"}
     %thead{class: "thead-light"}
       %tr
-        %th{scope: "col"} Account
-        %th{scope: "col"} Progress
-        %th{scope: "col"} Public
+        %th{scope: "col"} Person
+        %th{scope: "col"} Claim Progress
+        %th{scope: "col"} Is Public?
         %th{scope: "col"} Last Helped By
         %th{scope: "col"} Last Helped
 

@@ -99,9 +99,9 @@ if options[:file]
     elsif row[0].is_orcid?
       u = User.find_or_create_by({ orcid: row[0] })
     end
-    if u.wikidata && !u.complete_wikicontent?
+    if u.wikidata && !u.valid_wikicontent?
       u.delete
-      puts "#{u.wikidata} deleted. Missing either family name, birth or death date".red
+      puts "#{u.wikidata} deleted. Missing either family name, birth or death date or has an ORCID".red
     else
       puts "#{u.fullname_reverse} created/updated".green
     end
@@ -110,9 +110,9 @@ end
 
 if options[:wikidata]
   u = User.find_or_create_by({ wikidata: options[:wikidata] })
-  if !u.complete_wikicontent?
+  if !u.valid_wikicontent?
     u.delete
-    puts "#{u.wikidata} deleted. Missing either family name, birth or death date".red
+    puts "#{u.wikidata} deleted. Missing either family name, birth or death date or has an ORCID".red
   else
     cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse} created/updated".green

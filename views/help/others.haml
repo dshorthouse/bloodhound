@@ -17,36 +17,24 @@
 - if @results.empty? && params[:q] && !params[:q].empty?
   %div{class: "alert alert-warning tiny-margins", role: "alert"}
     No one found by the name
-    %span{class: "font-weight-bold"} #{h(params[:q])}
+    = succeed "." do
+      %span{class: "font-weight-bold"}
+        #{h(params[:q])}
+    See the
+    %a{href: "/help-others/help"} Help
+    tab for suggestions.
 
 - if @results.empty? || params[:q].nil?
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    Is the person you're looking for not here?
-    %ul
-      %li
-        %strong
-          Living:
-        Ask them to create an 
-        %a{href: "https://orcid.org/register"} ORCID account
-        with a publicly available name. If they assign themselves one or more of the keywords 
-        %span{class: "font-italic"} #{Settings.orcid_keywords.join(", ")}
-        to their ORCID account, Bloodhound will add them the following day
-      %li
-        %strong
-          Deceased:
-        Search on 
-        %a{href:"https://www.wikidata.org"} Wikidata
-        and ensure they have a birth and death date accurate to the day and there is a value for any of the properties:
-        %span{class: "font-italic"} #{::Bloodhound::WikidataSearch::PEOPLE_PROPERTIES.keys.join(", ")}
-        \. Bloodhound will also add them by the following day.
 
   %ul{class: "nav nav-tabs pl-2"}
     %li{class: "nav-item"}
-      %a{class: "nav-link active", href: "/help-others"} Country
-    %li{class: "nav-item"}
-      %a{class: "nav-link", href: "/help-others/progress"} Recent Claims
+      %a{class: "nav-link active", href: "/help-others"} By Country
     %li{class: "nav-item"}
       %a{class: "nav-link", href: "/help-others/new-people"} New People
+    %li{class: "nav-item"}
+      %a{class: "nav-link", href: "/help-others/progress"} Latest Recipients
+    %li{class: "nav-item"}
+      %a{class: "nav-link", href: "/help-others/help"} Help / Add
 
   = haml :'partials/help_others_countries', layout: false
 

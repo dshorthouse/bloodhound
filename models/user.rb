@@ -53,8 +53,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def complete_wikicontent?
-    !family.nil? && !date_born.nil? && !date_died.nil?
+  def valid_wikicontent?
+    !family.nil? && !date_born.nil? && !date_died.nil? && orcid.nil?
   end
 
   def visible_user_occurrences
@@ -300,10 +300,12 @@ class User < ActiveRecord::Base
   def update_wikidata_profile
     wikidata_lib = Bloodhound::WikidataSearch.new
     data = wikidata_lib.wiki_user_data(wikidata)
-    data[:organizations].each do |org|
-      update_affiliation(org)
+    if data
+      data[:organizations].each do |org|
+        update_affiliation(org)
+      end
+      update(data.except!(:organizations))
     end
-    update(data.except!(:organizations))
   end
 
   def update_affiliation(org)

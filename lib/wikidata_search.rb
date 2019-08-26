@@ -122,7 +122,7 @@ module Bloodhound
         next if parsed.nil? || parsed.family.nil? || parsed.given.nil?
 
         u = User.find_or_create_by({ wikidata: wikicode })
-        if !u.complete_wikicontent?
+        if !u.valid_wikicontent?
           u.delete
           puts "#{u.wikidata} deleted. Missing either family name, birth or death date".red
         else
@@ -191,12 +191,16 @@ module Bloodhound
 
     def wiki_user_data(wikicode)
       wiki_user = Wikidata::Item.find(wikicode)
+      if !wiki_user || wiki_user.properties("P31")[0].title != "human"
+        return
+      end
       parsed = Namae.parse(wiki_user.title)[0] rescue nil
       family = parsed.family rescue nil
       given = parsed.given rescue nil
       country = wiki_user.properties("P27").compact.map(&:title).join("|") rescue nil
       country_code = wiki_user.properties("P27").compact.map{|a| find_country_code(a.title) || "" }.compact.join("|").presence rescue nil
       keywords = wiki_user.properties("P106").map{|k| k.title if !/^Q\d+/.match?(k.title)}.compact.join("|") rescue nil
+      orcid = wiki_user.properties("P496").first.value rescue nil
       image_url = nil
       signature_url = nil
       image = wiki_user.image.value rescue nil
@@ -227,6 +231,7 @@ module Bloodhound
         country: country,
         country_code: country_code,
         keywords: keywords,
+        orcid: orcid,
         image_url: image_url,
         signature_url: signature_url,
         date_born: date_born,

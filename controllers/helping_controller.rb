@@ -28,10 +28,23 @@ module Sinatra
             { count: count }.to_json
           end
 
+          app.get '/help-others/help' do
+            protected!
+            @new_user = session[:new_user]
+            session[:new_user] = nil
+            haml :'help/help'
+          end
+
           app.get '/help-others/progress' do
             protected!
             latest_claims("living")
             haml :'help/progress', locals: { active_page: "help", active_tab: "orcid" }
+          end
+
+          app.post '/help-others/add' do
+            protected!
+            create_user
+            redirect '/help-others/help'
           end
 
           app.get '/help-others/progress/wikidata' do

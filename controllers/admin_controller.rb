@@ -113,22 +113,7 @@ module Sinatra
 
           app.post '/admin/user/add' do
             admin_protected!
-            if params[:identifier]
-              if params[:identifier].is_orcid?
-                new_user = User.find_or_create_by({ orcid: params[:identifier] })
-                session[:new_user] = { fullname: new_user.fullname, slug: new_user.orcid }
-              elsif params[:identifier].is_wiki_id?
-                new_user = User.find_or_create_by({ wikidata: params[:identifier] })
-                if !new_user.complete_wikicontent?
-                  session[:new_user] = { fullname: params[:identifier], slug: nil }
-                  new_user.destroy
-                else
-                  session[:new_user] = { fullname: new_user.fullname, slug: new_user.wikidata }
-                end
-              else
-                session[:new_user] = { fullname: params[:identifier], slug: nil }
-              end
-            end
+            create_user
             redirect '/admin/users/manage'
           end
 
