@@ -1,7 +1,7 @@
 require 'rake'
 require 'bundler/setup'
 require 'rspec/core/rake_task'
-require './environment'
+require './application'
 
 task :default => :test
 task :test => :spec
