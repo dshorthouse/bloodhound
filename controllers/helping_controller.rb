@@ -40,6 +40,18 @@ module Sinatra
             haml :'help/progress', locals: { active_page: "help", active_tab: "wikidata" }
           end
 
+          app.get '/help-others/new-people' do
+            protected!
+            @pagy, @results = pagy(User.where.not(orcid: nil).order(created: :desc), items: 20)
+            haml :'help/new_people', locals: { active_page: "help", active_tab: "orcid" }
+          end
+
+          app.get '/help-others/new-people/wikidata' do
+            protected!
+            @pagy, @results = pagy(User.where.not(wikidata: nil).order(created: :desc), items: 20)
+            haml :'help/new_people', locals: { active_page: "help", active_tab: "wikidata" }
+          end
+
           app.get '/help-others/country/:country_code' do
             protected!
             country_code = params[:country_code]
