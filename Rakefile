@@ -7,7 +7,7 @@ task :default => :test
 task :test => :spec
 
 task :environment do
-  require_relative './environment'
+  require_relative './application'
 end
 
 if !defined?(RSpec)
@@ -43,13 +43,9 @@ end
 end
 
 namespace :db do
-  task :load_config do
-    require "./application"
-  end
 
   desc "Migrate the database"
   task(:migrate => :environment) do
-    require "./application"
     ActiveRecord::Base.logger = Logger.new(STDOUT)
     ActiveRecord::Migration.verbose = true
     ActiveRecord::MigrationContext.new('db/migrate', ActiveRecord::SchemaMigration).migrate
