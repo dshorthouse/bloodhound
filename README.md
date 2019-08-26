@@ -13,7 +13,7 @@ Sinatra app to parse people names from structured biodiversity occurrence data, 
 
 ## Requirements
 
-1. ruby 2.5.1+
+1. ruby 2.6.3+
 2. Elasticsearch 6.2.4+
 3. MySQL 14.14+
 4. Redis 4.0.9+
