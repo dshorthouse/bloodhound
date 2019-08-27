@@ -19,7 +19,7 @@ module Sinatra
 
           app.get '/help-others/candidate-count.json' do
             protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             user = User.find(params[:user_id].to_i)
             return { count: 0 }.to_json if user.family.nil?
 

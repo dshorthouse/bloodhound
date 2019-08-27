@@ -11,15 +11,25 @@ var ProgressBar = (function($, window) {
       this.candidate_counter();
     },
     candidate_counter: function() {
-      var self = this, percent, progress_bar = $('#progress-bar_' + this.identifier);
+      var self = this, denominator, percent, message, progress_bar = $('#progress-bar_' + this.identifier);
       $.ajax({
         method: "GET",
         url: "/" + self.identifier + "/progress.json?relaxed=0"
       }).done(function(data) {
-        var denominator = (data.claimed + data.unclaimed === 0) ? 1 : data.claimed + data.unclaimed;
-        percent = parseInt(100 * data.claimed / denominator, 10);
-        progress_bar.width(percent + '%').text(percent + "%");
-        if (percent === 100) {
+        denominator = data.claimed + data.unclaimed;
+        if (denominator === 0) {
+          console.log(self.identifier);
+          percent = 100;
+          message = "None";
+        } else {
+          percent = parseInt(100 * data.claimed / denominator, 10);
+          message = percent + "%";
+        }
+        progress_bar.width(percent + '%').text(message);
+        if (message === "None") {
+          progress_bar.removeClass("bg-info").addClass("bg-secondary");
+        }
+        if (percent === 100 && denominator > 0) {
           progress_bar.removeClass("bg-info").addClass("bg-success");
         }
       });
