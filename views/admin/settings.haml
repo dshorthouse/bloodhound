@@ -63,7 +63,10 @@
               %p
                 %a{ href:"/admin/refresh.json?user_id=#{@admin_user.id}", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
                   %i{class: "fas fa-sync-alt"}
+                  - locale = @admin_user.orcid ? "ORCID" : "Wikidata"
                   Refresh
+                  %img{src: "/images/#{locale.downcase}_24x24.png", alt:"#{locale} iD", width:"18px"}
+
               %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
                 - locale = @admin_user.orcid ? "ORCID" : "Wikidata"
                 #{locale} Data was refreshed.

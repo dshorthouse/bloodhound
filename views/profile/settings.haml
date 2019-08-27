@@ -52,6 +52,8 @@
                 %a{ href:"/profile/refresh.json?user_id=#{@user.id}", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
                   %i{class: "fas fa-sync-alt"}
                   Refresh
+                  %img{src: "/images/orcid_24x24.png", alt:"ORCID iD", width:"18px"}
+
               %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
                 ORCID Data was refreshed.
                 %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
