@@ -16,7 +16,8 @@ var ProgressBar = (function($, window) {
         method: "GET",
         url: "/" + self.identifier + "/progress.json?relaxed=0"
       }).done(function(data) {
-        percent = parseInt(100 * data.claimed / (data.claimed + data.unclaimed), 10);
+        var denominator = (data.claimed + data.unclaimed === 0) ? 1 : data.claimed + data.unclaimed;
+        percent = parseInt(100 * data.claimed / denominator, 10);
         progress_bar.width(percent + '%').text(percent + "%");
         if (percent === 100) {
           progress_bar.removeClass("bg-info").addClass("bg-success");
