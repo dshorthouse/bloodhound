@@ -6,7 +6,7 @@ module Bloodhound
     attr_reader :client
     attr_reader :base_url
 
-    def initialize(ops = {})
+    def initialize(opts = {})
       settings = Settings.merge!(opts)
       @client = ::Twitter::REST::Client.new do |config|
         config.consumer_key        = settings.twitter_consumer_key
@@ -14,7 +14,7 @@ module Bloodhound
         config.access_token        = settings.twitter_access_token
         config.access_token_secret = settings.twitter_access_token_secret
       end
-      @base_url = Settings.base_url
+      @base_url = settings.base_url
     end
 
     def welcome_user(user)
