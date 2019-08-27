@@ -54,7 +54,7 @@
               %div{class:"modal-header"}
                 %h5{class:"modal-title", id:"helperPublicLabel"}
                   %i{class:"fas fa-unlock"}
-                  Make Profile Public
+                  Make Public
                 %button{type:"button", class:"close", "data-dismiss":"modal", "aria-label":"Close"}
                   %span{"aria-hidden":"true"} &times;
               %div{class:"modal-body"}
@@ -76,7 +76,7 @@
                   %input{type: :submit, class:"btn btn-sm btn-outline-success", value:"Yes, Make Public"}
           
       - if authorized?
-        %div{class: "text-center"}
+        %div{class: "text-center border-top mt-3 pt-3"}
           - if @viewed_user.is_public?
             %a{href: "/#{@viewed_user.identifier}", class: "mr-2"}
               %i{class:"fas fa-user"}
@@ -84,21 +84,22 @@
           - if !@viewed_user.is_public? && !@viewed_user.wikidata.nil?
             %button{type: "button", class:"btn btn-sm btn-outline-success", "data-toggle": "modal", "data-target": "#helperPublicModal"}
               %i{class:"fas fa-unlock"}
-              Make Profile Public
+              Make Public
 
-          %a{ href:"/help-others/refresh.json?user_id=#{@viewed_user.id}", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
+          %a{href:"/help-others/refresh.json?user_id=#{@viewed_user.id}", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
             %i{class: "fas fa-sync-alt"}
             - locale = @viewed_user.orcid ? "ORCID" : "Wikidata"
-            Refresh #{locale}
+            Refresh
+            %img{src: "/images/#{locale.downcase}_24x24.png", alt:"#{locale} iD", width:"18px"}
       
           - if admin_authorized?
             %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
               %i{class:"fas fa-cog"}
               Settings
               
-          %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
-            Data from #{locale} was refreshed.
-            %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
-              %span{"aria-hidden":"true"} &times;
+        %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
+          Data from #{locale} was refreshed.
+          %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+            %span{"aria-hidden":"true"} &times;
 
     %div{class:"col"}
