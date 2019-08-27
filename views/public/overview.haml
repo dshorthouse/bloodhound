@@ -3,21 +3,26 @@
 - content_for(:title, "#{@viewed_user.fullname}")
 
 - content_for :stylesheets do
-  %link{rel:"stylesheet", href:"/css/jquery-jvectormap-2.0.3.css"}
+  - if @viewed_user.is_public? && !@total[:country_counts].empty?
+    %link{rel:"stylesheet", href:"/css/jquery-jvectormap-2.0.3.css"}
 
 - content_for :scripts do
-  %script{src: "/js/progress-bar.js"}
-  %script{src: "/js/jquery-jvectormap-2.0.3.min.js"}
-  %script{src: "/js/jquery-jvectormap-world-mill.js"}
   %script{id:"dsq-count-scr", src:"//#{Settings.disqus_shortname}.disqus.com/count.js"}
+  - if @viewed_user.is_public?
+    %script{src: "/js/progress-bar.js"}
+    :javascript
+      $(function() {
+        ProgressBar.init("#{@viewed_user.identifier}");
+      });
   - if @viewed_user.is_public? && !@total[:country_counts].empty?
+    %script{src: "/js/jquery-jvectormap-2.0.3.min.js"}
+    %script{src: "/js/jquery-jvectormap-world-mill.js"}
     :javascript
       var countryData=#{@total[:country_counts].to_json};
   
       $(function() {
         var map = $('#world-map');
         DISQUSWIDGETS.getCount({reset: true});
-        ProgressBar.init("#{@viewed_user.identifier}");
         if (Object.keys(countryData).length > 0) {
           map.vectorMap({
             map: 'world_mill',
@@ -70,10 +75,9 @@
                   - if @total[:country_counts].count > 0 
                     from at least #{@total[:country_counts].count} #{'country'.pluralize(@total[:country_counts].count)}
             %div{class:"col-4 col-md-2 p-0"}
-              - if !@total[:country_counts].empty?
-                Progress
-                %div{class:"progress", style:"border:1px solid rgba(0,0,0,.125);inline"}
-                  %div{id:"progress-bar_#{@viewed_user.identifier}", class:"progress-bar bg-info", role:"progressbar", style:"width: 0%;inline", "aria-valuenow":"0", "aria-valuemin":"0", "aria-valuemax":"100"}
+              Progress
+              %div{class:"progress", style:"border:1px solid rgba(0,0,0,.125);inline"}
+                %div{id:"progress-bar_#{@viewed_user.identifier}", class:"progress-bar bg-info", role:"progressbar", style:"width: 0%;inline", "aria-valuenow":"0", "aria-valuemin":"0", "aria-valuemax":"100"}
 
         - if !@total[:country_counts].empty?
           %div{class:"row d-flex justify-content-center"}
