@@ -171,6 +171,7 @@ module Sinatra
 
           app.get '/:id/progress.json' do
             content_type "application/json"
+            expires 0, :no_cache, :must_revalidate
 
             viewed_user = find_user(params[:id])
             claimed = viewed_user.all_occurrences_count
