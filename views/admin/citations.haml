@@ -2,6 +2,7 @@
   #{@admin_user.fullname} Citations
 
 -content_for :scripts do
+  %script{src: "https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"}
   %script{src:"/js/application.js"}
   :javascript
     $(function() {
@@ -31,20 +32,17 @@
         %div{class: "card-header"}
           %p{class: "citation card-title"}
             #{h(article.citation)}
+            %a{href: "https://doi.org/#{article.doi}"} https://doi.org/#{article.doi}
         %div{class: "card-body"}
-          %dl{class: "row"}
-            %dt{class: "col-sm-2"} DOI
-            %dd{class: "col-sm-10"}
-              %a{href: "https://doi.org/#{article.doi}"} #{article.doi}
-            %dt{class: "col-sm-2"} Abstract:
-            %dd{class: "col-sm-10 text-muted"} #{h(article.abstract)}
-            %dt{class: "col-sm-2"} Specimens used:
-            %dd{class: "col-sm-10"}
+          %div{"data-badge-popover":"right", "data-badge-type":"donut", "data-doi":"#{article.doi}", "data-hide-no-mentions":"true", class:"altmetric-embed pull-left mr-2 float-left"}
+          %p{class:"card-text text-muted"} #{h(article.abstract)}
+        %div{class: "card-footer d-flex"}
+          %div{class:"w-100 mr-2"}
+            %div{class: "small"}
               %span{class: "badge badge-success badge-pill citation-correction"} #{number_with_delimiter(article.user_specimen_count(@admin_user.id))}
-              %a{href: "/admin/user/#{@admin_user.identifier}/citation/#{article.id}"} View
-            %dt{class: "col-sm-2"} All data in study:
-            %dd{class: "col-sm-10"}
-              - article.gbif_dois.each do |doi|
-                %a{href: "https://doi.org/#{doi}", class: "badge badge-light citation-correction"} #{doi}
+              %a{href: "/admin/user/#{@admin_user.identifier}/citation/#{article.id}", class:"ml-2"} View
+          %div{class:"flex-grow-1"}
+            - article.gbif_dois.each do |doi|
+              %a{href: "https://doi.org/#{doi}", class: "badge badge-light citation-correction"} #{doi}
 
     = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

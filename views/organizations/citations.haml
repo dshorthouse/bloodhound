@@ -6,6 +6,7 @@
     %link{href: "https://unpkg.com/leaflet@1.4.0/dist/leaflet.css", rel: "stylesheet", type: "text/css"}
 
 -content_for :scripts do
+  %script{src: "https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"}
   = haml :'partials/organization_jumbotron_scripts', layout:false
 
 -content_for :jumbotron do
@@ -31,9 +32,11 @@
               #{h(article.citation)}
               %a{href: "https://doi.org/#{article.doi}"} https://doi.org/#{article.doi}
           %div{class: "card-body"}
-            %p{class:"card-text text-muted",style:"margin-top:5px;"} #{h(article.abstract)}
-            %p
-              Specimens collected or identified by: 
+            %div{"data-badge-popover":"right", "data-badge-type":"donut", "data-doi":"#{article.doi}", "data-hide-no-mentions":"true", class:"altmetric-embed pull-left mr-2 float-left"}
+            %p{class:"card-text text-muted"} #{h(article.abstract)}
+          %div{class: "card-footer d-flex"}
+            %p{class:"m-0 p-0"}
+              Specimens collected or identified by:
               - article.user_ids.split(",").each_with_index do |user_id, index|
                 - user = User.find(user_id)
                 %span

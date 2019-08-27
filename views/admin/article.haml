@@ -1,6 +1,9 @@
 -content_for :title do
   Article
 
+-content_for :scripts do
+  %script{src: "https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"}
+
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid alert-warning"}
     %h2 Article
@@ -32,4 +35,5 @@
       %dt{class: "col-sm-2"} All data in study:
       %dd{class: "col-sm-10"}
         - @article.gbif_dois.each do |doi|
-          %a{href: "https://doi.org/#{doi}", class: "badge badge-light citation-correction"} #{doi}
+          %a{href: "https://doi.org/#{@article.doi}", class: "badge badge-light citation-correction"} #{doi}
+    %div{"data-badge-popover":"right", "data-badge-type":"donut", "data-doi":"#{@article.doi}", "data-hide-no-mentions":"true", class:"altmetric-embed"}
