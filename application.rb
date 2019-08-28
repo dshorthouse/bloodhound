@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require './environment'
+require File.dirname(__FILE__) + '/environment.rb'
 
 class BLOODHOUND < Sinatra::Base
   set :root, File.dirname(__FILE__)
