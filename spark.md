@@ -21,6 +21,7 @@ import org.apache.spark.sql.functions._
 
 val verbatimTerms = List(
   "gbifID",
+  "datasetKey",
   "occurrenceID",
   "dateIdentified",
   "decimalLatitude",

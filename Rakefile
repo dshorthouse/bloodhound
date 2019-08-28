@@ -28,7 +28,8 @@ namespace :generate do
     class_name = migration_name.split("_").map {|w| w.capitalize}.join('')
     path = File.join(File.expand_path(File.dirname(__FILE__)), 'db', 'migrate', file_name)
     f = open(path, 'w')
-    content = "class #{class_name} < ActiveRecord::Migration
+    v = Gem.loaded_specs["activerecord"].version.to_s[0..2]
+    content = "class #{class_name} < ActiveRecord::Migration[#{v}]
   def up
   end
   

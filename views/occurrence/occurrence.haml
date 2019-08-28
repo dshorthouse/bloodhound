@@ -22,6 +22,13 @@
             %i{class:"fas fa-external-link-alt"}
         %dd{class:"line-break"}
 
+        %dt datasetKey
+        %dd
+          %a{href: "https://gbif.org/dataset/#{@occurrence.datasetKey}", target:"_blank"}
+            #{@occurrence.datasetKey}
+            %i{class:"fas fa-external-link-alt"}
+        %dd{class:"line-break"}
+
         %dt occurrenceID
         %dd
           - if @occurrence.occurrenceID && @occurrence.occurrenceID[0..3] == "http"
