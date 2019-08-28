@@ -1,6 +1,13 @@
 -content_for :title do
   Trainers
 
+-content_for :scripts do
+  %script{src: "/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init();
+    });
+
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
@@ -16,7 +23,7 @@
           %div{class:"card", style:"border:0px"}
         - else
           - cache_fragment(u.identifier + "-trainer") do
-            %div{class: "card my-3"}
+            %div{class: "card card-profile my-3"}
               %div{class: "card-header"}
                 - title_class = u.image_url ? "fullheight" : ""
                 %h5{class: title_class}
