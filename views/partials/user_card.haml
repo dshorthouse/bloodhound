@@ -6,7 +6,7 @@
 - if locals[:user].top_family_identified || locals[:user].top_family_recorded
   - statement = [id_statement,recorded_statement].compact.join(" and ")
   - statement = statement.slice(0,1).capitalize + statement.slice(1..-1)
-%div{class: "card my-3"}
+%div{class: "card card-profile my-3"}
   %div{class: "card-header"}
     - title_class = locals[:user].image_url ? "fullheight" : ""
     %h5{class:title_class}

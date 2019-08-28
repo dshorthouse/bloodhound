@@ -22,6 +22,7 @@ var Application = (function($, window) {
       this.method = typeof method !== 'undefined' ? method : "POST";
       this.path = typeof path !== 'undefined' ? path : "";
       this.identifier = typeof identifier !== 'undefined' ? identifier : "";
+      this.profile_cards();
       this.bloodhound();
       this.typeahead();
       this.activate_radios();
@@ -30,6 +31,11 @@ var Application = (function($, window) {
       this.candidate_counter();
       this.helper_navbar();
       this.helper_modal();
+    },
+    profile_cards: function() {
+      $(".card-profile").on("click", function() {
+        window.location = $(this).find(".card-header a").attr("href");
+      });
     },
     bloodhound: function() {
       this.data_sources.agent = this.create_bloodhound("agent");
