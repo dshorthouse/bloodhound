@@ -65,7 +65,10 @@
             - else
               #{claim.user.is_public}
           %td
-            #{claim.claimant.fullname_reverse}
+            - if claim.claimant.is_bot?
+              #{claim.claimant.fullname}
+            - else
+              %a{href: "/#{claim.claimant.orcid}"} #{claim.claimant.fullname_reverse}
           %td
             #{claim.created}
 

@@ -84,7 +84,7 @@ else
         user_id: user.id,
         occurrence_id: o,
         action: "recorded",
-        created_by: user.id
+        created_by: 1
       } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
 
       puts "Claiming unique determinations...".yellow
@@ -92,7 +92,7 @@ else
         user_id: user.id,
         occurrence_id: o,
         action: "identified",
-        created_by: user.id
+        created_by: 1
       } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
 
       puts "Claiming recordings and determinations...".yellow
@@ -100,7 +100,7 @@ else
         user_id: user.id,
         occurrence_id: o,
         action: "recorded,identified",
-        created_by: user.id
+        created_by: 1
       } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
 
       puts "#{agent.fullname} data claimed for #{user.fullname}".green
@@ -112,7 +112,7 @@ else
         occurrence_id: o,
         action: nil,
         visible: 0,
-        created_by: user.id
+        created_by: 1
       } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
       puts "#{agent.fullname} data ignored for #{user.fullname}".red
     end

@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+
+  BOT_IDS = [1]
+
   serialize :zenodo_access_token, Hash
 
   has_many :user_occurrences, dependent: :delete_all
@@ -31,6 +34,10 @@ class User < ActiveRecord::Base
 
   def wants_mail?
     wants_mail
+  end
+
+  def is_bot?
+    BOT_IDS.include? id
   end
 
   def identifier
