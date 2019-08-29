@@ -401,8 +401,9 @@ module Sinatra
             req = JSON.parse(request.body.read).symbolize_keys
             occurrence_ids = req[:occurrence_ids].split(",")
             visible = req[:visible] rescue true
+            data = { action: req[:action], visible: visible, created_by: @user.id }
             UserOccurrence.where(id: occurrence_ids, user_id: req[:user_id].to_i)
-                          .update_all({ action: req[:action], visible: visible })
+                          .update_all(data)
             { message: "ok" }.to_json
           end
 
@@ -413,6 +414,7 @@ module Sinatra
             uo = UserOccurrence.find_by(id: params[:id].to_i, user_id: req[:user_id].to_i)
             uo.action = req[:action]
             uo.visible = true
+            uo.created_by = @user.id
             uo.save
             { message: "ok" }.to_json
           end
