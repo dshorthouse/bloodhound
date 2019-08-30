@@ -1,6 +1,13 @@
 -content_for :title do
   #{@country.name}
 
+- content_for :scripts do
+  %script{src: "/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init();
+    });
+
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
