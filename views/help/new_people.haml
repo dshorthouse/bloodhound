@@ -15,7 +15,12 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap alert-warning-light"}
     %div{class: "mr-auto p-2"}
-      %h2 Help Claim Specimens for Recently Found People
+      %h2 Recently Found People
+      %p{class:"lead text-muted"}
+        Claim specimens for newly found people in
+        %a{href:"https://orcid.org"} ORCID
+        or
+        %a{href: "https://www.wikidata.org"} Wikidata
     = haml :'partials/help_others_search', layout: false
 
 %ul{class: "nav nav-tabs pl-2"}
