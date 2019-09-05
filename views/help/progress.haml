@@ -15,7 +15,8 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap alert-warning-light"}
     %div{class: "mr-auto p-2"}
-      %h2 Help Claim Specimens for People Actively Receiving Help
+      %h2 People Receiving Help
+      %p{class:"lead text-muted"} Join the trainers by helping to claim specimens
     = haml :'partials/help_others_search', layout: false
 
 %ul{class: "nav nav-tabs pl-2"}
@@ -43,8 +44,8 @@
         %th{scope: "col"} Person
         %th{scope: "col"} Claim Progress
         %th{scope: "col"} Is Public?
-        %th{scope: "col"} Last Helped By
-        %th{scope: "col"} Last Helped
+        %th{scope: "col"} Latest Trainer
+        %th{scope: "col"} Latest Claim
 
     %tbody
       - @results.each do |claim|
@@ -65,7 +66,10 @@
             - else
               #{claim.user.is_public}
           %td
-            #{claim.claimant.fullname_reverse}
+            - if claim.claimant.is_bot?
+              #{claim.claimant.fullname}
+            - else
+              %a{href: "/#{claim.claimant.orcid}"} #{claim.claimant.fullname_reverse}
           %td
             #{claim.created}
 

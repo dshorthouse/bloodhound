@@ -351,7 +351,9 @@ module Bloodhound
     end
 
     def import_users
-      User.where.not(family: [nil, ""]).find_in_batches do |batch|
+      User.where.not(family: [nil, ""])
+          .where.not(id: User::BOT_IDS)
+          .find_in_batches do |batch|
         bulk_user(batch)
       end
     end

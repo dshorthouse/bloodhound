@@ -352,6 +352,9 @@ var Application = (function($, window) {
     helper_modal: function() {
       var self = this, helper_list = "";
       $('#helperPublicModal').on('show.bs.modal', function (event) {
+        var helpers_list = $("#helpers-list").hide().next();
+        $("#helpers-list-none").hide();
+        helpers_list.empty();
         $.ajax({
           method: "GET",
           url: "/help-others/" + self.identifier + "/helpers.json"
@@ -362,9 +365,9 @@ var Application = (function($, window) {
               if (i.email && i.email.length > 0) {
                 email = " (" + i.email + ")";
               }
-              return i.given + " " + i.family + email;
+              return "<li>" + i.given + " " + i.family + email + "</li>";
             });
-            $("#helpers-list").append(helper_list.join(", ")).show();
+            helpers_list.append(helper_list.join(", ")).prev().show();
           } else {
             $("#helpers-list-none").show();
           }

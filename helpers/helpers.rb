@@ -153,6 +153,7 @@ module Sinatra
           end
           agents.delete_if{|a| !keepers.include?(a) || a[:score] < 40 }
         end
+
         agents.compact.uniq.sort_by{|a| a[:score]}.reverse
       end
 
@@ -261,7 +262,8 @@ module Sinatra
       end
 
       def trainers
-        results = UserOccurrence.where("user_occurrences.user_id != user_occurrences.created_by")
+        results = UserOccurrence.where.not(created_by: User::BOT_IDS)
+                                .where("user_occurrences.user_id != user_occurrences.created_by")
                                 .group([:user_id, :created_by])
                                 .pluck(:created_by)
                                 .uniq

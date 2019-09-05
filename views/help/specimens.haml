@@ -59,7 +59,9 @@
             %td #{h(o.catalogNumber)}
             %td #{h(o.typeStatus)}
             %td
-              - if uo.claimant.is_public?
+              - if uo.claimant.is_bot?
+                #{uo.claimant.fullname}
+              - elsif uo.claimant.is_public?
                 %a{href: "/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
               - else
                 %a{href: "https://orcid.org/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
