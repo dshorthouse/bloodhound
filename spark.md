@@ -21,7 +21,6 @@ import org.apache.spark.sql.functions._
 
 val verbatimTerms = List(
   "gbifID",
-  "datasetKey",
   "occurrenceID",
   "dateIdentified",
   "decimalLatitude",
@@ -65,6 +64,7 @@ val df1 = spark.
 
 val processedTerms = List(
   "gbifID",
+  "datasetKey",
   "countryCode",
   "dateIdentified",
   "eventDate"
