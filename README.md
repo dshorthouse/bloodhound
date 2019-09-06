@@ -64,10 +64,6 @@ JOIN taxon_occurrences t ON d.occurrence_id = t.occurrence_id
 
 ### Step 4: Cluster Agents & Store in Neo4j
 
-     $ RACK_ENV=production ./bin/cluster_agents.rb --truncate --cluster
-     # Can start 2+ workers, each with 40 threads to help speed-up processing
-     $ RACK_ENV=production sidekiq -c 40 -q cluster -r ./application.rb
-
 Truncating a large Neo4j graph.db usually does not work. Instead, it is best to entirely delete the graph.db directory then recreate it.
 
 Example on Mac with homebrew:
@@ -76,6 +72,12 @@ Example on Mac with homebrew:
      $ sudo rm -rf /usr/local/opt/neo4j/libexec/data/databases/graph.db
      $ brew services start neo4j # recreates graph.db
      $ rake neo4j:migrate # recreate the constraint on graph.db
+
+Finally:
+
+     $ RACK_ENV=production ./bin/cluster_agents.rb --truncate --cluster
+     # Can start 2+ workers, each with 40 threads to help speed-up processing
+     $ RACK_ENV=production sidekiq -c 40 -q cluster -r ./application.rb
 
 ### Step 5: Populate Search in Elasticsearch
 
