@@ -42,13 +42,13 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
 
      $ RACK_ENV=production ./bin/populate_agents.rb --truncate --directory /directory-to-spark-csv-files/
      # Can start 2+ workers, each with 40 threads to help speed-up processing
-     $ RACK_ENV=production sidekiq -c 40 -q agent -r ./environment.rb
+     $ RACK_ENV=production sidekiq -c 40 -q agent -r ./application.rb
 
 ### Step 3: Populate Taxa
 
      $ RACK_ENV=production ./bin/populate_taxa.rb --truncate --directory /directory-to-spark-csv-files/
      # Can start 2+ workers, each with 40 threads to help speed-up processing
-     $ RACK_ENV=production sidekiq -c 40 -q taxon -r ./environment.rb
+     $ RACK_ENV=production sidekiq -c 40 -q taxon -r ./application.rb
 
 Also execute following SQL statement once queue is finished:
 
@@ -66,7 +66,7 @@ JOIN taxon_occurrences t ON d.occurrence_id = t.occurrence_id
 
      $ RACK_ENV=production ./bin/cluster_agents.rb --truncate --cluster
      # Can start 2+ workers, each with 40 threads to help speed-up processing
-     $ RACK_ENV=production sidekiq -c 40 -q cluster -r ./environment.rb
+     $ RACK_ENV=production sidekiq -c 40 -q cluster -r ./application.rb
 
 Truncating a large Neo4j graph.db usually does not work. Instead, it is best to entirely delete the graph.db directory then recreate it.
 

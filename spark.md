@@ -106,8 +106,14 @@ prop.setProperty("password", "")
 
 val url = "jdbc:mysql://localhost:3306/bloodhound?serverTimezone=UTC&useSSL=false"
 
+// Best to drop indices then recreate later
+// ALTER TABLE `occurrences` DROP KEY `typeStatus_idx`, DROP KEY `index_occurrences_on_datasetKey`;
+
 //write occurrences data to the database
 occurrences.write.mode("append").jdbc(url, "occurrences", prop)
+
+// Recreate indices
+// ALTER TABLE `occurrences` ADD KEY `typeStatus_idx` (`typeStatus`(256)), ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`);
 
 //aggregate recordedBy
 val recordedByGroups = occurrences.
