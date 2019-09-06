@@ -47,6 +47,7 @@ CREATE TABLE `destroyed_users` (
 
 CREATE TABLE `occurrences` (
   `gbifID` bigint(11) UNSIGNED NOT NULL,
+  `datasetKey` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
   `occurrenceID` text COLLATE utf8mb4_bin,
   `dateIdentified` text COLLATE utf8mb4_bin,
   `decimalLatitude` text COLLATE utf8mb4_bin,
@@ -188,7 +189,8 @@ ALTER TABLE `destroyed_users`
 
 ALTER TABLE `occurrences`
   ADD PRIMARY KEY (`gbifID`) USING BTREE,
-  ADD KEY `typeStatus_idx` (`typeStatus`(256));
+  ADD KEY `typeStatus_idx` (`typeStatus`(256)),
+  ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`);
 
 ALTER TABLE `occurrence_determiners`
   ADD KEY `agent_idx` (`agent_id`);
@@ -239,7 +241,7 @@ ALTER TABLE `user_organizations`
 
 
 ALTER TABLE `agents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7068825;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `articles`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6620;
@@ -254,7 +256,7 @@ ALTER TABLE `organizations`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4841;
 
 ALTER TABLE `taxa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33306;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40449;
