@@ -60,9 +60,7 @@ SELECT
 FROM
   occurrence_determiners d
 JOIN
-  taxon_occurrences t ON d.occurrence_id = t.occurrence_id
-WHERE
-  d.agent_id > 500000 AND d.agent_id <= 1000000;
+  taxon_occurrences t ON d.occurrence_id = t.occurrence_id;
 ```
 
 ### Step 4: Cluster Agents & Store in Neo4j
