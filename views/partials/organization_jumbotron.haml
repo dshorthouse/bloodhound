@@ -24,3 +24,8 @@
     %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"}
       %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
     %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"} https://www.wikidata.org/wiki/#{@organization.wikidata}
+  - if admin_authorized?
+    %br
+    %a{href: "/admin/organization/#{@organization.id}"}
+      %i{class:"fas fa-cog"}
+      Settings
