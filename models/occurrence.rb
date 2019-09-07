@@ -22,7 +22,7 @@ class Occurrence < ActiveRecord::Base
 
   alias_attribute :id, :gbifID
 
-  IGNORED_COLUMNS_OUTPUT = ["gbifID", "dateIdentified_processed", "eventDate_processed"]
+  IGNORED_COLUMNS_OUTPUT = ["gbifID", "datasetKey", "dateIdentified_processed", "eventDate_processed"]
 
   def self.enqueue(o)
     Sidekiq::Client.enqueue(Bloodhound::OccurrenceWorker, o)

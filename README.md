@@ -42,13 +42,13 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
 
      $ RACK_ENV=production ./bin/populate_agents.rb --truncate --directory /directory-to-spark-csv-files/
      # Can start 2+ workers, each with 40 threads to help speed-up processing
-     $ RACK_ENV=production sidekiq -c 40 -q agent -r ./environment.rb
+     $ RACK_ENV=production sidekiq -c 40 -q agent -r ./application.rb
 
 ### Step 3: Populate Taxa
 
      $ RACK_ENV=production ./bin/populate_taxa.rb --truncate --directory /directory-to-spark-csv-files/
      # Can start 2+ workers, each with 40 threads to help speed-up processing
-     $ RACK_ENV=production sidekiq -c 40 -q taxon -r ./environment.rb
+     $ RACK_ENV=production sidekiq -c 40 -q taxon -r ./application.rb
 
 Also execute following SQL statement once queue is finished:
 
@@ -59,14 +59,11 @@ SELECT
   t.taxon_id, d.agent_id
 FROM
   occurrence_determiners d
-JOIN taxon_occurrences t ON d.occurrence_id = t.occurrence_id
+JOIN
+  taxon_occurrences t ON d.occurrence_id = t.occurrence_id;
 ```
 
 ### Step 4: Cluster Agents & Store in Neo4j
-
-     $ RACK_ENV=production ./bin/cluster_agents.rb --truncate --cluster
-     # Can start 2+ workers, each with 40 threads to help speed-up processing
-     $ RACK_ENV=production sidekiq -c 40 -q cluster -r ./environment.rb
 
 Truncating a large Neo4j graph.db usually does not work. Instead, it is best to entirely delete the graph.db directory then recreate it.
 
@@ -76,6 +73,12 @@ Example on Mac with homebrew:
      $ sudo rm -rf /usr/local/opt/neo4j/libexec/data/databases/graph.db
      $ brew services start neo4j # recreates graph.db
      $ rake neo4j:migrate # recreate the constraint on graph.db
+
+Finally:
+
+     $ RACK_ENV=production ./bin/cluster_agents.rb --truncate --cluster
+     # Can start 2+ workers, each with 40 threads to help speed-up processing
+     $ RACK_ENV=production sidekiq -c 40 -q cluster -r ./application.rb
 
 ### Step 5: Populate Search in Elasticsearch
 

@@ -64,6 +64,7 @@ val df1 = spark.
 
 val processedTerms = List(
   "gbifID",
+  "datasetKey",
   "countryCode",
   "dateIdentified",
   "eventDate"
@@ -95,7 +96,7 @@ val df2 = spark.
     withColumn("eventDate_processed", to_timestamp($"eventDate_processed")).
     withColumn("dateIdentified_processed", to_timestamp($"dateIdentified_processed"))
 
-val occurrences = df1.join(df2, Seq("gbifID"), "left_outer")
+val occurrences = df1.join(df2, Seq("gbifID"), "left_outer").orderBy($"gbifID")
 
 //set some properties for a MySQL connection
 val prop = new java.util.Properties
@@ -105,8 +106,14 @@ prop.setProperty("password", "")
 
 val url = "jdbc:mysql://localhost:3306/bloodhound?serverTimezone=UTC&useSSL=false"
 
+// Best to drop indices then recreate later
+// ALTER TABLE `occurrences` DROP KEY `typeStatus_idx`, DROP KEY `index_occurrences_on_datasetKey`;
+
 //write occurrences data to the database
 occurrences.write.mode("append").jdbc(url, "occurrences", prop)
+
+// Recreate indices
+// ALTER TABLE `occurrences` ADD KEY `typeStatus_idx` (`typeStatus`(256)), ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`);
 
 //aggregate recordedBy
 val recordedByGroups = occurrences.

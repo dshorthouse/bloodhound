@@ -47,6 +47,7 @@ CREATE TABLE `destroyed_users` (
 
 CREATE TABLE `occurrences` (
   `gbifID` bigint(11) UNSIGNED NOT NULL,
+  `datasetKey` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
   `occurrenceID` text COLLATE utf8mb4_bin,
   `dateIdentified` text COLLATE utf8mb4_bin,
   `decimalLatitude` text COLLATE utf8mb4_bin,
@@ -188,10 +189,12 @@ ALTER TABLE `destroyed_users`
 
 ALTER TABLE `occurrences`
   ADD PRIMARY KEY (`gbifID`) USING BTREE,
-  ADD KEY `typeStatus_idx` (`typeStatus`(256));
+  ADD KEY `typeStatus_idx` (`typeStatus`(256)),
+  ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`);
 
 ALTER TABLE `occurrence_determiners`
-  ADD KEY `agent_idx` (`agent_id`);
+  ADD KEY `agent_idx` (`agent_id`),
+  ADD KEY `occurrence_idx` (`occurrence_id`);
 
 ALTER TABLE `occurrence_recorders`
   ADD KEY `agent_idx` (`agent_id`);
@@ -239,31 +242,31 @@ ALTER TABLE `user_organizations`
 
 
 ALTER TABLE `agents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7068825;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `articles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6620;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `article_occurrences`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3129641695;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `destroyed_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `organizations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4841;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `taxa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33306;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40449;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `user_occurrences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7581250;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `user_organizations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84872;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
