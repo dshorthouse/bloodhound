@@ -12,10 +12,9 @@
         %a{href: "https://www.wikidata.org"} Wikidata
         accounts
 
-%div{class:"container-fluid"}
-  - @countries.each do |k,group|
-    %h3 #{k}
-    %ul{class:"list-inline"}
-      - group.each do |country|
-        %li{class:"list-inline-item"}
-          %a{href: "/country/#{country[1]}", class:"btn btn-outline-success btn-sm mb-2"} #{country[0]}
+- @countries.each do |k,group|
+  %h3 #{k}
+  %ul{class:"list-inline"}
+    - group.each do |country|
+      %li{class:"list-inline-item"}
+        %a{href: "/country/#{country[1]}", class:"btn btn-outline-success btn-sm mb-2"} #{country[0]}

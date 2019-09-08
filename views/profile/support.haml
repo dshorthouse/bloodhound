@@ -8,12 +8,11 @@
         Application.init(#{@user[:id]}, "PUT", "/profile");
     });
 
-%div{class:"container-fluid"}
-  %div{class:"row"}
-    %div{class:"col-12 col-lg-4"}
-      %h3{class:"display-6"}= @user.fullname
-    %div{class:"col-12 col-lg-8 mt-2"}
-      = haml :'partials/profile_tabs', layout: false, locals: { active_page: "support" }
+%div{class:"row"}
+  %div{class:"col-12 col-lg-4"}
+    %h3{class:"display-6"}= @user.fullname
+  %div{class:"col-12 col-lg-8 mt-2"}
+    = haml :'partials/profile_tabs', layout: false, locals: { active_page: "support" }
 
 - if @results.empty?
   %div{class: "alert alert-info tiny-margins", role: "alert"}

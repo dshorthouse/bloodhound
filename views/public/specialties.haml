@@ -9,49 +9,48 @@
       DISQUSWIDGETS.getCount({ reset: true });
     });
 
-%div{class:"container-fluid"}
-  %div{class:"row"}
-    = haml :'partials/user_jumbotron', layout: false
-    %div{class:"col-12 col-lg-8 mt-2"}
-      - if @viewed_user.is_public?
-        = haml :'partials/user_tabs', layout: false, locals: { active_page: "specialties" }
+%div{class:"row"}
+  = haml :'partials/user_jumbotron', layout: false
+  %div{class:"col-12 col-lg-8 mt-2"}
+    - if @viewed_user.is_public?
+      = haml :'partials/user_tabs', layout: false, locals: { active_page: "specialties" }
 
-        - if @families_identified.empty? && @families_recorded.empty? 
-          %div{class: "alert alert-info tiny-margins", role: "alert"}
-            Specialties have not yet been recorded.
+      - if @families_identified.empty? && @families_recorded.empty? 
+        %div{class: "alert alert-info tiny-margins", role: "alert"}
+          Specialties have not yet been recorded.
 
-        - if !@families_identified.empty? || !@families_recorded.empty?
-          %div{class: "alert alert-info tiny-margins", role: "alert"}
-            Collected or identified specimens in the following Families:
+      - if !@families_identified.empty? || !@families_recorded.empty?
+        %div{class: "alert alert-info tiny-margins", role: "alert"}
+          Collected or identified specimens in the following Families:
 
-          %div{class: "container-fluid"}
-            %div{class: "row"}
-              %div{class: "col-12 col-lg-6"}
-                - if @families_recorded.empty? && !@families_identified.empty?
-                  %h4{class: "d-flex justify-content-between list-header"}
-                    Families Identified
-                    %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@families_identified.count)}
-                  %ul{class: "list-group"}
-                    - @families_identified.each do |k,v|
-                      %li{class: "list-group-item d-flex justify-content-between align-items-center"}
-                        #{k}
-                        %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
-                - elsif !@families_recorded.empty?
-                  %h4{class: "d-flex justify-content-between list-header"}
-                    Families Collected
-                    %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@families_recorded.count)}
-                  %ul{class: "list-group"}
-                    - @families_recorded.each do |k,v|
-                      %li{class: "list-group-item d-flex justify-content-between align-items-center"}
-                        #{k}
-                        %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
-              %div{class: "col-12 col-lg-6"}
-                - if !@families_recorded.empty? && !@families_identified.empty?
-                  %h4{class: "d-flex justify-content-between list-header"}
-                    Families Identified
-                    %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@families_identified.count)}
-                  %ul{class: "list-group"}
-                    - @families_identified.each do |k,v|
-                      %li{class: "list-group-item d-flex justify-content-between align-items-center"}
-                        #{k}
-                        %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
+        %div{class: "container-fluid"}
+          %div{class: "row"}
+            %div{class: "col-12 col-lg-6"}
+              - if @families_recorded.empty? && !@families_identified.empty?
+                %h4{class: "d-flex justify-content-between list-header"}
+                  Families Identified
+                  %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@families_identified.count)}
+                %ul{class: "list-group"}
+                  - @families_identified.each do |k,v|
+                    %li{class: "list-group-item d-flex justify-content-between align-items-center"}
+                      #{k}
+                      %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
+              - elsif !@families_recorded.empty?
+                %h4{class: "d-flex justify-content-between list-header"}
+                  Families Collected
+                  %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@families_recorded.count)}
+                %ul{class: "list-group"}
+                  - @families_recorded.each do |k,v|
+                    %li{class: "list-group-item d-flex justify-content-between align-items-center"}
+                      #{k}
+                      %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
+            %div{class: "col-12 col-lg-6"}
+              - if !@families_recorded.empty? && !@families_identified.empty?
+                %h4{class: "d-flex justify-content-between list-header"}
+                  Families Identified
+                  %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@families_identified.count)}
+                %ul{class: "list-group"}
+                  - @families_identified.each do |k,v|
+                    %li{class: "list-group-item d-flex justify-content-between align-items-center"}
+                      #{k}
+                      %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}

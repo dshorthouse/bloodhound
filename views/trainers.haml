@@ -15,31 +15,30 @@
       %p.lead.text-muted
         Users who have helped their peers, mentors, and role models claim specimens
 
-%div{class:"container-fluid"}
-  - @results.in_groups_of(3).each do |group|
-    %div{class: "card-deck"}
-      - group.each do |u|
-        - if u.nil?
-          %div{class:"card", style:"border:0px"}
-        - else
-          - cache_fragment(u.identifier + "-trainer") do
-            %div{class: "card card-profile my-3"}
-              %div{class: "card-header"}
-                - title_class = u.image_url ? "fullheight" : ""
-                %h5{class: title_class}
-                  - if u.image_url
-                    %img{src:"#{profile_image(u, 'medium')}", alt:"#{u.fullname}", class:"card-img-profile mr-2 float-left"}
-                  %span{class:"clearfix"}
-                    %a{href: "/#{u.identifier}"} #{u.fullname_reverse}
-              %div{class: "card-body"}
-                - if u.country
-                  %p{class:"small text-muted mt-0 mb-0"} #{u.country.split("|").join("; ")}
-              %div{class: "card-footer d-flex"}
-                %div{class: "small text-muted"}
-                  Helped
-                  %span{class:"badge badge-light"} #{number_with_delimiter(u.helped_count)}
-                  #{'person'.pluralize(u.helped_count)} claim
-                  %span{class:"badge badge-success"} #{number_with_delimiter(u.claims_given.count)}
-                  #{'specimen'.pluralize(u.claims_given.count)}
+- @results.in_groups_of(3).each do |group|
+  %div{class: "card-deck"}
+    - group.each do |u|
+      - if u.nil?
+        %div{class:"card", style:"border:0px"}
+      - else
+        - cache_fragment(u.identifier + "-trainer") do
+          %div{class: "card card-profile my-3"}
+            %div{class: "card-header"}
+              - title_class = u.image_url ? "fullheight" : ""
+              %h5{class: title_class}
+                - if u.image_url
+                  %img{src:"#{profile_image(u, 'medium')}", alt:"#{u.fullname}", class:"card-img-profile mr-2 float-left"}
+                %span{class:"clearfix"}
+                  %a{href: "/#{u.identifier}"} #{u.fullname_reverse}
+            %div{class: "card-body"}
+              - if u.country
+                %p{class:"small text-muted mt-0 mb-0"} #{u.country.split("|").join("; ")}
+            %div{class: "card-footer d-flex"}
+              %div{class: "small text-muted"}
+                Helped
+                %span{class:"badge badge-light"} #{number_with_delimiter(u.helped_count)}
+                #{'person'.pluralize(u.helped_count)} claim
+                %span{class:"badge badge-success"} #{number_with_delimiter(u.claims_given.count)}
+                #{'specimen'.pluralize(u.claims_given.count)}
 
-  = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
+= pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

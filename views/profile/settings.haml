@@ -10,147 +10,146 @@
         Profile.init();
     });
 
-%div{class:"container-fluid"}
-  %div{class:"row"}
-    = haml :'partials/profile_jumbotron', layout: false, locals: { active_page: "settings" }
-    %div{class:"col-12 col-lg-8 mt-2"}
-      = haml :'partials/profile_tabs', layout: false, locals: { active_page: nil }
+%div{class:"row"}
+  = haml :'partials/profile_jumbotron', layout: false, locals: { active_page: "settings" }
+  %div{class:"col-12 col-lg-8 mt-2"}
+    = haml :'partials/profile_tabs', layout: false, locals: { active_page: nil }
 
-      %div{class:"container-fluid citation-wrapper mt-3"}
-        %h4 Settings
-        %div{class:"card-deck"}
+    %div{class:"citation-wrapper mt-3"}
+      %h4 Settings
+      %div{class:"card-deck"}
 
-          %div{class:"card"}
-            %h5{class:"card-header"} Public Availability
-            %div{class:"card-body"}
+        %div{class:"card"}
+          %h5{class:"card-header"} Public Availability
+          %div{class:"card-body"}
+            %p{class:"card-text"}
+              Include your account in public
+              = succeed "." do
+                %a{href: "/roster"} Profiles
+              Your claims will be included in a bulk
+              %a{href: "/developers"}
+                data download
+              and exposed through Google Chrome and Firefox
+              = succeed "." do
+                %a{href:"/integrations"} extensions
+            %div{class:"row"}
+              %div{class:"col"}
+                %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: @user.is_public?, class:"btn-claim" }
+              %div{class:"col text-right"}
+                - if @user.is_public?
+                  %a{href: "/#{@user.orcid}", target: "_blank"}
+                    Public Profile
+                    %i{class:"fas fa-external-link-alt"}
+
+        %div{class:"card"}
+          %h5{class:"card-header"}
+            %img{src:"/images/orcid_24x24.png", alt: "ORCID"}
+            ORCID
+          %div{class:"card-body"}
+            %p{class:"card-text"} Pull new updates to your name, aliases, keywords, country, education, and employment from your ORCID account.
+            %p
+              %a{ href:"/profile/refresh.json?user_id=#{@user.id}", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
+                %i{class: "fas fa-sync-alt"}
+                Refresh
+                %img{src: "/images/orcid_24x24.png", alt:"ORCID iD", width:"18px"}
+
+            %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
+              ORCID Data was refreshed.
+              %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+                %span{"aria-hidden":"true"} &times;
+
+      %div{class:"card-deck"}
+        %div{class:"card"}
+          %h5{class:"card-header"} Make Your Data Citable
+          %div{class:"card-body"}
+            - if !@user.made_claim?
               %p{class:"card-text"}
-                Include your account in public
-                = succeed "." do
-                  %a{href: "/roster"} Profiles
-                Your claims will be included in a bulk
-                %a{href: "/developers"}
-                  data download
-                and exposed through Google Chrome and Firefox
-                = succeed "." do
-                  %a{href:"/integrations"} extensions
-              %div{class:"row"}
-                %div{class:"col"}
-                  %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: @user.is_public?, class:"btn-claim" }
-                %div{class:"col text-right"}
-                  - if @user.is_public?
-                    %a{href: "/#{@user.orcid}", target: "_blank"}
-                      Public Profile
-                      %i{class:"fas fa-external-link-alt"}
-
-          %div{class:"card"}
-            %h5{class:"card-header"}
-              %img{src:"/images/orcid_24x24.png", alt: "ORCID"}
-              ORCID
-            %div{class:"card-body"}
-              %p{class:"card-text"} Pull new updates to your name, aliases, keywords, country, education, and employment from your ORCID account.
-              %p
-                %a{ href:"/profile/refresh.json?user_id=#{@user.id}", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
-                  %i{class: "fas fa-sync-alt"}
-                  Refresh
-                  %img{src: "/images/orcid_24x24.png", alt:"ORCID iD", width:"18px"}
-
-              %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
-                ORCID Data was refreshed.
-                %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
-                  %span{"aria-hidden":"true"} &times;
-
-        %div{class:"card-deck"}
-          %div{class:"card"}
-            %h5{class:"card-header"} Make Your Data Citable
-            %div{class:"card-body"}
-              - if !@user.made_claim?
+                Claim at least one of your specimens and return here to connect your account to
+                %a{href:"https://zenodo.org/", target:"_blank"}
+                  Zenodo
+                  %i{class:"fas fa-external-link-alt"}
+                where versioned snapshots of your claims will be stored and a DataCite DOI assigned. A citation will be provided for inclusion in your resume.
+            - else
+              - if !@user.zenodo_concept_doi
                 %p{class:"card-text"}
-                  Claim at least one of your specimens and return here to connect your account to
+                  Connect your account to
                   %a{href:"https://zenodo.org/", target:"_blank"}
                     Zenodo
                     %i{class:"fas fa-external-link-alt"}
                   where versioned snapshots of your claims will be stored and a DataCite DOI assigned. A citation will be provided for inclusion in your resume.
+                - if @user.zenodo_access_token.empty?
+                  %p{class:"card-text"}
+                    %a{href:"/auth/zenodo", role:"button", class:"btn btn-sm btn-outline-info"}
+                      Integrate with Zenodo
+                - elsif !@user.zenodo_access_token.empty?
+                  %p{class:"alert alert-success"}
+                    %i{class:"fas fa-check-circle"}
+                    Your account is now linked and data will be pushed within the hour
               - else
-                - if !@user.zenodo_concept_doi
-                  %p{class:"card-text"}
-                    Connect your account to
-                    %a{href:"https://zenodo.org/", target:"_blank"}
-                      Zenodo
-                      %i{class:"fas fa-external-link-alt"}
-                    where versioned snapshots of your claims will be stored and a DataCite DOI assigned. A citation will be provided for inclusion in your resume.
-                  - if @user.zenodo_access_token.empty?
-                    %p{class:"card-text"}
-                      %a{href:"/auth/zenodo", role:"button", class:"btn btn-sm btn-outline-info"}
-                        Integrate with Zenodo
-                  - elsif !@user.zenodo_access_token.empty?
-                    %p{class:"alert alert-success"}
-                      %i{class:"fas fa-check-circle"}
-                      Your account is now linked and data will be pushed within the hour
-                - else
-                  %p{class:"card-text"}
-                    Your profile is linked to
-                    %a{href:"https://doi.org/#{@user.zenodo_concept_doi}", target:"_blank"}
-                      Zenodo
-                      %i{class:"fas fa-external-link-alt"}
-                    and your claims are versioned and archived.
-                  %p
-                    %a{href:"https://doi.org/#{@user.zenodo_concept_doi}"}
-                      %img{src:"https://zenodo.org/badge/DOI/#{@user.zenodo_concept_doi}.svg"}
-                  %p
-                    %button{type: "button", class:"btn btn-sm btn-outline-danger", "data-toggle": "modal", "data-target": "#zenodoModal"} Disconnect
-
-                  %div{class:"modal fade", id:"zenodoModal", tabindex:"-1", role:"dialog", "aria-labelledby":"zenodoModal", "aria-hidden":"true"}
-                    %div{class:"modal-dialog", role:"document"}
-                      %div{class:"modal-content"}
-                        %div{class:"modal-header"}
-                          %h5{class:"modal-title", id:"zenodoLabel"} Disconnect From Zenodo
-                          %button{type:"button", class:"close", "data-dismiss":"modal", "aria-label":"Close"}
-                            %span{"aria-hidden":"true"} &times;
-                        %div{class:"modal-body"}
-                          Are you sure you want to disconnect your account from Zenodo? Your data will remain archived and accessible but no new versions will be created. If you later reconnect your account to Zenodo, a new data package will be created.
-                        %div{class:"modal-footer"}
-                          %button{type:"button", class:"btn btn-sm btn-outline-secondary", "data-dismiss":"modal"} Cancel
-                          %button{type:"button", class:"btn btn-sm btn-outline-danger", id:"zenodo-disconnect"} Disconnect
-
-          %div{class:"card"}
-            %h5{class:"card-header"} Email Notifications
-            %div{class:"card-body"}
-              - if @user.email && !@user.email.empty?
                 %p{class:"card-text"}
-                  Receive notification of new publications that made use of data derived from the specimens you identified or collected. Your primary, publicly available email address,
-                  %strong #{@user.email}
-                  comes from your ORCID account.
+                  Your profile is linked to
+                  %a{href:"https://doi.org/#{@user.zenodo_concept_doi}", target:"_blank"}
+                    Zenodo
+                    %i{class:"fas fa-external-link-alt"}
+                  and your claims are versioned and archived.
                 %p
-                  %input{type:"checkbox", id: "toggle-mail", "data-toggle":"toggle", "data-on":"On", "data-off":"Off", "data-onstyle": "success", "data-size": "small", checked: @user.wants_mail?, class:"btn-claim" }
-              - else
-                %p{class:"card-text"}
-                  Receive email notifications of new papers that made use of data derived from the specimens you identified or collected. Make your primary email address publicly available in your ORCID account and then refresh your ORCID data above.
+                  %a{href:"https://doi.org/#{@user.zenodo_concept_doi}"}
+                    %img{src:"https://zenodo.org/badge/DOI/#{@user.zenodo_concept_doi}.svg"}
+                %p
+                  %button{type: "button", class:"btn btn-sm btn-outline-danger", "data-toggle": "modal", "data-target": "#zenodoModal"} Disconnect
 
-        %div{class:"card-deck"}
-
-          %div{class:"card"}
-            %h5{class:"card-header"}
-              Delete Your Account
-            %div{class:"card-body"}
-              %p{class:"card-text"} Permanently delete your account.
-              %button{type: "button", class:"btn btn-sm btn-outline-danger", "data-toggle": "modal", "data-target": "#deleteModal"} Delete
-
-              %div{class:"modal fade", id:"deleteModal", tabindex:"-1", role:"dialog", "aria-labelledby":"deleteModal", "aria-hidden":"true"}
-                %div{class:"modal-dialog", role:"document"}
-                  %div{class:"modal-content"}
-                    %div{class:"modal-header"}
-                      %h5{class:"modal-title", id:"deleteLabel"} Delete Account
-                      %button{type:"button", class:"close", "data-dismiss":"modal", "aria-label":"Close"}
-                        %span{"aria-hidden":"true"} &times;
-                    %div{class:"modal-body"}
-                      Are you sure you want to delete your account? All your claims
-                      %span{class:"font-weight-bold"}
-                        AND
-                      all the claims you may have made for others will be permanently removed.
-                    %div{class:"modal-footer"}
-                      %form{action: "/profile/destroy", method: :post}
+                %div{class:"modal fade", id:"zenodoModal", tabindex:"-1", role:"dialog", "aria-labelledby":"zenodoModal", "aria-hidden":"true"}
+                  %div{class:"modal-dialog", role:"document"}
+                    %div{class:"modal-content"}
+                      %div{class:"modal-header"}
+                        %h5{class:"modal-title", id:"zenodoLabel"} Disconnect From Zenodo
+                        %button{type:"button", class:"close", "data-dismiss":"modal", "aria-label":"Close"}
+                          %span{"aria-hidden":"true"} &times;
+                      %div{class:"modal-body"}
+                        Are you sure you want to disconnect your account from Zenodo? Your data will remain archived and accessible but no new versions will be created. If you later reconnect your account to Zenodo, a new data package will be created.
+                      %div{class:"modal-footer"}
                         %button{type:"button", class:"btn btn-sm btn-outline-secondary", "data-dismiss":"modal"} Cancel
-                        %input{type: :hidden, name: "_method", value: 'DELETE'}
-                        %input{type: :submit, class:"btn btn-sm btn-outline-danger", value:"Delete"}
+                        %button{type:"button", class:"btn btn-sm btn-outline-danger", id:"zenodo-disconnect"} Disconnect
 
-          %div{class:"card", style:"border:0px"}
+        %div{class:"card"}
+          %h5{class:"card-header"} Email Notifications
+          %div{class:"card-body"}
+            - if @user.email && !@user.email.empty?
+              %p{class:"card-text"}
+                Receive notification of new publications that made use of data derived from the specimens you identified or collected. Your primary, publicly available email address,
+                %strong #{@user.email}
+                comes from your ORCID account.
+              %p
+                %input{type:"checkbox", id: "toggle-mail", "data-toggle":"toggle", "data-on":"On", "data-off":"Off", "data-onstyle": "success", "data-size": "small", checked: @user.wants_mail?, class:"btn-claim" }
+            - else
+              %p{class:"card-text"}
+                Receive email notifications of new papers that made use of data derived from the specimens you identified or collected. Make your primary email address publicly available in your ORCID account and then refresh your ORCID data above.
+
+      %div{class:"card-deck"}
+
+        %div{class:"card"}
+          %h5{class:"card-header"}
+            Delete Your Account
+          %div{class:"card-body"}
+            %p{class:"card-text"} Permanently delete your account.
+            %button{type: "button", class:"btn btn-sm btn-outline-danger", "data-toggle": "modal", "data-target": "#deleteModal"} Delete
+
+            %div{class:"modal fade", id:"deleteModal", tabindex:"-1", role:"dialog", "aria-labelledby":"deleteModal", "aria-hidden":"true"}
+              %div{class:"modal-dialog", role:"document"}
+                %div{class:"modal-content"}
+                  %div{class:"modal-header"}
+                    %h5{class:"modal-title", id:"deleteLabel"} Delete Account
+                    %button{type:"button", class:"close", "data-dismiss":"modal", "aria-label":"Close"}
+                      %span{"aria-hidden":"true"} &times;
+                  %div{class:"modal-body"}
+                    Are you sure you want to delete your account? All your claims
+                    %span{class:"font-weight-bold"}
+                      AND
+                    all the claims you may have made for others will be permanently removed.
+                  %div{class:"modal-footer"}
+                    %form{action: "/profile/destroy", method: :post}
+                      %button{type:"button", class:"btn btn-sm btn-outline-secondary", "data-dismiss":"modal"} Cancel
+                      %input{type: :hidden, name: "_method", value: 'DELETE'}
+                      %input{type: :submit, class:"btn btn-sm btn-outline-danger", value:"Delete"}
+
+        %div{class:"card", style:"border:0px"}
