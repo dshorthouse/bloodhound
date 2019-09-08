@@ -1,13 +1,12 @@
 #!/usr/bin/env ruby
+# encoding: utf-8
+
 require File.dirname(__FILE__) + '/environment.rb'
 
 class BLOODHOUND < Sinatra::Base
   set :root, File.dirname(__FILE__)
   set :haml, :format => :html5
   set :public_folder, 'public'
-
-  Encoding.default_internal = Encoding::UTF_8
-  Encoding.default_external = Encoding::UTF_8
 
   register Sinatra::I18nSupport
   load_locales File.join(root, 'config', 'locales')

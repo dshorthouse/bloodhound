@@ -59,6 +59,9 @@ require 'pluck_to_hash'
 require 'pony'
 require 'twitter'
 
+Encoding.default_internal = Encoding::UTF_8
+Encoding.default_external = Encoding::UTF_8
+
 Hashie.logger = Logger.new(nil)
 
 require_all File.join(File.dirname(__FILE__), 'lib')

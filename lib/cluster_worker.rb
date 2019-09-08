@@ -20,6 +20,7 @@ module Bloodhound
           given: a.given })
       end
       begin
+        retries ||= 0
         nodes.combination(2).each do |pair|
           w = DwcAgent.similarity_score(pair.first.given, pair.second.given)
           if w > 0
@@ -29,7 +30,7 @@ module Bloodhound
           end
         end
       rescue
-        retry
+        retry if (retries += 1) < 3
       end
 
     end
