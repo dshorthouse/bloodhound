@@ -273,7 +273,7 @@ module Sinatra
       end
 
       def create_user
-        if params[:identifier]
+        if params[:identifier] && !params[:identifier].empty?
           if params[:identifier].is_orcid?
             new_user = User.find_or_create_by({ orcid: params[:identifier] })
             session[:new_user] = { fullname: new_user.fullname, slug: new_user.orcid }

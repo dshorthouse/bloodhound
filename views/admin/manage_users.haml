@@ -13,7 +13,7 @@
     %h2 Add Account
 
     %form{id:"form-user-wrapper", method: "post", action: "/admin/user/add", "accept-charset" => "UTF-8", class:"helpers"}
-      %div{class:"d-flex flex-sm-row flex-column p-3"}
+      %div{class:"d-flex flex-sm-row flex-column mt-2"}
         %div{class:"form-group"}
           %label{for: "identifier", class:"font-weight-bold"}= "Add ORCID or Wikidata QID"
           %input{class: "orcid-add", type: :text, name: "identifier", placeholder: "0000-0001-2345-6789", size:"12"}

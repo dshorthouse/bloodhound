@@ -48,7 +48,7 @@
 %h4 Add a Person
 
 %form{id:"form-user-wrapper", method: "post", action: "/help-others/add", "accept-charset" => "UTF-8", class:"helpers"}
-  %div{class:"d-flex flex-sm-row flex-column p-3"}
+  %div{class:"d-flex flex-sm-row flex-column mt-3"}
     %div{class:"form-group"}
       %label{for: "identifier", class:"font-weight-bold"}= "Add ORCID Identifier or Wikidata Q Number"
       %input{class: "orcid-add", type: :text, name: "identifier", placeholder: "Q1234567", size:"12"}
@@ -58,11 +58,11 @@
   %div{class: "row"}
     %div{class: "col-sm-8 col-md-6 col-xl-6"}
       - if !@new_user[:slug].nil?
-        %div{class:"alert alert-success", role: "alert", style:"display:block"}
+        %div{class:"alert alert-success", role: "alert", style:"display:block;"}
           %span{class:"font-weight-bold"}
             %a{href: "/help-others/#{@new_user[:slug]}"} #{@new_user[:fullname]}
           was created or updated.
       - else
-        %div{class:"alert alert-danger", role: "alert", style:"display:block"}
-          %span{class:"font-weight-bold"} #{@new_user[:fullname]}
+        %div{class:"alert alert-danger", role: "alert", style:"display:block;"}
+          %span{class:"font-weight-bold"} #{h(@new_user[:fullname])}
           not created because the identifier was incorrectly formatted or in the case of wikidata, the item is not a human, the family name and/or precise birth and death dates were missing, or the user already exists with an ORCID identifier.
