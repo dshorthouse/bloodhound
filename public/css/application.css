@@ -1,6 +1,9 @@
 html, body {
   height: 100%;
 }
+header, main, footer, nav {
+  display:block;
+}
 footer {
   background-color:#f9f9f9;
 }
