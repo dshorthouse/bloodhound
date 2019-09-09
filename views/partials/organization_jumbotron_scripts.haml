@@ -1,4 +1,8 @@
 %script{src: "/js/application.js"}
+:javascript
+  $(function() {
+    Application.init();
+  });
 - if @organization.latitude
   %script{src: "https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"}
   :javascript
@@ -14,7 +18,3 @@
 
       L.marker([#{@organization.latitude}, #{@organization.longitude}]).addTo(mymap).bindPopup("<b>#{@organization.name}</b>");
     });
-:javascript
-  $(function() {
-    Application.init();
-  });

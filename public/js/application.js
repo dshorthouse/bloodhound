@@ -1,5 +1,6 @@
-/*global jQuery, window, document, self, encodeURIComponent, Bloodhound */
-Array.prototype.unique = function () {
+/*global jQuery, window, document, self, encodeURIComponent, Bloodhound, Application */
+
+Array.prototype.all_unique = function () {
   "use strict";
   return this.filter(function (value, index, self) { 
     return self.indexOf(value) === index;
@@ -165,7 +166,7 @@ var Application = (function($, window) {
           if($(this).attr("name") === "selection-all") {
               var occurrence_ids = $.map($("[data-occurrence-id]"), function(e) {
                 return $(e).attr("data-occurrence-id");
-              }).unique().toString();
+              }).all_unique().toString();
               $.ajax({
                   method: self.method,
                   url: self.path + "/user-occurrence/bulk.json",
@@ -254,7 +255,7 @@ var Application = (function($, window) {
       $("button.hide-all").on("click", function() {
         var occurrence_ids = $.map($("[data-occurrence-id]"), function(e) {
               return $(e).attr("data-occurrence-id");
-            }).unique().toString();
+            }).all_unique().toString();
         $.ajax({
             method: self.method,
             url: self.path + "/user-occurrence/bulk.json",
