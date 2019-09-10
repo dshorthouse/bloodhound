@@ -56,6 +56,10 @@ OptionParser.new do |opts|
     options[:claimed] = true
   end
 
+  opts.on("-d", "--duplicates", "Merge duplicate wikidata accounts.") do
+    options[:duplicates] = true
+  end
+
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
@@ -158,4 +162,7 @@ elsif options[:update_orcid]
     cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
   end
+elsif options[:duplicates]
+  wiki = Bloodhound::WikidataSearch.new
+  wiki.merge_users
 end
