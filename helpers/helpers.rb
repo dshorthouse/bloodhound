@@ -25,6 +25,15 @@ module Sinatra
         end
       end
 
+      def check_redirect(path = nil)
+        destroyed_user = DestroyedUser.where("identifier = ?", params[:id])
+                                      .where.not(redirect_to: nil)
+        if !destroyed_user.empty?
+          qualified_path = !path.nil? ? "/#{path}" : ""
+          redirect "/#{destroyed_user.first.redirect_to}#{qualified_path}", 301
+        end
+      end
+
       def check_user_public
         if !@viewed_user && !@viewed_user.is_public?
           halt 404, haml(:oops)

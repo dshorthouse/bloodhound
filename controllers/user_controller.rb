@@ -40,6 +40,7 @@ module Sinatra
 
           app.get '/:id' do
             check_identifier
+            check_redirect
             @viewed_user = find_user(params[:id])
             if !@viewed_user
               halt 404, haml(:oops)
@@ -54,6 +55,7 @@ module Sinatra
 
           app.get '/:id/specialties' do
             check_identifier
+            check_redirect("specialties")
             @viewed_user = find_user(params[:id])
             check_user_public
             @families_identified = @viewed_user.identified_families
@@ -63,6 +65,7 @@ module Sinatra
 
           app.get '/:id/specimens' do
             check_identifier
+            check_redirect("specimens")
             @viewed_user = find_user(params[:id])
             check_user_public
 
@@ -77,6 +80,7 @@ module Sinatra
 
           app.get '/:id/citations' do
             check_identifier
+            check_redirect("citations")
             @viewed_user = find_user(params[:id])
             check_user_public
 
@@ -91,7 +95,7 @@ module Sinatra
 
           app.get '/:id/citation/:article_id' do
             check_identifier
-            
+            check_redirect("citation/#{params[:id]}")
             @viewed_user = find_user(params[:id])
             check_user_public
 
@@ -111,6 +115,7 @@ module Sinatra
 
           app.get '/:id/co-collectors' do
             check_identifier
+            check_redirect("co-collectors")
             @viewed_user = find_user(params[:id])
             check_user_public
 
@@ -125,6 +130,7 @@ module Sinatra
 
           app.get '/:id/identified-for' do
             check_identifier
+            check_redirect("identified-for")
             @viewed_user = find_user(params[:id])
             check_user_public
 
@@ -139,6 +145,7 @@ module Sinatra
 
           app.get '/:id/identifications-by' do
             check_identifier
+            check_redirect("identifications-by")
             @viewed_user = find_user(params[:id])
             check_user_public
 
@@ -153,6 +160,7 @@ module Sinatra
 
           app.get '/:id/deposited-at' do
             check_identifier
+            check_redirect("deposited-at")
             @viewed_user = find_user(params[:id])
             check_user_public
             @recordings_at = @viewed_user.recordings_deposited_at
@@ -162,6 +170,7 @@ module Sinatra
 
           app.get '/:id/comments' do
             check_identifier
+            check_redirect("comments")
             @viewed_user = find_user(params[:id])
             if !@viewed_user.can_comment?
               halt 404, haml(:oops)
