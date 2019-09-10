@@ -25,12 +25,12 @@ module Sinatra
         end
       end
 
-      def check_redirect(path = nil)
+      def check_redirect
         destroyed_user = DestroyedUser.where("identifier = ?", params[:id])
                                       .where.not(redirect_to: nil)
         if !destroyed_user.empty?
-          qualified_path = !path.nil? ? "/#{path}" : ""
-          redirect "/#{destroyed_user.first.redirect_to}#{qualified_path}", 301
+          dest = request.path.sub(params[:id], destroyed_user.first.redirect_to)
+          redirect "#{dest}", 301
         end
       end
 

@@ -119,6 +119,7 @@ module Sinatra
 
           app.get '/admin/user/:id' do
             admin_protected!
+            check_redirect
             @admin_user = find_user(params[:id])
             @total = {
               number_identified: @admin_user.identified_count,
@@ -167,12 +168,14 @@ module Sinatra
 
           app.get '/admin/user/:id/settings' do
             admin_protected!
+            check_redirect
             @admin_user = find_user(params[:id])
             haml :'admin/settings', locals: { active_page: "administration" }
           end
 
           app.get '/admin/user/:id/specimens' do
             admin_protected!
+            check_redirect
             @admin_user = find_user(params[:id])
             @page = (params[:page] || 1).to_i
             @total = @admin_user.visible_occurrences.count
@@ -208,6 +211,7 @@ module Sinatra
 
           app.get '/admin/user/:id/support' do
             admin_protected!
+            check_redirect
             @admin_user = find_user(params[:id])
 
             @page = (params[:page] || 1).to_i
@@ -235,6 +239,7 @@ module Sinatra
 
           app.get '/admin/user/:id/candidates' do
             admin_protected!
+            check_redirect
             occurrence_ids = []
             @page = (params[:page] || 1).to_i
 
@@ -287,6 +292,7 @@ module Sinatra
 
           app.get '/admin/user/:id/candidates/agent/:agent_id' do
             admin_protected!
+            check_redirect
             @admin_user = find_user(params[:id])
 
             occurrence_ids = []
@@ -308,6 +314,7 @@ module Sinatra
 
           app.get '/admin/user/:id/ignored' do
             admin_protected!
+            check_redirect
             @admin_user = find_user(params[:id])
             @page = (params[:page] || 1).to_i
             @total = @admin_user.hidden_occurrences.count
@@ -325,6 +332,7 @@ module Sinatra
 
           app.get '/admin/user/:id/citations' do
             admin_protected!
+            check_redirect
             @admin_user = find_user(params[:id])
             page = (params[:page] || 1).to_i
             @total = @admin_user.articles_citing_specimens.count
@@ -335,6 +343,7 @@ module Sinatra
 
           app.get '/admin/user/:id/citation/:article_id' do
             admin_protected!
+            check_redirect
             @admin_user = find_user(params[:id])
             @article = Article.find(params[:article_id])
             if !@article

@@ -155,6 +155,7 @@ module Sinatra
           app.get '/help-others/:id' do
             protected!
             check_identifier
+            check_redirect
             @made_public = session[:made_public]
             session[:made_public] = false
 
@@ -195,6 +196,7 @@ module Sinatra
           app.get '/help-others/:id/specimens' do
             protected!
             check_identifier
+            check_redirect
 
             @viewed_user = find_user(params[:id])
 
@@ -215,6 +217,7 @@ module Sinatra
           app.get '/help-others/:id/ignored' do
             protected!
             check_identifier
+            check_redirect
 
             @viewed_user = find_user(params[:id])
 

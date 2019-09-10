@@ -170,8 +170,10 @@ module Bloodhound
           src.reload
           src.update_wikidata_profile
         else
-          src.user_occurrences.where.not(occurrence_id: dest.user_occurrences.pluck(:occurrence_id))
-             .update_all({ user_id: dest.id })
+          occurrences = src.user_occurrences
+          dest.user_occurrences.pluck(:occurrence_id).in_groups_of(500, false) do |group|
+            occurrences.where.not(occurrence_id: group).update_all({ user_id: dest.id })
+          end
           if src.is_public?
             dest.is_public = true
             dest.save
