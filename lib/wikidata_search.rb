@@ -285,7 +285,7 @@ module Bloodhound
         country: country,
         country_code: country_code,
         keywords: keywords,
-        orcid: orcid,
+        orcid: nil, #might have ORCID but null it out
         image_url: image_url,
         signature_url: signature_url,
         date_born: date_born,
