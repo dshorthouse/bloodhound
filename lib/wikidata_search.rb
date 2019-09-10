@@ -88,7 +88,7 @@ module Bloodhound
       )
     end
 
-    def wikidata_by_orcid(orcid)
+    def wikidata_by_orcid_query(orcid)
       %Q(
         SELECT ?item ?itemLabel ?twitter
         WHERE {
@@ -101,6 +101,23 @@ module Bloodhound
           SERVICE wikibase:label {
             bd:serviceParam wikibase:language "en" .
           }
+        }
+      )
+    end
+
+    def merged_wikidata_people_query(property)
+      %Q(
+        SELECT (REPLACE(STR(?item),".*Q","Q") AS ?qid) (REPLACE(STR(?redirect),".*Q","Q") AS ?redirect_toqid)
+        WHERE {
+          ?redirect wdt:P31 wd:Q5 .
+          ?redirect wdt:#{property} ?id .
+          ?item owl:sameAs ?redirect .
+          SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
+          OPTIONAL { ?redirect p:P569/psv:P569 [wikibase:timePrecision ?birth_precision; wikibase:timeValue ?birth]
+          BIND(if(?birth_precision=11,?birth,if(?birth_precision=10,concat(month(?birth)," ",year(?birth)),year(?birth))) as ?date_of_birth) }
+          OPTIONAL { ?redirect p:P570/psv:P570 [wikibase:timePrecision ?death_precision; wikibase:timeValue ?death]
+          BIND(if(?death_precision=11,?death,if(?death_precision=10,concat(month(?death)," ",year(?death)),year(?death))) as ?date_of_death) }
+          FILTER(?birth_precision=11 && ?death_precision=11 )
         }
       )
     end
@@ -128,6 +145,41 @@ module Bloodhound
         else
           puts u.fullname_reverse.green
         end
+      end
+    end
+
+    def merge_users
+      merged_wikicodes = {}
+      PEOPLE_PROPERTIES.each do |key,property|
+        puts "Merges for #{key}...".yellow
+        @sparql.query(merged_wikidata_people_query(property)).each_solution do |solution|
+          qid = solution.to_h[:qid].to_s.match(/Q[0-9]{1,}/).to_s
+          merged_wikicodes[qid] =  solution.to_h[:redirect_toqid].to_s.match(/Q[0-9]{1,}/).to_s
+        end
+      end
+      qids_to_merge = merged_wikicodes.keys & existing_wikicodes
+      qids_to_merge.each do |qid|
+        dest_qid = merged_wikicodes[qid]
+        DestroyedUser.create(identifier: qid, redirect_to: dest_qid)
+
+        src = User.find_by_wikidata(qid)
+        dest = User.find_by_wikidata(dest_qid)
+        if dest.nil?
+          src.wikidata = dest_qid
+          src.save
+          src.reload
+          src.update_wikidata_profile
+        else
+          src.user_occurrences.where.not(occurrence_id: dest.user_occurrences.pluck(:occurrence_id))
+             .update_all({ user_id: dest.id })
+          if src.is_public?
+            dest.is_public = true
+            dest.save
+          end
+          dest.update_wikidata_profile
+          src.destroy
+        end
+        puts "#{qid} => #{dest_qid}".red
       end
     end
 
@@ -273,7 +325,7 @@ module Bloodhound
 
     def wiki_user_by_orcid(orcid)
       data = {}
-      @sparql.query(wikidata_by_orcid(orcid)).each_solution do |solution|
+      @sparql.query(wikidata_by_orcid_query(orcid)).each_solution do |solution|
         data[:twitter] = solution.to_h[:twitter] rescue nil
       end
       data
