@@ -24,13 +24,15 @@
         %th{scope: "col"}
           %a{href: "/admin/users?order=country&sort=#{sort}"} Country
         %th{scope: "col"}
+          %a{href: "/admin/users?order=is_public&sort=#{sort}"} Public
+        %th{scope: "col"}
+          %a{href: "/admin/users?order=wants_mail&sort=#{sort}"} Email
+        %th{scope: "col"}
+          %a{href: "/admin/users?order=zenodo_concept_doi&sort=#{sort}"} DOI
+        %th{scope: "col"}
           %a{href: "/admin/users?order=visited&sort=#{sort}"} Last Login
         %th{scope: "col"}
           %a{href: "/admin/users?order=created&sort=#{sort}"} Created
-        %th{scope: "col"}
-          %a{href: "/admin/users?order=is_public&sort=#{sort}"} Public
-        %th{scope: "col"}
-          %a{href: "/admin/users?order=zenodo_concept_doi&sort=#{sort}"} DOI
 
     %tbody
       - @results.each do |u|
@@ -43,15 +45,20 @@
               %img{src: "/images/wikidata_16x16.png", alt:"Wikidata iD"}
             %a{href: "/admin/user/#{u.identifier}"} #{u.fullname_reverse}
           %td #{u.country}
-          %td #{u.visited}
-          %td #{u.created}
           %td
             - if u.is_public?
               %span{class: "text-success"} #{u.is_public}
             - else
               #{u.is_public}
           %td
+            - if u.wants_mail?
+              %span{class: "text-success"} #{u.wants_mail}
+            - else
+              #{u.wants_mail}
+          %td
             - if u.zenodo_concept_doi
               %a{href: "https://doi.org/#{u.zenodo_concept_doi}"} #{u.zenodo_concept_doi}
+          %td #{u.visited}
+          %td #{u.created}
 
 = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
