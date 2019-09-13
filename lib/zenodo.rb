@@ -142,14 +142,22 @@ module Bloodhound
     end
 
     def discard_version(id:)
-      raw_response = access_token.post(discard_version_url(id))
-      JSON.parse(raw_response.body).deep_symbolize_keys
+      begin
+        raw_response = access_token.post(discard_version_url(id))
+        JSON.parse(raw_response.body).deep_symbolize_keys
+      rescue
+        {}
+      end
     end
 
     # concept DOI is returned as [:conceptdoi] whereas version DOI is [:doi]
     def publish(id:)
-      response = access_token.post(publish_url(id))
-      JSON.parse(response.body).deep_symbolize_keys
+      begin
+        response = access_token.post(publish_url(id))
+        JSON.parse(response.body).deep_symbolize_keys
+      rescue
+        { doi: nil }
+      end
     end
 
   end

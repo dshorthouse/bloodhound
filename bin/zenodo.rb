@@ -66,15 +66,17 @@ elsif options[:all]
     z.add_file_enum(id: id, enum: csv, file_name: u.orcid + ".csv")
     json = Bloodhound::IO.jsonld_stream(u)
     z.add_file_string(id: id, string: json, file_name: u.orcid + ".json")
-    begin
-      pub = z.publish(id: id)
+
+    pub = z.publish(id: id)
+    if !pub[:doi].nil?
       u.zenodo_doi = pub[:doi]
       u.save
       puts "#{u.fullname_reverse}".green
-    rescue
+    else
       z.discard_version(id: id)
       puts "#{u.fullname_reverse}".red
     end
+
   end
 end
 
