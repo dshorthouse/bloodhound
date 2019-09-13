@@ -47,7 +47,6 @@ if options[:new]
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:all]
-  #TODO: what is periodicity? trigger?
   User.where.not(zenodo_doi: nil).find_each do |u|
     z = Bloodhound::Zenodo.new(hash: u.zenodo_access_token)
     u.zenodo_access_token = z.refresh_token

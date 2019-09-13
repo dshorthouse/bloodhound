@@ -72,15 +72,24 @@ module Bloodhound
       JSON.parse(response.body).map(&:deep_symbolize_keys)
     end
 
-    # Returns {:doi=>"10.5281/zenodo.2652235", :recid=>2652235}
+    # Returns { upload_type: ... , prereserve_doi: { doi: "10.5281/zenodo.2652235", recid: 2652235 }
     def get_deposit(id:)
       raw_response = access_token.get(deposit_url(id))
       response = JSON.parse(raw_response.body).deep_symbolize_keys
-      response[:metadata][:prereserve_doi]
+      response[:metadata]
+    end
+
+    def update_deposit(id:, metadata:)
+      headers = { "Content-Type": "application/json"}
+      body = {
+        metadata: metadata
+      }
+      raw_response = access_token.put(deposit_url(id), { body: body.to_json, headers: headers })
+      JSON.parse(raw_response.body).deep_symbolize_keys
     end
 
     # Input, name: "Shorthouse, David", orcid: "0000-0001-7618-5230"
-    # Returns {:doi=>"10.5281/zenodo.2652234", :recid=>2652234}
+    # Returns { doi: "10.5281/zenodo.2652234", recid: 2652234}
     def new_deposit(name:, orcid:)
       headers = { "Content-Type": "application/json"}
       creators = [{ name: name, orcid: orcid }]
@@ -138,7 +147,10 @@ module Bloodhound
       raw_response = access_token.post(new_version_url(id))
       response = JSON.parse(raw_response.body).deep_symbolize_keys
       new_id = response[:links][:latest_draft].split("/").last.to_i
-      get_deposit(id: new_id)
+      metadata = get_deposit(id: new_id)
+      metadata[:publication_date] = Time.now.strftime('%F')
+      update_deposit(id: new_id, metadata: metadata)
+      metadata[:prereserve_doi]
     end
 
     def discard_version(id:)
