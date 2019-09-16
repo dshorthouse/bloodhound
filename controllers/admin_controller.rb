@@ -38,6 +38,15 @@ module Sinatra
             haml :'admin/organizations_search', locals: { active_page: "administration" }
           end
 
+          app.get '/admin/organization/refresh.json' do
+            admin_protected!
+            content_type "application/json", charset: 'utf-8'
+
+            organization = Organization.find(params[:organization_id])
+            organization.update_wikidata
+            { message: "ok" }.to_json
+          end
+
           app.get '/admin/organization/:id' do
             admin_protected!
             @organization = Organization.find(params[:id])

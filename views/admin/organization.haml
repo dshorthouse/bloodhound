@@ -1,6 +1,13 @@
 -content_for :title do
   #{@organization.name}
 
+-content_for :scripts do
+  %script{src:"/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init(#{@user.id}, "POST", "/admin");
+    });
+
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid alert-warning"}
     %h2 #{@organization.name}
@@ -47,6 +54,15 @@
         %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}"}
           %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
         %a{href: "https://www.wikidata.org/wiki/#{@organization.wikidata}", target:"_blank"} https://www.wikidata.org/wiki/#{@organization.wikidata}
+      %a{href:"/admin/organization/refresh.json?organization_id=#{@organization.id}", role:"button", class:"btn btn-sm btn-outline-success organization-refresh"}
+        %i{class: "fas fa-sync-alt"}
+        Refresh
+        %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD", width:"18px"}
+
+      %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
+        Data from Wikidata was refreshed.
+        %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+          %span{"aria-hidden":"true"} &times;
   %div{class:"form-group"}
     %label{for:"institution_codes"} Institution Codes
     %textarea{type:"text", class:"form-control", id:"institution_codes", name:"institution_codes"}= "#{@organization.institution_codes.join("|")}"

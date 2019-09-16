@@ -319,6 +319,22 @@ var Application = (function($, window) {
         });
         return false;
       });
+      $("a.organization-refresh").on("click", function() {
+        var button = $(this);
+        $.ajax({
+            method: "GET",
+            url: button.attr("href"),
+            beforeSend: function(xhr) {
+              button.addClass("disabled");
+            }
+        }).done(function(data) {
+          $(".alert").alert().show();
+          $(".alert").on("closed.bs.alert", function () {
+            location.reload();
+          });
+        });
+        return false;
+      });
     },
     candidate_counter: function() {
       var self = this;
