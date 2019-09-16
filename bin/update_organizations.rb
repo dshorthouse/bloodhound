@@ -16,8 +16,12 @@ OptionParser.new do |opts|
     options[:codes] = true
   end
 
-  opts.on("-w", "--update_wiki", "Gather and update coordinates and wikidata Q identifers from Wikidata") do
-    options[:wikidata] = true
+  opts.on("-f", "--find_wikidata", "Use existing Ringgold or GRID identifiers to find Wikidata identifiers") do
+    options[:find_wikidata] = true
+  end
+
+  opts.on("-w", "--update_wikidata", "Update Wikidata data") do
+    options[:update_wikidata] = true
   end
 
   opts.on("-h", "--help", "Prints this help") do
@@ -46,7 +50,7 @@ if options[:codes]
   end
 end
 
-if options[:wikidata]
+if options[:find_wikidata]
   Organization.where(wikidata: nil).find_each do |o|
     wikicode = o.update_wikidata
     if wikicode
@@ -54,6 +58,14 @@ if options[:wikidata]
     else
       puts "#{o.name}".red
     end
+    sleep(0.25)
+  end
+end
+
+if options[:update_wikidata]
+  Organization.where.not(wikidata: nil) do |o|
+    o.update_wikidata
+    puts "#{o.name}".green
     sleep(0.25)
   end
 end
