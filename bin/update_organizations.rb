@@ -63,7 +63,7 @@ if options[:find_wikidata]
 end
 
 if options[:update_wikidata]
-  Organization.where.not(wikidata: nil) do |o|
+  Organization.where.not(wikidata: nil).find_each do |o|
     o.update_wikidata
     puts "#{o.name}".green
     sleep(0.25)
