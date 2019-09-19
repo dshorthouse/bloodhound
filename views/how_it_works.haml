@@ -7,16 +7,16 @@
       %h2 How it Works
 
 %p
-  This application is developed and maintained by 
+  This application is developed and maintained by
   %a{href:"https://orcid.org/0000-0001-7618-5230"}
     %img{alt:"David P. Shorthouse", src:"/images/orcid_16x16.png", width:"16", height:"16", hspace:"4"}
-  %a{href: "https://orcid.org/0000-0001-7618-5230" } David P. Shorthouse 
-  using specimen data periodically downloaded from the 
+  %a{href: "https://orcid.org/0000-0001-7618-5230" } David P. Shorthouse
+  using specimen data periodically downloaded from the
   %a{href: "https://www.gbif.org"} Global Biodiversity Information Facility
-  (GBIF) and authentication provided by 
+  (GBIF) and authentication provided by
   = succeed "." do
     %a{href: "https://orcid.org" } ORCID
-  It was launched in August 2018 as a submission to the annual 
+  It was launched in August 2018 as a submission to the annual
   = succeed "." do
     %a{href: "https://www.gbif.org/news/1GQURfK5jS4Iq4O06Y0EK4/2018-gbif-ebbe-nielsen-challenge-seeks-open-data-innovations-for-biodiversity"} Ebbe Nielsen Challenge
   Since then,
@@ -26,16 +26,16 @@
 %h3 Inner Workings
 
 %p
-  The approximately 193M 
-  %a{href: "https://doi.org/10.15468/dl.28ezti"} specimen records processed
-  in this project have content in their 
-  %a{href: "http://rs.tdwg.org/dwc/terms/#recordedBy"} recordedBy 
-  (collector) or 
-  %a{href: "http://rs.tdwg.org/dwc/terms/#identifiedBy"} identifiedBy 
+  The approximately 194M
+  %a{href: "https://doi.org/10.15468/dl.ejwnnv"} specimen records processed
+  in this project have content in their
+  %a{href: "http://rs.tdwg.org/dwc/terms/#recordedBy"} recordedBy
+  (collector) or
+  %a{href: "http://rs.tdwg.org/dwc/terms/#identifiedBy"} identifiedBy
   Darwin Core fields and are refreshed every few weeks. Names of collectors and determiners are parsed and cleaned using the test-driven
-  %a{href: "https://github.com/dshorthouse/dwc_agent"} dwc_agent ruby gem 
-  available for free integration in other projects. Similarity of people names is scored using a graph theory method outlined by 
-  %a{href: "https://orcid.org/0000-0002-7101-9767"} R.D.M. Page 
+  %a{href: "https://github.com/dshorthouse/dwc_agent"} dwc_agent ruby gem
+  available for free integration in other projects. Similarity of people names is scored using a graph theory method outlined by
+  %a{href: "https://orcid.org/0000-0002-7101-9767"} R.D.M. Page
   and incorporated as a method in the dwc_agent gem. These scores are used to help expand the search for candidate specimens, presented in order of greatest to least probable. If you declared alternate names in your ORCID account such as a maiden name or if aliases are mentioned in wikidata profiles, these are used to search for candidate specimen records. Processing this large number of specimen records is an intensive though repeatable process using MIT-licensed,
   %a{href: "https://github.com/dshorthouse/bloodhound"} open source code.
 
