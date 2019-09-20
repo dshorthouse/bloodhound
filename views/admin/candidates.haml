@@ -48,9 +48,10 @@
       = succeed "." do
         Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for 
         %span{class:"font-weight-bold"} #{placeholder}
-      = succeed "." do
-        Attribute with
-        %a{href: "#", "data-toggle":"modal", "data-target":"#bot_claims"} Bloodhound Bot
+      - if !@searched_user.nil?
+        = succeed "." do
+          Attribute with
+          %a{href: "#", "data-toggle":"modal", "data-target":"#bot_claims"} Bloodhound Bot
       - if @searched_user.nil?
         %div{class:"form-check d-inline-flex"}
           - checked = params[:relaxed] == "1" ? "checked" : nil

@@ -19,8 +19,12 @@
           %div{class:"form-group"}
             %label{for:"bulk-json"} JSON
             %div
-              %input{type:"text", id:"bulk-json", class:"form-control", name:"where"}
-              
+              %input{type:"text", id:"bulk-json", class:"form-control", name:"conditions"}
+
+          %div{class:"form-check"}
+            %input{type:"checkbox", id:"ignore", class:"form-check-input", name:"ignore"}
+            %label{for:"ignore", class:"form-check-label"} Bulk Not Them
+
           %div{class:"form-group"}
             %button{type:"submit", class:"btn btn-success mt-3"} Submit
 

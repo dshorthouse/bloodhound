@@ -12,8 +12,8 @@ OptionParser.new do |opts|
     options[:agent_id] = agent_id
   end
 
-  opts.on("-w", "--where [where]", String, "WHERE as JSON on occurrence records, eg '{ \"institutionCode\" : \"CAN\" }' or a LIKE statement '{ \"scientificName LIKE ?\":\"Bolbelasmus %\"}'") do |where|
-    options[:where] = where
+  opts.on("-c", "--conditions [conditions]", String, "executes a WHERE as JSON on occurrence records, eg '{ \"institutionCode\" : \"CAN\" }' or a LIKE statement '{ \"scientificName LIKE ?\":\"Bolbelasmus %\"}'") do |conditions|
+    options[:conditions] = conditions
   end
 
   opts.on("-i", "--ignore", "Ignore all selections") do
@@ -38,7 +38,7 @@ if !options[:agent_id] || [options[:orcid], options[:wikidata]].compact.empty?
   puts "ERROR: Both -a and -o or -w are required".red
 else
   agent = Agent.find(options[:agent_id])
-  
+
   if options[:orcid]
     user = User.find_by_orcid(options[:orcid])
   elsif options[:wikidata]
@@ -49,74 +49,8 @@ else
     puts "ERROR: either agent or user not found".red
     exit
   else
-    #TODO: put all below into lib
-    claimed = user.user_occurrences.pluck(:occurrence_id)
-
-    if !options[:where]
-      recordings = agent.occurrence_recorders.pluck(:occurrence_id)
-      determinations = agent.occurrence_determiners.pluck(:occurrence_id)
-    else
-      where_hash = JSON.parse options[:where].gsub('=>', ':')
-
-      recordings = where_hash.inject(agent.recordings) do |o, a|
-        if a[0].include?(" ?")
-          o.send("where", a)
-        else
-          o.send("where", Hash[[a]])
-        end
-      end.pluck(:gbifID)
-
-      determinations = where_hash.inject(agent.determinations) do |o, a|
-        if a[0].include?(" ?")
-          o.send("where", a)
-        else
-          o.send("where", Hash[[a]])
-        end
-      end.pluck(:gbifID)
-    end
-
-    uniq_recordings = (recordings - determinations) - claimed
-    uniq_determinations = (determinations - recordings) - claimed
-    both = (recordings & determinations) - claimed
-
-    if !options[:ignore]
-      puts "Claiming unique recordings...".yellow
-      UserOccurrence.import uniq_recordings.map{|o| {
-        user_id: user.id,
-        occurrence_id: o,
-        action: "recorded",
-        created_by: 1
-      } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
-
-      puts "Claiming unique determinations...".yellow
-      UserOccurrence.import uniq_determinations.map{|o| {
-        user_id: user.id,
-        occurrence_id: o,
-        action: "identified",
-        created_by: 1
-      } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
-
-      puts "Claiming recordings and determinations...".yellow
-      UserOccurrence.import both.map{|o| {
-        user_id: user.id,
-        occurrence_id: o,
-        action: "recorded,identified",
-        created_by: 1
-      } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
-
-      puts "#{agent.fullname} data claimed for #{user.fullname}".green
-    else
-      all = (recordings + determinations).uniq - claimed
-      puts "Ignoring occurrences...".yellow
-      UserOccurrence.import all.map{|o| {
-        user_id: user.id,
-        occurrence_id: o,
-        action: nil,
-        visible: 0,
-        created_by: 1
-      } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
-      puts "#{agent.fullname} data ignored for #{user.fullname}".red
-    end
+    result = user.bulk_claim(agent: agent, conditions: options[:conditions], ignore: options[:ignore])
+    puts result.green
   end
 
 end

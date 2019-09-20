@@ -278,6 +278,72 @@ class User < ActiveRecord::Base
     current
   end
 
+  def bulk_claim(agent:, conditions:, ignore: false)
+
+    claimed = user_occurrences.pluck(:occurrence_id)
+
+    if conditions.blank?
+      agent_recordings = agent.occurrence_recorders.pluck(:occurrence_id)
+      agent_determinations = agent.occurrence_determiners.pluck(:occurrence_id)
+    else
+      conditions_hash = JSON.parse conditions.gsub('=>', ':')
+
+      agent_recordings = conditions_hash.inject(agent.recordings) do |o, a|
+        if a[0].include?(" ?")
+          o.send("where", a)
+        else
+          o.send("where", Hash[[a]])
+        end
+      end.pluck(:gbifID)
+
+      agent_determinations = conditions_hash.inject(agent.determinations) do |o, a|
+        if a[0].include?(" ?")
+          o.send("where", a)
+        else
+          o.send("where", Hash[[a]])
+        end
+      end.pluck(:gbifID)
+    end
+
+    uniq_recordings = (agent_recordings - agent_determinations) - claimed
+    uniq_determinations = (agent_determinations - agent_recordings) - claimed
+    both = (agent_recordings & agent_determinations) - claimed
+
+    if ignore
+      all = (agent_recordings + agent_determinations).uniq - claimed
+      UserOccurrence.import all.map{|o| {
+        user_id: id,
+        occurrence_id: o,
+        action: nil,
+        visible: 0,
+        created_by: BOT_IDS[0]
+      } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
+    else
+      UserOccurrence.import uniq_recordings.map{|o| {
+        user_id: id,
+        occurrence_id: o,
+        action: "recorded",
+        created_by: BOT_IDS[0]
+      } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
+
+      UserOccurrence.import uniq_determinations.map{|o| {
+        user_id: id,
+        occurrence_id: o,
+        action: "identified",
+        created_by: BOT_IDS[0]
+      } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
+
+      UserOccurrence.import both.map{|o| {
+        user_id: id,
+        occurrence_id: o,
+        action: "recorded,identified",
+        created_by: BOT_IDS[0]
+      } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
+    end
+
+    { num_attributed: (both || all).count, ignored: ignore }
+  end
+
   def update_profile
     UserOrganization.where(user_id: id).destroy_all
     if wikidata
