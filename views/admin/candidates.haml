@@ -24,6 +24,9 @@
 
 = haml :'partials/upload_claim_modal', layout: false, locals: { csv_download_url: "/admin/user/#{@admin_user.identifier}/candidates.csv?relaxed=0", csv_upload_url: "/admin/user/#{@admin_user.identifier}/upload-claims", user: @admin_user}
 
+- if !@searched_user.nil?
+  = haml :'partials/bot_claim_modal', layout: false, locals: { user: @admin_user, agent: @searched_user }
+
 - if @results.empty?
   %div{class: "alert alert-info row tiny-margins", role:"alert"}
     %div{class: "col col-12 col-sm-12 col-m-8 col-lg-8"}
@@ -45,6 +48,9 @@
       = succeed "." do
         Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for 
         %span{class:"font-weight-bold"} #{placeholder}
+      = succeed "." do
+        Attribute with
+        %a{href: "#", "data-toggle":"modal", "data-target":"#bot_claims"} Bloodhound Bot
       - if @searched_user.nil?
         %div{class:"form-check d-inline-flex"}
           - checked = params[:relaxed] == "1" ? "checked" : nil

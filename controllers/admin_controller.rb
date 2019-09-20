@@ -321,6 +321,88 @@ module Sinatra
             haml :'admin/candidates', locals: { active_page: "administration" }
           end
 
+          app.post '/admin/user/:id/candidates/agent/:agent_id/bulk-claim' do
+            admin_protected!
+            check_redirect
+            user = find_user(params[:id])
+            agent = Agent.find(params[:agent_id])
+            json = params[:where]
+            #TODO: params for ignore
+            ignore = nil
+            #TODO: put all below into lib
+            begin
+              claimed = user.user_occurrences.pluck(:occurrence_id)
+
+              if json.empty?
+                recordings = agent.occurrence_recorders.pluck(:occurrence_id)
+                determinations = agent.occurrence_determiners.pluck(:occurrence_id)
+              else
+                where_hash = JSON.parse json.gsub('=>', ':')
+
+                recordings = where_hash.inject(agent.recordings) do |o, a|
+                  if a[0].include?(" ?")
+                    o.send("where", a)
+                  else
+                    o.send("where", Hash[[a]])
+                  end
+                end.pluck(:gbifID)
+
+                determinations = where_hash.inject(agent.determinations) do |o, a|
+                  if a[0].include?(" ?")
+                    o.send("where", a)
+                  else
+                    o.send("where", Hash[[a]])
+                  end
+                end.pluck(:gbifID)
+              end
+
+              uniq_recordings = (recordings - determinations) - claimed
+              uniq_determinations = (determinations - recordings) - claimed
+              both = (recordings & determinations) - claimed
+
+              if ignore.nil?
+                puts "Claiming unique recordings...".yellow
+                UserOccurrence.import uniq_recordings.map{|o| {
+                  user_id: user.id,
+                  occurrence_id: o,
+                  action: "recorded",
+                  created_by: 1
+                } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
+
+                puts "Claiming unique determinations...".yellow
+                UserOccurrence.import uniq_determinations.map{|o| {
+                  user_id: user.id,
+                  occurrence_id: o,
+                  action: "identified",
+                  created_by: 1
+                } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
+
+                puts "Claiming recordings and determinations...".yellow
+                UserOccurrence.import both.map{|o| {
+                  user_id: user.id,
+                  occurrence_id: o,
+                  action: "recorded,identified",
+                  created_by: 1
+                } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
+
+                puts "#{agent.fullname} data claimed for #{user.fullname}".green
+              else
+                all = (recordings + determinations).uniq - claimed
+                puts "Ignoring occurrences...".yellow
+                UserOccurrence.import all.map{|o| {
+                  user_id: user.id,
+                  occurrence_id: o,
+                  action: nil,
+                  visible: 0,
+                  created_by: 1
+                } }, batch_size: 500, validate: false, on_duplicate_key_ignore: true
+                puts "#{agent.fullname} data ignored for #{user.fullname}".red
+              end
+            rescue
+            end
+            redirect "/admin/user/#{params[:id]}/candidates/agent/#{params[:agent_id]}"
+          end
+
           app.get '/admin/user/:id/ignored' do
             admin_protected!
             check_redirect

@@ -49,6 +49,7 @@ else
     puts "ERROR: either agent or user not found".red
     exit
   else
+    #TODO: put all below into lib
     claimed = user.user_occurrences.pluck(:occurrence_id)
 
     if !options[:where]
