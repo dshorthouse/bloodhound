@@ -7,11 +7,11 @@
           %span{"aria-hidden":"true"} &times;
       %div{class:"modal-body"}
         %p
-          Bulk attribute
-          %strong #{locals[:agent].fullname}'s
-          specimen records using the Bloodhound Bot for
-          %strong #{locals[:user].fullname}.
-          Conditionals must take the form of JSON.
+          Bulk attribute specimens collected and/or identified by the agent
+          %strong #{locals[:agent].fullname}
+          to the user
+          %strong #{locals[:user].fullname}
+          using the Bloodhound Bot. Conditionals must take the form of JSON.
         %p
           Examples: { "institutionCode" : "CAN" } or { "scientificName LIKE ?":"Bolbelasmus %"}
 
