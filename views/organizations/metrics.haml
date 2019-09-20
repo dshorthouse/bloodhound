@@ -33,7 +33,7 @@
             All Years
         %div{class:"dropdown-menu", "aria-labelledby":"dropdownMenuButton"}
           %a{class:"dropdown-item", href:"?year="} All years
-          - Organization::METRICS_YEAR_RANGE.each do |y|
+          - Organization::METRICS_YEAR_RANGE.reverse_each do |y|
             %a{class:"dropdown-item", href:"?year=#{y}"} #{y}
 
         - if @others_recorded.empty? && @others_identified.empty?
