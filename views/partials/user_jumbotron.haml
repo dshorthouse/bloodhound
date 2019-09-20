@@ -22,8 +22,8 @@
   %p{class: "orcid text-lg-left p-0 mt-4"}
     - if @viewed_user.orcid
       %a{href: "https://orcid.org/#{@viewed_user.orcid}", itemprop:"sameAs"}
-        %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-      %a{href: "https://orcid.org/#{@viewed_user.orcid}"} https://orcid.org/#{@viewed_user.orcid}
+        %i{class:"fab fa-orcid"}
+        https://orcid.org/#{@viewed_user.orcid}
     - else
       %a{href: "https://www.wikidata.org/wiki/#{@viewed_user.wikidata}", itemprop:"sameAs"}
         %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}

@@ -52,7 +52,7 @@
         %div{class:"card"}
           %h5{class:"card-header"}
             - if @admin_user.orcid
-              %img{src:"/images/orcid_24x24.png", alt: "ORCID"}
+              %i{class:"fab fa-orcid"}
               ORCID
             - else
               %img{src:"/images/wikidata_24x24.png", alt: "Wikidata"}
@@ -62,13 +62,14 @@
             %p
               %a{ href:"/admin/refresh.json?user_id=#{@admin_user.id}", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
                 %i{class: "fas fa-sync-alt"}
-                - locale = @admin_user.orcid ? "ORCID" : "Wikidata"
                 Refresh
-                %img{src: "/images/#{locale.downcase}_24x24.png", alt:"#{locale} iD", width:"18px"}
+                - if @admin_user.orcid
+                  %i{class:"fab fa-orcid"}
+                - else
+                  %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD", width:"18px"}
 
             %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
-              - locale = @admin_user.orcid ? "ORCID" : "Wikidata"
-              #{locale} Data was refreshed.
+              Data was refreshed.
               %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
                 %span{"aria-hidden":"true"} &times;
 

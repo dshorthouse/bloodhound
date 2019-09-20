@@ -43,7 +43,7 @@
 
         %div{class:"card"}
           %h5{class:"card-header"}
-            %img{src:"/images/orcid_24x24.png", alt: "ORCID"}
+            %i{class:"fab fa-orcid"}
             ORCID
           %div{class:"card-body"}
             %p{class:"card-text"} Pull new updates to your name, aliases, keywords, country, education, and employment from your ORCID account.
@@ -51,7 +51,7 @@
               %a{ href:"/profile/refresh.json?user_id=#{@user.id}", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
                 %i{class: "fas fa-sync-alt"}
                 Refresh
-                %img{src: "/images/orcid_24x24.png", alt:"ORCID iD", width:"18px"}
+                %i{class:"fab fa-orcid"}
 
             %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
               ORCID Data was refreshed.

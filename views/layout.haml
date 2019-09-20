@@ -32,9 +32,9 @@
     %link{href: "/css/application.css", rel: "stylesheet", type: "text/css"}
     %link{href: "/css/bootstrap-toggle.min.css", rel: "stylesheet", type: "text/css"}
     %link{href: "/css/typeahead.css", rel: "stylesheet", type: "text/css"}
-    %link{rel:"stylesheet", href:"https://use.fontawesome.com/releases/v5.8.1/css/all.css", integrity:"sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf", crossorigin:"anonymous"}
     = yield_content :stylesheets
 
+    %script{src: "https://kit.fontawesome.com/c0c5b90533.js", crossorigin:"anonymous"}
     %script{src: "/js/jquery-3.3.1.min.js"}
     %script{src: "/js/popper.min.js", crossorigin:"anonymous"}
     %script{src: "/js/bootstrap.min.js", crossorigin: "anonymous"}
@@ -113,7 +113,7 @@
             - else
               %li
                 %a{ href:"/auth/orcid?lang=#{I18n.locale}", role: "button", class: "btn btn-outline-light connect-orcid-button" }
-                  %img{ alt: "#{I18n.t('home.orcid_logo')}", height:24, width:24, class:"orcid-id-logo", src:"/images/orcid_24x24.png", class:"mr-2"}
+                  %i{class:"fab fa-orcid"}
                   = I18n.t('home.orcid_login')
 
       = yield_content :jumbotron

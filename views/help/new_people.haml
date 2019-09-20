@@ -54,9 +54,8 @@
       - @results.each do |user|
         %tr
           %td
-            %a{href: "/help-others/#{user.identifier}"}
             - if user.orcid
-              %img{src: "/images/orcid_16x16.png", alt:"ORCID iD"}
+              %i{class:"fab fa-orcid"}
             - else
               %img{src: "/images/wikidata_16x16.png", alt:"Wikidata iD"}
             %a{href: "/help-others/#{user.identifier}"} #{user.fullname_reverse}

@@ -37,9 +37,8 @@
       - @results.each do |claim|
         %tr
           %td
-            %a{href: "/admin/user/#{claim.user.identifier}"}
             - if claim.user.orcid
-              %img{src: "/images/orcid_16x16.png", alt:"ORCID iD"}
+              %i{class:"fab fa-orcid"}
             - else
               %img{src: "/images/wikidata_16x16.png", alt:"Wikidata iD"}
             %a{href: "/admin/user/#{claim.user.identifier}"} #{claim.user.fullname_reverse}

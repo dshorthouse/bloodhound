@@ -24,8 +24,8 @@
 
   %p{class: "orcid text-lg-left p-0 mt-4"}
     %a{href: "https://orcid.org/#{@user.orcid}"}
-      %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-        %a{href: "https://orcid.org/#{@user.orcid}"} https://orcid.org/#{@user.orcid}
+      %i{class:"fab fa-orcid"}
+      https://orcid.org/#{@user.orcid}
 
   - if !@user.current_organization.nil?
     %p{class: "text-lg-left p-0 m-0"}

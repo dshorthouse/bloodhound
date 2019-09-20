@@ -36,11 +36,11 @@
       %div{class: "orcid text-center"}
         - if @viewed_user.orcid
           %a{href: "https://orcid.org/#{@viewed_user.orcid}"}
-            %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-          %a{href: "https://orcid.org/#{@viewed_user.orcid}"} https://orcid.org/#{@viewed_user.orcid}
+            %i{class:"fab fa-orcid"}
+            https://orcid.org/#{@viewed_user.orcid}
         - else
           %a{href: "https://www.wikidata.org/wiki/#{@viewed_user.wikidata}"}
-            %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
+            %img{src: "/images/wikidata_16x16.png", alt:"Wikidata iD"}
             %a{href: "https://www.wikidata.org/wiki/#{@viewed_user.wikidata}"} https://www.wikidata.org/wiki/#{@viewed_user.wikidata}
 
       - if !@viewed_user.keywords.blank?
@@ -87,9 +87,11 @@
 
           %a{href:"/help-others/refresh.json?user_id=#{@viewed_user.id}", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
             %i{class: "fas fa-sync-alt"}
-            - locale = @viewed_user.orcid ? "ORCID" : "Wikidata"
             Refresh
-            %img{src: "/images/#{locale.downcase}_24x24.png", alt:"#{locale} iD", width:"18px"}
+            - if @viewed_user.orcid
+              %i{class:"fab fa-orcid"}
+            - else
+              %img{src: "/images/wikidata_16x16.png", alt:"Wikidata iD", width:"18px"}
       
           - if admin_authorized?
             %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
@@ -97,7 +99,7 @@
               Settings
               
         %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
-          Data from #{locale} was refreshed.
+          Data was refreshed.
           %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
             %span{"aria-hidden":"true"} &times;
 

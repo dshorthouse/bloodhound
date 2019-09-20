@@ -180,6 +180,10 @@ div.list-header{
   line-height:42px;
 }
 
+.fa-orcid{
+  color:#a6cc46;
+}
+
 dl.dl-horizontal {
   display: table;
   min-width: 400px;

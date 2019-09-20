@@ -32,11 +32,11 @@
   %p{class: "orcid text-lg-left p-0 mt-4"}
     - if @admin_user.orcid
       %a{href: "https://orcid.org/#{@admin_user.orcid}"}
-        %img{src: "/images/orcid_24x24.png", alt:"ORCID iD"}
-          %a{href: "https://orcid.org/#{@admin_user.orcid}"} https://orcid.org/#{@admin_user.orcid}
+        %i{class:"fab fa-orcid"}
+        https://orcid.org/#{@admin_user.orcid}
     - else
       %a{href: "https://www.wikidata.org/wiki/#{@admin_user.wikidata}"}
-        %img{src: "/images/wikidata_24x24.png", alt:"WIkidata iD"}
+        %img{src: "/images/wikidata_16x16.png", alt:"WIkidata iD"}
           %a{href: "https://www.wikidata.org/wiki/#{@admin_user.wikidata}"} https://www.wikidata.org/wiki/#{@admin_user.wikidata}
 
   - if !@admin_user.current_organization.nil?
