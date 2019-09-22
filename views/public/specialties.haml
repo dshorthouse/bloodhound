@@ -53,3 +53,14 @@
                   %li{class: "list-group-item d-flex justify-content-between align-items-center"}
                     #{k}
                     %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
+
+    - else
+      %div{class: "alert alert-warning"}
+        - specimen_count = @viewed_user.all_occurrences_count
+        - if specimen_count > 0
+          %i{class:"fas fa-lock"}
+          Although #{number_with_delimiter(specimen_count)} #{'specimen'.pluralize(specimen_count)} were claimed, this profile
+        - else
+          %i{class:"fas fa-lock"}
+          Profile
+        is not publicly available.
