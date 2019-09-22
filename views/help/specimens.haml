@@ -1,5 +1,5 @@
 -content_for :title do
-  Helping specimens #{@viewed_user.fullname}
+  Help Attribute for #{@viewed_user.fullname}
 
 -content_for :scripts do
   %script{src: "/js/application.js"}
@@ -15,7 +15,7 @@
 
 - if @results.empty?
   %div{class: "alert alert-info tiny-margins", role: "alert"}
-    Bloodhound trainers have not yet helped claim specimens.
+    Bloodhound trainers have not yet helped attribute specimens.
 - else
   = haml :'partials/help_fixed_navbar', layout: false
   %div{id: "helper-info", class: "alert alert-info tiny-margins", role: "alert"}
