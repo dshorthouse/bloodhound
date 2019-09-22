@@ -5,7 +5,7 @@
   %div{class: "jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class: "mr-auto p-2"}
       %h2 Get Started
-      %p.lead.text-muted Three steps to claim the specimens you collected or identified and track their use in new science
+      %p.lead.text-muted Four steps to claim the specimens you collected or identified and to help acknowledge your peers, mentors, and organizations.
 
 
 %h3 Step 1: Authenticate via ORCID
@@ -76,17 +76,14 @@
   %p
     Once authenticated via ORCID, Bloodhound first shows you an
     - if !authorized?
-      %strong
-        Overview
+      Overview
     - else
-      %strong
-        %a{href: "/profile"} Overview
+      %a{href: "/profile"} Overview
     of your profile. It pulls your full name and other details (see above) from your ORCID account, which you may refresh at any time. Click the
     - if !authorized?
-      %strong Discovered
+      Discovered
     - else
-      %strong
-        %a{href: "/profile/candidates"} Discovered
+      %a{href: "/profile/candidates"} Discovered
     tab to see a list of candidate specimens. Much like an email inbox, Bloodhound shows the number of specimens that await action.
 
 %h3 Step 3: Claim your specimens
@@ -94,11 +91,9 @@
   %p
     Under the
     - if !authorized?
-      %strong
-        Discovered
+      Discovered
     - else
-      %strong
-        %a{href: "/profile/candidates"} Discovered
+      %a{href: "/profile/candidates"} Discovered
     tab of your profile, you may bulk claim
     %em all visible rows
     of specimens or claim single rows by clicking:
@@ -120,16 +115,23 @@
     %em all visible rows
     or single rows of specimen records. Make a mistake? Visit other tabs in your profile such as
     - if !authorized?
-      %strong My Specimens
+      My Specimens
     - else
-      %strong
-        %a{href: "/profile/specimens"} My Specimens
+      %a{href: "/profile/specimens"} My Specimens
     or
     - if !authorized?
-      %strong Ignored
+      Ignored
     - else
-      %strong
-        %a{href: "/profile/ignored"} Ignored
+      %a{href: "/profile/ignored"} Ignored
     to repair or adjust your selections.
   %div{class:"bd-callout bd-callout-info"}
     Too many specimen records or want to sort by columns and/or filter by content? Click "work offline then upload" to view instructions on how to download, add claims in a spreadsheet, then upload a completed csv file.
+
+%h4 Step 4: Attribute specimens to others
+%p
+  While authenticated via ORCID, visit
+  - if authorized?
+    %a{href:"/help-others"} Help Others
+  - else
+    Help Others
+  to search for your peers, mentors, or anyone who inspires you. Attribute specimens to them just as you claimed your own specimens.
