@@ -87,14 +87,19 @@ module Sinatra
 
       def latest_claims(type = "living")
         user_type = (type == "living") ? { orcid: nil } : { wikidata: nil }
-        qry = UserOccurrence.select("user_occurrences.user_id AS user_id, MAX(user_occurrences.created_by) AS created_by, MAX(user_occurrences.created) AS created")
-                  .joins(:user)
-                  .preload(:user, :claimant)
-                  .group("user_occurrences.user_id")
-                  .where("user_occurrences.visible = true")
-                  .where("user_occurrences.user_id != user_occurrences.created_by")
-                  .where.not(users: user_type)
-                  .order(Arel.sql("MAX(user_occurrences.created) DESC"))
+        subq = UserOccurrence.select("user_occurrences.user_id AS user_id, MAX(user_occurrences.created) AS created")
+                              .group("user_occurrences.user_id")
+
+        qry = UserOccurrence.select(:user_id, :created_by, :created)
+                            .joins(:user)
+                            .joins("INNER JOIN (#{subq.to_sql}) sub ON sub.user_id = user_occurrences.user_id AND sub.created = user_occurrences.created")
+                            .preload(:user, :claimant)
+                            .where("user_occurrences.visible = true")
+                            .where("user_occurrences.user_id != user_occurrences.created_by")
+                            .where.not(users: user_type)
+                            .order(created: :desc)
+                            .distinct
+
         @pagy, @results = pagy(qry, items: 20)
       end
 
