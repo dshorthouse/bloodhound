@@ -21,7 +21,7 @@ module Bloodhound
           SELECT DISTINCT
             ?item ?itemLabel
           WHERE {
-            ?item wdt:#{property} ?id.
+            ?item wdt:#{property} ?id .
             SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
             OPTIONAL { ?item p:P569/psv:P569 [wikibase:timePrecision ?birth_precision; wikibase:timeValue ?birth]
             BIND(if(?birth_precision=11,?birth,if(?birth_precision=10,concat(month(?birth)," ",year(?birth)),year(?birth))) as ?date_of_birth) }
@@ -122,6 +122,24 @@ module Bloodhound
       )
     end
 
+    def wikidata_modified_query(property)
+      yesterday = Time.now - 86400
+      %Q(
+        SELECT (REPLACE(STR(?item),".*Q","Q") AS ?qid)
+        WHERE {
+          ?item wdt:P31 wd:Q5 .
+          ?item wdt:#{property} ?id .
+          ?item schema:dateModified ?change . 
+          SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
+          OPTIONAL { ?item p:P569/psv:P569 [wikibase:timePrecision ?birth_precision; wikibase:timeValue ?birth]
+          BIND(if(?birth_precision=11,?birth,if(?birth_precision=10,concat(month(?birth)," ",year(?birth)),year(?birth))) as ?date_of_birth) }
+          OPTIONAL { ?item p:P570/psv:P570 [wikibase:timePrecision ?death_precision; wikibase:timeValue ?death]
+          BIND(if(?death_precision=11,?death,if(?death_precision=10,concat(month(?death)," ",year(?death)),year(?death))) as ?date_of_death) }
+          FILTER(?birth_precision=11 && ?death_precision=11 && ?change > "#{yesterday.iso8601}"^^xsd:dateTime)
+        }
+      )
+    end
+
     def populate_new_users
       existing = existing_wikicodes + destroyed_users
       new_wikicodes = {}
@@ -143,9 +161,20 @@ module Bloodhound
           u.delete
           puts "#{u.wikidata} deleted. Missing either family name, birth or death date".red
         else
-          puts u.fullname_reverse.green
+          puts "#{u.fullname_reverse}".green
         end
       end
+    end
+
+    def recently_modified
+      requires_refresh = []
+      PEOPLE_PROPERTIES.each do |key,property|
+        puts "Updates for #{key}...".yellow
+        @sparql.query(wikidata_modified_query(property)).each_solution do |solution|
+          requires_refresh << solution.to_h[:qid].to_s.match(/Q[0-9]{1,}/).to_s
+        end
+      end
+      requires_refresh.uniq
     end
 
     def merge_users

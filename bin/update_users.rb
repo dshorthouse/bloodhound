@@ -48,6 +48,10 @@ OptionParser.new do |opts|
     options[:update_wikidata] = true
   end
 
+  opts.on("-x", "--modified-wikidata", "Update all wikidata accounts that were modified within last 24hrs") do
+    options[:modified_wikidata] = true
+  end
+
   opts.on("-a", "--all", "Update all user accounts.") do
     options[:all] = true
   end
@@ -161,6 +165,15 @@ elsif options[:update_orcid]
     u.update_profile
     cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
+  end
+elsif options[:modified_wikidata]
+  wikidata_lib = Bloodhound::WikidataSearch.new
+  wikidata_lib.recently_modified.each do |qid|
+    u = User.find_by_wikidata(qid) rescue nil
+    if !u.nil?
+      u.update_wikidata_profile
+      puts "#{u.fullname_reverse}".green
+    end
   end
 elsif options[:duplicates]
   wiki = Bloodhound::WikidataSearch.new
