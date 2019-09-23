@@ -16,6 +16,10 @@ OptionParser.new do |opts|
     options[:all] = true
   end
 
+  opts.on("-w", "--within-week", "Push new versions to Zenodo but only for people who have logged in within last week.") do
+    options[:within_week] = true
+  end
+
   opts.on("-r", "--refresh", "Refresh all Zenodo tokens") do
     options[:refresh] = true
   end
@@ -46,8 +50,13 @@ if options[:new]
     u.save
     puts "#{u.fullname_reverse}".green
   end
-elsif options[:all]
-  User.where.not(zenodo_doi: nil).find_each do |u|
+elsif options[:all] || options[:within_week]
+  qry = User.where.not(zenodo_doi: nil)
+  if options[:within_week]
+    week_ago = DateTime.now - 7.days
+    qry = qry.where("visited >= '#{week_ago}'")
+  end
+  qry.find_each do |u|
     z = Bloodhound::Zenodo.new(hash: u.zenodo_access_token)
     u.zenodo_access_token = z.refresh_token
     u.save
