@@ -303,8 +303,11 @@ var Application = (function($, window) {
     },
     activate_refresh: function(){
       var self = this;
-      $("a.profile-refresh").on("click", function() {
+      $("a.profile-refresh").on("click", function(e) {
         var button = $(this);
+
+        e.stopPropagation();
+        e.preventDefault();
         $.ajax({
             method: "GET",
             url: self.path + "/refresh.json?user_id=" + self.user_id,
@@ -319,8 +322,11 @@ var Application = (function($, window) {
         });
         return false;
       });
-      $("a.organization-refresh").on("click", function() {
+      $("a.organization-refresh").on("click", function(e) {
         var button = $(this);
+
+        e.stopPropagation();
+        e.preventDefault();
         $.ajax({
             method: "GET",
             url: button.attr("href"),

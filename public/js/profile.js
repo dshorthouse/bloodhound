@@ -17,7 +17,9 @@ var Profile = (function($, window) {
     activate_profile_image: function() {
       var popup = $('#profile-upload-option'), self = this;
 
-      $('#profile-image').on('click', function() {
+      $('#profile-image').on('click', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
         popup.show();
       });
       $('#profile-cancel').on('click', function(e) {
