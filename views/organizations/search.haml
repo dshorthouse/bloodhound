@@ -36,15 +36,21 @@
           - org = Organization.find(o[:_id].to_i)
           - if !o.nil?
             %div{class: "card card-profile m-3"}
-              %div{class: "card-header"}
-                - title_class = org.image_url ? "fullheight" : ""
-                %h5{class: title_class}
-                  - if org.image_url
-                    %img{src:"#{organization_image(org, 'medium')}", alt:"#{org.name}", class:"mr-2 rounded float-left"}
-                  %span{class:"clearfix"}
+              - if org.image_url
+                %div{class: "card-header d-flex"}
+                  %div
+                    %img{src:"#{organization_image(org, 'medium')}", alt:"#{org.name}", class:"mr-2 rounded"}
+                  %div{class:"flex-grow-1"}
+                    %h5
+                      %a{href: "/organization/#{org.identifier}"} #{org.name}
+                    %p{class:"text-muted"} #{org.address}
+              - else
+                %div{class: "card-header"}
+                  %h5
                     %a{href: "/organization/#{org.identifier}"} #{org.name}
+                  %p{class:"text-muted"} #{org.address}
               %div{class: "card-body"}
-                %p{class:"text-muted"} #{org.address}
+
               %div{class: "card-footer"}
                 %div{class: "col small text-left text-muted"}
                 %div{class: "col small text-right text-muted"}

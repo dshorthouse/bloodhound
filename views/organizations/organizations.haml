@@ -20,24 +20,30 @@
 
 - @results.in_groups_of(3).each do |group|
   %div{class: "card-deck"}
-    - group.each do |o|
-      - if o.nil?
+    - group.each do |org|
+      - if org.nil?
         %div{class:"card", style:"border:0px"}
       - else
         %div{class: "card card-profile m-3"}
-          %div{class: "card-header"}
-            - title_class = o.image_url ? "fullheight" : ""
-            %h5{class: title_class}
-              - if o.image_url
-                %img{src:"#{organization_image(o, 'medium')}", alt:"#{o.name}", class:"mr-2 rounded float-left"}
-              %span{class:"clearfix"}
-                %a{href: "/organization/#{o.identifier}"} #{o.name}
+          - if org.image_url
+            %div{class: "card-header d-flex"}
+              %div
+                %img{src:"#{organization_image(org, 'medium')}", alt:"#{org.name}", class:"mr-2 rounded"}
+              %div{class:"flex-grow-1"}
+                %h5
+                  %a{href: "/organization/#{org.identifier}"} #{org.name}
+                %p{class:"text-muted"} #{org.address}
+          - else
+            %div{class: "card-header"}
+              %h5
+                %a{href: "/organization/#{org.identifier}"} #{org.name}
+              %p{class:"text-muted"} #{org.address}
           %div{class: "card-body"}
-            %p{class:"text-muted"} #{o.address}
+
           %div{class: "card-footer"}
             %div{class: "col small text-left text-muted"}
             %div{class: "col small text-right text-muted"}
-              - count = o.active_users.count
+              - count = org.active_users.count
               - color = count == 0 ? "light" : "success"
               %span{class:"badge badge-#{color}"} #{number_with_delimiter(count)}
               #{'member'.pluralize(count)}
