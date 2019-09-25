@@ -318,7 +318,8 @@ module Sinatra
             occurrence_ids = occurrences_by_score(id_scores, @admin_user)
             specimen_pager(occurrence_ids)
 
-            haml :'admin/candidates', locals: { active_page: "administration" }
+            bulk_error_message = flash.now[:error] ? flash.now[:error] : ""
+            haml :'admin/candidates', locals: { active_page: "administration", bulk_error: bulk_error_message }
           end
 
           app.post '/admin/user/:id/candidates/agent/:agent_id/bulk-claim' do
@@ -326,7 +327,11 @@ module Sinatra
             check_redirect
             user = find_user(params[:id])
             agent = Agent.find(params[:agent_id])
-            user.bulk_claim(agent: agent, conditions: params[:conditions], ignore: params[:ignore])
+            begin
+              user.bulk_claim(agent: agent, conditions: params[:conditions], ignore: params[:ignore])
+            rescue ArgumentError => e
+              flash.next[:error] = "#{e.message}"
+            end
             redirect "/admin/user/#{params[:id]}/candidates/agent/#{params[:agent_id]}"
           end
 

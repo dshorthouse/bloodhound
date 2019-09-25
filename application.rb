@@ -15,6 +15,7 @@ class BLOODHOUND < Sinatra::Base
   register Config
 
   register Sinatra::Cacher
+  register Sinatra::Flash
   register Sinatra::OutputBuffer
   set :cache_enabled_in, [:development, :production]
 

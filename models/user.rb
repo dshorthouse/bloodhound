@@ -286,7 +286,20 @@ class User < ActiveRecord::Base
       agent_recordings = agent.occurrence_recorders.pluck(:occurrence_id)
       agent_determinations = agent.occurrence_determiners.pluck(:occurrence_id)
     else
-      conditions_hash = JSON.parse conditions.gsub('=>', ':')
+      conditions.gsub!('=>', ':')
+
+      if !Bloodhound::AgentUtility.valid_json?(conditions)
+        raise ArgumentError, "Conditions argument was not valid JSON"
+      end
+
+      conditions_hash = JSON.parse(conditions)
+
+      conditions_hash.keys.each do |k|
+        field = k.gsub(/\s+LIKE\s+\?\s*/i,"")
+        if !Occurrence.accepted_fields.include?(field)
+          raise ArgumentError, "Conditions field must be one of #{Occurrence.accepted_fields.join(", ")}"
+        end
+      end
 
       agent_recordings = conditions_hash.inject(agent.recordings) do |o, a|
         if a[0].include?(" ?")

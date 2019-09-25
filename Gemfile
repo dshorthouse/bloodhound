@@ -3,6 +3,7 @@ ruby '2.6.3'
 
 gem 'sinatra'
 gem 'sinatra-contrib'
+gem 'sinatra-flash'
 gem 'mysql2'
 gem 'config'
 gem 'activerecord'

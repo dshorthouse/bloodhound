@@ -279,6 +279,8 @@ GEM
       rack-protection (= 2.0.7)
       sinatra (= 2.0.7)
       tilt (~> 2.0)
+    sinatra-flash (0.3.0)
+      sinatra (>= 1.0.0)
     sinatra-outputbuffer (0.1.0)
       sinatra (>= 1.0.a)
     sinatra-support (1.2.2)
@@ -370,6 +372,7 @@ DEPENDENCIES
   sinatra
   sinatra-cacher
   sinatra-contrib
+  sinatra-flash
   sinatra-outputbuffer
   sinatra-support
   sparql-client

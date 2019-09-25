@@ -28,6 +28,10 @@ class Occurrence < ActiveRecord::Base
     Sidekiq::Client.enqueue(Bloodhound::OccurrenceWorker, o)
   end
 
+  def self.accepted_fields
+    Occurrence.column_names - Occurrence::IGNORED_COLUMNS_OUTPUT
+  end
+
   def coordinates
     lat = decimalLatitude.to_f
     long = decimalLongitude.to_f
