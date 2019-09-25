@@ -18,7 +18,6 @@ var ProgressBar = (function($, window) {
       }).done(function(data) {
         denominator = data.claimed + data.unclaimed;
         if (denominator === 0) {
-          console.log(self.identifier);
           percent = 100;
           message = "None";
         } else {

@@ -176,11 +176,12 @@ module Sinatra
         id_scores.sort{|a,b| b[:score] <=> a[:score]}
                  .each{|a| scores[a[:id]] = a[:score] }
 
-        occurrences_by_agent_ids(scores.keys).where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
-                                          .pluck(:agent_id, :typeStatus, :occurrence_id)
-                                          .sort_by{|o| [ scores.fetch(o[0]), o[1].nil? ? "" : o[1] ] }
-                                          .reverse
-                                          .map(&:last)
+        occurrences_by_agent_ids(scores.keys)
+          .where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
+          .pluck(:agent_id, :typeStatus, :occurrence_id)
+          .sort_by{|o| [ scores.fetch(o[0]), o[1].nil? ? "" : o[1] ] }
+          .reverse
+          .map(&:last)
       end
 
       def occurrences_by_agent_ids(agent_ids = [])

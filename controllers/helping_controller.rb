@@ -24,7 +24,11 @@ module Sinatra
             return { count: 0 }.to_json if user.family.nil?
 
             agent_ids = candidate_agents(user).pluck(:id)
-            count = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: user.user_occurrences.select(:occurrence_id)).count
+            count = occurrences_by_agent_ids(agent_ids)
+                      .where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
+                      .pluck(:occurrence_id)
+                      .uniq
+                      .count
             { count: count }.to_json
           end
 
@@ -187,7 +191,7 @@ module Sinatra
                 occurrence_ids = occurrences_by_score(id_scores, @viewed_user)
               end
 
-              specimen_pager(occurrence_ids)
+              specimen_pager(occurrence_ids.uniq)
             end
 
             haml :'help/user', locals: { active_page: "help" }
