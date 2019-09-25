@@ -291,17 +291,17 @@ module Sinatra
         if params[:identifier] && !params[:identifier].empty?
           if params[:identifier].is_orcid?
             new_user = User.find_or_create_by({ orcid: params[:identifier] })
-            session[:new_user] = { fullname: new_user.fullname, slug: new_user.orcid }
+            flash.next[:new_user] = { fullname: new_user.fullname, slug: new_user.orcid }
           elsif params[:identifier].is_wiki_id?
             new_user = User.find_or_create_by({ wikidata: params[:identifier] })
             if !new_user.valid_wikicontent?
-              session[:new_user] = { fullname: params[:identifier], slug: nil }
+              flash.next[:new_user] = { fullname: params[:identifier], slug: nil }
               new_user.delete
             else
-              session[:new_user] = { fullname: new_user.fullname, slug: new_user.wikidata }
+              flash.next[:new_user] = { fullname: new_user.fullname, slug: new_user.wikidata }
             end
           else
-            session[:new_user] = { fullname: params[:identifier], slug: nil }
+            flash.next[:new_user] = { fullname: params[:identifier], slug: nil }
           end
         end
       end

@@ -11,7 +11,7 @@
 -content_for :jumbotron do
   = haml :'partials/help_others_jumbotron', layout: false
 
-- if @made_public
+- if flash[:public]
   %div{class:"alert alert-success alert-dismissible fade show", role: "alert", style:"display:block"}
     Thank you for your help!
     %a{href: "/#{@viewed_user.identifier}"}

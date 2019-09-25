@@ -56,15 +56,15 @@
       %input{class: "orcid-add", type: :text, name: "identifier", placeholder: "Q1234567", size:"12"}
       %input{type: :submit, class:"btn btn-success mt-3", value: "Add"}
 
-- if !@new_user.nil?
+- if flash[:new_user]
   %div{class: "row"}
     %div{class: "col-sm-8 col-md-6 col-xl-6"}
-      - if !@new_user[:slug].nil?
+      - if !flash[:new_user][:slug].nil?
         %div{class:"alert alert-success", role: "alert", style:"display:block;"}
           %span{class:"font-weight-bold"}
-            %a{href: "/help-others/#{@new_user[:slug]}"} #{@new_user[:fullname]}
+            %a{href: "/help-others/#{flash[:new_user][:slug]}"} #{flash[:new_user][:fullname]}
           was created or updated.
       - else
         %div{class:"alert alert-danger", role: "alert", style:"display:block;"}
-          %span{class:"font-weight-bold"} #{h(@new_user[:fullname])}
+          %span{class:"font-weight-bold"} #{h(flash[:new_user][:fullname])}
           not created because the identifier was incorrectly formatted or in the case of wikidata, the item is not a human, the family name and/or precise birth and death dates were missing, or the user already exists with an ORCID identifier.

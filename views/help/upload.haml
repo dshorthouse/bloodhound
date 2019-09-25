@@ -11,9 +11,11 @@
 -content_for :jumbotron do
   = haml :'partials/help_others_jumbotron', layout: false
 
-- if !@error.nil?
+= haml :'partials/help_others_tabs', layout: false
+
+- if flash[:error]
   %div{class: "alert alert-danger tiny-margins", role: "alert"}
-    #{@error}
+    #{flash[:error]}
     %a{href: "/help-others/#{@viewed_user.identifier}"} Try again.
 
 - else

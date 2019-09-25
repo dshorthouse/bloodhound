@@ -34,8 +34,6 @@ module Sinatra
 
           app.get '/help-others/help' do
             protected!
-            @new_user = session[:new_user]
-            session[:new_user] = nil
             haml :'help/help'
           end
 
@@ -160,8 +158,6 @@ module Sinatra
             protected!
             check_identifier
             check_redirect
-            @made_public = session[:made_public]
-            session[:made_public] = false
 
             occurrence_ids = []
             @page = (params[:page] || 1).to_i
@@ -264,7 +260,7 @@ module Sinatra
             begin
               upload_file(user_id: @viewed_user.id, created_by: @user.id)
             rescue => e
-              @error = e.message
+              flash.now[:error] = e.message
             end
             haml :'help/upload'
           end
@@ -281,9 +277,9 @@ module Sinatra
               @viewed_user.update({ is_public: true, made_public: Time.now })
               @viewed_user.update_profile
               cache_clear "fragments/#{@viewed_user.identifier}"
-              session[:made_public] = true
               twitter = ::Bloodhound::Twitter.new
               twitter.welcome_user(@viewed_user)
+              flash.next[:public] = true
               redirect "/help-others/#{@viewed_user.identifier}"
             end
           end
