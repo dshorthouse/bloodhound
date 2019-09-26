@@ -13,11 +13,11 @@
 
 - if flash[:public]
   %div{class:"alert alert-success alert-dismissible fade show", role: "alert", style:"display:block"}
-    Thank you for your help!
-    %a{href: "/#{@viewed_user.identifier}"}
-      #{@viewed_user.fullname}'s
-    profile is now visible to the public.
-      
+    %div
+      Thank you for your help!
+      %a{href: "/#{@viewed_user.identifier}"}
+        #{@viewed_user.fullname}'s
+      profile is now visible to the public.
     %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
       %span{"aria-hidden":"true"} &times;
 

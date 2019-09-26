@@ -14,9 +14,9 @@
   %div{class:"col-12 col-lg-8 mt-2"}
     = haml :'partials/profile_tabs', layout: false, locals: { active_page: "candidates" }
 
-- if !@error.nil?
+- if flash[:error]
   %div{class: "alert alert-danger tiny-margins", role: "alert"}
-    #{@error}
+    #{flash[:error]}
     %a{href: "/profile/candidates"} Try again.
 
 - else

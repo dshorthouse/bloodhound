@@ -20,19 +20,21 @@
 
           %input{type: :submit, class:"btn btn-success mt-3", value: "Submit"}
 
-- if !@new_user.nil?
+- if flash[:new_user]
   %div{class: "row"}
     %div{class: "col-sm-8 col-md-6 col-xl-6"}
-      - if !@new_user[:slug].nil?
-        %div{class:"alert alert-success alert-dismissible fade show", role: "alert", style:"display:block"}
-          %span{class:"font-weight-bold"}
-            %a{href: "/admin/user/#{@new_user[:slug]}"} #{@new_user[:fullname]}
-          was created or updated
+      - if !flash[:new_user][:slug].nil?
+        %div{class:"alert alert-success alert-dismissible fade show tiny-margins", role: "alert", style:"display:block"}
+          %div
+            %span{class:"font-weight-bold"}
+              %a{href: "/admin/user/#{flash[:new_user][:slug]}"} #{flash[:new_user][:fullname]}
+            was created or updated
           %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
             %span{"aria-hidden":"true"} &times;
       - else
-        %div{class:"alert alert-danger alert-dismissible fade show", role: "alert", style:"display:block"}
-          %span{class:"font-weight-bold"} #{@new_user[:fullname]}
-          not created because the identifier was incorrectly formatted or in the case of wikidata, the family name and/or precise birth and death dates were missing
+        %div{class:"alert alert-danger alert-dismissible fade show tiny-margins", role: "alert", style:"display:block"}
+          %div
+            %span{class:"font-weight-bold"} #{flash[:new_user][:fullname]}
+            not created because the identifier was incorrectly formatted or in the case of wikidata, the family name and/or precise birth and death dates were missing
           %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
             %span{"aria-hidden":"true"} &times;

@@ -255,7 +255,7 @@ module Sinatra
             begin
               upload_file(user_id: @user.id, created_by: @user.id)
             rescue => e
-              @error = e.message
+              flash.now[:error] = e.message
             end
             haml :'profile/upload'
           end

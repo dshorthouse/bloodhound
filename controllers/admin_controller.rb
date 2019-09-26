@@ -115,8 +115,6 @@ module Sinatra
 
           app.get '/admin/users/manage' do
             admin_protected!
-            @new_user = session[:new_user]
-            session[:new_user] = nil
             haml :'admin/manage_users', locals: { active_page: "administration" }
           end
 
@@ -283,7 +281,7 @@ module Sinatra
             begin
               upload_file(user_id: @admin_user.id, created_by: @user.id)
             rescue => e
-              @error = e.message
+              flash.now[:error] = e.message
             end
             haml :'admin/upload'
           end

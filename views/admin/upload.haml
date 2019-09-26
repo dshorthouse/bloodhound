@@ -16,13 +16,13 @@
       %div{class:"col-12 col-lg-8 mt-2"}
         = haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "help" }
 
-- if !@error.nil?
+- if flash[:error]
   %div{class: "alert alert-danger tiny-margins", role: "alert"}
-    #{@error}
+    #{flash[:error]}
     %a{href: "/admin/user/#{@admin_user.identifier}/candidates"} Try again.
 
 - else
-  %div{class: "alert alert-info", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  %div{class: "alert alert-info tiny-margins", role: "alert"}
     A total of 
     %span{class:"font-weight-bold"} #{number_with_delimiter(@record_count)} #{'record'.pluralize(@record_count)} 
     were handled. Existing claims, if present, were skipped.

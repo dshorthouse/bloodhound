@@ -16,7 +16,7 @@
           Examples: { "institutionCode" : "CAN" } or { "scientificName LIKE ?":"Bolbelasmus %"}
 
         - if !locals[:bulk_error].empty?
-          %div{class:"alert alert-danger", role:"alert"}= locals[:bulk_error]
+          %div{class:"alert alert-danger tiny-margins", role:"alert"}= locals[:bulk_error]
 
         %form{id:"form-wrapper", method: :post, action: "/admin/user/#{locals[:user].identifier}/candidates/agent/#{locals[:agent].id}/bulk-claim", enctype: "multipart/form-data", "accept-charset": "UTF-8", class: "form"}
           %div{class:"form-group"}
