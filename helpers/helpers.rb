@@ -94,7 +94,6 @@ module Sinatra
                             .joins(:user)
                             .joins("INNER JOIN (#{subq.to_sql}) sub ON sub.user_id = user_occurrences.user_id AND sub.created = user_occurrences.created")
                             .preload(:user, :claimant)
-                            .where("user_occurrences.visible = true")
                             .where("user_occurrences.user_id != user_occurrences.created_by")
                             .where.not(users: user_type)
                             .order(created: :desc)
