@@ -418,7 +418,7 @@ dl.citation{
 
 @media(max-width: 767px) {
   .form-inline .form-group {
-    margin-bottom:0rem;
+    margin-bottom:0.25rem;
   }
   .button-login{display:inline-block;}
 }
