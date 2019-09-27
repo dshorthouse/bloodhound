@@ -65,7 +65,7 @@
     %div
       Daily build,
       %a{href: "/data/bloodhound-public-claims.csv.gz"} bloodhound-public-claims.csv.gz
-      (#{@compressed_file_size} MB)
+      (#{@compressed_file_size} MB, utf-8)
     %p
       %small{class:"text-muted"}
         Where the above gzipped csv includes a header, "Subject, Predicate, Object" and rows are expressed as, "https://gbif.org/occurrence/1801358422, http://rs.tdwg.org/dwc/iri/identifiedBy, https://orcid.org/0000-0001-9008-0611"
@@ -74,7 +74,7 @@
   %h5 Agent Summaries
   %div
     %a{href:"https://github.com/dshorthouse/bloodhound/blob/90a07a1a5f43cb94bfd36ce211fe68bc3a621e3d/data/bloodhound-agents-counts.csv.gz?raw=true"} bloodhound-agents-counts.csv.gz
-    (38 MB, UTF-8)
+    (38 MB, utf-8)
   %p
     %small{class:"text-muted"}
       The above gzipped csv includes a header, "agent_id, family, given, recordings_count, recordings_year_range, recordings_institutionCode, recordings_countryCode, determinations_count" was produced using 
@@ -85,7 +85,7 @@
   %h5 Unverified, Unauthenticated Agents
   %div
     %a{href: "https://github.com/dshorthouse/bloodhound/blob/d6605b8b3771a42bc62e613fc6622af0bd5cb278/public/data/bloodhound-agents.gz?raw=true"} bloodhound-agents.gz
-    (474 MB, UTF-8)
+    (474 MB, utf-8)
   %p
     %small{class:"text-muted"}
       The above gzipped csv includes a header, "agents, gbifIDs_recordedBy, gbifIDs_identifiedBy", was constructed from
