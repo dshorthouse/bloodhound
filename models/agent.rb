@@ -33,6 +33,10 @@ class Agent < ActiveRecord::Base
     recordings.pluck(:institutionCode).uniq.compact.reject{ |c| c.empty? }
   end
 
+  def recordings_country_codes
+    recordings.pluck(:countryCode).uniq.compact.reject{ |c| c.empty? }
+  end
+
   def determinations_year_range
     years = determinations.pluck(:dateIdentified)
                           .map{ |d| Bloodhound::AgentUtility.valid_year(d) }
