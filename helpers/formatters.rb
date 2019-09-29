@@ -90,7 +90,7 @@ module Sinatra
             orcid: n[:_source][:orcid],
             wikidata: n[:_source][:wikidata],
             fullname: n[:_source][:fullname],
-            fullname_reverse: [n[:_source][:family].presence, n[:_source][:given].presence].compact.join(", "),
+            fullname_reverse: n[:_source][:fullname_reverse]
           }
         }
       end

@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
 
   def fullname
     if !family.blank?
-      [given, family].compact.join(" ")
+      [given, family_part].compact.reject(&:empty?).join(' ')
     else
       orcid
     end
@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
 
   def fullname_reverse
     if !family.blank?
-      [family, given].compact.join(", ")
+      [family_part, given].compact.reject(&:empty?).join(", ")
     else
       orcid
     end
@@ -443,6 +443,10 @@ class User < ActiveRecord::Base
   end
 
   private
+
+  def family_part
+    [particle, family].compact.join(' ')
+  end
 
   def set_update_time
     self.updated = Time.now

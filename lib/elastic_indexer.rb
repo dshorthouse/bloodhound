@@ -387,6 +387,7 @@ module Bloodhound
         family: u.family,
         given: u.given,
         fullname: u.fullname,
+        fullname_reverse: u.fullname_reverse,
         other_names: u.other_names.split("|").map(&:strip)
       }
     end

@@ -281,6 +281,7 @@ module Bloodhound
 
       family = parsed.family rescue nil
       given = parsed.given rescue nil
+      particle = parsed.particle rescue nil
       country = wiki_user.properties("P27").compact.map(&:title).join("|") rescue nil
       country_code = wiki_user.properties("P27").compact.map{|a| find_country_code(a.title) || "" }.compact.join("|").presence rescue nil
       keywords = wiki_user.properties("P106").map{|k| k.title if !/^Q\d+/.match?(k.title)}.compact.join("|") rescue nil
@@ -320,6 +321,7 @@ module Bloodhound
       {
         family: family,
         given: given,
+        particle: particle,
         other_names: other_names,
         country: country,
         country_code: country_code,
