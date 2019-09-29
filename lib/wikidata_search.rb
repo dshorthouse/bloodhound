@@ -298,7 +298,7 @@ module Bloodhound
         signature_url = "http://commons.wikimedia.org/wiki/Special:FilePath/" << URI.encode(signature)
       end
 
-      other_names = nil
+      other_names = ""
       aliases = []
       aliases.concat(wiki_user.properties("P1559").compact.map{|a| a.value.text})
       aliases.concat(wiki_user.aliases.values.compact.map{|a| a.map{|b| b.value if b.language == "en"}.compact}.flatten) rescue nil
