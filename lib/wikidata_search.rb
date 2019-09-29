@@ -278,12 +278,14 @@ module Bloodhound
         return
       end
       parsed = Namae.parse(wiki_user.title)[0] rescue nil
+
       family = parsed.family rescue nil
       given = parsed.given rescue nil
       country = wiki_user.properties("P27").compact.map(&:title).join("|") rescue nil
       country_code = wiki_user.properties("P27").compact.map{|a| find_country_code(a.title) || "" }.compact.join("|").presence rescue nil
       keywords = wiki_user.properties("P106").map{|k| k.title if !/^Q\d+/.match?(k.title)}.compact.join("|") rescue nil
       orcid = wiki_user.properties("P496").first.value rescue nil
+
       image_url = nil
       signature_url = nil
       image = wiki_user.image.value rescue nil
@@ -294,7 +296,15 @@ module Bloodhound
       if signature
         signature_url = "http://commons.wikimedia.org/wiki/Special:FilePath/" << URI.encode(signature)
       end
-      other_names = wiki_user.aliases.values.compact.map{|a| a.map{|b| b.value if b.language == "en"}.compact}.flatten.uniq.join("|") rescue nil
+
+      other_names = nil
+      aliases = []
+      aliases.concat(wiki_user.properties("P1559").compact.map{|a| a.value.text})
+      aliases.concat(wiki_user.aliases.values.compact.map{|a| a.map{|b| b.value if b.language == "en"}.compact}.flatten) rescue nil
+      if aliases.length > 0
+        other_names = aliases.uniq.join("|")
+      end
+
       date_born = Date.parse(wiki_user.properties("P569").compact.map{|a| a.value.time if a.precision_key == :day}.compact.first) rescue nil
       date_died = Date.parse(wiki_user.properties("P570").compact.map{|a| a.value.time if a.precision_key == :day}.compact.first) rescue nil
 
