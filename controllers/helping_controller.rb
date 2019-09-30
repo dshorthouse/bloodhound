@@ -155,7 +155,6 @@ module Sinatra
           end
 
           app.get '/help-others/:id' do
-            protected!
             check_identifier
             check_redirect
 
@@ -167,27 +166,29 @@ module Sinatra
               halt 404, haml(:oops)
             end
 
-            if @viewed_user == @user
-              redirect "/profile/candidates"
-            end
-
-            if @viewed_user.family.nil?
-              @results = []
-              @total = nil
-            else
-              id_scores = candidate_agents(@viewed_user).map{|a| { id: a[:id], score: a[:score] } }.compact
-              if !id_scores.empty?
-                ids = id_scores.map{|a| a[:id]}
-                nodes = AgentNode.where(agent_id: ids)
-                if !nodes.empty?
-                  (nodes.map(&:agent_id) - ids).each do |id|
-                    id_scores << { id: id, score: 1 } #TODO: how to more effectively use the edge weights here?
-                  end
-                end
-                occurrence_ids = occurrences_by_score(id_scores, @viewed_user)
+            if authorized?
+              if @viewed_user == @user
+                redirect "/profile/candidates"
               end
 
-              specimen_pager(occurrence_ids.uniq)
+              if @viewed_user.family.nil?
+                @results = []
+                @total = nil
+              else
+                id_scores = candidate_agents(@viewed_user).map{|a| { id: a[:id], score: a[:score] } }.compact
+                if !id_scores.empty?
+                  ids = id_scores.map{|a| a[:id]}
+                  nodes = AgentNode.where(agent_id: ids)
+                  if !nodes.empty?
+                    (nodes.map(&:agent_id) - ids).each do |id|
+                      id_scores << { id: id, score: 1 } #TODO: how to more effectively use the edge weights here?
+                    end
+                  end
+                  occurrence_ids = occurrences_by_score(id_scores, @viewed_user)
+                end
+
+                specimen_pager(occurrence_ids.uniq)
+              end
             end
 
             haml :'help/user', locals: { active_page: "help" }

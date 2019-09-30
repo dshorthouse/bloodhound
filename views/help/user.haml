@@ -11,88 +11,69 @@
 -content_for :jumbotron do
   = haml :'partials/help_others_jumbotron', layout: false
 
-- if flash[:public]
-  %div{class:"alert alert-success alert-dismissible fade show", role: "alert", style:"display:block"}
-    %div
-      Thank you for your help!
-      %a{href: "/#{@viewed_user.identifier}"}
-        #{@viewed_user.fullname}'s
-      profile is now visible to the public.
-    %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
-      %span{"aria-hidden":"true"} &times;
+- if !authorized?
+  %p Want to help attribute specimens to #{@viewed_user.fullname}?
+  %p
+    %a{ href:"/auth/orcid?lang=#{I18n.locale}", id: "connect-orcid-button", role: "button", class: "btn btn-outline-success" }
+      %i{class:"fab fa-orcid"}
+      = I18n.t('home.orcid_login')
 
-= haml :'partials/help_others_tabs', layout: false, locals: { active_tab: "discovered" }
+  - if @viewed_user.is_public?
+    %p
+      View the
+      = succeed "." do
+        %a{href:"/#{@viewed_user.identifier}"} public profile
 
-- if @results.empty?
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    Bloodhound did not sniff any unclaimed specimens.
-
-    %div{class:"form-check d-inline-flex"}
-      - checked = params[:relaxed] == "1" ? "checked" : nil
-      %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
-      %label{for:"relaxed", class:"relaxed"} Make less exact.
 - else
-  = haml :'partials/upload_claim_modal', layout: false, locals: { csv_download_url: "/help-others/#{@viewed_user.identifier}/candidates.csv", csv_upload_url: "/help-others/#{@viewed_user.identifier}/upload-claims", user: @viewed_user}
 
-  = haml :'partials/help_fixed_navbar', layout: false
+  - if flash[:public]
+    %div{class:"alert alert-success alert-dismissible fade show", role: "alert", style:"display:block"}
+      %div
+        Thank you for your help!
+        %a{href: "/#{@viewed_user.identifier}"}
+          #{@viewed_user.fullname}'s
+        profile is now visible to the public.
+      %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+        %span{"aria-hidden":"true"} &times;
 
-  %div{id:"helper-info", class: "alert alert-info tiny-margins", role: "alert"}
-    Help attribute #{number_with_delimiter(@total, delimeter: ",")} #{'specimen'.pluralize(@total)}.
+  = haml :'partials/help_others_tabs', layout: false, locals: { active_tab: "discovered" }
 
-    %div{class:"form-check d-inline-flex"}
-      - checked = params[:relaxed] == "1" ? "checked" : nil
-      %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
-      %label{for:"relaxed", class:"relaxed"} Make less exact.
+  - if @results.empty?
+    %div{class: "alert alert-info tiny-margins", role: "alert"}
+      Bloodhound did not sniff any unclaimed specimens.
 
-    Choose
-    %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
-    collected, 
-    %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-    identified, or Both. Not all available columns are shown. Alternatively, 
-    %a{href: "#", "data-toggle":"modal", "data-target":"#modal_claims"} work offline then upload 
-    claims.
+      %div{class:"form-check d-inline-flex"}
+        - checked = params[:relaxed] == "1" ? "checked" : nil
+        %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
+        %label{for:"relaxed", class:"relaxed"} Make less exact.
+  - else
+    = haml :'partials/upload_claim_modal', layout: false, locals: { csv_download_url: "/help-others/#{@viewed_user.identifier}/candidates.csv", csv_upload_url: "/help-others/#{@viewed_user.identifier}/upload-claims", user: @viewed_user}
 
-- if !@results.empty?
-  %div{class:"table-responsive-lg"}
-    %table{class:"table table-hover table-sm"}
-      %thead{class: "thead-light"}
-        %tr
-          %th{scope: "col", class:"selector"}
-            = haml :'partials/bulk_selector_top', layout: false
-          %th{scope: "col"} Scientific Name
-          %th{scope: "col"} Collected By
-          %th{scope: "col"} Identified By
-          %th{scope: "col"} Date Collected
-          %th{scope: "col"} Date Identified
-          %th{scope: "col"} Institution
-          %th{scope: "col"} Catalog Number
-          %th{scope: "col"} Type Status
-          %th{scope: "col", class:"btn-selector-wide"}
-            %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"} Not them
+    = haml :'partials/help_fixed_navbar', layout: false
 
-      %tbody
-        - @results.each do |o|
-          %tr
-            %td{class: "selector"}
-              = haml :'partials/single_selector', layout: false, locals: { occurrence: o }
-            %td
-              - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
-              %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"} #{h(scientific_name)}
-            %td #{h(o.recordedBy)}
-            %td #{h(o.identifiedBy)}
-            %td #{h(o.eventDate || o.year)}
-            %td #{h(o.dateIdentified)}
-            %td #{h(o.institutionCode)}
-            %td #{h(o.catalogNumber)}
-            %td #{h(o.typeStatus)}
-            %td
-              %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{o.id}"} Not them
+    %div{id:"helper-info", class: "alert alert-info tiny-margins", role: "alert"}
+      Help attribute #{number_with_delimiter(@total, delimeter: ",")} #{'specimen'.pluralize(@total)}.
 
-      - if @total > 25
-        %tfoot{class: "thead-light"}
+      %div{class:"form-check d-inline-flex"}
+        - checked = params[:relaxed] == "1" ? "checked" : nil
+        %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
+        %label{for:"relaxed", class:"relaxed"} Make less exact.
+
+      Choose
+      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
+      collected, 
+      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+      identified, or Both. Not all available columns are shown. Alternatively, 
+      %a{href: "#", "data-toggle":"modal", "data-target":"#modal_claims"} work offline then upload 
+      claims.
+
+  - if !@results.empty?
+    %div{class:"table-responsive-lg"}
+      %table{class:"table table-hover table-sm"}
+        %thead{class: "thead-light"}
           %tr
             %th{scope: "col", class:"selector"}
-              = haml :'partials/bulk_selector_bottom', layout: false
+              = haml :'partials/bulk_selector_top', layout: false
             %th{scope: "col"} Scientific Name
             %th{scope: "col"} Collected By
             %th{scope: "col"} Identified By
@@ -101,10 +82,44 @@
             %th{scope: "col"} Institution
             %th{scope: "col"} Catalog Number
             %th{scope: "col"} Type Status
-            %th{scope: "col"}
+            %th{scope: "col", class:"btn-selector-wide"}
               %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"} Not them
 
-  - if @total > 25
-    = haml :'partials/page_size', layout: false
+        %tbody
+          - @results.each do |o|
+            %tr
+              %td{class: "selector"}
+                = haml :'partials/single_selector', layout: false, locals: { occurrence: o }
+              %td
+                - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
+                %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"} #{h(scientific_name)}
+              %td #{h(o.recordedBy)}
+              %td #{h(o.identifiedBy)}
+              %td #{h(o.eventDate || o.year)}
+              %td #{h(o.dateIdentified)}
+              %td #{h(o.institutionCode)}
+              %td #{h(o.catalogNumber)}
+              %td #{h(o.typeStatus)}
+              %td
+                %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{o.id}"} Not them
+
+        - if @total > 25
+          %tfoot{class: "thead-light"}
+            %tr
+              %th{scope: "col", class:"selector"}
+                = haml :'partials/bulk_selector_bottom', layout: false
+              %th{scope: "col"} Scientific Name
+              %th{scope: "col"} Collected By
+              %th{scope: "col"} Identified By
+              %th{scope: "col"} Date Collected
+              %th{scope: "col"} Date Identified
+              %th{scope: "col"} Institution
+              %th{scope: "col"} Catalog Number
+              %th{scope: "col"} Type Status
+              %th{scope: "col"}
+                %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"} Not them
+
+    - if @total > 25
+      = haml :'partials/page_size', layout: false
                 
-  = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
+    = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

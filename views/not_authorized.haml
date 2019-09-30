@@ -4,6 +4,6 @@
 %div{class:"alert alert-warning", role: "alert"}= I18n.t('not_authorized.not_authorized')
 
 %p
-  %a{ href:"/auth/orcid", id: "connect-orcid-button", role: "button", class: "btn btn-outline-success" }
+  %a{ href:"/auth/orcid?lang=#{I18n.locale}", id: "connect-orcid-button", role: "button", class: "btn btn-outline-success" }
     %i{class:"fab fa-orcid"}
     = I18n.t('home.orcid_login')
