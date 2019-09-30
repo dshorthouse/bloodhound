@@ -23,16 +23,24 @@
       - else
         - cache_fragment(u.identifier + "-trainer") do
           %div{class: "card card-profile my-3"}
-            %div{class: "card-header"}
-              - title_class = u.image_url ? "fullheight" : ""
-              %h5{class: title_class}
-                - if u.image_url
-                  %img{src:"#{profile_image(u, 'medium')}", alt:"#{u.fullname}", class:"card-img-profile mr-2 float-left"}
-                %span{class:"clearfix"}
+            - if u.image_url
+              %div{class: "card-header d-flex"}
+                %div
+                  %img{src:"#{profile_image(u, 'medium')}", alt:"#{u.fullname}", class:"card-img-profile mr-2"}
+                %div{class:"flex-grow-1"}
+                  %h5
+                    %a{href: "/#{u.identifier}"} #{u.fullname_reverse}
+                  - if u.country
+                    %p{class:"small text-muted mt-0 mb-0"} #{u.country.split("|").join("; ")}
+            - else
+              %div{class: "card-header"}
+                %h5
                   %a{href: "/#{u.identifier}"} #{u.fullname_reverse}
+                - if u.country
+                  %p{class:"small text-muted mt-0 mb-0"} #{u.country.split("|").join("; ")}
+
             %div{class: "card-body"}
-              - if u.country
-                %p{class:"small text-muted mt-0 mb-0"} #{u.country.split("|").join("; ")}
+
             %div{class: "card-footer d-flex"}
               %div{class: "small text-muted"}
                 Attributed
