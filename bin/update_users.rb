@@ -133,25 +133,25 @@ elsif options[:orcid]
   Sinatra::Base.cache_clear "fragments/#{u.identifier}"
   puts "#{u.fullname_reverse} created/updated".green
 elsif options[:logged]
-  User.where.not(visited: nil).order(:family).find_each do |u|
+  User.where.not(visited: nil).find_each do |u|
     u.update_profile
     Sinatra::Base.cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:public]
-  User.where(is_public: true).order(:family).find_each do |u|
+  User.where(is_public: true).find_each do |u|
     u.update_profile
     Sinatra::Base.cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:all]
-  User.order(:family).find_each do |u|
+  User.find_each do |u|
     u.update_profile
     Sinatra::Base.cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:claimed]
-  User.where(id: UserOccurrence.select(:user_id).group(:user_id)).order(:family).find_each do |u|
+  User.where(id: UserOccurrence.select(:user_id).group(:user_id)).find_each do |u|
     u.update_profile
     Sinatra::Base.cache_clear "fragments/#{u.identifier}"
     puts "#{u.fullname_reverse}".green
