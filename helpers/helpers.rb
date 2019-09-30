@@ -135,7 +135,10 @@ module Sinatra
       def candidate_agents(user)
         agents = search_agents(user.fullname)
 
+        agents.concat search_agents([user.initials, user.family].join(" "))
+
         given_names = [user.given]
+        given_names << user.initials
 
         if !user.other_names.nil?
           user.other_names.split("|").each do |other_name|
@@ -144,7 +147,10 @@ module Sinatra
             end
             agents.concat search_agents(other_name)
             given = DwcAgent.parse(other_name)[0].given rescue nil
-            given_names << given if !given.nil?
+            if !given.nil?
+              given_names << given
+              given_names << given.gsub(/([[:upper:]])[[:lower:]]+/, '\1.').gsub(/\s+/, '')
+            end
           end
         end
 

@@ -60,6 +60,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def initials
+    given.gsub(/([[:upper:]])[[:lower:]]+/, '\1.').gsub(/\s+/, '')
+  end
+
   def valid_wikicontent?
     !family.nil? && !date_born.nil? && !date_died.nil? && orcid.nil?
   end
