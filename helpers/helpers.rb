@@ -170,7 +170,7 @@ module Sinatra
             end
           end
           eliminate_ids.uniq!
-          agents.delete_if{|a| eliminate_ids && eliminate_ids.include?(a[:id]) }
+          agents.delete_if{|a| (eliminate_ids && eliminate_ids.include?(a[:id])) || a[:score] < 40 }
         end
 
         agents.compact.uniq.sort_by{|a| a[:score]}.reverse
