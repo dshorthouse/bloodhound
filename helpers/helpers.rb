@@ -142,6 +142,7 @@ module Sinatra
 
         if !user.other_names.nil?
           user.other_names.split("|").each do |other_name|
+            next if other_name == user.family
             if !other_name.include?(" ") && other_name != user.family
               other_name = [other_name, user.family].join(" ")
             end
@@ -154,23 +155,22 @@ module Sinatra
           end
         end
 
-        #Remove wildly different search results if not a relaxed view
+        given_names.uniq!
+
+        #Remove agents if similarity score to any of given names is zero
         if !params.has_key?(:relaxed) || params[:relaxed] == "0"
-          keepers = []
+          eliminate_ids = []
+
           agents.each do |a|
-            #Keep if no given name
-            if a[:given].nil?
-              keepers << a
-              next
-            end
-            #Keep if agent given name is similar to a provided given name
-            given_names.uniq.each do |g|
-              if DwcAgent.similarity_score(g, a[:given]) > 0
-                keepers << a
+            given_names.each do |g|
+              #has to be zero against all of them, not just one
+              if DwcAgent.similarity_score(g, a[:given]) == 0
+                eliminate_ids << a[:id]
               end
             end
           end
-          agents.delete_if{|a| !keepers.include?(a) || a[:score] < 40 }
+          eliminate_ids.uniq!
+          agents.delete_if{|a| eliminate_ids && eliminate_ids.include?(a[:id]) }
         end
 
         agents.compact.uniq.sort_by{|a| a[:score]}.reverse
