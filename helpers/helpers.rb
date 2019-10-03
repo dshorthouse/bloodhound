@@ -142,8 +142,10 @@ module Sinatra
 
         if !user.other_names.nil?
           user.other_names.split("|").each do |other_name|
-            next if other_name == user.family
-            if !other_name.include?(" ") && other_name != user.family
+            #Attempt to ignore botanist abbreviation or naked family name, often as "other" name in wikidata
+            next if user.family.include?(other_name.gsub(".",""))
+            #Attempt to tack on family name because single given name often in ORCID
+            if !other_name.include?(" ")
               other_name = [other_name, user.family].join(" ")
             end
             agents.concat search_agents(other_name)
