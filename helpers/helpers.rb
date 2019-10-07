@@ -159,20 +159,16 @@ module Sinatra
 
         given_names.uniq!
 
-        #Remove agents if similarity score to any of given names is zero
+        #Remove agents if similarity scores between all given names & found agents is zero
         if !params.has_key?(:relaxed) || params[:relaxed] == "0"
-          eliminate_ids = []
+          agent_similarities = {}
 
           agents.each do |a|
-            given_names.each do |g|
-              #has to be zero against all of them, not just one
-              if DwcAgent.similarity_score(g, a[:given]) == 0
-                eliminate_ids << a[:id]
-              end
-            end
+            agent_similarities[a[:id]] = given_names.map{ |g|  DwcAgent.similarity_score(g, a[:given]) }
+                                               .delete_if { |score| score == 0 }
           end
-          eliminate_ids.uniq!
-          agents.delete_if{|a| (eliminate_ids && eliminate_ids.include?(a[:id])) || a[:score] < 40 }
+          agent_similarities.delete_if{ |k,v| !v.empty? }
+          agents.delete_if{|a| (agent_similarities && agent_similarities.keys.include?(a[:id])) || a[:score] < 40 }
         end
 
         agents.compact.uniq.sort_by{|a| a[:score]}.reverse
