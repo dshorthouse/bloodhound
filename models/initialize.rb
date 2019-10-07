@@ -27,8 +27,8 @@ module Sinatra
             inflect.irregular 'specimen', 'specimens'
           end
 
-          username = Settings.neo4j_username
-          password = Settings.neo4j_password
+          username = Settings.neo4j.username
+          password = Settings.neo4j.password
           neo4j_adaptor = Neo4j::Core::CypherSession::Adaptors::HTTP.new("http://#{username}:#{password}@localhost:7474")
           Neo4j::ActiveBase.on_establish_session { Neo4j::Core::CypherSession.new(neo4j_adaptor) }
 

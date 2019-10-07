@@ -7,16 +7,16 @@ module Bloodhound
       settings = Settings.merge!(opts)
       Pony.options = {
         charset: 'UTF-8',
-        from: settings.gmail_email,
+        from: settings.gmail.email,
         subject: subject,
         via: :smtp,
         via_options: {
           address: 'smtp.gmail.com',
           port: '587',
           enable_starttls_auto: true,
-          user_name: settings.gmail_username,
-          password: settings.gmail_password,
-          domain: settings.gmail_domain
+          user_name: settings.gmail.username,
+          password: settings.gmail.password,
+          domain: settings.gmail.domain
         }
       }
     end

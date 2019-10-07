@@ -40,7 +40,7 @@ module Bloodhound
       Enumerator.new do |yielder|
         start = 0
         loop do
-          orcid_search_url = "#{@settings.orcid_api_url}search?q=doi-self:#{clean_doi}&start=#{start}&rows=50"
+          orcid_search_url = "#{@settings.orcid.api_url}search?q=doi-self:#{clean_doi}&start=#{start}&rows=50"
           response = RestClient::Request.execute(
             method: :get,
             url: orcid_search_url,
@@ -58,16 +58,16 @@ module Bloodhound
     end
 
     def search_orcids_by_keyword
-      if !@settings.orcid_keywords || !@settings.orcid_keywords.is_a?(Array)
+      if !@settings.orcid.keywords || !@settings.orcid.keywords.is_a?(Array)
         raise ArgumentError, 'ORCID keywords to search on not in config.yml' 
       end
 
-      keyword_parameter = URI::encode(@settings.orcid_keywords.map{ |k| "keyword:#{k}" }.join(" OR "))
+      keyword_parameter = URI::encode(@settings.orcid.keywords.map{ |k| "keyword:#{k}" }.join(" OR "))
       Enumerator.new do |yielder|
         start = 0
 
         loop do
-          orcid_search_url = "#{@settings.orcid_api_url}search?q=#{keyword_parameter}&start=#{start}&rows=200"
+          orcid_search_url = "#{@settings.orcid.api_url}search?q=#{keyword_parameter}&start=#{start}&rows=200"
           response = RestClient::Request.execute(
             method: :get,
             url: orcid_search_url,
@@ -100,7 +100,7 @@ module Bloodhound
     def account_data(orcid)
       response = RestClient::Request.execute(
         method: :get,
-        url: "#{@settings.orcid_api_url}#{orcid}",
+        url: "#{@settings.orcid.api_url}#{orcid}",
         headers: { accept: 'application/orcid+json' }
       )
       data = JSON.parse(response, :symbolize_names => true)

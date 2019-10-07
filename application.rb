@@ -24,31 +24,31 @@ class BLOODHOUND < Sinatra::Base
 
   use Rack::Session::Cookie, key: 'rack.session',
                              path: '/',
-                             secret: Settings.orcid_key
+                             secret: Settings.orcid.key
 
   use OmniAuth::Builder do
-    provider :orcid, Settings.orcid_key, Settings.orcid_secret,
+    provider :orcid, Settings.orcid.key, Settings.orcid.secret,
       :authorize_params => {
         :scope => '/authenticate'
       },
       :client_options => {
-        :site => Settings.orcid_site,
-        :authorize_url => Settings.orcid_authorize_url,
-        :token_url => Settings.orcid_token_url,
+        :site => Settings.orcid.site,
+        :authorize_url => Settings.orcid.authorize_url,
+        :token_url => Settings.orcid.token_url,
         :token_method => :post,
         :scope => '/authenticate'
       }
 
-    provider :zenodo, Settings.zenodo_key, Settings.zenodo_secret,
-      :sandbox => Settings.zenodo_sandbox,
+    provider :zenodo, Settings.zenodo.key, Settings.zenodo.secret,
+      :sandbox => Settings.zenodo.sandbox,
       :authorize_params => {
-        :client_id => Settings.zenodo_key,
+        :client_id => Settings.zenodo.key,
         :redirect_uri => Settings.base_url + '/auth/zenodo/callback'
       },
       :client_options => {
-        :site => Settings.zenodo_site,
-        :authorize_url => Settings.zenodo_authorize_url,
-        :token_url => Settings.zenodo_token_url,
+        :site => Settings.zenodo.site,
+        :authorize_url => Settings.zenodo.authorize_url,
+        :token_url => Settings.zenodo.token_url,
         :token_method => :post,
         :scope => 'deposit:write deposit:actions',
         :redirect_uri => Settings.base_url + '/auth/zenodo/callback'

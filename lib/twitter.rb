@@ -9,10 +9,10 @@ module Bloodhound
     def initialize(opts = {})
       settings = Settings.merge!(opts)
       @client = ::Twitter::REST::Client.new do |config|
-        config.consumer_key        = settings.twitter_consumer_key
-        config.consumer_secret     = settings.twitter_consumer_secret
-        config.access_token        = settings.twitter_access_token
-        config.access_token_secret = settings.twitter_access_token_secret
+        config.consumer_key        = settings.twitter.consumer_key
+        config.consumer_secret     = settings.twitter.consumer_secret
+        config.access_token        = settings.twitter.access_token
+        config.access_token_secret = settings.twitter.access_token_secret
       end
       @base_url = settings.base_url
     end

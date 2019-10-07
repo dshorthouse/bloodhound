@@ -10,10 +10,10 @@ module Bloodhound
     end
 
     def client
-      @client ||= OAuth2::Client.new(@settings.zenodo_key, @settings.zenodo_secret,
-                      site: @settings.zenodo_site,
-                      authorize_url: @settings.zenodo_authorize_url,
-                      token_url:  @settings.zenodo_token_url,
+      @client ||= OAuth2::Client.new(@settings.zenodo.key, @settings.zenodo.secret,
+                      site: @settings.zenodo.site,
+                      authorize_url: @settings.zenodo.authorize_url,
+                      token_url:  @settings.zenodo.token_url,
                       token_method: :post) do |stack|
                         stack.request :multipart
                         stack.request :url_encoded

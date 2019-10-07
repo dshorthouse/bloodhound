@@ -52,7 +52,7 @@ module Sinatra
         body = build_name_query(searched_term)
         from = (page -1) * search_size
 
-        response = client.search index: Settings.elastic_agent_index, type: "agent", from: from, size: search_size, body: body
+        response = client.search index: Settings.elastic.agent_index, type: "agent", from: from, size: search_size, body: body
         results = response["hits"].deep_symbolize_keys
 
         @pagy = Pagy.new(count: results[:total], items: search_size, page: page)
@@ -62,7 +62,7 @@ module Sinatra
       def search_agents(search)
         client = Elasticsearch::Client.new
         body = build_name_query(search)
-        response = client.search index: Settings.elastic_agent_index, type: "agent", size: 25, body: body
+        response = client.search index: Settings.elastic.agent_index, type: "agent", size: 25, body: body
         results = response["hits"].deep_symbolize_keys
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) }.compact rescue []
       end
@@ -78,7 +78,7 @@ module Sinatra
         body = build_name_query(searched_term)
         from = (page -1) * 30
 
-        response = client.search index: Settings.elastic_user_index, type: "user", from: from, size: 30, body: body
+        response = client.search index: Settings.elastic.user_index, type: "user", from: from, size: 30, body: body
         results = response["hits"].deep_symbolize_keys
 
         @pagy = Pagy.new(count: results[:total], items: 30, page: page)
@@ -121,7 +121,7 @@ module Sinatra
         body = build_organization_query(searched_term)
         from = (page -1) * 30
 
-        response = client.search index: Settings.elastic_organization_index, type: "organization", from: from, size: 30, body: body
+        response = client.search index: Settings.elastic.organization_index, type: "organization", from: from, size: 30, body: body
         results = response["hits"].deep_symbolize_keys
 
         @pagy = Pagy.new(count: results[:total], items: 30, page: page)
