@@ -118,18 +118,27 @@ module Bloodhound
       country = IsoCountryCodes.find(country_code).name rescue nil
 
       organizations = []
-      data[:"activities-summary"][:educations][:"education-summary"].each do |place|
-        org = orcid_place(place)
-        if !org.nil?
-          organizations << org
-        end 
+      data[:"activities-summary"][:educations][:"affiliation-group"].each do |group|
+        group[:summaries].each do |summary|
+          if summary.has_key?(:"education-summary")
+            org = orcid_place(summary[:"education-summary"])
+            if !org.nil?
+              organizations << org
+            end
+          end
+        end
       end
-      data[:"activities-summary"][:employments][:"employment-summary"].each do |place|
-        org = orcid_place(place)
-        if !org.nil?
-          organizations << org
-        end 
+      data[:"activities-summary"][:employments][:"affiliation-group"].each do |group|
+        group[:summaries].each do |summary|
+          if summary.has_key?(:"employment-summary")
+            org = orcid_place(summary[:"employment-summary"])
+            if !org.nil?
+              organizations << org
+            end 
+          end
+        end
       end
+
       {
         family: family,
         given: given,

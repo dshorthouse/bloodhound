@@ -13,7 +13,7 @@ neo4j:
   username:
   password:
 orcid:
-  api_url: 'https://pub.orcid.org/v2.1/'
+  api_url: 'https://pub.orcid.org/v3.0/'
   key: ''
   secret: ''
   site: 'https://orcid.org'
