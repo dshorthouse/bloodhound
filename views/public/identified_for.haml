@@ -4,7 +4,7 @@
 
 - content_for :scripts do
   %script{src: "/js/application.js"}
-  %script{id:"dsq-count-scr", src:"//#{Settings.disqus_shortname}.disqus.com/count.js"}
+  %script{id:"dsq-count-scr", src:"//#{Settings.disqus_shortname}.disqus.com/count.js", defer: ""}
   :javascript
     $(function() {
       Application.init();
