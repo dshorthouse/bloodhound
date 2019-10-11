@@ -8,7 +8,8 @@ module Bloodhound
       "Harvard Index of Botanists": "P6264",
       "Entomologists of the World": "P5370",
       "ZooBank Author ID": "P2006",
-      "BHL Creator ID": "P4081"
+      "BHL Creator ID": "P4081",
+      "Stuttgart Database of Scientific Illustrators ID": "P2349"
     }
 
     def initialize

@@ -7,6 +7,7 @@ class BLOODHOUND < Sinatra::Base
   set :root, File.dirname(__FILE__)
   set :haml, :format => :html5
   set :public_folder, 'public'
+  set :show_exceptions, false
 
   register Sinatra::I18nSupport
   load_locales File.join(root, 'config', 'locales')
@@ -78,6 +79,14 @@ class BLOODHOUND < Sinatra::Base
 
   register Sinatra::Bloodhound::Model::Initialize
   use Sinatra::Bloodhound::Model::QueryCache
+
+  not_found do
+    haml :oops
+  end
+
+  error do
+    haml :error
+  end
 
   run! if app_file == $0
 end
