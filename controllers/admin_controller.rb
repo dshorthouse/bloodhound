@@ -372,7 +372,7 @@ module Sinatra
             @admin_user = find_user(params[:id])
             @article = Article.find(params[:article_id])
             if !@article
-              halt 404, haml(:oops)
+              halt 404
             end
 
             @page = (params[:page] || 1).to_i
