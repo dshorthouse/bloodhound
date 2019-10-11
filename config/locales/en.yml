@@ -31,7 +31,10 @@ en:
     twitter: Bloodhound on Twitter
     support: Give Support
   oops:
-    not_found: Not found
+    not_found_title: Not found
+    not_found: Sorry, that page was not found.
+    error_title: Error
+    error: Sorry, we experienced an error.
   not_authorized:
     not_authorized: Not authorized or session terminated.
   offline:

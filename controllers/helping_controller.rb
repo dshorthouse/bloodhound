@@ -163,7 +163,7 @@ module Sinatra
 
             @viewed_user = find_user(params[:id])
             if !@viewed_user
-              halt 404, haml(:oops)
+              halt 404
             end
 
             if authorized?
@@ -242,7 +242,7 @@ module Sinatra
             check_identifier
             @viewed_user = find_user(params[:id])
             if !@viewed_user
-              halt 404, haml(:oops)
+              halt 404
             end
 
             agent_ids = candidate_agents(@viewed_user).pluck(:id)
@@ -255,7 +255,7 @@ module Sinatra
             check_identifier
             @viewed_user = find_user(params[:id])
             if !@viewed_user
-              halt 404, haml(:oops)
+              halt 404
             end
 
             begin
@@ -271,7 +271,7 @@ module Sinatra
             check_identifier
             @viewed_user = find_user(params[:id])
             if !@viewed_user
-              halt 404, haml(:oops)
+              halt 404
             end
             
             if !@viewed_user.is_public
@@ -290,7 +290,7 @@ module Sinatra
             check_identifier
             viewed_user = find_user(params[:id])
             if !viewed_user
-              halt 404, haml(:oops)
+              halt 404
             end
             content_type "application/json", charset: 'utf-8'
             helpers = viewed_user.helped_by - [@user]

@@ -43,7 +43,7 @@ module Sinatra
             check_redirect
             @viewed_user = find_user(params[:id])
             if !@viewed_user
-              halt 404, haml(:oops)
+              halt 404
             end
             @total = {
               number_identified: @viewed_user.identified_count,

@@ -21,7 +21,7 @@ module Sinatra
 
       def check_identifier
         if !params[:id].is_orcid? && !params[:id].is_wiki_id?
-          halt 404, haml(:oops)
+          halt 404
         end
       end
 
@@ -36,7 +36,7 @@ module Sinatra
 
       def check_user_public
         if !@viewed_user && !@viewed_user.is_public?
-          halt 404, haml(:oops)
+          halt 404
         end
       end
 
@@ -246,7 +246,7 @@ module Sinatra
       def organization_redirect(path = "")
         @organization = Organization.find_by_identifier(params[:id]) rescue nil
         if @organization.nil?
-          halt 404, haml(:oops)
+          halt 404
         end
         if !@organization.wikidata.nil? && params[:id] != @organization.wikidata
           redirect "/organization/#{@organization.wikidata}#{path}"
