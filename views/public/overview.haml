@@ -7,13 +7,15 @@
     %link{rel:"stylesheet", href:"/css/jquery-jvectormap-2.0.3.css"}
 
 - content_for :scripts do
-  %script{id:"dsq-count-scr", src:"//#{Settings.disqus_shortname}.disqus.com/count.js", defer: ""}
   - if @viewed_user.is_public?
     %script{src: "/js/progress-bar.js"}
     :javascript
       $(function() {
         ProgressBar.init("#{@viewed_user.identifier}");
       });
+
+  %script{id:"dsq-count-scr", src:"//#{Settings.disqus_shortname}.disqus.com/count.js", defer: ""}
+
   - if @viewed_user.is_public? && !@total[:country_counts].empty?
     %script{src: "/js/jquery-jvectormap-2.0.3.min.js"}
     %script{src: "/js/jquery-jvectormap-world-mill.js"}
