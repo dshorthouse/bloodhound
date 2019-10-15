@@ -312,8 +312,7 @@ var Application = (function($, window) {
             method: "GET",
             url: self.path + "/refresh.json?user_id=" + self.user_id,
             beforeSend: function(xhr) {
-              button.addClass("disabled");
-              button.find("i").addClass("fa-spin");
+              button.addClass("disabled").find("i").addClass("fa-spin");
             }
         }).done(function(data) {
           button.find("i").removeClass("fa-spin");
@@ -333,7 +332,7 @@ var Application = (function($, window) {
             method: "GET",
             url: button.attr("href"),
             beforeSend: function(xhr) {
-              button.addClass("disabled");
+              button.addClass("disabled").find("i").addClass("fa-spin");
             }
         }).done(function(data) {
           $(".alert").alert().show();
