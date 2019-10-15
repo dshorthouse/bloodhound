@@ -44,7 +44,7 @@
             %div{class: "card-footer d-flex"}
               %div{class: "small text-muted"}
                 Attributed
-                %span{class:"badge badge-success"} #{number_with_delimiter(u.claims_given.count)}
+                %span{class:"badge badge-light"} #{number_with_delimiter(u.claims_given.count)}
                 #{'specimen'.pluralize(u.claims_given.count)}
                 to
                 %span{class:"badge badge-light"} #{number_with_delimiter(u.helped_count)}

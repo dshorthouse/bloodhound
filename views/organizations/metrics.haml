@@ -50,7 +50,7 @@
                 - @others_identified.each do |k,v|
                   %li{class: "list-group-item d-flex justify-content-between align-items-center"}
                     #{k}
-                    %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
+                    %span{class: "badge badge-light badge-pill"} #{number_with_delimiter(v)}
             - elsif !@others_recorded.empty?
               %h4{class: "d-flex justify-content-between list-header"} Specimens Collected
               %div{class: "d-flex justify-content-between list-header h5"}
@@ -60,7 +60,7 @@
                 - @others_recorded.each do |k,v|
                   %li{class: "list-group-item d-flex justify-content-between align-items-center"}
                     #{k}
-                    %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
+                    %span{class: "badge badge-light badge-pill"} #{number_with_delimiter(v)}
           %div{class: "col"}
             - if !@others_recorded.empty? && !@others_identified.empty?
               %h4{class: "d-flex justify-content-between list-header"} Specimens Identified
@@ -71,4 +71,4 @@
                 - @others_identified.each do |k,v|
                   %li{class: "list-group-item d-flex justify-content-between align-items-center"}
                     #{k}
-                    %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
+                    %span{class: "badge badge-light badge-pill"} #{number_with_delimiter(v)}

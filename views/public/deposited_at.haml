@@ -35,7 +35,7 @@
                 - @identifications_at.each do |k,v|
                   %li{class: "list-group-item d-flex justify-content-between align-items-center"}
                     #{k}
-                    %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
+                    %span{class: "badge badge-light badge-pill"} #{number_with_delimiter(v)}
             - elsif !@recordings_at.empty?
               %h4{class: "mt-0"} Specimens Collected
               %div{class: "d-flex justify-content-between list-header h5"}
@@ -45,7 +45,7 @@
                 - @recordings_at.each do |k,v|
                   %li{class: "list-group-item d-flex justify-content-between align-items-center"}
                     #{k}
-                    %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
+                    %span{class: "badge badge-light badge-pill"} #{number_with_delimiter(v)}
           %div{class: "col-12 col-lg-6 mb-3"}
             - if !@recordings_at.empty? && !@identifications_at.empty?
               %h4{class: "mt-0"} Specimens Identified
@@ -56,7 +56,7 @@
                 - @identifications_at.each do |k,v|
                   %li{class: "list-group-item d-flex justify-content-between align-items-center"}
                     #{k}
-                    %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
+                    %span{class: "badge badge-light badge-pill"} #{number_with_delimiter(v)}
 
     - else
       %div{class: "alert alert-warning"}

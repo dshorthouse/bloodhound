@@ -33,7 +33,7 @@
                 - @families_identified.each do |k,v|
                   %li{class: "list-group-item d-flex justify-content-between align-items-center"}
                     #{k}
-                    %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
+                    %span{class: "badge badge-light badge-pill"} #{number_with_delimiter(v)}
             - elsif !@families_recorded.empty?
               %h4{class: "d-flex justify-content-between mt-0"}
                 Families Collected
@@ -42,7 +42,7 @@
                 - @families_recorded.each do |k,v|
                   %li{class: "list-group-item d-flex justify-content-between align-items-center"}
                     #{k}
-                    %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
+                    %span{class: "badge badge-light badge-pill"} #{number_with_delimiter(v)}
           %div{class: "col-12 col-lg-6 mb-3"}
             - if !@families_recorded.empty? && !@families_identified.empty?
               %h4{class: "d-flex justify-content-between mt-0"}
@@ -52,7 +52,7 @@
                 - @families_identified.each do |k,v|
                   %li{class: "list-group-item d-flex justify-content-between align-items-center"}
                     #{k}
-                    %span{class: "badge badge-success badge-pill"} #{number_with_delimiter(v)}
+                    %span{class: "badge badge-light badge-pill"} #{number_with_delimiter(v)}
 
     - else
       %div{class: "alert alert-warning"}

@@ -76,7 +76,7 @@
       - if authorized?
         %div{class: "text-center border-top mt-3 pt-3"}
           - if @viewed_user.is_public?
-            %a{href: "/#{@viewed_user.identifier}", class: "mr-2"}
+            %a{href: "/#{@viewed_user.identifier}", class: "btn btn-sm btn-outline-success"}
               %i{class:"fas fa-user"}
               Public Profile
           - if !@viewed_user.is_public? && !@viewed_user.wikidata.nil?

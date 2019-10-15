@@ -55,8 +55,7 @@
                 %div{class: "col small text-left text-muted"}
                 %div{class: "col small text-right text-muted"}
                   - count = org.active_users.count
-                  - color = count == 0 ? "light" : "success"
-                  %span{class:"badge badge-#{color}"} #{number_with_delimiter(count)}
+                  %span{class:"badge badge-light"} #{number_with_delimiter(count)}
                   #{'member'.pluralize(count)}
 
   = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

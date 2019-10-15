@@ -36,7 +36,7 @@
                 %p{class:"card-text text-muted"} #{h(article.abstract)}
               %div{class: "card-footer d-flex"}
                 %div{class: "small"}
-                  %span{class: "badge badge-success badge-pill citation-correction"} #{number_with_delimiter(article.user_specimen_count(@viewed_user.id))}
+                  %span{class: "badge badge-light badge-pill citation-correction"} #{number_with_delimiter(article.user_specimen_count(@viewed_user.id))}
                   %a{href: "/#{@viewed_user.identifier}/citation/#{article.id}"} #{'specimen'.pluralize(article.user_specimen_count(@viewed_user.id))}
 
         = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
