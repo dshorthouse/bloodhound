@@ -15,13 +15,13 @@
 %div{class:"container-fluid"}
   %p{class:"lead"}= I18n.t('home.tagline')
   %p{id: "profile-buttons"}
-    %a{href:"/get-started", role: "button", class:"btn btn-lg btn-outline-success"}= I18n.t('home.get_started')
+    %a{href:"/get-started", role: "button", class:"btn btn-lg btn-outline-dark"}= I18n.t('home.get_started')
     - if !authorized?
-      %a{ href:"/auth/orcid", role: "button", class: "btn btn-lg btn-outline-success button-login connect-orcid-button" }
+      %a{ href:"/auth/orcid", role: "button", class: "btn btn-lg btn-outline-dark button-login connect-orcid-button" }
         %i{class:"fab fa-orcid"}
         = I18n.t('home.orcid_login')
     - else
-      %a{ href:"/profile", id: "candidates-button", role: "button", class: "btn btn-lg btn-outline-success" }= I18n.t('home.your_profile')
+      %a{ href:"/profile", id: "candidates-button", role: "button", class: "btn btn-lg btn-outline-dark" }= I18n.t('home.your_profile')
 
 - if !@results.empty?
   %h2{class: "text-center"}= I18n.t('home.sample_profiles')

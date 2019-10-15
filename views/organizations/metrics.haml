@@ -14,7 +14,7 @@
   %div{class:"col-12 col-lg-8 mt-2"}
     = haml :'partials/organization_tabs', layout:false, locals: { active_tab: 'organization-metrics' }
 
-    %h3{class:"mt-3"} Impact on Activities in Other Organizations
+    %h4{class:"mt-3"} Impact on Activities in Other Organizations
 
     - if @others_recorded.empty? && @others_identified.empty? && @year.nil?
       %div{class: "alert alert-info tiny-margins", role: "alert"}
