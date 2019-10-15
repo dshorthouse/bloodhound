@@ -46,6 +46,11 @@ a:hover, .page-link:hover{
   color:#D3633C;
   text-shadow:-1px -1px 0 #222,1px -1px 0 #222,-1px 1px 0 #222,1px 3px 0 #222;
 }
+#roster-jumbotron{
+  background-image: url('/images/curiosities2.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 #main{
   padding-top:1rem;
 }
@@ -106,15 +111,15 @@ table td.selector{
   padding-left: 17px !important;
 }
 .toggle-off {
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
 }
 .toggle.off {
-    border-color: rgba(0, 0, 0, .25);
+  border-color: rgba(0, 0, 0, .25);
 }
 
 .toggle-handle {
-    background-color: white;
-    border: thin rgba(0, 0, 0, .25) solid;
+  background-color: white;
+  border: thin rgba(0, 0, 0, .25) solid;
 }
 
 .alert-dismissible{
@@ -254,44 +259,47 @@ dl.dl-horizontal dd.line-break {
 .card-profile:hover {
   background-color:#f8f9fa;
   cursor:pointer;
+  -webkit-box-shadow: 3px 3px 5px -5px rgba(0,0,0,0.4); 
+  box-shadow: 3px 3px 5px -5px rgba(0,0,0,0.4);
+  border: 1px solid rgba(0,0,0,.175);
 }
 
 /* CALLOUTS */
 .bd-callout {
-    padding: 0.75rem;
-    margin-top: 1.25rem;
-    margin-bottom: 1.25rem;
-    border: 1px solid #eee;
-    border-left-width: .25rem;
-    border-radius: .25rem;
+  padding: 0.75rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid #eee;
+  border-left-width: .25rem;
+  border-radius: .25rem;
 }
 
 .bd-callout p:last-child {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .bd-callout code {
-    border-radius: .25rem;
+  border-radius: .25rem;
 }
 
 .bd-callout+.bd-callout {
-    margin-top: -.25rem;
+  margin-top: -.25rem;
 }
 
 .bd-callout-info {
-    border-left-color: #5bc0de;
+  order-left-color: #5bc0de;
 }
 
 .bd-callout-warning {
-    border-left-color: #f0ad4e;
+  border-left-color: #f0ad4e;
 }
 
 .bd-callout-success {
-    border-left-color: #28a745;
+  border-left-color: #28a745;
 }
 
 .bd-callout-danger {
-    border-left-color: #d9534f;
+  border-left-color: #d9534f;
 }
 .relaxed{margin-bottom:0px;}
 .button-login{display:none;}
