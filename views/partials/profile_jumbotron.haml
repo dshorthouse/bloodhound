@@ -13,7 +13,7 @@
           %li{id:"profile-remove", class:"list-group-item profile-upload-option-list"} Remove
           %li{id:"profile-cancel", class:"list-group-item profile-upload-option-list"} Cancel
 
-  %h3{class:"display-6"}= @user.fullname
+  %h1{class:"display-6 h3"}= @user.fullname
 
   - if !@user.other_names.blank?
     %p{class:"text-center text-muted p-0 m-0"} #{@user.other_names.split("|").join("; ")}

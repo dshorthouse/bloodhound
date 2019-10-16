@@ -16,7 +16,7 @@
   %div{class:"jumbotron jumbotron-fluid alert-warning"}
     %div{class:"row"}
       %div{class:"col-12 col-lg-4 alert-warning mb-2"}
-        %h3{class:"display-6"}= @admin_user.fullname
+        %h1{class:"display-6 m3"}= @admin_user.fullname
       %div{class:"col-12 col-lg-8 mt-2"}
         = haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "candidates" }
 

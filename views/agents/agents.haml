@@ -11,7 +11,7 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
-      %h2 Agent Search
+      %h1{class:"h2"} Agent Search
       %p.lead.text-muted
         #{number_with_delimiter(@count)} unauthenticated and unverified names for people found in specimen data
     = haml :'partials/agent_search', layout: false
