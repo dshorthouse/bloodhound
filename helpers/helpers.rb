@@ -168,7 +168,7 @@ module Sinatra
             remove_agents << a[:id] if scores.include?(0) && given_names.count == 2
           end
 
-          agents.delete_if{|a| remove_agents.include?(a[:id]) }
+          agents.delete_if{|a| remove_agents.include?(a[:id]) || a[:score] < 40 }
         end
 
         agents.compact.uniq.sort_by{|a| a[:score]}.reverse
