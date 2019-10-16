@@ -162,6 +162,7 @@ module Sinatra
             @page = (params[:page] || 1).to_i
 
             @viewed_user = find_user(params[:id])
+
             if !@viewed_user
               halt 404
             end
@@ -186,7 +187,6 @@ module Sinatra
                   end
                   occurrence_ids = occurrences_by_score(id_scores, @viewed_user)
                 end
-
                 specimen_pager(occurrence_ids.uniq)
               end
             end

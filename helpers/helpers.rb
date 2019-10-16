@@ -137,8 +137,8 @@ module Sinatra
 
         agents.concat search_agents([user.initials, user.family].join(" "))
 
-        given_names = [user.given]
-        given_names << user.initials
+        given_names = [user.given.dup]
+        given_names << user.initials.dup
 
         if !user.other_names.nil?
           user.other_names.split("|").each do |other_name|
