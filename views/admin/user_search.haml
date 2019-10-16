@@ -11,7 +11,7 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid alert-warning d-flex flex-wrap"}
     %div{class:"mr-auto"}
-      %h2 Search Accounts
+      %h1{class:"h2"} Search Accounts
     = haml :'partials/admin_user_search', layout: false
 
 - if @results.empty?
