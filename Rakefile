@@ -19,7 +19,7 @@ else
   end
 end
 
-# usage: rake generate:migration[name_of_migration]
+# usage: rake bundle exec rake 'generate:migration[name_of_migration]'
 namespace :generate do
   task(:migration, :migration_name) do |t, args|
     timestamp = Time.now.gmtime.to_s[0..18].gsub(/[^\d]/, '')

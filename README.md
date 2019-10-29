@@ -52,7 +52,7 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
 
 Also execute following:
 
-     $ RACK_ENV=production ./bin/populate_taxon_determiners.rb -p
+     $ RACK_ENV=production ./bin/populate_taxon_determiners.rb -t -p
 
 ### Step 4: Cluster Agents & Store in Neo4j
 

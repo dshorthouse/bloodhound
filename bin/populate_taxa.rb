@@ -52,20 +52,3 @@ if options[:directory]
     puts file.green
   end
 end
-
-=begin
-
-AFTER taxon queue is empty of jobs, must execute the following:
-
-  sql = "INSERT INTO
-          taxon_determiners
-            (taxon_id, agent_id)
-         SELECT
-           t.taxon_id, d.agent_id
-         FROM
-           occurrence_determiners d
-         JOIN taxon_occurrences t ON d.occurrence_id = t.occurrence_id"
-
-  Occurrence.connection.execute(sql)
-
-=end
