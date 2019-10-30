@@ -20,6 +20,7 @@ else
 end
 
 # usage: rake bundle exec rake 'generate:migration[name_of_migration]'
+# note the single quotes above, necessary in zsh 
 namespace :generate do
   task(:migration, :migration_name) do |t, args|
     timestamp = Time.now.gmtime.to_s[0..18].gsub(/[^\d]/, '')
