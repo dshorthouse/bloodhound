@@ -13,36 +13,32 @@
   %div{class:"col-12 col-lg-8 mt-2"}
     = haml :'partials/profile_tabs', layout: false, locals: { active_page: "profile" }
 
-    - if @total[:number_identified] == 0 && @total[:number_recorded] == 0
-      %div{class: "alert alert-info tiny-margins", role: "alert"}
-        Claim your specimens under the "Discovered" tab to build your profile and start tracking your citations.
-      - if @total[:number_helped] > 0
-        %div{class:"container-fluid mt-3"}
-          %h4 Summary
-          %ul
-            %li Helped #{number_with_delimiter(@total[:number_helped])} #{'user'.pluralize(@total[:number_helped])} claim a total of #{number_with_delimiter(@total[:number_claims_given])} #{'specimen'.pluralize(@total[:number_claims_given])}
-    - else
-      %div{class:"mt-3"}
-        %h4 Summary
-        %ul
-          - if @total[:number_identified] > 0
-            %li Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}
-          - if @total[:number_recorded] > 0
-            %li Collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])} from at least #{number_with_delimiter(@total[:number_countries])} #{'country'.pluralize(@total[:number_countries])}
-          - if @total[:number_specimens_cited] > 0
-            %li #{number_with_delimiter(@total[:number_specimens_cited])} #{'specimen'.pluralize(@total[:number_specimens_cited])} used in #{number_with_delimiter(@total[:number_articles])} published #{'work'.pluralize(@total[:number_articles])}
-          - if @total[:number_helped] > 0
-            %li Helped #{number_with_delimiter(@total[:number_helped])} #{'user'.pluralize(@total[:number_helped])} claim a total of #{number_with_delimiter(@total[:number_claims_given])} #{'specimen'.pluralize(@total[:number_claims_given])}
+    %div{class:"mt-3"}
+      %h4 Summary
 
-        - if @user.zenodo_concept_doi
-          %h4 For Your Resume
-          %p{class:"citation"}
-            #{@user.fullname_reverse}. #{DateTime.now.year}. Natural history specimens collected and/or identified and deposited. [Data set]. Zenodo.
-            %a{href: "https://doi.org/#{@user.zenodo_concept_doi}"}
-              https://doi.org/#{@user.zenodo_concept_doi}
-          %h5 HTML
-          %div{class:"alert alert-secondary"}
-            %pre{class:"p-0 m-0"}
-              &lt;a href="https://doi.org/#{@user.zenodo_concept_doi}"&gt;&lt;img src="https://zenodo.org/badge/DOI/#{@user.zenodo_concept_doi}.svg" alt="DOI"&gt;&lt;/a&gt;
-          %a{href:"https://doi.org/#{@user.zenodo_concept_doi}"}
-            %img{src:"https://zenodo.org/badge/DOI/#{@user.zenodo_concept_doi}.svg"}
+      - if @total[:number_identified] == 0 && @total[:number_recorded] == 0 && @total[:number_helped] == 0
+        %div{class: "alert alert-info tiny-margins", role: "alert"}
+          Claim your specimens under the "Discovered" tab to build your profile and start tracking your citations. Acknowledge your peers, mentors, or anyone who inspires you by attributing specimens under "Help Others".
+
+      %ul
+        - if @total[:number_identified] > 0
+          %li Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}
+        - if @total[:number_recorded] > 0
+          %li Collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])} from at least #{number_with_delimiter(@total[:number_countries])} #{'country'.pluralize(@total[:number_countries])}
+        - if @total[:number_specimens_cited] > 0
+          %li #{number_with_delimiter(@total[:number_specimens_cited])} #{'specimen'.pluralize(@total[:number_specimens_cited])} used in #{number_with_delimiter(@total[:number_articles])} published #{'work'.pluralize(@total[:number_articles])}
+        - if @total[:number_helped] > 0
+          %li Attributed #{number_with_delimiter(@total[:number_claims_given])} #{'specimen'.pluralize(@total[:number_claims_given])} to #{number_with_delimiter(@total[:number_helped])} #{'person'.pluralize(@total[:number_helped])}
+
+      - if @user.zenodo_concept_doi
+        %h4 For Your Resume
+        %p{class:"citation"}
+          #{@user.fullname_reverse}. #{DateTime.now.year}. Natural history specimens collected and/or identified and deposited. [Data set]. Zenodo.
+          %a{href: "https://doi.org/#{@user.zenodo_concept_doi}"}
+            https://doi.org/#{@user.zenodo_concept_doi}
+        %h5 HTML
+        %div{class:"alert alert-secondary"}
+          %pre{class:"p-0 m-0"}
+            &lt;a href="https://doi.org/#{@user.zenodo_concept_doi}"&gt;&lt;img src="https://zenodo.org/badge/DOI/#{@user.zenodo_concept_doi}.svg" alt="DOI"&gt;&lt;/a&gt;
+        %a{href:"https://doi.org/#{@user.zenodo_concept_doi}"}
+          %img{src:"https://zenodo.org/badge/DOI/#{@user.zenodo_concept_doi}.svg"}
