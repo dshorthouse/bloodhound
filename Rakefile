@@ -19,7 +19,7 @@ else
   end
 end
 
-# usage: rake bundle exec rake 'generate:migration[name_of_migration]'
+# usage: rake 'generate:migration[name_of_migration]'
 # note the single quotes above, necessary in zsh 
 namespace :generate do
   task(:migration, :migration_name) do |t, args|

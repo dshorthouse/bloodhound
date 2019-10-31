@@ -6,9 +6,6 @@ class Agent < ActiveRecord::Base
   has_many :occurrence_recorders, dependent: :delete_all
   has_many :recordings, through: :occurrence_recorders, source: :occurrence
 
-  has_many :taxon_determiners, dependent: :delete_all
-  has_many :determined_taxa, through: :taxon_determiners, source: :taxon
-
   def fullname
     [given, family].join(" ").strip
   end
@@ -73,16 +70,6 @@ class Agent < ActiveRecord::Base
 
   def identified_taxa
     determinations.pluck(:scientificName).compact.uniq
-  end
-
-  def determined_families_counts
-    determined_taxa.group_by{|i| i }
-                   .map{|k, v| { id: k.id, family: k.family, count: v.size } }
-                   .sort_by { |a| a[:family] }
-  end
-
-  def determined_families
-    determined_taxa.uniq.pluck(:family)
   end
 
   def occurrences

@@ -50,10 +50,6 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
      # Can start 2+ workers, each with 40 threads to help speed-up processing
      $ RACK_ENV=production sidekiq -c 40 -q taxon -r ./application.rb
 
-Also execute following:
-
-     $ RACK_ENV=production ./bin/populate_taxon_determiners.rb -t -p
-
 ### Step 4: Cluster Agents & Store in Neo4j
 
 Truncating a large Neo4j graph.db usually does not work. Instead, it is best to entirely delete the graph.db directory then recreate it.
