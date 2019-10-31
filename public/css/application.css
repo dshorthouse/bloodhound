@@ -208,7 +208,7 @@ dl.dl-horizontal dt {
 dl.dl-horizontal dd {
   display: table-cell;
   padding: 2% 5%;
-  width: auto;
+  width: 100%;
 }
 dl.dl-horizontal dd.line-break {
   display: table-row;
