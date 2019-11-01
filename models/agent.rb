@@ -6,6 +6,8 @@ class Agent < ActiveRecord::Base
   has_many :occurrence_recorders, dependent: :delete_all
   has_many :recordings, through: :occurrence_recorders, source: :occurrence
 
+  validates :family, presence: true
+
   def fullname
     [given, family].join(" ").strip
   end

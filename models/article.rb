@@ -3,6 +3,10 @@ class Article < ActiveRecord::Base
   has_many :article_occurrences, dependent: :delete_all
   has_many :occurrences, through: :article_occurrences, source: :occurrence
 
+  validates :doi, presence: true
+  validates :gbif_dois, presence: true
+  validates :gbif_downloadkeys, presence: true
+
   serialize :gbif_dois, Array
   serialize :gbif_downloadkeys, Array
 
