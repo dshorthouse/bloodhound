@@ -79,7 +79,7 @@ module Sinatra
 
           app.post '/profile/image' do
             protected!
-            file_name = upload_image
+            file_name = upload_image(app.root)
             if file_name
               @user.image_url = file_name
               @user.save
@@ -92,7 +92,7 @@ module Sinatra
           app.delete '/profile/image' do
             protected!
             if @user.image_url
-              FileUtils.rm(File.join(root, "public", "images", "users", @user.image_url)) rescue nil
+              FileUtils.rm(File.join(app.root, "public", "images", "users", @user.image_url)) rescue nil
             end
             @user.image_url = nil
             @user.save

@@ -53,7 +53,7 @@ module Sinatra
         tempfile.unlink
       end
 
-      def upload_image
+      def upload_image(root)
         new_name = nil
         if params[:file] && params[:file][:tempfile]
           tempfile = params[:file][:tempfile]

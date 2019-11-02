@@ -19,6 +19,10 @@ var Profile = (function($, window) {
 
       $('#profile-image').on('click', function(e) {
         e.stopPropagation();
+        popup.show();
+      });
+      $('#profile-image a').on('click', function(e) {
+        e.stopPropagation();
         e.preventDefault();
         popup.show();
       });

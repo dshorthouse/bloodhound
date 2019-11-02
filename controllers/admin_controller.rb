@@ -152,7 +152,7 @@ module Sinatra
           app.post '/admin/user/:id/image' do
             admin_protected!
             @admin_user = find_user(params[:id])
-            file_name = upload_image
+            file_name = upload_image(app.root)
             if file_name
               @admin_user.image_url = file_name
               @admin_user.save
@@ -166,7 +166,7 @@ module Sinatra
             admin_protected!
             @admin_user = find_user(params[:id])
             if @admin_user.image_url
-              FileUtils.rm(File.join(root, "public", "images", "users", @admin_user.image_url)) rescue nil
+              FileUtils.rm(File.join(app.root, "public", "images", "users", @admin_user.image_url)) rescue nil
             end
             @admin_user.image_url = nil
             @admin_user.save
