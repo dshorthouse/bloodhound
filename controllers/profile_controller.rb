@@ -83,6 +83,8 @@ module Sinatra
             if file_name
               @user.image_url = file_name
               @user.save
+              cache_clear "fragments/#{@user.identifier}"
+              cache_clear "fragments/#{@user.identifier}-trainer"
               { message: "ok" }.to_json
             else
               { message: "failed" }.to_json
@@ -96,6 +98,8 @@ module Sinatra
             end
             @user.image_url = nil
             @user.save
+            cache_clear "fragments/#{@user.identifier}"
+            cache_clear "fragments/#{@user.identifier}-trainer"
             { message: "ok" }.to_json
           end
 

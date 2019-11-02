@@ -156,6 +156,8 @@ module Sinatra
             if file_name
               @admin_user.image_url = file_name
               @admin_user.save
+              cache_clear "fragments/#{@admin_user.identifier}"
+              cache_clear "fragments/#{@admin_user.identifier}-trainer"
               { message: "ok" }.to_json
             else
               { message: "failed" }.to_json
@@ -170,6 +172,8 @@ module Sinatra
             end
             @admin_user.image_url = nil
             @admin_user.save
+            cache_clear "fragments/#{@admin_user.identifier}"
+            cache_clear "fragments/#{@admin_user.identifier}-trainer"
             { message: "ok" }.to_json
           end
 
