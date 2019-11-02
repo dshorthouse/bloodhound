@@ -10,4 +10,9 @@ describe "DestroyedUser model" do
     expect(destroyed_user).to be_valid
   end
 
+  it "is valid with an identifier and a redirect" do
+    destroyed_user = DestroyedUser.new(identifier: "Q12345", redirect_to: "Q12346")
+    expect(destroyed_user).to be_valid
+  end
+
 end

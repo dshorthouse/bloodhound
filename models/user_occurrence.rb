@@ -13,6 +13,10 @@ class UserOccurrence < ActiveRecord::Base
 
    alias_attribute :user_occurrence_id, :id
 
+   validates :occurrence_id, presence: true
+   validates :user_id, presence: true
+   validates :created_by, presence: true
+
    def self.accepted_actions
      ["identified","recorded","identified,recorded","recorded,identified"]
    end

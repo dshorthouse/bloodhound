@@ -22,6 +22,8 @@ class Occurrence < ActiveRecord::Base
 
   alias_attribute :id, :gbifID
 
+  validates :id, presence: true
+
   IGNORED_COLUMNS_OUTPUT = ["gbifID", "datasetKey", "dateIdentified_processed", "eventDate_processed"]
 
   def self.enqueue(o)
