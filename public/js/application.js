@@ -7,6 +7,24 @@ Array.prototype.all_unique = function () {
   });
 };
 
+// jQuery plugin to prevent double submission of forms
+jQuery.fn.preventDoubleSubmission = function() {
+  $(this).on('submit',function(e){
+    var $form = $(this);
+
+    if ($form.data('submitted') === true) {
+      // Previously submitted - don't submit again
+      e.preventDefault();
+    } else {
+      // Mark it so that the next submit can be ignored
+      $form.data('submitted', true);
+    }
+  });
+
+  // Keep chainability
+  return this;
+};
+
 var Application = (function($, window) {
 
   "use strict";
@@ -379,6 +397,7 @@ var Application = (function($, window) {
         var helpers_list = $("#helpers-list").hide().next();
         $("#helpers-list-none").hide();
         helpers_list.empty();
+        $('#visibility-form').preventDoubleSubmission();
         $.ajax({
           method: "GET",
           url: "/help-others/" + self.identifier + "/helpers.json"
