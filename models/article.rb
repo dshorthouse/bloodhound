@@ -22,6 +22,13 @@ class Article < ActiveRecord::Base
                        .count
   end
 
+  def claimants
+    article_occurrences.joins(:user_occurrences)
+                       .where(user_occurrences: { visible: true })
+                       .pluck("user_occurrences.user_id").uniq
+                       .map{ |u| User.find(u) }
+  end
+
   private
 
   def make_citation

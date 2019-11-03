@@ -32,6 +32,19 @@
       %dt{class: "col-sm-2"} Specimens claimed:
       %dd{class: "col-sm-10"}
         %span{class: "badge badge-light badge-pill citation-correction"} #{number_with_delimiter(@article.claimed_specimen_count)}
+      %dt{class: "col-sm-2"} Claimants:
+      %dd{class: "col-sm-10"}
+        - @article.claimants.each do |u|
+          %span{class:"mr-2"}
+            - if u.orcid
+              %a{href: "/#{u.identifier}"}
+                %i{class:"fab fa-orcid"}
+                #{u.fullname}
+            - else
+              %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
+                %a{href: "/#{u.identifier}"}
+                  #{u.fullname}
+
       %dt{class: "col-sm-2"} All data in study:
       %dd{class: "col-sm-10"}
         - @article.gbif_dois.each do |doi|
