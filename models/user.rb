@@ -197,7 +197,10 @@ class User < ActiveRecord::Base
   end
 
   def helped_by
-    claims_received.map(&:claimant).uniq
+    visible_user_occurrences.where.not(created_by: self)
+                            .pluck(:created_by)
+                            .uniq
+                            .map{|u| User.find(u)}
   end
 
   def country_counts

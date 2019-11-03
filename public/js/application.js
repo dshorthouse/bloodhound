@@ -391,7 +391,7 @@ var Application = (function($, window) {
               }
               return "<li>" + i.given + " " + i.family + email + "</li>";
             });
-            helpers_list.append(helper_list.join(", ")).prev().show();
+            helpers_list.append(helper_list.join("")).prev().show();
           } else {
             $("#helpers-list-none").show();
           }

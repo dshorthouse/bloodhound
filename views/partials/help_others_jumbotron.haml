@@ -65,7 +65,7 @@
                   Other trainers have also helped attribute #{@viewed_user.fullname}'s specimens:
                 %ul
                 %p{id:"helpers-list-none", style:"display:none;"}
-                  No other trainers have helped claim #{@viewed_user.fullname}'s specimens.
+                  No other trainers have helped attribute #{@viewed_user.fullname}'s specimens.
                 
               %div{class:"modal-footer"}
                 %form{action: "/help-others/#{@viewed_user.identifier}/visibility", method: :post}
