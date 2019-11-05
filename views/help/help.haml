@@ -67,4 +67,4 @@
       - else
         %div{class:"alert alert-danger tiny-margins", role: "alert", style:"display:block;"}
           %span{class:"font-weight-bold"} #{h(flash[:new_user][:fullname])}
-          not created because the identifier was incorrectly formatted or in the case of wikidata, the item is not a human, the family name and/or precise birth and death dates were missing, or the user already exists with an ORCID identifier.
+          not created because the identifier was incorrectly formatted or in the case of wikidata, the item is not a human, the family name and/or birth and death dates are not accurate to the day, or the user already exists with an ORCID identifier.

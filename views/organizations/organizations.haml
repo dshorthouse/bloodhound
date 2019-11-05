@@ -15,7 +15,9 @@
       %p.lead.text-muted
         From employment and academic records in
         %a{href: "https://orcid.org/"} ORCID
-        accounts
+        accounts and
+        %a{href: "https://www.wikidata.org"} Wikidata
+        entries
     = haml :'partials/organization_search', layout: false
 
 - @results.in_groups_of(3).each do |group|
