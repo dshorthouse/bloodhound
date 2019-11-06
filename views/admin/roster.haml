@@ -11,7 +11,7 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid alert-warning d-flex flex-wrap"}
     %div{class:"mr-auto"}
-      %h1{class:"h2"} All Accounts
+      %h1{class:"h2"} All People
     = haml :'partials/admin_user_search', layout: false
 
 - sort = locals[:sort] == "asc" ? "desc" : "asc"
@@ -20,7 +20,7 @@
     %thead{class: "thead-light"}
       %tr
         %th{scope: "col"}
-          %a{href: "/admin/users?order=family&sort=#{sort}"} Account
+          %a{href: "/admin/users?order=family&sort=#{sort}"} Person
         %th{scope: "col"}
           %a{href: "/admin/users?order=country&sort=#{sort}"} Country
         %th{scope: "col"}

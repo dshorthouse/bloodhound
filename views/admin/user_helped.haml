@@ -13,7 +13,7 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid alert-warning d-flex flex-wrap"}
     %div{class:"mr-auto"}
-      %h1{class:"h2"} Helped Accounts
+      %h1{class:"h2"} People Receiving Assistance
 
 %div{class:"mb-3"}
   %nav{id:"network-nav", class:"navbar navbar-light navbar-expand bg-light"}
@@ -27,7 +27,7 @@
   %table{class:"table table-hover table-sm"}
     %thead{class: "thead-light"}
       %tr
-        %th{scope: "col"} Account
+        %th{scope: "col"} Person
         %th{scope: "col"} Progress
         %th{scope: "col"} Public
         %th{scope: "col"} Last Helped By
@@ -51,7 +51,7 @@
             - else
               #{claim.user.is_public}
           %td
-            #{claim.claimant.fullname_reverse}
+            %a{href: "/admin/user/#{claim.claimant.identifier}"} #{claim.claimant.fullname_reverse}
           %td
             #{claim.created}
 

@@ -9,25 +9,25 @@
   %div{class:"card-deck"}
     %div{class:"card"}
       %h5{class:"card-header"}
-        %a{href:"/admin/users"} Accounts
+        %a{href:"/admin/users"} All People
       %div{class:"card-body"}
-        %p{class:"card-text"} View and search through a paginated and ordered list of accounts. This includes when last logged in, public status, and links to manage each account.
+        %p{class:"card-text"} View and search through a paginated and ordered list of people. This includes when last logged in, public status, and links to manage their settings.
         %p
           %a{href:"/admin/users", role:"button", class:"btn btn-sm btn-outline-primary profile-refresh"} List
           %a{href:"/admin/users/manage", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"} Add
     %div{class:"card"}
       %h5{class:"card-header"}
-        %a{href:"/admin/users/helped"} Helped Accounts
+        %a{href:"/admin/users/helped"} People Receiving Assistance
       %div{class:"card-body"}
-        %p{class:"card-text"} View a paginated and ordered list of accounts whose specimens have been claimed by authenticated users.
+        %p{class:"card-text"} View a paginated and ordered list of people who are being attributed their specimens.
   %div{class:"card-deck"}
     %div{class:"card"}
       %h5{class:"card-header"}
         %a{href:"/admin/organizations"} Organizations
       %div{class:"card-body"}
-        %p{class:"card-text"} View a paginated and ordered list of organizations from ORCID accounts. This includes their isni, ringgold, GRID, and wikidata identifiers.
+        %p{class:"card-text"} View a paginated and ordered list of organizations from ORCID accounts. This includes their ISNI, ringgold, GRID, and wikidata identifiers.
     %div{class:"card"}
       %h5{class:"card-header"}
         %a{href:"/admin/articles"} Articles
       %div{class:"card-body"}
-        %p{class:"card-text"} View a paginated and ordered list of latest references indexed by GBIF. This includes the number of specimens used in the study and the number of specimens claimed by users.
+        %p{class:"card-text"} View a paginated and ordered list of latest references indexed by GBIF. This includes the number of specimens used in the study, the number claimed or attributed, and a list of claimants.
