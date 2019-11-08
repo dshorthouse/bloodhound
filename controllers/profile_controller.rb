@@ -74,7 +74,7 @@ module Sinatra
               number_specimens_cited: @user.cited_specimens.count,
               number_articles: @user.cited_specimens.select(:article_id).distinct.count
             }
-            haml :'profile/overview'
+            haml :'profile/overview', locals: { active_page: "profile" }
           end
 
           app.post '/profile/image' do
@@ -105,7 +105,7 @@ module Sinatra
 
           app.get '/profile/settings' do
             protected!
-            haml :'profile/settings'
+            haml :'profile/settings', locals: { active_page: "profile" }
           end
 
           app.get '/profile/specimens' do
@@ -122,7 +122,7 @@ module Sinatra
             @page = 1 if @page <= 0
 
             @pagy, @results = pagy(@user.visible_occurrences.order("occurrences.typeStatus desc"), items: search_size, page: @page)
-            haml :'profile/specimens'
+            haml :'profile/specimens', locals: { active_page: "profile" }
           end
 
           app.get '/profile/support' do
@@ -139,7 +139,7 @@ module Sinatra
             @page = 1 if @page <= 0
 
             @pagy, @results = pagy(@user.claims_received, items: search_size, page: @page)
-            haml :'profile/support'
+            haml :'profile/support', locals: { active_page: "profile" }
           end
 
           app.put '/profile/visibility.json' do
@@ -231,7 +231,7 @@ module Sinatra
               specimen_pager(occurrence_ids.uniq)
             end
 
-            haml :'profile/candidates'
+            haml :'profile/candidates', locals: { active_page: "profile" }
           end
 
           app.get '/profile/candidates/agent/:id' do
@@ -251,7 +251,7 @@ module Sinatra
             occurrence_ids = occurrences_by_score(id_scores, @user)
             specimen_pager(occurrence_ids.uniq)
 
-            haml :'profile/candidates'
+            haml :'profile/candidates', locals: { active_page: "profile" }
           end
 
           app.post '/profile/upload-claims' do
@@ -278,14 +278,14 @@ module Sinatra
             @page = 1 if @page <= 0
 
             @pagy, @results = pagy(@user.hidden_occurrences, items: search_size, page: @page)
-            haml :'profile/ignored'
+            haml :'profile/ignored', locals: { active_page: "profile" }
           end
 
           app.get '/profile/citations' do
             protected!
             page = (params[:page] || 1).to_i
             @pagy, @results = pagy(@user.articles_citing_specimens, page: page)
-            haml :'profile/citations'
+            haml :'profile/citations', locals: { active_page: "profile" }
           end
 
           app.get '/profile/citation/:article_id' do
@@ -305,7 +305,7 @@ module Sinatra
             end
 
             @pagy, @results = pagy(@user.cited_specimens_by_article(@article.id), items: search_size, page: @page)
-            haml :'profile/citation'
+            haml :'profile/citation', locals: { active_page: "profile" }
           end
 
           app.get '/profile/refresh.json' do

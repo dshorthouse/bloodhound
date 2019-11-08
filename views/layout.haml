@@ -80,9 +80,12 @@
             - if authorized?
               %li{class: "nav-item"}
                 %div{class:"btn-group"}
-                  %a{class:"btn btn-outline-light", href:"/profile", role:"button"}
+                  %a{class:"btn btn-outline-light#{locals[:active_page] == "profile" ? " active" : " text-muted"}", href:"/profile", role:"button"}
                     - if @user.image_url
-                      %img{src:"#{profile_image(@user, 'thumbnail')}", alt:"#{@user.fullname}"}
+                      - if locals[:active_page] == "profile"
+                        %img{src:"#{profile_image(@user, 'thumbnail')}", alt:"#{@user.fullname}"}
+                      - else
+                        %img{src:"#{profile_image(@user, 'thumbnail_grey')}", alt:"#{@user.fullname}"}
                     - else
                       %i{class:"fas fa-user", alt:"#{@user.fullname}"}
                   %button{class:"btn btn-outline-light dropdown-toggle", type:"button", "data-toggle": "dropdown", "aria-haspopup": "true", "aria-expanded": "false"}

@@ -28,6 +28,8 @@ module Sinatra
         cloud_img = "https://abekpgaoen.cloudimg.io/height/200/x/"
         if size == "thumbnail"
           cloud_img = "https://abekpgaoen.cloudimg.io/crop/24x24/n/"
+        elsif size == "thumbnail_grey"
+          cloud_img = "https://abekpgaoen.cloudimg.io/crop/24x24/fgrey/"
         elsif size == "medium"
           cloud_img = "https://abekpgaoen.cloudimg.io/crop/48x48/n/"
         elsif size == "social"
