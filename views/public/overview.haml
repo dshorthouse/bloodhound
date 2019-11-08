@@ -67,20 +67,19 @@
     - if @viewed_user.is_public?
       = haml :'partials/user_tabs', layout: false, locals: { active_page: "overview" }
 
-      - if @total[:number_recorded] == 0 && @total[:number_identified] == 0
-        %div{class: "alert alert-info justify-content-between row", role: "alert", style:"margin-left:0.1em;margin-right:0.1em"}
-          Identified or collected specimens have not yet been recorded.
-      - else
-        %div{class: "alert alert-info justify-content-between row tiny-margins", role: "alert"}
-          %div{class:"col-8 col-md-10 pl-0"}
+      %div{class:"d-flex flex-row mt-3 alert alert-info justify-content-between"}
+        %div
+          %ul{class:"list-unstyled"}
             - if @total[:number_identified] > 0
-              Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}.
+              %li Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}
             - if @total[:number_recorded] > 0
-              = succeed "." do
-                Collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])}
-                - if @total[:country_counts].count > 0 
-                  from at least #{@total[:country_counts].count} #{'country'.pluralize(@total[:country_counts].count)}
-          %div{class:"col-4 col-md-2 p-0"}
+              %li Collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])} from at least #{number_with_delimiter(@total[:country_counts].count)} #{'country'.pluralize(@total[:country_counts].count)}
+            - if @total[:number_helped] > 0
+              %li Attributed #{number_with_delimiter(@total[:number_claims_given])} #{'specimen'.pluralize(@total[:number_claims_given])} to #{number_with_delimiter(@total[:number_helped])} #{'person'.pluralize(@total[:number_helped])}
+            - if @total[:number_specimens_cited] > 0
+              %li #{number_with_delimiter(@total[:number_specimens_cited])} #{'specimen'.pluralize(@total[:number_specimens_cited])} used in #{number_with_delimiter(@total[:number_articles])} published #{'work'.pluralize(@total[:number_articles])}
+        - if @total[:number_recorded] > 0 || @total[:number_identified] > 0
+          %div{class:"col-4 col-md-2"}
             Progress
             %div{class:"progress", style:"border:1px solid rgba(0,0,0,.125);inline"}
               %div{id:"progress-bar_#{@viewed_user.identifier}", class:"progress-bar bg-info", role:"progressbar", style:"width: 0%;inline", "aria-valuenow":"0", "aria-valuemin":"0", "aria-valuemax":"100"}
@@ -95,7 +94,7 @@
         - specimen_count = @viewed_user.all_occurrences_count
         - if specimen_count > 0
           %i{class:"fas fa-lock"}
-          Although #{number_with_delimiter(specimen_count)} #{'specimen'.pluralize(specimen_count)} were claimed, this profile
+          Although #{number_with_delimiter(specimen_count)} #{'specimen'.pluralize(specimen_count)} were claimed or attributed, this profile
         - else
           %i{class:"fas fa-lock"}
           Profile

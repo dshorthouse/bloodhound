@@ -48,7 +48,11 @@ module Sinatra
             @total = {
               number_identified: @viewed_user.identified_count,
               number_recorded: @viewed_user.recorded_count,
-              country_counts: @viewed_user.country_counts
+              number_helped: @viewed_user.helped_count,
+              number_claims_given: @viewed_user.claims_given.count,
+              country_counts: @viewed_user.country_counts,
+              number_specimens_cited: @viewed_user.cited_specimens.count,
+              number_articles: @viewed_user.cited_specimens.select(:article_id).distinct.count
             }
             haml :'public/overview', locals: { active_page: "roster" }
           end
