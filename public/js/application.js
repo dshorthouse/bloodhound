@@ -50,6 +50,7 @@ var Application = (function($, window) {
       this.candidate_counter();
       this.helper_navbar();
       this.helper_modal();
+      this.hover_cards();
     },
     profile_cards: function() {
       $(".card-profile").on("click", function() {
@@ -416,6 +417,39 @@ var Application = (function($, window) {
           }
         });
       });
+    },
+    hover_cards: function(){
+      var self = this;
+      $('span.hover-card').each(function() {
+        $(this).popover({
+          placement: 'auto',
+          trigger: 'hover',
+          html: true,
+          container: $(this),
+          animation: true,
+          title: $(this).text(),
+          content: self.spinner
+        });
+      });
+      /*
+      TODO: popover does not disappear when hovering away after the GET below
+      $('span.hover-card').hover(function() {
+          var $elem = $(this);
+          $elem.popover({
+            placement: 'auto',
+            trigger: 'hover',
+            html: true,
+            container: $elem,
+            animation: true,
+            title: $elem.text(),
+            content: self.spinner
+          });
+
+          $.get(self.path + "/candidate-count.json?relaxed=0&user_id=" + self.user_id, function(d) {
+              $elem.popover({ placement: 'auto', animation: true, trigger: 'hover', content: d.toString() }).popover('show');
+          });
+      });
+      */
     }
   };
 

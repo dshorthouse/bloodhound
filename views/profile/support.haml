@@ -65,9 +65,11 @@
               - if uo.claimant.is_bot?
                 #{uo.claimant.fullname}
               - elsif uo.claimant.is_public?
-                %a{href: "/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
+                %span{class:"hover-card"}
+                  %a{href: "/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
               - else
-                %a{href: "https://orcid.org/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
+                %span{class:"hover-card"}
+                  %a{href: "https://orcid.org/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
             %td
               %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{uo.user_occurrence_id}"} Not me
 
