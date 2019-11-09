@@ -19,7 +19,7 @@ Sinatra app to parse people names from structured biodiversity occurrence data, 
 4. Redis 4.0.9+
 5. Apache Spark 2+
 6. Neo4j
-7. Unix-based operating system to use GNU parallel
+7. Unix-based operating system to use GNU parallel to process GBIF downloads
 
 ## Installation
 
@@ -28,8 +28,9 @@ Sinatra app to parse people names from structured biodiversity occurrence data, 
      $ gem install bundler
      $ bundle install
      $ mysql -u root bloodhound < db/bloodhound.sql
-     $ cp config.yml.sample config.yml
-     # Adjust content of config.yml
+     $ cp config/settings/development.yml.sample config/settings/development.yml
+     # Adjust content of development.yml
+     # Copy and edit production.yml and test.yml as above
      $ rackup -p 4567 config.ru
 
 ## Steps to Import Data & Execute Parsing / Clustering
@@ -52,7 +53,7 @@ See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the oc
 
 ### Step 4: Cluster Agents & Store in Neo4j
 
-Truncating a large Neo4j graph.db usually does not work. Instead, it is best to entirely delete the graph.db directory then recreate it.
+Truncating a large Neo4j graph.db usually does not work. Instead, it is best to entirely delete graph.db then recreate it.
 
 Example on Mac with homebrew:
 

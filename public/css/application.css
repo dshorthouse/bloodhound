@@ -411,6 +411,10 @@ dl.citation{
   background-color:#fff;
 }
 
+.popover{
+    max-width: 100%;
+}
+
 @media (max-width: 450px) {
   .display-2 {
     font-size:3.5rem;

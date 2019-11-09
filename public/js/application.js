@@ -7,21 +7,16 @@ Array.prototype.all_unique = function () {
   });
 };
 
-// jQuery plugin to prevent double submission of forms
 jQuery.fn.preventDoubleSubmission = function() {
   $(this).on('submit',function(e){
     var $form = $(this);
 
     if ($form.data('submitted') === true) {
-      // Previously submitted - don't submit again
       e.preventDefault();
     } else {
-      // Mark it so that the next submit can be ignored
       $form.data('submitted', true);
     }
   });
-
-  // Keep chainability
   return this;
 };
 
@@ -50,7 +45,7 @@ var Application = (function($, window) {
       this.candidate_counter();
       this.helper_navbar();
       this.helper_modal();
-      this.hover_cards();
+      this.popover_cards();
     },
     profile_cards: function() {
       $(".card-profile").on("click", function() {
@@ -418,38 +413,50 @@ var Application = (function($, window) {
         });
       });
     },
-    hover_cards: function(){
+    popover_cards: function() {
       var self = this;
       $('span.hover-card').each(function() {
-        $(this).popover({
+        var ele = $(this);
+        ele.popover({
           placement: 'auto',
           trigger: 'hover',
           html: true,
-          container: $(this),
+          container: ele,
           animation: true,
-          title: $(this).text(),
+          title: "",
           content: self.spinner
+        }).on('shown.bs.popover', function(e) {
+          $.ajax({
+            method: "GET",
+            dataType: "html",
+            url: "/" + ele.data("identifier") + "/card",
+          }).done(function(data) {
+            var thanks_ele = "<a href=\"#\" class=\"thanks\"><i class=\"far fa-heart pl-1\"></i> thanks</a>",
+                content = "<div class=\"d-flex flex-row align-items-center\">";
+            if (ele.data("thanks") === true) {
+              thanks_ele = "<i class=\"fas fa-check pl-1\"></i> thanks";
+            }
+            var thanks_class = (ele.data("thanks") === true) ? "fas fa-check" : "far fa-heart";
+            content += data;
+            content += "<div class:\"align-middle\">" + thanks_ele + "</div>";
+            content += "</div>";
+            $(e.target).parent().find(".popover-body").html(content).find("a.thanks").on({
+              click: function(e) {
+                e.preventDefault();
+                ele.data("thanks", true);
+                ele.find("i").removeClass("far fa-heart").addClass("fas fa-check").css({ color: "green" });
+              },
+              mouseover: function(e) {
+                ele.find("i.fa-heart").removeClass("far").addClass("fas");
+              },
+              mouseleave: function(e) {
+                ele.find("i.fa-heart").removeClass("fas").addClass("far");
+              }
+            });
+            ele.popover('update');
+          });
         });
       });
-      /*
-      TODO: popover does not disappear when hovering away after the GET below
-      $('span.hover-card').hover(function() {
-          var $elem = $(this);
-          $elem.popover({
-            placement: 'auto',
-            trigger: 'hover',
-            html: true,
-            container: $elem,
-            animation: true,
-            title: $elem.text(),
-            content: self.spinner
-          });
-
-          $.get(self.path + "/candidate-count.json?relaxed=0&user_id=" + self.user_id, function(d) {
-              $elem.popover({ placement: 'auto', animation: true, trigger: 'hover', content: d.toString() }).popover('show');
-          });
-      });
-      */
     }
   };
 
