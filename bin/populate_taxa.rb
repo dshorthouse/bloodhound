@@ -25,8 +25,7 @@ end.parse!
 if options[:truncate]
   tables = [
     "taxa",
-    "taxon_occurrences",
-    "taxon_determiners"
+    "taxon_occurrences"
   ]
   tables.each do |table|
     Occurrence.connection.execute("TRUNCATE TABLE #{table}")
