@@ -33,7 +33,7 @@ if options[:cluster]
                     .where.not(given: ["", nil])
                     .group("family, LOWER(LEFT(given,1))")
                     .having('count(*) > 1')
-                    .pluck(:id)
+                    .pluck("ANY_VALUE(id)")
                     .uniq
   duplicates.in_groups_of(1000, false) do |group|
     Sidekiq::Client.push_bulk({ 'class' => Bloodhound::ClusterWorker, 'args' => group.map{ |i| [i] } })
