@@ -428,21 +428,21 @@ var Application = (function($, window) {
         }).on('shown.bs.popover', function(e) {
           $.ajax({
             method: "GET",
-            dataType: "html",
-            url: "/" + ele.data("identifier") + "/card",
+            dataType: "json",
+            url: self.path + "/" + ele.data("helper-orcid") + "/card/" + ele.data("occurrence-id") +".json",
           }).done(function(data) {
             var thanks_ele = "<a href=\"#\" class=\"thanks\"><i class=\"far fa-heart pl-1\"></i> thanks</a>",
                 content = "<div class=\"d-flex flex-row align-items-center\">";
-            if (ele.data("thanks") === true) {
+            if (ele.data("thanks") === true || data.message_exists) {
               thanks_ele = "<i class=\"fas fa-check pl-1\"></i> thanks";
             }
-            var thanks_class = (ele.data("thanks") === true) ? "fas fa-check" : "far fa-heart";
-            content += data;
+            content += data.card;
             content += "<div class:\"align-middle\">" + thanks_ele + "</div>";
             content += "</div>";
             $(e.target).parent().find(".popover-body").html(content).find("a.thanks").on({
               click: function(e) {
                 e.preventDefault();
+                self.create_message(ele.data("helper-orcid"), ele.data("occurrence-id"));
                 ele.data("thanks", true);
                 ele.find("i").removeClass("far fa-heart").addClass("fas fa-check").css({ color: "green" });
               },
@@ -456,6 +456,19 @@ var Application = (function($, window) {
             ele.popover('update');
           });
         });
+      });
+    },
+    create_message: function(recipient_identifier, occurrence_id) {
+      $.ajax({
+        method: "POST",
+        url: this.path + "/message.json",
+        dataType: "json",
+        data: JSON.stringify({
+          recipient_identifier: recipient_identifier,
+          occurrence_id: occurrence_id
+        })
+      }).done(function(data) {
+        //TODO
       });
     }
   };

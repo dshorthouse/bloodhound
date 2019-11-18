@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
   has_many :claimed_occurrences, through: :claims, source: :occurrence
   has_many :user_organizations, dependent: :delete_all
   has_many :organizations, through: :user_organizations, source: :organization
+  has_many :received_messages, foreign_key: :recipient_id, class_name: "Message", dependent: :delete_all
+  has_many :sent_messages, class_name: "Message", foreign_key: :user_id, dependent: :delete_all
 
   before_update :set_update_time
   after_create :update_profile, :add_search

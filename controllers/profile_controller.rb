@@ -308,6 +308,35 @@ module Sinatra
             haml :'profile/citation', locals: { active_page: "profile" }
           end
 
+          app.get '/profile/:id/card/:occurrence_id.json' do
+            protected!
+            content_type "application/json", charset: 'utf-8'
+            viewed_user = find_user(params[:id])
+            occurrence_id = params[:occurrence_id].to_i
+            message_exists = Message.exists?({
+              user_id: @user.id,
+              recipient_id: viewed_user.id,
+              occurrence_id: occurrence_id
+            })
+            card = cache_fragment(params[:id]) do
+              haml :'partials/user_card', layout: false, locals: { user: viewed_user }
+            end
+            { card: card, message_exists: message_exists }.to_json
+          end
+
+          app.post '/profile/message.json' do
+            protected!
+            content_type "application/json", charset: 'utf-8'
+            req = JSON.parse(request.body.read).symbolize_keys
+            m = Message.new
+            m.user_id = @user.id
+            recipient = find_user(req[:recipient_identifier])
+            m.recipient_id = recipient.id
+            m.occurrence_id = req[:occurrence_id]
+            m.save
+            { message: "ok", occurrence_id: params[:occurrence_id] }.to_json
+          end
+
           app.get '/profile/refresh.json' do
             protected!
             content_type "application/json", charset: 'utf-8'

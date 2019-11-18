@@ -20,6 +20,8 @@ class Occurrence < ActiveRecord::Base
   has_one :taxon_occurrence
   has_one :taxon, through: :taxon_occurrence, source: :taxon
 
+  has_many :messages
+
   alias_attribute :id, :gbifID
 
   validates :id, presence: true
