@@ -20,7 +20,7 @@ else
 end
 
 # usage: rake 'generate:migration[name_of_migration]'
-# note the single quotes above, necessary in zsh 
+# note the single quotes above, necessary in zsh
 namespace :generate do
   task(:migration, :migration_name) do |t, args|
     timestamp = Time.now.gmtime.to_s[0..18].gsub(/[^\d]/, '')
@@ -33,7 +33,7 @@ namespace :generate do
     content = "class #{class_name} < ActiveRecord::Migration[#{v}]
   def up
   end
-  
+
   def down
   end
 end
@@ -62,12 +62,12 @@ namespace :db do
       end
     end
   end
-  
+
   namespace :create do
     task(:all) do
       if ['0.0.0.0', '127.0.0.1', 'localhost'].include?(Settings[:host].strip)
         database = Settings.delete_field(:database)
-        ActiveRecord::Base.establish_connection(Settings.to_hash)
+        ActiveRecord::Base.establish_connection(Settings)
         ActiveRecord::Base.connection.execute("create database if not exists #{database}")
       end
     end
@@ -81,7 +81,7 @@ namespace :db do
         # this needs to match the delimiter of your queries
         STATEMENT_SEPARATOR = ";\n"
 
-        ActiveRecord::Base.establish_connection(Settings.to_hash)
+        ActiveRecord::Base.establish_connection(Settings)
         script.split(STATEMENT_SEPARATOR).each do |stmt|
           ActiveRecord::Base.connection.execute(stmt)
         end
