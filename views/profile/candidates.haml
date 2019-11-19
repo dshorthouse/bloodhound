@@ -23,7 +23,7 @@
   - placeholder = @searched_user.fullname
 
 - if @results.empty?
-  %div{class: "alert alert-info row", role:"alert", style:"margin-left:0.1em;margin-right:0.1em"}
+  %div{class: "alert alert-info row tiny-margins", role:"alert"}
     %div{class: "col col-12 col-sm-12 col-m-8 col-lg-8"}
       Bloodhound did not sniff any specimens indexed by the Global Biodiversity Information Facility (GBIF) that you may have collected or identified.
 
@@ -40,7 +40,7 @@
   %div{class: "alert alert-#{alert_class} row candidates-alert tiny-margins", role: "alert"}
     %div{class: "col col-12 col-sm-12 col-m-6 col-lg-8"}
       = succeed "." do
-        Sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for 
+        Sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for
         %span{class:"font-weight-bold"} #{placeholder}
       - if @searched_user.nil?
         %div{class:"form-check d-inline-flex"}
@@ -49,13 +49,13 @@
           %label{for:"relaxed", class:"relaxed"} Make less exact
       %br
       Choose
-      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
-      collected, 
+      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+      collected,
       %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
       identified, or Both.
       - if @searched_user.nil?
-        Or 
-        %a{href: "#", "data-toggle":"modal", "data-target":"#modal_claims"} work offline then upload 
+        Or
+        %a{href: "#", "data-toggle":"modal", "data-target":"#modal_claims"} work offline then upload
         your claims.
       - else
         Claim the following specimen records

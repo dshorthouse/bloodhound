@@ -12,4 +12,6 @@
   %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_page] == "help" ? " active" : nil}", href: "/admin/user/#{@admin_user.identifier}/support"} Help Received
   %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "messages" ? " active" : nil}", href: "/admin/user/#{@admin_user.identifier}/messages"} Thanks Received
+  %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_page] == "citations" ? " active" : nil}", href: "/admin/user/#{@admin_user.identifier}/citations"} Science Enabled

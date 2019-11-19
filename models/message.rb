@@ -1,6 +1,6 @@
 class Message < ActiveRecord::Base
-  belongs_to :user
-  belongs_to :recipient, class_name: :user, foreign_key: :recipient_id
+  belongs_to :sender, class_name: "User", foreign_key: :user_id
+  belongs_to :recipient, class_name: "User", foreign_key: :recipient_id
   belongs_to :occurrence
 
   validates :user_id, presence: true

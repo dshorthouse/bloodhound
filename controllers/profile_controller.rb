@@ -142,6 +142,25 @@ module Sinatra
             haml :'profile/support', locals: { active_page: "profile" }
           end
 
+          app.get '/profile/messages' do
+            protected!
+
+            @page = (params[:page] || 1).to_i
+            @total = @user.messages_received.count
+
+            if @page*search_size > @total
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
+            end
+
+            @page = 1 if @page <= 0
+
+            @user.messages_received.update_all({ read: true })
+
+            @pagy, @results = pagy(@user.messages_received, items: search_size, page: @page)
+            haml :'profile/messages', locals: { active_page: "profile" }
+          end
+
           app.put '/profile/visibility.json' do
             protected!
             content_type "application/json", charset: 'utf-8'
@@ -194,6 +213,15 @@ module Sinatra
                       .pluck(:occurrence_id)
                       .uniq
                       .count
+            { count: count }.to_json
+          end
+
+          app.get '/profile/message-count.json' do
+            protected!
+            content_type "application/json"
+            return { count: 0}.to_json if @user.family.nil?
+
+            count = @user.messages_received.where(read: false).count
             { count: count }.to_json
           end
 

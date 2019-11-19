@@ -75,7 +75,7 @@ module Sinatra
             wikidata_lib = ::Bloodhound::WikidataSearch.new
             code = wikidata || grid || ringgold
             wiki = wikidata_lib.institution_wikidata(code)
-            data.merge!(wiki) if wiki 
+            data.merge!(wiki) if wiki
             @organization.update(data)
             redirect "/admin/organization/#{params[:id]}"
           end
@@ -237,6 +237,25 @@ module Sinatra
 
             @pagy, @results = pagy(@admin_user.claims_received, items: search_size, page: @page)
             haml :'admin/support', locals: { active_page: "administration" }
+          end
+
+          app.get '/admin/user/:id/messages' do
+            admin_protected!
+            check_redirect
+            @admin_user = find_user(params[:id])
+
+            @page = (params[:page] || 1).to_i
+            @total = @admin_user.messages_received.count
+
+            if @page*search_size > @total
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
+            end
+
+            @page = 1 if @page <= 0
+
+            @pagy, @results = pagy(@admin_user.messages_received, items: search_size, page: @page)
+            haml :'admin/messages', locals: { active_page: "administration" }
           end
 
           app.get '/admin/user/:id/candidates.csv' do
@@ -405,7 +424,7 @@ module Sinatra
                             .where(user_id: req[:user_id].to_i)
                             .destroy_all
             end
-            data = occurrence_ids.map{|o| { 
+            data = occurrence_ids.map{|o| {
                 user_id: req[:user_id].to_i,
                 occurrence_id: o.to_i,
                 created_by: @user.id,

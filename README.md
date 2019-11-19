@@ -59,6 +59,8 @@ Example on Mac with homebrew:
 
      $ brew services stop neo4j
      $ sudo rm -rf /usr/local/opt/neo4j/libexec/data/databases/graph.db
+     # Could also be
+     $ sudo rm -rf /usr/local/var/neo4j/data/databases/graph.db
      $ brew services start neo4j # recreates graph.db
      $ rake neo4j:migrate # recreate the constraint on graph.db
 
@@ -99,6 +101,7 @@ Replacing the database through load requires that the database first be deleted 
 Unfortunately, gbifIDs are not persistent. These occasionally disappear through processing at GBIF's end. As a result, claims may no longer point to an existing occurrence record and these must then be purged from the user_occurrences table. The following SQL statement can remove these with successive data imports from GBIF:
 
       DELETE uo FROM user_occurrences uo LEFT JOIN occurrences o ON uo.occurrence_id = o.gbifID WHERE o.gbifID IS NULL;
+      DELETE m FROM messages m LEFT JOIN occurrences o ON m.occurrence_id = o.gbifID WHERE o.gbifID IS NULL;
       DELETE ao FROM article_occurrences ao LEFT JOIN occurrences o ON ao.occurrence_id = o.gbifID WHERE o.gbifID IS NULL;
       DELETE a FROM articles a LEFT JOIN article_occurrences ao ON ao.article_id = a.id WHERE ao.article_id IS NULL;
 

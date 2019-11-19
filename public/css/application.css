@@ -227,6 +227,12 @@ dl.dl-horizontal dd.line-break {
     right:-5px;
     top:-5px;
 }
+.badge-notify-message{
+    display:none;
+    position: absolute;
+    right:-5px;
+    top:-5px;
+}
 
 /* CARDS */
 .card-header {
@@ -259,7 +265,7 @@ dl.dl-horizontal dd.line-break {
 .card-profile:hover {
   background-color:#f8f9fa;
   cursor:pointer;
-  -webkit-box-shadow: 3px 3px 5px -5px rgba(0,0,0,0.4); 
+  -webkit-box-shadow: 3px 3px 5px -5px rgba(0,0,0,0.4);
   box-shadow: 3px 3px 5px -5px rgba(0,0,0,0.4);
   border: 1px solid rgba(0,0,0,.175);
 }

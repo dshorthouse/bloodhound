@@ -2,7 +2,7 @@
 
 Array.prototype.all_unique = function () {
   "use strict";
-  return this.filter(function (value, index, self) { 
+  return this.filter(function (value, index, self) {
     return self.indexOf(value) === index;
   });
 };
@@ -43,6 +43,7 @@ var Application = (function($, window) {
       this.activate_switch();
       this.activate_refresh();
       this.candidate_counter();
+      this.message_counter();
       this.helper_navbar();
       this.helper_modal();
       this.popover_cards();
@@ -372,6 +373,21 @@ var Application = (function($, window) {
         });
       }
     },
+    message_counter: function() {
+      var self = this;
+      if (self.path === "/profile") {
+        $.ajax({
+          method: "GET",
+          url: self.path + "/message-count.json"
+        }).done(function(data) {
+          if (data.count > 0 && data.count <= 50) {
+            $(".badge-notify-message").text(data.count).show();
+          } else if (data.count > 50) {
+            $(".badge-notify-message").text("50+").show();
+          }
+        });
+      }
+    },
     helper_navbar: function() {
       var self = this;
       if ($('#helper-info').length && $('#helper-navbar').length) {
@@ -416,7 +432,16 @@ var Application = (function($, window) {
     popover_cards: function() {
       var self = this;
       $('span.hover-card').each(function() {
-        var ele = $(this);
+        var ele = $(this),
+            url = "", data_type = "html";
+
+        if (ele.data("occurrence-id")) {
+          url = self.path + "/" + ele.data("helper-orcid") + "/card/" + ele.data("occurrence-id") +".json";
+          data_type = "json";
+        } else {
+          url = "/" + ele.data("helper-orcid") + "/card";
+          data_type = "html";
+        }
         ele.popover({
           placement: 'auto',
           trigger: 'hover',
@@ -428,17 +453,23 @@ var Application = (function($, window) {
         }).on('shown.bs.popover', function(e) {
           $.ajax({
             method: "GET",
-            dataType: "json",
-            url: self.path + "/" + ele.data("helper-orcid") + "/card/" + ele.data("occurrence-id") +".json",
+            dataType: data_type,
+            url: url,
           }).done(function(data) {
-            var thanks_ele = "<a href=\"#\" class=\"thanks\"><i class=\"far fa-heart pl-1\"></i> thanks</a>",
-                content = "<div class=\"d-flex flex-row align-items-center\">";
-            if (ele.data("thanks") === true || data.message_exists) {
-              thanks_ele = "<i class=\"fas fa-check pl-1\"></i> thanks";
+            var thanks_ele = "", content = "";
+            if (ele.data("occurrence-id")) {
+              thanks_ele = "<a href=\"#\" class=\"thanks\"><i class=\"far fa-heart pl-1\"></i> thanks</a>";
+              content = "<div class=\"d-flex flex-row align-items-center\">";
+              if (ele.data("thanks") === true || data.message_exists) {
+                thanks_ele = "<i class=\"fas fa-check pl-1\"></i> thanks";
+              }
+              content += data.card;
+              content += "<div class:\"align-middle\">" + thanks_ele + "</div>";
+              content += "</div>";
+            } else {
+              content = data;
             }
-            content += data.card;
-            content += "<div class:\"align-middle\">" + thanks_ele + "</div>";
-            content += "</div>";
+
             $(e.target).parent().find(".popover-body").html(content).find("a.thanks").on({
               click: function(e) {
                 e.preventDefault();

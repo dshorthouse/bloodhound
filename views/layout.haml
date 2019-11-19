@@ -100,12 +100,15 @@
                     %a{href:"/profile/candidates", class:"dropdown-item"}
                       %i{class:"fas fa-search-location"}
                       = I18n.t('layout.discovered')
-                    %a{href:"/profile/citations", class:"dropdown-item"}
-                      %i{class:"fas fa-flask"}
-                      = I18n.t('layout.science_enabled')
                     %a{href:"/profile/support", class:"dropdown-item"}
                       %i{class:"fas fa-hands-helping"}
                       = I18n.t('layout.help_received')
+                    %a{href:"/profile/messages", class:"dropdown-item"}
+                      %i{class:"fas fa-heart"}
+                      = I18n.t('layout.messages_received')
+                    %a{href:"/profile/citations", class:"dropdown-item"}
+                      %i{class:"fas fa-flask"}
+                      = I18n.t('layout.science_enabled')
                     %a{href:"/profile/settings", class:"dropdown-item"}
                       %i{class:"fas fa-cog"}
                       = I18n.t('layout.settings')
