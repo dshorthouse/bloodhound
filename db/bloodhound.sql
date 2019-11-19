@@ -42,20 +42,20 @@ CREATE TABLE `ar_internal_metadata` (
 
 CREATE TABLE `destroyed_users` (
   `id` int(11) NOT NULL,
-  `identifier` varchar(25) NOT NULL,
-  `redirect_to` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `identifier` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `redirect_to` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `messages` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
   `recipient_id` int(11) NOT NULL,
   `occurrence_id` bigint(20) DEFAULT NULL,
-  `message` text COLLATE utf8mb4_general_ci,
+  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `read` tinyint(1) DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `occurrences` (
   `gbifID` bigint(11) UNSIGNED NOT NULL,
