@@ -1,0 +1,10 @@
+%nav{id:"specimen-nav", class:"navbar navbar-light navbar-expand bg-light"}
+  %ul{class:"navbar-nav"}
+    %li{class:"nav-item"}
+      %a{class:"nav-link#{locals[:active_tab] == "specimens" ? " active" : nil}", href:"/profile/specimens"} Claimed
+    %li{class:"nav-item"}
+      %a{class:"nav-link#{locals[:active_tab] == "candidates" ? " active" : nil}", href:"/profile/candidates"} Discovered
+    %li{class:"nav-item"}
+      %a{class:"nav-link#{locals[:active_tab] == "ignored" ? " active" : nil}", href:"/profile/ignored"} Ignored
+    %li{class: "nav-item"}
+      %a{class: "nav-link#{locals[:active_tab] == "support" ? " active" : nil}", href: "/profile/support"} Help Received

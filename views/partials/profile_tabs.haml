@@ -1,18 +1,17 @@
 %ul{class: "nav nav-tabs pl-2"}
   %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_page] == "profile" ? " active" : nil}", href: "/profile"} Overview
-  %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "specimens" ? " active" : nil}", href: "/profile/specimens"} My Specimens
   %li{class: "nav-item badge-item"}
-    %a{class: "nav-link#{locals[:active_page] == "candidates" ? " active" : nil}", href: "/profile/candidates"}
-      Discovered
+    %a{class: "nav-link#{locals[:active_page] == "specimens" ? " active" : nil}", href: "/profile/specimens"}
+      %i{class:"fas fa-th"}
+      Specimens
     %span{class: "badge-notify badge badge-danger badge-pill"}
-  %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "ignored" ? " active" : nil}", href: "/profile/ignored"} Ignored
-  %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "support" ? " active" : nil}", href: "/profile/support"} Help Received
   %li{class: "nav-item badge-item"}
-    %a{class: "nav-link#{locals[:active_page] == "messages" ? " active" : nil}", href: "/profile/messages"} Thanks Received
+    %a{class: "nav-link#{locals[:active_page] == "messages" ? " active" : nil}", href: "/profile/messages"}
+      %i{class:"fas fa-heart"}
+      Thanks Received
     %span{class: "badge-notify-message badge badge-success badge-pill"}
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "citations" ? " active" : nil}", href: "/profile/citations"} Science Enabled
+    %a{class: "nav-link#{locals[:active_page] == "citations" ? " active" : nil}", href: "/profile/citations"}
+      %i{class:"fas fa-flask"}
+      Science Enabled

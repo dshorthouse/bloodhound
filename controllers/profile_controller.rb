@@ -289,7 +289,7 @@ module Sinatra
             rescue => e
               flash.now[:error] = e.message
             end
-            haml :'profile/upload'
+            haml :'profile/upload', locals: { active_page: "profile" }
           end
 
           app.get '/profile/ignored' do
@@ -306,7 +306,7 @@ module Sinatra
             @page = 1 if @page <= 0
 
             @pagy, @results = pagy(@user.hidden_occurrences, items: search_size, page: @page)
-            haml :'profile/ignored', locals: { active_page: "profile" }
+            haml :'profile/ignored', locals: { active_page: "profile", active_tab: "ignored" }
           end
 
           app.get '/profile/citations' do

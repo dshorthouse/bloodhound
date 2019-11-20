@@ -12,20 +12,20 @@
   %div{class:"col-12 col-lg-4"}
     %h1{class:"h3"}= @user.fullname
   %div{class:"col-12 col-lg-8 mt-2"}
-    = haml :'partials/profile_tabs', layout: false, locals: { active_page: "ignored" }
+    = haml :'partials/profile_tabs', layout: false, locals: { active_page: "specimens" }
+    = haml :'partials/profile_subtabs', layout: false, locals: { active_tab: "ignored"}
 
 %div{class: "alert alert-info tiny-margins", role: "alert"}
   - if @results.empty?
     Specimen records you marked as "Not me" will appear here.
 
   - else
-    Choose 
-    %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
-    collected, 
+    Choose
+    %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+    collected,
     %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-    identified, or Both to claim specimens 
+    identified, or Both to claim specimens
     %span{class:"font-weight-bold"} you may have mistakenly marked as "Not me".
 
 - if !@results.empty?
   = haml :'partials/tables/ignored', layout: false
-

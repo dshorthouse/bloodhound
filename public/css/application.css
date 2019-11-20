@@ -396,11 +396,11 @@ dl.citation{
   position:relative;
 }
 
-#network-nav a.nav-link {
+#network-nav a.nav-link, #specimen-nav a.nav-link {
   color:#D3633C;
 }
 
-#network-nav a.active {
+#network-nav a.active, #specimen-nav a.active {
   color:#495057;
 }
 
