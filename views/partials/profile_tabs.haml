@@ -1,6 +1,8 @@
 %ul{class: "nav nav-tabs pl-2"}
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "profile" ? " active" : nil}", href: "/profile"} Overview
+    %a{class: "nav-link#{locals[:active_page] == "profile" ? " active" : nil}", href: "/profile"}
+      %i{class:"fas fa-user"}
+      Overview
   %li{class: "nav-item badge-item"}
     %a{class: "nav-link#{locals[:active_page] == "specimens" ? " active" : nil}", href: "/profile/specimens"}
       %i{class:"fas fa-th"}
