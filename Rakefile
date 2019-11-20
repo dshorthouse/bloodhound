@@ -57,7 +57,7 @@ namespace :db do
     task(:all) do
       if ['0.0.0.0', '127.0.0.1', 'localhost'].include?(Settings[:host].strip)
         database = Settings.delete(:database)
-        ActiveRecord::Base.establish_connection(Settings)
+        ActiveRecord::Base.establish_connection(Settings.to_hash)
         ActiveRecord::Base.connection.execute("drop database if exists #{database}")
       end
     end
@@ -67,7 +67,7 @@ namespace :db do
     task(:all) do
       if ['0.0.0.0', '127.0.0.1', 'localhost'].include?(Settings[:host].strip)
         database = Settings.delete_field(:database)
-        ActiveRecord::Base.establish_connection(Settings)
+        ActiveRecord::Base.establish_connection(Settings.to_hash)
         ActiveRecord::Base.connection.execute("create database if not exists #{database}")
       end
     end
@@ -81,7 +81,7 @@ namespace :db do
         # this needs to match the delimiter of your queries
         STATEMENT_SEPARATOR = ";\n"
 
-        ActiveRecord::Base.establish_connection(Settings)
+        ActiveRecord::Base.establish_connection(Settings.to_hash)
         script.split(STATEMENT_SEPARATOR).each do |stmt|
           ActiveRecord::Base.connection.execute(stmt)
         end
