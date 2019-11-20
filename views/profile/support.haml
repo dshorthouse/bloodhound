@@ -71,9 +71,10 @@
                 %a{href: "/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
             %td
               - if uo.message.nil?
-                %button{type:"button", class:"btn btn-sm btn-outline-danger thanks", "data-recipient-identifier": uo.claimant.orcid, "data-occurrence-id": o.id}
-                  %i{class:"fas fa-heart"}
-                  Thanks
+                - if !uo.claimant.is_bot?
+                  %button{type:"button", class:"btn btn-sm btn-outline-danger thanks", "data-recipient-identifier": uo.claimant.orcid, "data-occurrence-id": o.id}
+                    %i{class:"fas fa-heart"}
+                    Thanks
               - else
                 %span{class:"btn btn-sm btn-outline-success disabled", disabled: true}
                   %i{class:"fas fa-check"}
