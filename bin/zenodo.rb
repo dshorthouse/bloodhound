@@ -56,22 +56,38 @@ if options[:new]
   end
 
 elsif options[:orcid]
-  u = User.find_by_orcid(options[:orcid])
-  z = Bloodhound::Zenodo.new(hash: u.zenodo_access_token)
-  u.zenodo_access_token = z.refresh_token
-  u.save
+  u = User.where(orcid: options[:orcid]).where.not(zenodo_doi: nil).first
+  if !u.nil?
+    z = Bloodhound::Zenodo.new(hash: u.zenodo_access_token)
+    u.zenodo_access_token = z.refresh_token
+    u.save
 
-  doi_id = z.new_deposit(name: u.fullname_reverse, orcid: u.orcid)
-  id = doi_id[:recid]
-  csv = Bloodhound::IO.csv_stream_occurrences(u.visible_occurrences)
-  z.add_file_enum(id: id, enum: csv, file_name: u.orcid + ".csv")
-  json = Bloodhound::IO.jsonld_stream(u)
-  z.add_file_string(id: id, string: json, file_name: u.orcid + ".json")
-  pub = z.publish(id: id)
-  u.zenodo_doi = pub[:doi]
-  u.zenodo_concept_doi = pub[:conceptdoi]
-  u.save
-  puts "#{u.fullname_reverse}".green 
+    old_id = u.zenodo_doi.split(".").last
+    doi_id = z.new_version(id: old_id)
+
+    id = doi_id[:recid]
+    files = z.list_files(id: id).map{|f| f[:id]}
+    files.each do |file_id|
+      z.delete_file(id: id, file_id: file_id)
+    end
+
+    csv = Bloodhound::IO.csv_stream_occurrences(u.visible_occurrences)
+    z.add_file_enum(id: id, enum: csv, file_name: u.orcid + ".csv")
+    json = Bloodhound::IO.jsonld_stream(u)
+    z.add_file_string(id: id, string: json, file_name: u.orcid + ".json")
+
+    pub = z.publish(id: id)
+    if !pub[:doi].nil?
+      u.zenodo_doi = pub[:doi]
+      u.save
+      puts "#{u.fullname_reverse}".green
+    else
+      z.discard_version(id: id)
+      puts "#{u.fullname_reverse}".red
+    end
+  else
+    puts "User does not yet have a data package in Zenodo".red
+  end
  
 elsif options[:all] || options[:within_week]
   qry = User.where.not(zenodo_doi: nil)
