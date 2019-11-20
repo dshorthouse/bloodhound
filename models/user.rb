@@ -288,6 +288,16 @@ class User < ActiveRecord::Base
     current
   end
 
+  def latest_messages_by_senders
+    messages_received.select(:user_id, :recipient_id, "MAX(created_at) AS latest")
+                     .group(:user_id, :recipient_id)
+                     .order("MAX(created_at) DESC")
+  end
+
+  def messages_by_recipient(recipient_id)
+    messages_sent.where(recipient_id: recipient_id)
+  end
+
   def bulk_claim(agent:, conditions:, ignore: false)
 
     claimed = user_occurrences.pluck(:occurrence_id)
