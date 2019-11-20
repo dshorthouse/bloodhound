@@ -38,14 +38,6 @@ module Sinatra
             end
           end
 
-          app.get '/:id/card' do
-            check_identifier
-            viewed_user = find_user(params[:id])
-            cache_fragment(params[:id]) do
-              haml :'partials/user_card', layout: false, locals: { user: viewed_user }
-            end
-          end
-
           app.get '/:id' do
             check_identifier
             check_redirect

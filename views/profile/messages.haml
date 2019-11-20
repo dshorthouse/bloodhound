@@ -59,7 +59,10 @@
               %div{class: "small text-left text-muted mr-2"}
                 %span{class:"badge badge-light"}
                   #{u.messages_by_recipient(m[:recipient_id]).count}
-                thanks, Latest at #{m[:latest]}
+                %span{class:"text-danger"}
+                  %i{class:"fas fa-heart"}
+              %div{class:"small ml-auto text-muted"}
+                Latest at #{m[:latest]}
 
 
   = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

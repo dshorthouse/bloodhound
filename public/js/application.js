@@ -46,7 +46,6 @@ var Application = (function($, window) {
       this.message_counter();
       this.helper_navbar();
       this.helper_modal();
-      this.popover_cards();
     },
     profile_cards: function() {
       $(".card-profile").on("click", function() {
@@ -315,6 +314,26 @@ var Application = (function($, window) {
         });
         return false;
       });
+      $("button.thanks").on("click", function() {
+        var button = this,
+            occurrence_id = $(this).attr("data-occurrence-id"),
+            recipient_identifier = $(this).attr("data-recipient-identifier");
+        $.ajax({
+          method: "POST",
+          url: self.path + "/message.json",
+          dataType: "json",
+          data: JSON.stringify({
+            recipient_identifier: recipient_identifier,
+            occurrence_id: occurrence_id
+          })
+        }).done(function(data) {
+          $(button).removeClass("btn-outline-danger")
+                   .addClass("btn-outline-success")
+                   .addClass("disabled")
+                   .prop("disabled", true)
+                   .find("i").removeClass("fa-heart").addClass("fa-check");
+        });
+      });
     },
     activate_refresh: function(){
       var self = this;
@@ -427,79 +446,6 @@ var Application = (function($, window) {
             $("#helpers-list-none").show();
           }
         });
-      });
-    },
-    popover_cards: function() {
-      var self = this;
-      $('span.hover-card').each(function() {
-        var ele = $(this),
-            url = "", data_type = "html";
-
-        if (ele.data("occurrence-id")) {
-          url = self.path + "/" + ele.data("helper-orcid") + "/card/" + ele.data("occurrence-id") +".json";
-          data_type = "json";
-        } else {
-          url = "/" + ele.data("helper-orcid") + "/card";
-          data_type = "html";
-        }
-        ele.popover({
-          placement: 'auto',
-          trigger: 'hover',
-          html: true,
-          container: ele,
-          animation: true,
-          title: "",
-          content: self.spinner
-        }).on('shown.bs.popover', function(e) {
-          $.ajax({
-            method: "GET",
-            dataType: data_type,
-            url: url,
-          }).done(function(data) {
-            var thanks_ele = "", content = "";
-            if (ele.data("occurrence-id")) {
-              thanks_ele = "<a href=\"#\" class=\"thanks\"><i class=\"far fa-heart pl-1\" style=\"color:green\"></i> thanks</a>";
-              content = "<div class=\"d-flex flex-row align-items-center m-0 p-0\">";
-              if (ele.data("thanks") === true || data.message_exists) {
-                thanks_ele = "<i class=\"fas fa-check pl-1\" style=\"color:green\"></i> thanks";
-              }
-              content += data.card;
-              content += "<div class=\"align-middle\">" + thanks_ele + "</div>";
-              content += "</div>";
-            } else {
-              content = data;
-            }
-
-            $(e.target).parent().find(".popover-body").html(content).find("a.thanks").on({
-              click: function(e) {
-                e.preventDefault();
-                self.create_message(ele.data("helper-orcid"), ele.data("occurrence-id"));
-                ele.data("thanks", true);
-                ele.find("i").removeClass("far fa-heart").addClass("fas fa-check").css({ color: "green" });
-              },
-              mouseover: function(e) {
-                ele.find("i.fa-heart").removeClass("far").addClass("fas");
-              },
-              mouseleave: function(e) {
-                ele.find("i.fa-heart").removeClass("fas").addClass("far");
-              }
-            });
-            ele.popover('update');
-          });
-        });
-      });
-    },
-    create_message: function(recipient_identifier, occurrence_id) {
-      $.ajax({
-        method: "POST",
-        url: this.path + "/message.json",
-        dataType: "json",
-        data: JSON.stringify({
-          recipient_identifier: recipient_identifier,
-          occurrence_id: occurrence_id
-        })
-      }).done(function(data) {
-        //TODO
       });
     }
   };

@@ -41,11 +41,8 @@
             %td
               - if m.sender.is_bot?
                 #{m.sender.fullname}
-              - elsif m.sender.is_public?
-                %span{class:"hover-card", "data-helper-orcid": m.sender.orcid}
-                  %a{href: "/#{m.sender.orcid}"} #{m.sender.fullname_reverse}
               - else
-                %a{href: "https://orcid.org/#{m.sender.orcid}"} #{m.sender.fullname_reverse}
+                %a{href: "/#{m.sender.orcid}"} #{m.sender.fullname_reverse}
             %td
               - scientific_name = m.occurrence.scientificName.nil? ? "not recorded" : m.occurrence.scientificName
               %a{href: "https://gbif.org/occurrence/#{m.occurrence.id}", target:"_blank"} #{h(scientific_name)}

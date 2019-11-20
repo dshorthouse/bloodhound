@@ -45,6 +45,7 @@
           %th{scope: "col"} Catalog Number
           %th{scope: "col"} Type Status
           %th{scope: "col"} Trainer
+          %th{scope: "col", class:"btn-selector-wide"}
           %th{scope: "col", class:"btn-selector"}
 
       %tbody
@@ -67,8 +68,16 @@
               - if uo.claimant.is_bot?
                 #{uo.claimant.fullname}
               - else
-                %span{class:"hover-card", "data-helper-orcid": uo.claimant.orcid, "data-occurrence-id": o.id}
-                  %a{href: "/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
+                %a{href: "/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
+            %td
+              - if uo.message.nil?
+                %button{type:"button", class:"btn btn-sm btn-outline-danger thanks", "data-recipient-identifier": uo.claimant.orcid, "data-occurrence-id": o.id}
+                  %i{class:"fas fa-heart"}
+                  Thanks
+              - else
+                %span{class:"btn btn-sm btn-outline-success disabled", disabled: true}
+                  %i{class:"fas fa-check"}
+                  Thanks
             %td
               %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{uo.user_occurrence_id}"} Not me
 
@@ -86,6 +95,7 @@
             %th{scope: "col"} Catalog Number
             %th{scope: "col"} Type Status
             %th{scope: "col"} Helper
+            %th{scope: "col"}
             %th{scope: "col"}
 
   - if @total > 25
