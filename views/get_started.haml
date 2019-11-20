@@ -70,7 +70,7 @@
         %em eg
         Ringgold or GRID have been captured in your ORCID account.
 
-%h3 Step 2: Visit the Discovered tab
+%h3 Step 2: Visit the Specimens tab
 %div{class:"ml-3 mt-4"}
   %img{src:"/images/profile-tabs.png", alt:"Bloodhound profile tabs", class:"mb-3 img-fluid"}
   %p
@@ -94,7 +94,7 @@
       Discovered
     - else
       %a{href: "/profile/candidates"} Discovered
-    tab of your profile, you may bulk claim
+    page of your Specimens tab, you may bulk claim
     %em all visible rows
     of specimens or claim single rows by clicking:
     %ul{class:"list-unstyled"}
@@ -113,11 +113,11 @@
   %p
     Click the "Not me" buttons to ignore
     %em all visible rows
-    or single rows of specimen records. Make a mistake? Visit other tabs in your profile such as
+    or single rows of specimen records. Make a mistake? Visit other pages in your Specimens tab such as
     - if !authorized?
-      My Specimens
+      Claimed
     - else
-      %a{href: "/profile/specimens"} My Specimens
+      %a{href: "/profile/specimens"} Claimed
     or
     - if !authorized?
       Ignored
@@ -125,7 +125,7 @@
       %a{href: "/profile/ignored"} Ignored
     to repair or adjust your selections.
   %div{class:"bd-callout bd-callout-info"}
-    Too many specimen records or want to sort by columns and/or filter by content? Click "work offline then upload" to view instructions on how to download, add claims in a spreadsheet, then upload a completed csv file.
+    Too many specimen records or want to sort by columns and/or filter by content? Click "work offline then upload" on the Discovered page of your Specimens tab to view instructions on how to download, add claims in a spreadsheet, then upload a completed csv file.
 
 %h4 Step 4: Attribute specimens to others
 %p
@@ -134,4 +134,4 @@
     %a{href:"/help-others"} Help Others
   - else
     Help Others
-  to search for your peers, mentors, or anyone who inspires you. Attribute specimens to them just as you claimed your own specimens.
+  to search for your peers, mentors, or anyone who inspires you. Attribute specimens to them just as you claimed your own specimens. If they too have an ORCID ID, they may send you a quick thanks and these will appear in your Thanks Received tab.
