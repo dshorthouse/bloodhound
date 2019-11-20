@@ -417,8 +417,26 @@ dl.citation{
   background-color:#fff;
 }
 
-.popover{
+.popover {
     max-width: 100%;
+    margin:0px;
+    padding:0px;
+}
+.popover .card {
+  border:0px;
+  padding:0px;
+  margin:0px;
+}
+.popover-body {
+  margin:0px;
+  padding:0px 1rem;
+}
+.popover .card-profile:hover{
+  background: none !important;
+  cursor:default;
+  -webkit-box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.4);
+  box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.4);
+  border: 0px solid rgba(0,0,0,.175);
 }
 
 @media (max-width: 450px) {

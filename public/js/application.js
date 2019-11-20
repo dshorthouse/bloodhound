@@ -458,13 +458,13 @@ var Application = (function($, window) {
           }).done(function(data) {
             var thanks_ele = "", content = "";
             if (ele.data("occurrence-id")) {
-              thanks_ele = "<a href=\"#\" class=\"thanks\"><i class=\"far fa-heart pl-1\"></i> thanks</a>";
-              content = "<div class=\"d-flex flex-row align-items-center\">";
+              thanks_ele = "<a href=\"#\" class=\"thanks\"><i class=\"far fa-heart pl-1\" style=\"color:green\"></i> thanks</a>";
+              content = "<div class=\"d-flex flex-row align-items-center m-0 p-0\">";
               if (ele.data("thanks") === true || data.message_exists) {
-                thanks_ele = "<i class=\"fas fa-check pl-1\"></i> thanks";
+                thanks_ele = "<i class=\"fas fa-check pl-1\" style=\"color:green\"></i> thanks";
               }
               content += data.card;
-              content += "<div class:\"align-middle\">" + thanks_ele + "</div>";
+              content += "<div class=\"align-middle\">" + thanks_ele + "</div>";
               content += "</div>";
             } else {
               content = data;
