@@ -8,10 +8,10 @@ class Messages < ActiveRecord::Migration[6.0]
       t.boolean :read, default: false
       t.timestamp :created_at, default: -> { 'CURRENT_TIMESTAMP' }
       t.timestamp :updated_at
-      t.index :user_id
-      t.index :recipient_id
-      t.index :occurrence_id
     end
+    add_index  :messages, :user_id unless index_exists?(:messages, :user_id)
+    add_index  :messages, :recipient_id unless index_exists?(:messages, :recipient_id)
+    add_index  :messages, :occurrence_id unless index_exists?(:messages, :occurrence_id)
   end
 
   def down
