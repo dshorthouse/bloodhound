@@ -203,8 +203,7 @@ ALTER TABLE `messages`
 ALTER TABLE `occurrences`
   ADD PRIMARY KEY (`gbifID`) USING BTREE,
   ADD KEY `typeStatus_idx` (`typeStatus`(256)),
-  ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`),
-  ADD KEY `triplet_idx` (`institutionCode`(256),`collectionCode`(256),`catalogNumber`(256));
+  ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`);
 
 ALTER TABLE `occurrence_determiners`
   ADD KEY `agent_idx` (`agent_id`);
