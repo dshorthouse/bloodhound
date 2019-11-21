@@ -34,28 +34,55 @@ CREATE TABLE `article_occurrences` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `ar_internal_metadata` (
-  `key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `key` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `value` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `destroyed_users` (
   `id` int(11) NOT NULL,
-  `identifier` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `redirect_to` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+  `identifier` varchar(25) NOT NULL,
+  `redirect_to` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `messages` (
   `id` bigint(20) NOT NULL,
   `user_id` int(11) NOT NULL,
   `recipient_id` int(11) NOT NULL,
   `occurrence_id` bigint(20) DEFAULT NULL,
-  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `read` tinyint(1) DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `missing_occurrences` (
+  `gbifID` bigint(11) UNSIGNED NOT NULL,
+  `datasetKey` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `occurrenceID` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `dateIdentified` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `decimalLatitude` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `decimalLongitude` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `country` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `countryCode` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `eventDate` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `year` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `family` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `identifiedBy` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `institutionCode` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `collectionCode` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `catalogNumber` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `recordedBy` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `scientificName` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `typeStatus` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `dateIdentified_processed` datetime DEFAULT NULL,
+  `eventDate_processed` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE `missing_user_occurrences` (
+  `id` bigint(20) NOT NULL,
+  `occurrence_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `occurrences` (
   `gbifID` bigint(11) UNSIGNED NOT NULL,
@@ -201,10 +228,21 @@ ALTER TABLE `messages`
   ADD KEY `index_messages_on_recipient_id` (`recipient_id`),
   ADD KEY `index_messages_on_occurrence_id` (`occurrence_id`);
 
+ALTER TABLE `missing_occurrences`
+  ADD KEY `typeStatus_idx` (`typeStatus`(256)),
+  ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`),
+  ADD KEY `gbifID` (`gbifID`) USING BTREE,
+  ADD KEY `triplet_idx` (`institutionCode`(256),`collectionCode`(256),`catalogNumber`(256));
+
+ALTER TABLE `missing_user_occurrences`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `occurrence_idx` (`occurrence_id`);
+
 ALTER TABLE `occurrences`
   ADD PRIMARY KEY (`gbifID`) USING BTREE,
   ADD KEY `typeStatus_idx` (`typeStatus`(256)),
-  ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`);
+  ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`),
+  ADD KEY `triplet_idx` (`institutionCode`(256),`collectionCode`(256),`catalogNumber`(256));
 
 ALTER TABLE `occurrence_determiners`
   ADD KEY `agent_idx` (`agent_id`);
@@ -227,7 +265,8 @@ ALTER TABLE `taxa`
   ADD UNIQUE KEY `family_idx` (`family`);
 
 ALTER TABLE `taxon_occurrences`
-  ADD UNIQUE KEY `occurrence_id_idx` (`occurrence_id`);
+  ADD UNIQUE KEY `occurrence_id_idx` (`occurrence_id`),
+  ADD KEY `taxon_id_idx` (`taxon_id`);
 
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
