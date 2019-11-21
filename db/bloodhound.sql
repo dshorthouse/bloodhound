@@ -34,17 +34,17 @@ CREATE TABLE `article_occurrences` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `ar_internal_metadata` (
-  `key` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `value` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `destroyed_users` (
   `id` int(11) NOT NULL,
-  `identifier` varchar(25) NOT NULL,
-  `redirect_to` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `identifier` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `redirect_to` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `messages` (
   `id` bigint(20) NOT NULL,
@@ -54,35 +54,7 @@ CREATE TABLE `messages` (
   `read` tinyint(1) DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE `missing_occurrences` (
-  `gbifID` bigint(11) UNSIGNED NOT NULL,
-  `datasetKey` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `occurrenceID` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `dateIdentified` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `decimalLatitude` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `decimalLongitude` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `country` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `countryCode` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `eventDate` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `year` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `family` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `identifiedBy` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `institutionCode` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `collectionCode` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `catalogNumber` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `recordedBy` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `scientificName` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `typeStatus` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `dateIdentified_processed` datetime DEFAULT NULL,
-  `eventDate_processed` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-
-CREATE TABLE `missing_user_occurrences` (
-  `id` bigint(20) NOT NULL,
-  `occurrence_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `occurrences` (
   `gbifID` bigint(11) UNSIGNED NOT NULL,
@@ -150,17 +122,17 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `family` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `given` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `particle` varchar(50) DEFAULT NULL,
-  `orcid` varchar(25) DEFAULT NULL,
-  `wikidata` varchar(50) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
+  `particle` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `orcid` varchar(25) CHARACTER SET utf8 DEFAULT NULL,
+  `wikidata` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `other_names` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `country_code` varchar(50) DEFAULT NULL,
+  `country_code` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
   `keywords` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `twitter` varchar(50) DEFAULT NULL,
-  `image_url` text,
-  `signature_url` varchar(255) DEFAULT NULL,
+  `twitter` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `image_url` text CHARACTER SET utf8,
+  `signature_url` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `date_born` date DEFAULT NULL,
   `date_died` date DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
@@ -170,12 +142,12 @@ CREATE TABLE `users` (
   `updated` timestamp NULL DEFAULT NULL,
   `visited` timestamp NULL DEFAULT NULL,
   `is_admin` tinyint(1) NOT NULL DEFAULT '0',
-  `zenodo_access_token` text,
-  `zenodo_doi` varchar(255) DEFAULT NULL,
-  `zenodo_concept_doi` varchar(255) DEFAULT NULL,
+  `zenodo_access_token` text CHARACTER SET utf8,
+  `zenodo_doi` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `zenodo_concept_doi` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `wants_mail` tinyint(1) NOT NULL DEFAULT '0',
   `mail_last_sent` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `user_occurrences` (
   `id` int(11) NOT NULL,
@@ -186,7 +158,7 @@ CREATE TABLE `user_occurrences` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NULL DEFAULT NULL,
   `created_by` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `user_organizations` (
   `id` int(11) NOT NULL,
@@ -227,16 +199,6 @@ ALTER TABLE `messages`
   ADD KEY `index_messages_on_user_id` (`user_id`),
   ADD KEY `index_messages_on_recipient_id` (`recipient_id`),
   ADD KEY `index_messages_on_occurrence_id` (`occurrence_id`);
-
-ALTER TABLE `missing_occurrences`
-  ADD KEY `typeStatus_idx` (`typeStatus`(256)),
-  ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`),
-  ADD KEY `gbifID` (`gbifID`) USING BTREE,
-  ADD KEY `triplet_idx` (`institutionCode`(256),`collectionCode`(256),`catalogNumber`(256));
-
-ALTER TABLE `missing_user_occurrences`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `occurrence_idx` (`occurrence_id`);
 
 ALTER TABLE `occurrences`
   ADD PRIMARY KEY (`gbifID`) USING BTREE,
