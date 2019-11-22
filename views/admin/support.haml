@@ -18,7 +18,7 @@
 
 - if @results.empty?
   %div{class: "alert alert-info tiny-margins", role: "alert"}
-    Bloodhound users have not yet helped claim specimens.
+    Bloodhound trainers have not yet helped claim specimens.
 
 - else
   = haml :'partials/admin_fixed_navbar', layout: false
@@ -40,18 +40,20 @@
                 %div{class:"flex-grow-1"}
                   %h5
                     %a{href: "/admin/user/#{@admin_user.identifier}/support/#{u[:user].identifier}"}
-                      #{u[:user].fullname_reverse}
-                  - if u[:user].wikidata
-                    %p{class:"small text-muted mt-0 mb-0"}= format_lifespan(u[:user])
+                      - if u[:user].is_bot?
+                        #{u[:user].fullname}
+                      - else
+                        #{u[:user].fullname_reverse}
                   - if u[:user].country
                     %p{class:"small text-muted mt-0 mb-0"} #{u[:user].country.split("|").join("; ")}
             - else
               %div{class: "card-header"}
                 %h5
                   %a{href: "/admin/user/#{@admin_user.identifier}/support/#{u[:user].identifier}"}
-                    #{u[:user].fullname_reverse}
-                - if u[:user].wikidata
-                  %p{class:"small text-muted mt-0 mb-0"}= format_lifespan(u[:user])
+                    - if u[:user].is_bot?
+                      #{u[:user].fullname}
+                    - else
+                      #{u[:user].fullname_reverse}
                 - if u[:user].country
                   %p{class:"small text-muted mt-0 mb-0"} #{u[:user].country.split("|").join("; ")}
 
