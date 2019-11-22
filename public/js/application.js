@@ -48,7 +48,8 @@ var Application = (function($, window) {
       this.helper_modal();
     },
     profile_cards: function() {
-      $(".card-profile").on("click", function() {
+      $(".card-profile").on("click", function(e) {
+        e.stopPropagation();
         window.location = $(this).find(".card-header a").attr("href");
       });
     },
@@ -314,17 +315,17 @@ var Application = (function($, window) {
         });
         return false;
       });
-      $("button.thanks").on("click", function() {
+      $("button.thanks").on("click", function(e) {
+        e.stopPropagation();
+
         var button = this,
-            occurrence_id = $(this).attr("data-occurrence-id"),
             recipient_identifier = $(this).attr("data-recipient-identifier");
         $.ajax({
           method: "POST",
           url: self.path + "/message.json",
           dataType: "json",
           data: JSON.stringify({
-            recipient_identifier: recipient_identifier,
-            occurrence_id: occurrence_id
+            recipient_identifier: recipient_identifier
           })
         }).done(function(data) {
           $(button).removeClass("btn-outline-danger")

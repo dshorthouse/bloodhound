@@ -23,43 +23,48 @@
 - else
   = haml :'partials/admin_fixed_navbar', layout: false
   %div{id: "helper-info", class: "alert alert-info row tiny-margins", role: "alert"}
-    Bloodhound users have sent their appreciation.
+    Bloodhound trainers have sent their appreciation.
 
-  %div{class:"table-responsive-lg"}
-    %table{class:"table table-hover table-sm"}
-      %thead{class: "thead-light"}
-        %tr
-          %th{scope: "col"} Thanked By
-          %th{scope: "col"} Scientific Name
-          %th{scope: "col"} Institution
-          %th{scope: "col"} Catalog Number
-          %th{scope: "col"} Date Sent
+  - @results.in_groups_of(3).each do |group|
+    %div{class: "card-deck"}
+      - group.each do |m|
+        - if m.nil?
+          %div{class:"card", style:"border:0px"}
+        - else
+          - u = User.find(m[:user_id])
+          %div{class: "card card-profile my-3"}
+            - if u.image_url
+              %div{class: "card-header d-flex"}
+                %div
+                  %img{src:"#{profile_image(u, 'medium')}", alt:"#{u.fullname}", class:"card-img-profile mr-2"}
+                %div{class:"flex-grow-1"}
+                  %h5
+                    %a{href: "/#{u.identifier}"} #{u.fullname_reverse}
+                  - if u.wikidata
+                    %p{class:"small text-muted mt-0 mb-0"}= format_lifespan(u)
+                  - if u.country
+                    %p{class:"small text-muted mt-0 mb-0"} #{u.country.split("|").join("; ")}
+            - else
+              %div{class: "card-header"}
+                %h5
+                  %a{href: "/#{u.identifier}"} #{u.fullname_reverse}
+                - if u.wikidata
+                  %p{class:"small text-muted mt-0 mb-0"}= format_lifespan(u)
+                - if u.country
+                  %p{class:"small text-muted mt-0 mb-0"} #{u.country.split("|").join("; ")}
 
-      %tbody
-        - @results.each do |m|
-          %tr
-            %td
-              - if m.sender.is_bot?
-                #{m.sender.fullname}
-              - else
-                %a{href: "/#{m.sender.orcid}"} #{m.sender.fullname_reverse}
-            %td
-              - scientific_name = m.occurrence.scientificName.nil? ? "not recorded" : m.occurrence.scientificName
-              %a{href: "https://gbif.org/occurrence/#{m.occurrence.id}", target:"_blank"} #{h(scientific_name)}
-            %td #{h(m.occurrence.institutionCode)}
-            %td #{h(m.occurrence.catalogNumber)}
-            %td #{h(m.created_at)}
+            %div{class: "card-body"}
 
-      - if @total > 25
-        %tfoot{class: "thead-light"}
-          %tr
-          %th{scope: "col"} Thanked By
-          %th{scope: "col"} Scientific Name
-          %th{scope: "col"} Institution
-          %th{scope: "col"} Catalog Number
-          %th{scope: "col"} Date Sent
-
-  - if @total > 25
-    = haml :'partials/page_size', layout: false
+            %div{class: "card-footer d-flex"}
+              - if !u.is_public?
+                %div{class: "small text-right text-muted mr-2"}
+                  %i{class:"fas fa-lock"}
+              %div{class: "small text-left text-muted mr-2"}
+                %span{class:"badge badge-light"}
+                  #{u.messages_by_recipient(m[:recipient_id]).count}
+                %span{class:"text-danger"}
+                  %i{class:"fas fa-heart"}
+              %div{class:"small ml-auto text-muted"}
+                Latest at #{m[:latest]}
 
   = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

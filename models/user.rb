@@ -198,11 +198,22 @@ class User < ActiveRecord::Base
     visible_occurrences.where.not(created_by: self).order(created: :desc)
   end
 
+  def claims_received_by(id)
+    visible_occurrences.where(created_by: id).order(created: :desc)
+  end
+
   def helped_by
     visible_user_occurrences.where.not(created_by: self)
                             .pluck(:created_by)
                             .uniq
                             .map{|u| User.find(u)}
+  end
+
+  def helped_by_counts
+    visible_user_occurrences.where.not(created_by: self)
+                            .pluck(:created_by)
+                            .inject(Hash.new(0)) { |total, e| total[e] += 1 ;total}
+                            .map{|u, total| { user: User.find(u), total: total }}
   end
 
   def country_counts
@@ -292,6 +303,10 @@ class User < ActiveRecord::Base
     messages_received.select(:user_id, :recipient_id, "MAX(created_at) AS latest")
                      .group(:user_id, :recipient_id)
                      .order("MAX(created_at) DESC")
+  end
+
+  def messages_by_sender_count(id)
+    messages_received.where(user_id: id).count
   end
 
   def messages_by_recipient(recipient_id)

@@ -129,7 +129,7 @@ module Sinatra
             protected!
 
             @page = (params[:page] || 1).to_i
-            @total = @user.claims_received.count
+            @total = @user.helped_by_counts.count
 
             if @page*search_size > @total
               bump_page = @total % search_size.to_i != 0 ? 1 : 0
@@ -138,8 +138,27 @@ module Sinatra
 
             @page = 1 if @page <= 0
 
-            @pagy, @results = pagy(@user.claims_received, items: search_size, page: @page)
+            @pagy, @results = pagy_array(@user.helped_by_counts, items: search_size, page: @page)
             haml :'profile/support', locals: { active_page: "profile" }
+          end
+
+          app.get '/profile/support/:id' do
+            protected!
+
+            @helped_user = find_user(params[:id])
+
+            @page = (params[:page] || 1).to_i
+            @total = @user.claims_received_by(@helped_user.id).count
+
+            if @page*search_size > @total
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
+            end
+
+            @page = 1 if @page <= 0
+
+            @pagy, @results = pagy(@user.claims_received_by(@helped_user.id), items: search_size, page: @page)
+            haml :'profile/support_table', locals: { active_page: "profile" }
           end
 
           app.get '/profile/messages' do
@@ -332,7 +351,6 @@ module Sinatra
             m.user_id = @user.id
             recipient = find_user(req[:recipient_identifier])
             m.recipient_id = recipient.id
-            m.occurrence_id = req[:occurrence_id]
             m.save
             { message: "ok", occurrence_id: params[:occurrence_id] }.to_json
           end

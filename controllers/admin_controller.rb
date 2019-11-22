@@ -226,7 +226,7 @@ module Sinatra
             @admin_user = find_user(params[:id])
 
             @page = (params[:page] || 1).to_i
-            @total = @admin_user.claims_received.count
+            @total = @admin_user.helped_by_counts.count
 
             if @page*search_size > @total
               bump_page = @total % search_size.to_i != 0 ? 1 : 0
@@ -235,8 +235,28 @@ module Sinatra
 
             @page = 1 if @page <= 0
 
-            @pagy, @results = pagy(@admin_user.claims_received, items: search_size, page: @page)
+            @pagy, @results = pagy_array(@admin_user.helped_by_counts, items: search_size, page: @page)
             haml :'admin/support', locals: { active_page: "administration" }
+          end
+
+          app.get '/admin/user/:id/support/:id2' do
+            admin_protected!
+            check_redirect
+            @admin_user = find_user(params[:id])
+            @helped_user = find_user(params[:id2])
+
+            @page = (params[:page] || 1).to_i
+            @total = @admin_user.claims_received_by(@helped_user.id).count
+
+            if @page*search_size > @total
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
+            end
+
+            @page = 1 if @page <= 0
+
+            @pagy, @results = pagy(@admin_user.claims_received_by(@helped_user.id), items: search_size, page: @page)
+            haml :'admin/support_table', locals: { active_page: "administration" }
           end
 
           app.get '/admin/user/:id/messages' do
@@ -244,17 +264,7 @@ module Sinatra
             check_redirect
             @admin_user = find_user(params[:id])
 
-            @page = (params[:page] || 1).to_i
-            @total = @admin_user.messages_received.count
-
-            if @page*search_size > @total
-              bump_page = @total % search_size.to_i != 0 ? 1 : 0
-              @page = @total/search_size.to_i + bump_page
-            end
-
-            @page = 1 if @page <= 0
-
-            @pagy, @results = pagy(@admin_user.messages_received, items: search_size, page: @page)
+            @pagy, @results = pagy(@admin_user.latest_messages_by_senders)
             haml :'admin/messages', locals: { active_page: "administration" }
           end
 
