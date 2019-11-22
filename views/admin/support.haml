@@ -65,7 +65,7 @@
                   %i{class:"fas fa-lock"}
               %div{class: "small text-left text-muted mr-2"}
                 %span{class:"badge badge-light"}
-                  #{u[:total]}
+                  #{number_with_delimiter(u[:total])}
                 %a{href: "/admin/user/#{@admin_user.identifier}/support/#{u[:user].identifier}"}
                   #{'specimen'.pluralize(u[:total])} attributed
 
