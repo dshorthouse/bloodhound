@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
   end
 
   def identifier
-    orcid || wikidata
+    orcid || wikidata || id
   end
 
   def fullname

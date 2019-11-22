@@ -107,6 +107,8 @@ module Sinatra
           User.find_by_orcid(id)
         elsif id.is_wiki_id?
           User.find_by_wikidata(id)
+        else
+          User.find(id)
         end
       end
 
