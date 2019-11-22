@@ -9,9 +9,15 @@ class Messages < ActiveRecord::Migration[6.0]
       t.timestamp :created_at, default: -> { 'CURRENT_TIMESTAMP' }
       t.timestamp :updated_at
     end
-    add_index  :messages, :user_id unless index_exists?(:messages, :user_id)
-    add_index  :messages, :recipient_id unless index_exists?(:messages, :recipient_id)
-    add_index  :messages, :occurrence_id unless index_exists?(:messages, :occurrence_id)
+    if column_exists?(:messages, :user_id)
+      add_index  :messages, :user_id unless index_exists?(:messages, :user_id)
+    end
+    if column_exists?(:messages, :recipient_id)
+      add_index  :messages, :recipient_id unless index_exists?(:messages, :recipient_id)
+    end
+    if column_exists?(:messages, :occurrence_id)
+      add_index  :messages, :occurrence_id unless index_exists?(:messages, :occurrence_id)
+    end
   end
 
   def down
