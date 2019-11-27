@@ -14,6 +14,8 @@ module Bloodhound
       @map.add '/about'
       @map.add '/agents'
       @map.add '/countries'
+      @map.add '/datasets'
+      @map.add '/donate'
       @map.add '/get-started'
       @map.add '/developers'
       @map.add '/how-it-works'
@@ -50,6 +52,12 @@ module Bloodhound
       countries = IsoCountryCodes.for_select
       countries.each do |country|
         @map.add "/country/#{country[1]}"
+      end
+    end
+
+    def add_datasets
+      Dataset.find_each do |d|
+        @map.add "/dataset/#{d.datasetKey}"
       end
     end
 
