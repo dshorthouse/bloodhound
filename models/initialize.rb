@@ -25,6 +25,7 @@ module Sinatra
           ActiveSupport::Inflector.inflections do |inflect|
             inflect.irregular 'taxon', 'taxa'
             inflect.irregular 'specimen', 'specimens'
+            inflect.irregular 'person', 'people'
           end
 
           neo4j_adaptor = Neo4j::Core::CypherSession::Adaptors::HTTP.new(Settings.neo4j.url)

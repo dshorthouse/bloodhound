@@ -10,6 +10,7 @@ en:
     profiles: Profiles
     trainers: Trainers
     organizations: Organizations
+    datasets: Datasets
     countries: Countries
     agents: Agents
     help_others: Help Others

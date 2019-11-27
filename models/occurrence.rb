@@ -20,6 +20,8 @@ class Occurrence < ActiveRecord::Base
   has_one :taxon_occurrence
   has_one :taxon, through: :taxon_occurrence, source: :taxon
 
+  belongs_to :dataset, primary_key: :datasetKey, foreign_key: :datasetKey
+
   alias_attribute :id, :gbifID
 
   validates :id, presence: true

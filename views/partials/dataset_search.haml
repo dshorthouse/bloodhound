@@ -1,0 +1,5 @@
+%div{class:"p-2"}
+  %form{id:"form-org-wrapper", method: "get", action: "/datasets/search", "accept-charset" => "UTF-8", class: "form-inline helpers"}
+    %div{class: "form-group w-75"}
+      %input{class:"typeahead organization-search", id:"typeahead-dataset", type: :text, name: "q", placeholder: "Butterflies of Brazil", value: "#{params[:q]}", size:"25"}
+    %input{type: :submit, class:"btn btn-success", value:"Search", style:"margin-left:0.25rem;margin-right:0.25rem;"}

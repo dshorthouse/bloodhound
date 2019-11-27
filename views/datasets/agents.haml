@@ -1,0 +1,21 @@
+-content_for :title do
+  #{@dataset.title}
+
+%div{class:"row"}
+  = haml :'partials/dataset_jumbotron', layout:false
+
+  %div{class:"col-12 col-lg-8 mt-2"}
+    = haml :'partials/dataset_tabs', layout:false, locals: { active_tab: locals[:active_tab] }
+
+    - if @results.empty?
+      %div{class: "alert alert-info tiny-margins", role: "alert"}
+        Agents who have identified or collected specimens represented in this dataset have not yet been recorded.
+    - else
+      %div{class: "alert alert-info tiny-margins", role: "alert"}
+        Unverified and unresolved names of people who have identified or collected specimens represented in this dataset.
+
+      %ul{class: "list-unstyled ml-3"}
+        - @results.each do |a|
+          %li #{a.fullname_reverse}
+
+      = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

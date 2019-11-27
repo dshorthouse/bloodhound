@@ -64,6 +64,10 @@
                 %i{class:"fas fa-building"}
                 = I18n.t('layout.organizations')
             %li{class: "nav-item"}
+              %a{ href: "/datasets", class:"nav-link#{locals[:active_page] == "datasets" ? " active" : nil}" }
+                %i{class:"fas fa-database"}
+                = I18n.t('layout.datasets')
+            %li{class: "nav-item"}
               %a{ href: "/countries", class:"nav-link#{locals[:active_page] == "countries" ? " active" : nil}" }
                 %i{class:"fas fa-globe"}
                 = I18n.t('layout.countries')

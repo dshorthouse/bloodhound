@@ -1,4 +1,6 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -36,6 +38,18 @@ CREATE TABLE `ar_internal_metadata` (
   `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE `datasets` (
+  `id` bigint(20) NOT NULL,
+  `datasetKey` tinytext COLLATE utf8mb4_bin NOT NULL,
+  `title` text COLLATE utf8mb4_bin,
+  `description` text COLLATE utf8mb4_bin,
+  `doi` tinytext COLLATE utf8mb4_bin,
+  `license` tinytext COLLATE utf8mb4_bin,
+  `image_url` tinytext COLLATE utf8mb4_bin,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `destroyed_users` (
@@ -187,6 +201,10 @@ ALTER TABLE `article_occurrences`
 ALTER TABLE `ar_internal_metadata`
   ADD PRIMARY KEY (`key`);
 
+ALTER TABLE `datasets`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `index_datasets_on_datasetKey` (`datasetKey`(50));
+
 ALTER TABLE `destroyed_users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `identifier_idx` (`identifier`);
@@ -202,10 +220,12 @@ ALTER TABLE `occurrences`
   ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`);
 
 ALTER TABLE `occurrence_determiners`
-  ADD KEY `agent_idx` (`agent_id`);
+  ADD KEY `agent_idx` (`agent_id`),
+  ADD KEY `occurrence_idx` (`occurrence_id`);
 
 ALTER TABLE `occurrence_recorders`
-  ADD KEY `agent_idx` (`agent_id`);
+  ADD KEY `agent_idx` (`agent_id`),
+  ADD KEY `occurrence_idx` (`occurrence_id`);
 
 ALTER TABLE `organizations`
   ADD PRIMARY KEY (`id`),
@@ -254,6 +274,9 @@ ALTER TABLE `articles`
 ALTER TABLE `article_occurrences`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE `datasets`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
 ALTER TABLE `destroyed_users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
@@ -274,6 +297,7 @@ ALTER TABLE `user_occurrences`
 
 ALTER TABLE `user_organizations`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

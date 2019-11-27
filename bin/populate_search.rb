@@ -12,7 +12,7 @@ OptionParser.new do |opts|
     options[:rebuild] = true
   end
 
-  opts.on("-i", "--index [directory]", String, "Rebuild a particular index. Acccepted are agent, user, or organization") do |index|
+  opts.on("-i", "--index [directory]", String, "Rebuild a particular index. Acccepted are agent, user, organization, or dataset") do |index|
     options[:index] = index
   end
 
@@ -42,16 +42,23 @@ if options[:rebuild]
   puts "Importing organizations..."
   index.import_organizations
   index.refresh_organization_index
+
+  index.delete_dataset_index
+  index.create_dataset_index
+  puts "Importing datasets..."
+  index.import_datasets
+  index.refresh_dataset_index
 end
 
 if options[:index]
-  if ["agent","user","organization"].include?(options[:index])
+  accepted_list = ["agent","user","organization","dataset"]
+  if accepted_list.include?(options[:index])
     index.send("delete_#{options[:index]}_index")
     index.send("create_#{options[:index]}_index")
     puts "Importing #{options[:index]}s..."
     index.send("import_#{options[:index]}s")
     index.send("refresh_#{options[:index]}_index")
   else
-    puts "Accepted values are agent, user, or organization"
+    puts "Accepted values are #{accepted_list.join(", ")}"
   end
 end

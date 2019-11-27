@@ -60,6 +60,8 @@ var Application = (function($, window) {
       this.data_sources.user.initialize();
       this.data_sources.organization = this.create_bloodhound("organization");
       this.data_sources.organization.initialize();
+      this.data_sources.dataset = this.create_bloodhound("dataset");
+      this.data_sources.dataset.initialize();
     },
     create_bloodhound: function(type) {
       return new Bloodhound({
@@ -118,22 +120,35 @@ var Application = (function($, window) {
           }
         });
 
-        $("#typeahead-organization").typeahead({
-            minLength: 3,
-            highlight: true
-          },
-          {
-            name: "organization",
-            source : this.data_sources.organization.ttAdapter(),
-            display : "name"
+      $("#typeahead-organization").typeahead({
+          minLength: 3,
+          highlight: true
+        },
+        {
+          name: "organization",
+          source : this.data_sources.organization.ttAdapter(),
+          display : "name"
+        }
+        ).on("typeahead:select", function(obj, datum) {
+          if (self.path === "/admin") {
+            window.location.href = "/admin/organization/" + datum.id;
+          } else {
+            window.location.href = "/organization/" + datum.preferred;
           }
-          ).on("typeahead:select", function(obj, datum) {
-            if (self.path === "/admin") {
-              window.location.href = "/admin/organization/" + datum.id;
-            } else {
-              window.location.href = "/organization/" + datum.preferred;
-            }
-          });
+        });
+
+      $("#typeahead-dataset").typeahead({
+          minLength: 3,
+          highlight: true
+        },
+        {
+          name: "dataset",
+          source : this.data_sources.dataset.ttAdapter(),
+          display : "title"
+        }
+        ).on("typeahead:select", function(obj, datum) {
+          window.location.href = "/dataset/" + datum.datasetkey;
+        });
 
     },
     activate_switch: function() {

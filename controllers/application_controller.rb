@@ -66,6 +66,32 @@ module Sinatra
             end
           end
 
+          app.get '/datasets' do
+            datasets
+            haml :'datasets/datasets', locals: { active_page: "datasets" }
+          end
+
+          app.get '/datasets/search' do
+            search_dataset
+            haml :'datasets/search', locals: { active_page: "datasets" }
+          end
+
+          app.get '/dataset/:id' do
+            dataset_users
+            haml :'datasets/users', locals: { active_page: "datasets", active_tab: "people"  }
+          end
+
+          app.get '/dataset/:id/agents' do
+            dataset_agents
+            haml :'datasets/agents', locals: { active_page: "datasets", active_tab: "agents"  }
+          end
+
+          app.get '/dataset.json' do
+            content_type "application/json", charset: 'utf-8'
+            search_dataset
+            format_datasets.to_json
+          end
+
           app.get '/donate' do
             haml :'donate'
           end
@@ -100,7 +126,7 @@ module Sinatra
           end
 
           app.get '/user.json' do
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             search_user
             format_users.to_json
           end

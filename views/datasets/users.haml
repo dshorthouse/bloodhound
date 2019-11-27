@@ -1,0 +1,26 @@
+-content_for :title do
+  #{@dataset.title}
+
+%div{class:"row"}
+  = haml :'partials/dataset_jumbotron', layout:false
+
+  %div{class:"col-12 col-lg-8 mt-2"}
+    = haml :'partials/dataset_tabs', layout:false, locals: { active_tab: locals[:active_tab] }
+
+    - if @results.empty?
+      %div{class: "alert alert-info tiny-margins", role: "alert"}
+        People have yet not claimed or were attributed specimens represented in this dataset.
+    - else
+      %div{class: "alert alert-info tiny-margins", role: "alert"}
+        People who have claimed or were attributed specimens represented in this dataset.
+
+      - @results.in_groups_of(3).each do |group|
+        %div{class: "card-deck"}
+          - group.each do |u|
+            - if u.nil?
+              %div{class:"card", style:"border:0px"}
+            - else
+              - cache_fragment(u.identifier) do
+                = haml :'partials/user_card', layout: false, locals: { user: u }
+
+      = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

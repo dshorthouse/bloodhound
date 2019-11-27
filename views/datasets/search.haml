@@ -1,0 +1,59 @@
+-content_for :title do
+  Datasets
+
+-content_for :scripts do
+  %script{src: "/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init();
+    });
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
+    %div{class:"mr-auto p-2"}
+      %h1{class:"h2"} Datasets
+      %p.lead.text-muted
+        From the Global Biodiversity Information Facility (GBIF)
+    = haml :'partials/dataset_search', layout: false
+
+- if @results.empty?
+  %div{class: "alert alert-warning tiny-margins", role: "alert"}
+    No datasets found for
+    %span{class: "font-weight-bold"} #{h(params[:q])}
+- else
+  %div{class: "alert alert-info tiny-margins", role: "alert"}
+    #{@pagy.count} search results for
+    %span{class: "font-weight-bold"} #{h(params[:q])}
+
+  - @results.in_groups_of(3).each do |group|
+    %div{class: "card-deck"}
+      - group.each do |d|
+        - if d.nil?
+          %div{class:"card", style:"border:0px"}
+        - else
+          - dataset = Dataset.find(d[:_id].to_i)
+          - if !d.nil?
+            %div{class: "card card-profile m-3"}
+              - if dataset.image_url
+                %div{class: "card-header d-flex"}
+                  %div
+                    %img{src:"#{organization_image(dataset, 'medium')}", alt:"#{dataset.title}", class:"mr-2 rounded"}
+                  %div{class:"flex-grow-1"}
+                    %h5
+                      %a{href: "/dataset/#{dataset.datasetKey}"} #{dataset.title}
+                    %p{class:"text-muted"}
+              - else
+                %div{class: "card-header"}
+                  %h5
+                    %a{href: "/dataset/#{dataset.datasetKey}"} #{dataset.title}
+                  %p{class:"text-muted"}
+              %div{class: "card-body"}
+
+              %div{class: "card-footer"}
+                %div{class: "col small text-left text-muted"}
+                %div{class: "col small text-right text-muted"}
+                  - count = dataset.users.count
+                  %span{class:"badge badge-light"} #{number_with_delimiter(count)}
+                  #{'person'.pluralize(count)}
+
+  = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

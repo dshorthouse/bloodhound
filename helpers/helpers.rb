@@ -130,6 +130,24 @@ module Sinatra
         @results = results[:hits]
       end
 
+      def search_dataset
+        searched_term = params[:q]
+        @results = []
+        return if !searched_term.present?
+
+        page = (params[:page] || 1).to_i
+
+        client = Elasticsearch::Client.new
+        body = build_dataset_query(searched_term)
+        from = (page -1) * 30
+
+        response = client.search index: Settings.elastic.dataset_index, type: "dataset", from: from, size: 30, body: body
+        results = response["hits"].deep_symbolize_keys
+
+        @pagy = Pagy.new(count: results[:total], items: 30, page: page)
+        @results = results[:hits]
+      end
+
       def example_profiles
         @results = User.where(is_public: true).limit(6).order(Arel.sql("RAND()"))
       end
@@ -236,6 +254,10 @@ module Sinatra
         @pagy, @results = pagy(Article.order(created: :desc))
       end
 
+      def datasets
+        @pagy, @results = pagy(Dataset.order(title: :asc))
+      end
+
       def organizations
         if params[:order] && Organization.column_names.include?(params[:order]) && ["asc", "desc"].include?(params[:sort])
           data = Organization.active_user_organizations.order("#{params[:order]} #{params[:sort]}")
@@ -258,6 +280,22 @@ module Sinatra
       def organization
         organization_redirect
         @pagy, @results = pagy(@organization.active_users.order(:family))
+      end
+
+      def dataset_users
+        @dataset = Dataset.find_by_datasetKey(params[:id]) rescue nil
+        if @dataset.nil?
+          halt 404
+        end
+        @pagy, @results = pagy(@dataset.users)
+      end
+
+      def dataset_agents
+        @dataset = Dataset.find_by_datasetKey(params[:id]) rescue nil
+        if @dataset.nil?
+          halt 404
+        end
+        @pagy, @results = pagy(@dataset.agents, items: 30)
       end
 
       def past_organization

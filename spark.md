@@ -10,7 +10,7 @@ On a Mac with Homebrew:
 
 ```bash
 $ brew install apache-spark
-$ spark-shell --jars /usr/local/opt/mysql-connector-java/libexec/mysql-connector-java-8.0.16.jar --driver-memory 12G
+$ spark-shell --jars /usr/local/opt/mysql-connector-java/libexec/mysql-connector-java-8.0.18.jar --driver-memory 12G
 ```
 
 ```scala
@@ -49,7 +49,7 @@ val df1 = spark.
     option("escape", "\"").
     option("treatEmptyValuesAsNulls", "true").
     option("ignoreLeadingWhiteSpace", "true").
-    load("/Users/dshorthouse/Downloads/GBIF Data/verbatim.txt").
+    load("/Users/dshorthouse/Downloads/GBIF/verbatim.txt").
     select(verbatimTerms.map(col): _*).
     filter(coalesce($"identifiedBy",$"recordedBy").isNotNull).
     where(!$"scientificName".contains("BOLD:")).
@@ -81,7 +81,7 @@ val df2 = spark.
     option("escape", "\"").
     option("treatEmptyValuesAsNulls", "true").
     option("ignoreLeadingWhiteSpace", "true").
-    load("/Users/dshorthouse/Downloads/GBIF Data/occurrence.txt").
+    load("/Users/dshorthouse/Downloads/GBIF/occurrence.txt").
     select(processedTerms.map(col): _*).
     filter(coalesce($"countryCode",$"dateIdentified",$"eventDate").isNotNull)
 

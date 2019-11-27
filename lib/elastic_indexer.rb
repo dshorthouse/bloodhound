@@ -6,7 +6,8 @@ module Bloodhound
     INDICES = {
       agents: 'bloodhound_agents',
       users: 'bloodhound_users',
-      organizations: 'bloodhound_organizations'
+      organizations: 'bloodhound_organizations',
+      datasets: 'bloodhound_datasets'
     }
 
     def initialize(opts = {})
@@ -30,6 +31,12 @@ module Bloodhound
     def delete_organization_index
       if @client.indices.exists index: @settings[:organizations]
         @client.indices.delete index: @settings[:organizations]
+      end
+    end
+
+    def delete_dataset_index
+      if @client.indices.exists index: @settings[:datasets]
+        @client.indices.delete index: @settings[:datasets]
       end
     end
 
@@ -258,11 +265,51 @@ module Bloodhound
       @client.indices.create index: @settings[:organizations], body: config
     end
 
-    def import_agents
-      Agent.find_in_batches do |batch|
-        bulk_agent(batch)
-      end
+    def create_dataset_index
+      config = {
+        settings: {
+          analysis: {
+            filter: {
+              autocomplete: {
+                type: "edgeNGram",
+                side: "front",
+                min_gram: 1,
+                max_gram: 50
+              },
+            },
+            analyzer: {
+              dataset_analyzer: {
+                type: "custom",
+                tokenizer: "standard",
+                filter: ["lowercase", "asciifolding", :autocomplete]
+              }
+            }
+          }
+        },
+        mappings: {
+          dataset: {
+            properties: {
+              id: { type: 'text', index: false },
+              datasetkey: { type: 'text', index: false },
+              title: {
+                type: 'text',
+                search_analyzer: :standard,
+                analyzer: :dataset_analyzer,
+                norms: false
+              },
+              description: {
+                type: 'text',
+                analyzer: :standard,
+                norms: false
+              }
+            }
+          }
+        }
+      }
+      @client.indices.create index: @settings[:datasets], body: config
     end
+
+    # Agents
 
     def bulk_agent(batch)
       agents = []
@@ -275,6 +322,20 @@ module Bloodhound
         }
       end
       @client.bulk index: @settings[:agents], type: 'agent', refresh: false, body: agents
+    end
+
+    def import_agents
+      Agent.find_in_batches do |batch|
+        bulk_agent(batch)
+      end
+    end
+
+    def get_agent(a)
+      begin
+        @client.get index: @settings[:agents], type: 'agent', id: a.id
+      rescue Elasticsearch::Transport::Transport::Errors::NotFound
+        nil
+      end
     end
 
     def add_agent(a)
@@ -299,13 +360,23 @@ module Bloodhound
       }
     end
 
-    def organization_document(org)
-      {
-        id: org.identifier,
-        name: org.name,
-        address: org.address,
-        institution_codes: org.institution_codes
-      }
+    def refresh_agent_index
+      @client.indices.refresh index: @settings[:agents]
+    end
+
+    # Organizations
+
+    def bulk_organization(batch)
+      organizations = []
+      batch.each do |o|
+        organizations << {
+          index: {
+            _id: o.id,
+            data: organization_document(o)
+          }
+        }
+      end
+      @client.bulk index: @settings[:organizations], type: 'organization', refresh: false, body: organizations
     end
 
     def import_organizations
@@ -314,28 +385,46 @@ module Bloodhound
       end
     end
 
-    def add_organization(org)
-      @client.index index: @settings[:organizations], type: 'organization', id: org.id, body: organization_document(org)
-    end
-
-    def update_organization(org)
-      doc = { doc: organization_document(org) }
-      @client.update index: @settings[:organizations], type: 'organization', id: org.id, body: doc
-    end
-
-    def delete_organization(org)
-      @client.delete index: @settings[:organizations], type: 'organization', id: org.id
-    end
-
-    def refresh_agent_index
-      @client.indices.refresh index: @settings[:agents]
-    end
-
-    def import_organizations
-      Organization.find_each do |org|
-        add_organization(org)
+    def get_organization(o)
+      begin
+        @client.get index: @settings[:users], type: 'organization', id: o.id
+      rescue Elasticsearch::Transport::Transport::Errors::NotFound
+        nil
       end
     end
+
+    def add_organization(o)
+      @client.index index: @settings[:organizations], type: 'organization', id: o.id, body: organization_document(o)
+    end
+
+    def update_organization(o)
+      doc = { doc: organization_document(o) }
+      @client.update index: @settings[:organizations], type: 'organization', id: o.id, body: doc
+    end
+
+    def delete_organization(o)
+      @client.delete index: @settings[:organizations], type: 'organization', id: o.id
+    end
+
+    def organization_document(o)
+      {
+        id: o.id,
+        name: o.name,
+        address: o.address,
+        institution_codes: o.institution_codes,
+        isni: o.isni,
+        grid: o.grid,
+        ringgold: o.ringgold,
+        wikidata: o.wikidata,
+        preferred: o.identifier
+      }
+    end
+
+    def refresh_organization_index
+      @client.indices.refresh index: @settings[:organizations]
+    end
+
+    # Users
 
     def bulk_user(batch)
       users = []
@@ -396,43 +485,59 @@ module Bloodhound
       @client.indices.refresh index: @settings[:users]
     end
 
-    def organization_document(o)
-      {
-        id: o.id,
-        name: o.name,
-        address: o.address,
-        institution_codes: o.institution_codes,
-        isni: o.isni,
-        grid: o.grid,
-        ringgold: o.ringgold,
-        wikidata: o.wikidata,
-        preferred: o.identifier
-      }
-    end
+    # Datasets
 
-    def bulk_organization(batch)
-      organizations = []
-      batch.each do |o|
-        organizations << {
+    def bulk_dataset(batch)
+      datasets = []
+      batch.each do |d|
+        datasets << {
           index: {
-            _id: o.id,
-            data: organization_document(o)
+            _id: d.id,
+            data: dataset_document(d)
           }
         }
       end
-      @client.bulk index: @settings[:organizations], type: 'organization', refresh: false, body: organizations
+      @client.bulk index: @settings[:datasets], type: 'dataset', refresh: false, body: datasets
     end
 
-    def get_organization(o)
+    def import_datasets
+      Dataset.find_in_batches do |batch|
+        bulk_dataset(batch)
+      end
+    end
+
+    def get_dataset(d)
       begin
-        @client.get index: @settings[:users], type: 'organization', id: o.id
+        @client.get index: @settings[:datasets], type: 'dataset', id: d.id
       rescue Elasticsearch::Transport::Transport::Errors::NotFound
         nil
       end
     end
 
-    def refresh_organization_index
-      @client.indices.refresh index: @settings[:organizations]
+    def add_dataset(d)
+      @client.index index: @settings[:datasets], type: 'dataset', id: d.id, body: dataset_document(d)
+    end
+
+    def update_dataset(d)
+      doc = { doc: dataset_document(u) }
+      @client.update index: @settings[:datasets], type: 'dataset', id: d.id, body: doc
+    end
+
+    def delete_dataset(d)
+      @client.delete index: @settings[:dataset], type: 'dataset', id: u.id
+    end
+
+    def dataset_document(d)
+      {
+        id: d.id,
+        datasetkey: d.datasetKey,
+        title: d.title,
+        description: d.description
+      }
+    end
+
+    def refresh_dataset_index
+      @client.indices.refresh index: @settings[:datasets]
     end
 
   end

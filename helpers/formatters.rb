@@ -113,6 +113,16 @@ module Sinatra
         }
       end
 
+      def format_datasets
+        @results.map{ |n|
+          { id: n[:_source][:id],
+            score: n[:_score],
+            title: n[:_source][:title],
+            datasetkey: n[:_source][:datasetkey]
+          }
+        }
+      end
+
       def format_lifespan(user)
         born = !user.date_born.nil? ? user.date_born.to_formatted_s(:long) : "?"
         died = !user.date_died.nil? ? user.date_died.to_formatted_s(:long) : "?"

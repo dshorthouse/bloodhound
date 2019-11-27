@@ -29,6 +29,18 @@ module Sinatra
         }
       end
 
+      def build_dataset_query(search)
+        {
+          query: {
+            multi_match: {
+              query: search,
+              type: :best_fields,
+              fields: ["title^3", "description"]
+            }
+          }
+        }
+      end
+
     end
   end
 end

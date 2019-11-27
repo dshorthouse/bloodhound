@@ -9,7 +9,11 @@ class Agent < ActiveRecord::Base
   validates :family, presence: true
 
   def fullname
-    [given, family].join(" ").strip
+    [given, family].compact.reject(&:empty?).join(" ").strip
+  end
+
+  def fullname_reverse
+    [family, given].compact.reject(&:empty?).join(", ")
   end
 
   def agents_same_family
