@@ -8,7 +8,7 @@
   - if @organization.image_url || @organization.latitude
     - if @organization.image_url
       %div{class:"m-1"}
-        %img{src:"https://abekpgaoen.cloudimg.io/crop/350x200/q100/#{@organization.image_url}", class:"rounded mx-auto img-fluid", alt:"#{@organization.name}"}
+        %img{src:"https://abekpgaoen.cloudimg.io/fit/350x200/q100/#{@organization.image_url}", class:"rounded mx-auto img-fluid", alt:"#{@organization.name}"}
     - if @organization.latitude
       %div{style:"max-width:350px; height:200px;", class:"m-1 mx-auto"}
         %div{id:"mapid", class:"w-100 h-100"}
