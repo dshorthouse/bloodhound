@@ -22,7 +22,7 @@
     %span{class: "font-weight-bold"} #{h(params[:q])}
 - elsif !@formatted_results.empty?
   %div{class: "row"}
-    - @formatted_results.in_groups_of(25).each do |group|
+    - @formatted_results.in_groups_of(25, false).each do |group|
       %div{class: "col-12 col-md-3 mb-3"}
         %ul{class: "list-unstyled m-2"}
           - group.each do |o|
