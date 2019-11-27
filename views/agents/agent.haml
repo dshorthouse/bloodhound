@@ -14,8 +14,9 @@
         %br
         Search for
         %a{href: "/help-others?q=#{@agent.fullname}"}
+          %i{class:"fas fa-hands-helping"}
           #{@agent.fullname}
-        the person and attribute specimens.
+        the person and help attribute specimens.
     %div{class: "col col-3 text-right pr-2"}
       - if !authorized?
         %a{ href:"/auth/orcid" }
