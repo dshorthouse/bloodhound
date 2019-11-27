@@ -52,6 +52,8 @@ module Sinatra
           cloud_img = "https://abekpgaoen.cloudimg.io/crop/24x24/n/"
         elsif size == "medium"
           cloud_img = "https://abekpgaoen.cloudimg.io/crop/48x48/n/"
+        elsif size == "social"
+          cloud_img = "https://abekpgaoen.cloudimg.io/crop/240x240/n/"
         end
         if organization.image_url
           img = cloud_img + organization.image_url
