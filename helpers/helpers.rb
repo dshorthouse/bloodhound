@@ -296,7 +296,8 @@ module Sinatra
         if @dataset.nil?
           halt 404
         end
-        @pagy, @results = pagy(@dataset.agents, items: 75)
+
+        @pagy, @results = pagy_array(@dataset.agents.to_a, items: 75)
       end
 
       def past_organization

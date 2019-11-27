@@ -14,11 +14,16 @@ class Dataset < ActiveRecord::Base
   end
 
   def agents
-    recorders = Agent.joins(occurrence_recorders: :occurrence)
-                     .where(occurrences: { datasetKey: datasetKey })
-    determiners = Agent.joins(occurrence_determiners: :occurrence)
-                       .where(occurrences: { datasetKey: datasetKey })
-    recorders.union_all(determiners).distinct.order(:family)
+    determiners = OccurrenceDeterminer.select(:agent_id)
+                                      .joins(:occurrence)
+                                      .where(occurrences: {datasetKey: datasetKey })
+                                      .distinct
+    recorders = OccurrenceRecorder.select(:agent_id)
+                                  .joins(:occurrence)
+                                  .where(occurrences: {datasetKey: datasetKey })
+                                  .distinct
+    combined = recorders.union_all(determiners).unscope(:order).select(:agent_id).distinct
+    Agent.where(id: combined).order(:family)
   end
 
   def license_icon

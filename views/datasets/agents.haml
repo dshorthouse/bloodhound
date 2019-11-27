@@ -9,7 +9,7 @@
   %div{class:"col-12 col-lg-8 mt-2"}
     = haml :'partials/dataset_tabs', layout:false, locals: { active_tab: locals[:active_tab] }
 
-    - if @results.empty?
+    - if @pagy.count == 0
       %div{class: "alert alert-info tiny-margins", role: "alert"}
         Agents who have identified or collected specimens represented in this dataset have not yet been recorded.
     - else
@@ -17,7 +17,7 @@
         Unverified and unresolved names of people who have identified or collected specimens represented in this dataset.
 
       %div{class: "row"}
-        - @results.to_a.in_groups_of(25, false).each do |group|
+        - @results.in_groups_of(25, false).each do |group|
           %div{class: "col-12 col-sm-3 mb-3"}
             %ul{class: "list-unstyled m-2"}
               - group.each do |a|

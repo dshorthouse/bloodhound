@@ -16,7 +16,7 @@
   %div{class:"col-12 col-lg-8 mt-2"}
     = haml :'partials/dataset_tabs', layout:false, locals: { active_tab: locals[:active_tab] }
 
-    - if @results.empty?
+    - if @pagy.count == 0
       %div{class: "alert alert-info tiny-margins", role: "alert"}
         People have yet not claimed or were attributed specimens represented in this dataset.
     - else
