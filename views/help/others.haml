@@ -21,9 +21,9 @@
     = succeed "." do
       %span{class: "font-weight-bold"}
         #{h(params[:q])}
-    See the
+    See
     %a{href: "/help-others/help"} Help
-    tab for suggestions.
+    for suggestions.
 
 - if @results.empty? || params[:q].nil?
 
@@ -42,7 +42,11 @@
 - else
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     #{@pagy.count} search results for
-    %span{class: "font-weight-bold"} #{h(params[:q])}
+    = succeed "." do
+      %span{class: "font-weight-bold"} #{h(params[:q])}
+    Not found? See
+    %a{href:"/help-others/help"} Help
+    for suggestions.
 
   %div
     - @results.in_groups_of(3).each do |group|

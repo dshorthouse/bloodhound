@@ -21,6 +21,7 @@
           %div{class: "col-12 col-sm-3 mb-3"}
             %ul{class: "list-unstyled m-2"}
               - group.each do |a|
-                %li #{a.fullname_reverse}
+                %li
+                  %a{href:"/agent/#{a.id}"} #{a.fullname_reverse}
 
       = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

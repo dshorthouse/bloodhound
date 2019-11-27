@@ -10,11 +10,17 @@
       Sniffed #{number_with_delimiter(@pagy.count)} specimens for #{@agent.fullname}. Not all available columns are shown.
       %br
       Because Bloodhound is always improving on its ability to find agents in specimen data, this URL is unreliable for linking.
+      - if authorized?
+        %br
+        Search for
+        %a{href: "/help-others?q=#{@agent.fullname}"}
+          #{@agent.fullname}
+        the person and attribute specimens.
     %div{class: "col col-3 text-right pr-2"}
       - if !authorized?
         %a{ href:"/auth/orcid" }
           Login
-        to download
+        to download and attribute
       - else
         %a{href: "/agent/#{@agent.id}/specimens.csv"}
           %img{src: "/images/csv-icon.png", width:24, alt: "CSV download"}
