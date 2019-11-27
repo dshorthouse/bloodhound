@@ -11,7 +11,7 @@
 
   - if @dataset.description
     %p{class:"text-muted text-left"}
-      #{h(@dataset.description)}
+      #{h(strip_tags(@dataset.description))}
 
   - if @dataset.license && @dataset.license_icon
     %p

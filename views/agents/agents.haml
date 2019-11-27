@@ -21,10 +21,13 @@
     No agents found by the name
     %span{class: "font-weight-bold"} #{h(params[:q])}
 - elsif !@formatted_results.empty?
-  %ul{class: "list-unstyled"}
-    - @formatted_results.each do |o|
-      %li
-        %a{href: "/agent/#{o[:id]}"} #{o[:fullname_reverse]}
-        %small{class: "text-muted"} [Score: #{o[:score]}]
+  %div{class: "row"}
+    - @formatted_results.in_groups_of(25).each do |group|
+      %div{class: "col-12 col-md-3 mb-3"}
+        %ul{class: "list-unstyled m-2"}
+          - group.each do |o|
+            %li
+              %a{href: "/agent/#{o[:id]}"} #{o[:fullname_reverse]}
+              %small{class: "text-muted"} [Score: #{o[:score]}]
 
   = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

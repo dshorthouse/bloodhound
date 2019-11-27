@@ -40,7 +40,7 @@ module Sinatra
         end
       end
 
-      def search_agent
+      def search_agent(opts = { item_size: 25 })
         @results = []
         filters = []
         searched_term = params[:q]
@@ -48,14 +48,15 @@ module Sinatra
 
         page = (params[:page] || 1).to_i
 
+        size = opts[:item_size] || search_size
         client = Elasticsearch::Client.new
         body = build_name_query(searched_term)
-        from = (page -1) * search_size
+        from = (page -1) * size
 
-        response = client.search index: Settings.elastic.agent_index, type: "agent", from: from, size: search_size, body: body
+        response = client.search index: Settings.elastic.agent_index, type: "agent", from: from, size: size, body: body
         results = response["hits"].deep_symbolize_keys
 
-        @pagy = Pagy.new(count: results[:total], items: search_size, page: page)
+        @pagy = Pagy.new(count: results[:total], items: size, page: page)
         @results = results[:hits]
       end
 
@@ -295,7 +296,7 @@ module Sinatra
         if @dataset.nil?
           halt 404
         end
-        @pagy, @results = pagy(@dataset.agents, items: 30)
+        @pagy, @results = pagy(@dataset.agents, items: 75)
       end
 
       def past_organization

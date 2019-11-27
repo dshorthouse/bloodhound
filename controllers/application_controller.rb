@@ -40,7 +40,7 @@ module Sinatra
           end
 
           app.get '/agents' do
-            search_agent
+            search_agent({ item_size: 75 })
             @formatted_results = format_agents
             @count = Agent.count
             haml :'agents/agents', locals: { active_page: "agents" }

@@ -14,8 +14,11 @@
       %div{class: "alert alert-info tiny-margins", role: "alert"}
         Unverified and unresolved names of people who have identified or collected specimens represented in this dataset.
 
-      %ul{class: "list-unstyled ml-3"}
-        - @results.each do |a|
-          %li #{a.fullname_reverse}
+      %div{class: "row"}
+        - @results.to_a.in_groups_of(25).each do |group|
+          %div{class: "col-12 col-sm-3 mb-3"}
+            %ul{class: "list-unstyled m-2"}
+              - group.each do |a|
+                %li #{a.fullname_reverse}
 
       = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

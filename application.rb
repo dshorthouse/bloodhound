@@ -56,6 +56,7 @@ class BLOODHOUND < Sinatra::Base
       }
    end
 
+  include ActionView::Helpers::SanitizeHelper
   include Pagy::Backend
   include Pagy::Frontend
   Pagy::VARS[:items] = 30
