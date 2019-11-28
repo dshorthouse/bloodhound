@@ -27,11 +27,14 @@
               = succeed "." do
                 %a{href: "/roster"} Profiles
               Your claims will be included in a bulk
-              %a{href: "/developers"}
-                data download
-              and exposed through Google Chrome and Firefox
-              = succeed "." do
+              = succeed ", " do
+                %a{href: "/developers"} data download
+              exposed through Google Chrome and Firefox
+              = succeed ", " do
                 %a{href:"/integrations"} extensions
+              and a Tweet will be sent from
+              = succeed "." do
+                %a{href: "https://twitter.com/BloodhoundTrack"} @BloodhoundTrack
             %div{class:"row"}
               %div{class:"col"}
                 %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: @user.is_public?, class:"btn-claim" }
