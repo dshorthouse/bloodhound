@@ -66,7 +66,7 @@ module Sinatra
           end
 
           app.get '/occurrence/:id' do
-            @occurrence = Occurrence.find(params[:id])
+            @occurrence = Occurrence.find(params[:id]) rescue nil
             if @occurrence.nil?
               halt 404
             end
