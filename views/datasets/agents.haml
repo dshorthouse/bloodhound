@@ -11,10 +11,10 @@
 
     - if @pagy.count == 0
       %div{class: "alert alert-info tiny-margins", role: "alert"}
-        Agents who have identified or collected specimens represented in this dataset have not yet been recorded.
+        Unverified and unresolved names of agents that are associated with specimens represented in this dataset have not yet been recorded.
     - else
       %div{class: "alert alert-info tiny-margins", role: "alert"}
-        Unverified and unresolved names of people who have identified or collected specimens represented in this dataset.
+        Unverified and unresolved names of agents that are associated with specimens represented in this dataset.
 
       %div{class: "row"}
         - @results.in_groups_of(25, false).each do |group|

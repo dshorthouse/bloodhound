@@ -13,7 +13,7 @@
     %div{class:"mr-auto p-2"}
       %h1{class:"h2"} Agent Search
       %p.lead.text-muted
-        #{number_with_delimiter(@count)} unverified and unresolved names for people found in natural history specimen data
+        #{number_with_delimiter(@count)} unverified and unresolved names found in natural history specimen data
     = haml :'partials/agent_search', layout: false
 
 - if params[:q] && !params[:q].empty? && @formatted_results.empty?
