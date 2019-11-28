@@ -4,16 +4,12 @@ module Bloodhound
   class GbifDataset
 
     def initialize
-      @url = "http://api.gbif.org/v1/dataset?limit=100&offset="
     end
 
-    def create_records
-      datasets_list_enum.each do |item|
-        begin
-          Dataset.create item
-        rescue ActiveRecord::RecordNotUnique
-          next
-        end
+    def update_all
+      Dataset.find_each do |d|
+        datasets.process_dataset(d.datasetKey)
+        puts d.datasetKey.green
       end
     end
 
@@ -35,42 +31,6 @@ module Bloodhound
         dataset.save
       rescue
       end
-    end
-
-    def datasets_list_enum
-      Enumerator.new do |yielder|
-        offset = 0
-        loop do
-          sleep 2
-          response = RestClient::Request.execute(
-            method: :get,
-            url: "#{@url}#{offset}"
-          )
-          response = JSON.parse(response, :symbolize_names => true) rescue []
-          if response[:results].size > 0
-            if response[:count].to_i > offset
-              response[:results].each do |result|
-                begin
-                  if result[:key] && result[:type] == "OCCURRENCE"
-                    yielder << {
-                      datasetKey: result[:key],
-                      doi: result[:doi],
-                      title: result[:title],
-                      description: result[:description],
-                      license: result[:license],
-                      image_url: result[:logoUrl]
-                    }
-                  end
-                rescue
-                end
-              end
-            end
-          else
-            raise StopIteration
-          end
-          offset += 100
-        end
-      end.lazy
     end
 
   end

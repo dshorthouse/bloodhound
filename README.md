@@ -74,6 +74,14 @@ Finally:
 
      $ RACK_ENV=production ./bin/populate_search.rb --rebuild
 
+### Step 6: Populate dataset metadata
+
+     $ RACK_ENV=production ./bin/gbif_datasets.rb --populate
+
+If the above has been executed in previous runs, then execute the following to gather metadata for new datasets:
+
+     $ RACK_ENV=production ./bin/gbif_datasets.rb --update
+
 ## Neo4j Dump & Restore
 
 Notes to self because I never remember how to dump from my laptop and reload onto the server. Must stop Neo4j before this can be executed.
