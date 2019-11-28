@@ -519,12 +519,12 @@ module Bloodhound
     end
 
     def update_dataset(d)
-      doc = { doc: dataset_document(u) }
+      doc = { doc: dataset_document(d) }
       @client.update index: @settings[:datasets], type: 'dataset', id: d.id, body: doc
     end
 
     def delete_dataset(d)
-      @client.delete index: @settings[:dataset], type: 'dataset', id: u.id
+      @client.delete index: @settings[:datasets], type: 'dataset', id: d.id
     end
 
     def dataset_document(d)

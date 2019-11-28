@@ -4,6 +4,9 @@ class Dataset < ActiveRecord::Base
   validates :datasetKey, presence: true
 
   before_update :set_update_time
+  after_create :add_search
+  after_update :update_search
+  after_destroy :remove_search
 
   def users
     User.joins(occurrences: :dataset)
@@ -40,6 +43,26 @@ class Dataset < ActiveRecord::Base
 
   def set_update_time
     self.updated_at = Time.now
+  end
+
+  def add_search
+    es = Bloodhound::ElasticIndexer.new
+    if !es.get_dataset(self)
+      es.add_dataset(self)
+    end
+  end
+
+  def update_search
+    es = Bloodhound::ElasticIndexer.new
+    es.update_dataset(self)
+  end
+
+  def remove_search
+    es = Bloodhound::ElasticIndexer.new
+    begin
+      es.delete_dataset(self)
+    rescue
+    end
   end
 
 end

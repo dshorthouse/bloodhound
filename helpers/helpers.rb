@@ -256,7 +256,12 @@ module Sinatra
       end
 
       def datasets
-        @pagy, @results = pagy(Dataset.order(title: :asc))
+        if params[:order] && Dataset.column_names.include?(params[:order]) && ["asc", "desc"].include?(params[:sort])
+          data = Dataset.order("#{params[:order]} #{params[:sort]}")
+        else
+          data = Dataset.order(:title)
+        end
+        @pagy, @results = pagy(data)
       end
 
       def organizations

@@ -24,6 +24,49 @@ module Sinatra
             haml :'admin/article', locals: { active_page: "administration" }
           end
 
+          app.get '/admin/datasets' do
+            admin_protected!
+            sort = params[:sort] || nil
+            order = params[:order] || nil
+            datasets
+            haml :'admin/datasets', locals: { active_page: "administration", sort: sort, order: order  }
+          end
+
+          app.get '/admin/dataset/:id' do
+            admin_protected!
+            @dataset = Dataset.find_by_datasetKey(params[:id]) rescue nil
+            if @dataset.nil?
+              halt 404
+            end
+            haml :'admin/dataset', locals: { active_page: "administration" }
+          end
+
+          app.post '/admin/dataset/:id' do
+            admin_protected!
+            @dataset = Dataset.find(params[:id])
+            title = params[:title].blank? ? nil : params[:title]
+            doi = params[:doi].blank? ? nil : params[:doi]
+            license = params[:license].blank? ? nil : params[:license]
+            image_url = params[:image_url].blank? ? nil : params[:image_url]
+            description = params[:description].blank? ? nil : params[:description]
+            data = {
+              title: title,
+              doi: doi,
+              license: license,
+              image_url: image_url,
+              description: description,
+            }
+            @dataset.update(data)
+            redirect "/admin/datasets"
+          end
+
+          app.delete '/admin/dataset/:id' do
+            admin_protected!
+            dataset = Dataset.find(params[:id])
+            dataset.destroy
+            redirect "/admin/datasets"
+          end
+
           app.get '/admin/organizations' do
             admin_protected!
             sort = params[:sort] || nil
