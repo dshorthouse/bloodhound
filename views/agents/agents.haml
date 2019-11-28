@@ -20,7 +20,11 @@
   %div{class: "alert alert-warning tiny-margins", role: "alert"}
     No agents found by the name
     %span{class: "font-weight-bold"} #{h(params[:q])}
-- elsif !@formatted_results.empty?
+- elsif @pagy.count > 0
+  %div{class: "alert alert-info tiny-margins", role: "alert"}
+    #{@pagy.count} search results for
+    %span{class: "font-weight-bold"} #{h(params[:q])}
+
   %div{class: "row"}
     - @formatted_results.in_groups_of(25, false).each do |group|
       %div{class: "col-12 col-md-3 mb-3"}

@@ -21,7 +21,7 @@
         People have yet not claimed or were attributed specimens represented in this dataset.
     - else
       %div{class: "alert alert-info tiny-margins", role: "alert"}
-        People who have claimed or were attributed specimens represented in this dataset.
+        #{number_with_delimiter(@pagy.count)} #{'person'.pluralize(@pagy.count)} claimed or were attributed specimens represented in this dataset.
 
       - @results.in_groups_of(3).each do |group|
         %div{class: "card-deck"}

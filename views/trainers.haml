@@ -13,7 +13,7 @@
     %div{class:"mr-auto p-2"}
       %h1{class:"h2"} Trainers
       %p.lead.text-muted
-        People who have attributed natural history specimens to their peers, mentors, and role models
+        #{number_with_delimiter(@pagy.count)} people who have attributed natural history specimens to their peers, mentors, and role models
 
 - @results.in_groups_of(3).each do |group|
   %div{class: "card-deck"}

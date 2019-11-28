@@ -132,6 +132,9 @@ table td.selector{
   margin-left:0.1em;
   margin-right:0.1em;
 }
+.medium-margins{
+  margin-left:0.25rem;margin-right:0.25rem;
+}
 .card-hover:hover{
   background-color: rgba(0, 0, 0, 0.075);
 }

@@ -13,7 +13,7 @@
     %div{class:"mr-auto p-2"}
       %h1{class:"h2"} Organizations
       %p.lead.text-muted
-        From employment and academic records in
+        #{number_with_delimiter(Organization.active_user_organizations.count)} organizations from employment and academic records in
         %a{href: "https://orcid.org/"} ORCID
         accounts
     = haml :'partials/organization_search', layout: false

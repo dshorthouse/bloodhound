@@ -2,5 +2,5 @@
   %form{id:"form-helper-wrapper", method: "get", action: "/help-others", "accept-charset" => "UTF-8", class: "form-inline helpers"}
     %div{class: "form-group w-75"}
       - username = @viewed_user ? @viewed_user.fullname : "Mary Smith"
-      %input{class: "typeahead help-search", id: "typeahead-user", type: :text, name: "q", placeholder: "#{username}", size:"25"}
-    %input{type: :submit, class:"btn btn-success", value:"Search", style:"margin-left:0.25rem;margin-right:0.25rem;"}
+      %input{class: "typeahead help-search", id: "typeahead-user", type: :text, name: "q", placeholder: "#{username}", value: "#{h(params[:q])}", size:"25"}
+    %input{type: :submit, class:"btn btn-success medium-margins", value:"Search"}
