@@ -32,6 +32,15 @@ module Sinatra
             haml :'admin/datasets', locals: { active_page: "administration", sort: sort, order: order  }
           end
 
+          app.get '/admin/dataset/refresh.json' do
+            admin_protected!
+            content_type "application/json", charset: 'utf-8'
+
+            dataset = ::Bloodhound::GbifDataset.new
+            dataset.process_dataset(params[:datasetKey])
+            { message: "ok" }.to_json
+          end
+  
           app.get '/admin/dataset/:id' do
             admin_protected!
             @dataset = Dataset.find_by_datasetKey(params[:id]) rescue nil
@@ -57,7 +66,7 @@ module Sinatra
               description: description,
             }
             @dataset.update(data)
-            redirect "/admin/datasets"
+            redirect "/admin/dataset/#{@dataset.datasetKey}"
           end
 
           app.delete '/admin/dataset/:id' do

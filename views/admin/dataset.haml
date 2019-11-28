@@ -29,6 +29,19 @@
   %div{class:"form-group"}
     %label{for:"description"} Description
     %textarea{type:"text", class:"form-control", id:"description", name:"description"}= "#{@dataset.description}"
+    %small{id:"dataset-link", class:"form-text text-muted"}
+      %a{href: "https://gbif.org.org/dataset/#{@dataset.datasetKey}"}
+        %img{src: "/images/gbif_40x40.png", alt:"GBIF", width:"18px"}
+      %a{href: "https://gbif.org.org/dataset/#{@dataset.datasetKey}", target:"_blank"} https://gbif.org.org/dataset/#{@dataset.datasetKey}
+    %a{href:"/admin/dataset/refresh.json?datasetKey=#{@dataset.datasetKey}", role:"button", class:"btn btn-sm btn-outline-success dataset-refresh"}
+      %i{class: "fas fa-sync-alt"}
+      Refresh
+      %img{src: "/images/gbif_40x40.png", alt:"GBIF", width:"18px"}
+
+    %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
+      Data from GBIF was refreshed.
+      %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+        %span{"aria-hidden":"true"} &times;
 
   %button{type:"submit", class:"btn btn-success"} Submit
   %button{type: "button", class:"btn btn-danger", "data-toggle": "modal", "data-target": "#deleteModal"} Delete
