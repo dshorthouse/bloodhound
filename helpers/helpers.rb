@@ -304,6 +304,15 @@ module Sinatra
 
         @pagy, @results = pagy_array(@dataset.agents.to_a, items: 75)
       end
+  
+      def dataset_agents_counts
+        @dataset = Dataset.find_by_datasetKey(params[:id]) rescue nil
+        if @dataset.nil?
+          halt 404
+        end
+
+        @pagy, @results = pagy_array(@dataset.agents_occurrence_counts.to_a, items: 75)
+      end
 
       def past_organization
         organization_redirect("/past")

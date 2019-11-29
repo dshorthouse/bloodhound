@@ -21,13 +21,16 @@
         Unverified and unresolved names that are associated with specimens represented in this dataset have not yet been recorded.
     - else
       %div{class: "alert alert-info tiny-margins", role: "alert"}
-        #{number_with_delimiter(@pagy.count)} unverified and unresolved names that are associated with specimens represented in this dataset.
+        #{number_with_delimiter(@pagy.count)} unverified and unresolved names each with counts of specimens represented in this dataset.
+
       %div{class: "row"}
         - @results.in_groups_of(25, false).each do |group|
           %div{class: "col-12 col-sm-3 mb-3"}
             %ul{class: "list-unstyled m-2"}
               - group.each do |a|
+                - agent = Agent.find(a[0])
                 %li
-                  %a{href:"/agent/#{a.id}"} #{a.fullname_reverse}
+                  %a{href:"/agent/#{agent.id}"} #{agent.fullname_reverse}
+                  %span{class:"badge badge-light"} #{number_with_delimiter(a[1])}
 
       = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

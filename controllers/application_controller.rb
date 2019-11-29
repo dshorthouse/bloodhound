@@ -83,7 +83,12 @@ module Sinatra
 
           app.get '/dataset/:id/agents' do
             dataset_agents
-            haml :'datasets/agents', locals: { active_page: "datasets", active_tab: "agents"  }
+            haml :'datasets/agents', locals: { active_page: "datasets", active_tab: "agents", active_subtab: "default"  }
+          end
+
+          app.get '/dataset/:id/agents/counts' do
+            dataset_agents_counts
+            haml :'datasets/agents_counts', locals: { active_page: "datasets", active_tab: "agents", active_subtab: "counts"  }
           end
 
           app.get '/dataset.json' do

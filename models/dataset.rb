@@ -25,8 +25,22 @@ class Dataset < ActiveRecord::Base
                                   .joins(:occurrence)
                                   .where(occurrences: {datasetKey: datasetKey })
                                   .distinct
-    combined = recorders.union_all(determiners).unscope(:order).select(:agent_id).distinct
+    combined = recorders.union_all(determiners)
+                        .unscope(:order)
+                        .select(:agent_id)
+                        .distinct
     Agent.where(id: combined).order(:family)
+  end
+
+  def agents_occurrence_counts
+    determiners = OccurrenceDeterminer.joins(:occurrence)
+                                      .where(occurrences: {datasetKey: datasetKey })
+    recorders = OccurrenceRecorder.joins(:occurrence)
+                                  .where(occurrences: {datasetKey: datasetKey })
+    combined = recorders.union(determiners)
+                        .group(:agent_id)
+                        .order(Arel.sql("count(*) desc"))
+                        .count
   end
 
   def license_icon
