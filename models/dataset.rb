@@ -13,7 +13,6 @@ class Dataset < ActiveRecord::Base
         .where(datasets: { id: id })
         .where(user_occurrences: { visible: true })
         .distinct
-        .order(:family)
   end
 
   def agents
@@ -41,6 +40,22 @@ class Dataset < ActiveRecord::Base
                         .group(:agent_id)
                         .order(Arel.sql("count(*) desc"))
                         .count
+  end
+
+  def agents_occurrence_count
+    determiners = OccurrenceDeterminer.select(:agent_id)
+                                      .joins(:occurrence)
+                                      .where(occurrences: {datasetKey: datasetKey })
+                                      .distinct
+    recorders = OccurrenceRecorder.select(:agent_id)
+                                  .joins(:occurrence)
+                                  .where(occurrences: {datasetKey: datasetKey })
+                                  .distinct
+    recorders.union_all(determiners)
+             .unscope(:order)
+             .select(:agent_id)
+             .distinct
+             .count
   end
 
   def license_icon

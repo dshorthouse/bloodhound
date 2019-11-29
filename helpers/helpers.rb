@@ -293,7 +293,7 @@ module Sinatra
         if @dataset.nil?
           halt 404
         end
-        @pagy, @results = pagy(@dataset.users)
+        @pagy, @results = pagy(@dataset.users.order(:family))
       end
 
       def dataset_agents
@@ -312,6 +312,14 @@ module Sinatra
         end
 
         @pagy, @results = pagy_array(@dataset.agents_occurrence_counts.to_a, items: 75)
+      end
+
+      def dataset_stats
+        @dataset = Dataset.find_by_datasetKey(params[:id]) rescue nil
+        if @dataset.nil?
+          halt {}
+        end
+        { people: @dataset.users.count }
       end
 
       def past_organization

@@ -76,6 +76,11 @@ module Sinatra
             haml :'datasets/search', locals: { active_page: "datasets" }
           end
 
+          app.get '/dataset/:id.json' do
+            content_type "application/json", charset: 'utf-8'
+            dataset_stats.to_json
+          end
+
           app.get '/dataset/:id' do
             dataset_users
             haml :'datasets/users', locals: { active_page: "datasets", active_tab: "people"  }
