@@ -103,7 +103,7 @@ module Sinatra
                             .where(user_id: req[:user_id].to_i)
                             .destroy_all
             end
-            data = occurrence_ids.map{|o| { 
+            data = occurrence_ids.map{|o| {
                 user_id: req[:user_id],
                 occurrence_id: o.to_i,
                 created_by: @user.id,
@@ -232,7 +232,7 @@ module Sinatra
 
             @page = 1 if @page <= 0
 
-            @pagy, @results = pagy(@viewed_user.hidden_occurrences_by_others, items: search_size, page: @page) 
+            @pagy, @results = pagy(@viewed_user.hidden_occurrences_by_others, items: search_size, page: @page)
             haml :'help/ignored', locals: { active_page: "help" }
           end
 
@@ -246,7 +246,7 @@ module Sinatra
             end
 
             agent_ids = candidate_agents(@viewed_user).pluck(:id)
-            records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @viewed_user.user_occurrences.select(:occurrence_id)).limit(5_000)
+            records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @viewed_user.user_occurrences.select(:occurrence_id)).limit(Settings.helping_download_limit)
             body ::Bloodhound::IO.csv_stream_candidates(records)
           end
 
@@ -273,7 +273,7 @@ module Sinatra
             if !@viewed_user
               halt 404
             end
-            
+
             if !@viewed_user.is_public
               @viewed_user.update({ is_public: true, made_public: Time.now })
               @viewed_user.update_profile
