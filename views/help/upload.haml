@@ -11,17 +11,15 @@
 -content_for :jumbotron do
   = haml :'partials/help_others_jumbotron', layout: false
 
-= haml :'partials/help_others_tabs', layout: false
+= haml :'partials/help_others_tabs', layout: false, locals: { active_tab: "upload" }
 
 - if flash[:error]
   %div{class: "alert alert-danger tiny-margins", role: "alert"}
     #{flash[:error]}
-    %a{href: "/help-others/#{@viewed_user.identifier}"} Try again.
+    %a{href: "/help-others/#{@viewed_user.identifier}/upload"} Try again.
 
 - else
   %div{class: "alert alert-info tiny-margins", role: "alert"}
-    A total of 
-    %span{class:"font-weight-bold"} #{number_with_delimiter(@record_count)} #{'record'.pluralize(@record_count)} 
+    A total of
+    %span{class:"font-weight-bold"} #{number_with_delimiter(@record_count)} #{'record'.pluralize(@record_count)}
     were handled. Existing claims, if present in your upload, were skipped.
-    %a{href: "/help-others/#{@viewed_user.identifier}/specimens"} View
-    #{@viewed_user.fullname}'s specimens.

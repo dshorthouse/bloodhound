@@ -47,25 +47,19 @@
         %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
         %label{for:"relaxed", class:"relaxed"} Make less exact.
   - else
-    = haml :'partials/upload_claim_modal', layout: false, locals: { csv_download_url: "/help-others/#{@viewed_user.identifier}/candidates.csv", csv_upload_url: "/help-others/#{@viewed_user.identifier}/upload-claims", user: @viewed_user}
-
     = haml :'partials/help_fixed_navbar', layout: false
 
     %div{id:"helper-info", class: "alert alert-info tiny-margins", role: "alert"}
       Help attribute #{number_with_delimiter(@total, delimeter: ",")} #{'specimen'.pluralize(@total)}.
-
+      Choose
+      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+      collected,
+      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+      identified, or Both.
       %div{class:"form-check d-inline-flex"}
         - checked = params[:relaxed] == "1" ? "checked" : nil
         %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
         %label{for:"relaxed", class:"relaxed"} Make less exact.
-
-      Choose
-      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
-      collected, 
-      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-      identified, or Both. Not all available columns are shown. Alternatively, 
-      %a{href: "#", "data-toggle":"modal", "data-target":"#modal_claims"} work offline then upload 
-      claims.
 
   - if !@results.empty?
     %div{class:"table-responsive-lg"}
@@ -121,5 +115,5 @@
 
     - if @total > 25
       = haml :'partials/page_size', layout: false
-                
+
     = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

@@ -14,15 +14,9 @@
               %strong #{locals[:user].fullname}
             - else
               records
-          work offline, then upload new claims as a csv. Only csv files containing
-          %span{class:"font-weight-bold"} #{Settings.helping_download_limit} recorders or fewer
-          with a single header row minimally containing
-          %span{class:"font-weight-bold"} action
-          or
-          %span{class:"font-weight-bold"} not me
-          and
-          %span{class:"font-weight-bold"} gbifID
-          are produced. If you have many more than this, you may work in batches. This routine does not update underlying specimen data nor does it update existing claims; if existing claims are present in the upload, these will be skipped.
+          work offline, then upload new claims as a csv. A file containing at most
+          %span{class:"font-weight-bold"} #{number_with_delimiter(Settings.helping_download_limit)} records is generated.
+          If you have many more than this, you may work in batches. This routine does not update underlying specimen data nor does it update existing claims; if existing claims are present in the upload, these will be skipped.
         %p{class:"text-center"}
           %img{src: "/images/candidates-instructions.png", alt: "Instructions for offline claims", class:"rounded img-fluid"}
         %form{id:"form-wrapper", method: :post, action: "#{locals[:csv_upload_url]}", enctype: "multipart/form-data", "accept-charset": "UTF-8", class: "form"}
@@ -30,8 +24,9 @@
           %div{class:"form-group row"}
             %div{class:"col-sm-4 col-form-label col-form-label-sm text-xs-left text-sm-right"} Download discovered records
             %div{class:"col-sm-8"}
-              %a{href: "#{locals[:csv_download_url]}#{relaxed}"}
-                %img{src: "/images/csv-icon.png", width:24, alt: "CSV download"}
+              %a{href: "#{locals[:csv_download_url]}#{relaxed}", class:"btn btn-primary"}
+                %i{class:"fas fa-file-download"}
+                Download
           %div{class:"form-group row"}
             %label{for:"candidate-file", class:"col-sm-4 col-form-label col-form-label-sm text-xs-left text-sm-right"} Upload csv with claims
             %div{class:"col-sm-8"}

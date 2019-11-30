@@ -236,6 +236,15 @@ module Sinatra
             haml :'help/ignored', locals: { active_page: "help" }
           end
 
+          app.get '/help-others/:id/upload' do
+            protected!
+            check_identifier
+            check_redirect
+
+            @viewed_user = find_user(params[:id])
+            haml :'help/offline', locals: { active_page: "help" }
+          end
+
           app.get '/help-others/:id/candidates.csv' do
             protected!
             csv_stream_headers
@@ -250,7 +259,7 @@ module Sinatra
             body ::Bloodhound::IO.csv_stream_candidates(records)
           end
 
-          app.post '/help-others/:id/upload-claims' do
+          app.post '/help-others/:id/upload-result' do
             protected!
             check_identifier
             @viewed_user = find_user(params[:id])
@@ -263,7 +272,7 @@ module Sinatra
             rescue => e
               flash.now[:error] = e.message
             end
-            haml :'help/upload'
+            haml :'help/upload', locals: { active_page: "help" }
           end
 
           app.put '/help-others/:id/visibility' do
