@@ -40,7 +40,7 @@ module Sinatra
             dataset.process_dataset(params[:datasetKey])
             { message: "ok" }.to_json
           end
-  
+
           app.get '/admin/dataset/:id' do
             admin_protected!
             @dataset = Dataset.find_by_datasetKey(params[:id]) rescue nil
@@ -358,17 +358,6 @@ module Sinatra
             end
 
             haml :'admin/candidates', locals: { active_page: "administration" }
-          end
-
-          app.post '/admin/user/:id/upload-claims' do
-            admin_protected!
-            @admin_user = find_user(params[:id])
-            begin
-              upload_file(user_id: @admin_user.id, created_by: @user.id)
-            rescue => e
-              flash.now[:error] = e.message
-            end
-            haml :'admin/upload'
           end
 
           app.get '/admin/candidate-count.json' do

@@ -35,7 +35,8 @@ module Sinatra
               user_id: user_id,
               created_by: created_by,
               action: action,
-              visible: 1
+              visible: 1,
+              created: Time.now
             })
             @record_count += 1
           elsif (row[:not_me] && row[:not_me].downcase == "true" || row[:not_me] == 1)
@@ -44,7 +45,8 @@ module Sinatra
               user_id: user_id,
               created_by: created_by,
               action: nil,
-              visible: 0
+              visible: 0,
+              created: Time.now
             })
             @record_count += 1
           end

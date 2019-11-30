@@ -26,8 +26,6 @@
   - alert_class = "warning"
   - placeholder = @searched_user.fullname
 
-= haml :'partials/upload_claim_modal', layout: false, locals: { csv_download_url: "/admin/user/#{@admin_user.identifier}/candidates.csv?relaxed=0", csv_upload_url: "/admin/user/#{@admin_user.identifier}/upload-claims", user: @admin_user}
-
 - if !@searched_user.nil?
   = haml :'partials/admin_bot_claim_modal', layout: false, locals: { user: @admin_user, agent: @searched_user, bulk_error: "#{locals[:bulk_error]}" }
 
@@ -50,26 +48,24 @@
   %div{id: "helper-info", class: "alert alert-#{alert_class} row candidates-alert tiny-margins", role: "alert"}
     %div{class: "col col-12 col-sm-12 col-m-8 col-lg-8"}
       = succeed "." do
-        Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for 
+        Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for
         %span{class:"font-weight-bold"} #{placeholder}
       - if !@searched_user.nil?
         = succeed "." do
           Attribute with
           %a{href: "#", "data-toggle":"modal", "data-target":"#bot_claims"} Bloodhound Bot
+
+      %br
+      Choose
+      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+      collected,
+      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+      identified, or Both.
       - if @searched_user.nil?
         %div{class:"form-check d-inline-flex"}
           - checked = params[:relaxed] == "1" ? "checked" : nil
           %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
           %label{for:"relaxed", class:"relaxed"} Make less exact
-
-      %br
-      Choose
-      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
-      collected, 
-      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-      identified, or Both.
-      %a{href: "#", "data-toggle":"modal", "data-target":"#modal_claims"} Work offline then upload
-      claims.
 
     %div{class:"col col-12 col-sm-8 col-m-6 col-lg-4"}
       %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
