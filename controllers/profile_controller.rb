@@ -269,6 +269,12 @@ module Sinatra
             haml :'profile/candidates', locals: { active_page: "profile" }
           end
 
+          app.get '/profile/upload' do
+            protected!
+
+            haml :'profile/upload', locals: { active_page: "profile" }
+          end
+
           app.get '/profile/candidates/agent/:id' do
             protected!
 
@@ -289,14 +295,14 @@ module Sinatra
             haml :'profile/candidates', locals: { active_page: "profile" }
           end
 
-          app.post '/profile/upload-claims' do
+          app.post '/profile/upload-result' do
             protected!
             begin
               upload_file(user_id: @user.id, created_by: @user.id)
             rescue => e
               flash.now[:error] = e.message
             end
-            haml :'profile/upload', locals: { active_page: "profile" }
+            haml :'profile/upload_result', locals: { active_page: "profile" }
           end
 
           app.get '/profile/ignored' do

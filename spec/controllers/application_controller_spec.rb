@@ -40,6 +40,11 @@ describe "Bloodhound Application Controller" do
     expect(last_response).to be_ok
   end
 
+  it "should allow accessing the donor wall page" do
+    get '/donate/wall'
+    expect(last_response).to be_ok
+  end
+
   it "should allow accessing the how it works page" do
     get '/how-it-works'
     expect(last_response).to be_ok
