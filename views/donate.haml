@@ -6,14 +6,16 @@
     %div{class:"mr-auto p-2"}
       %h1{class:"h2"} Donate
 
-%p Your one-time or periodic donation will help complete the data pipeline and ensure that credit is given for contributions made to natural history collections as quickly and as seamlessly as possible.
+%ul{class: "nav nav-tabs pl-2"}
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "donate" ? " active" : nil}", href: "/donate"} Campaign
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_page] == "wall" ? " active" : nil}", href: "/donate/wall"} Donor Wall
+
+%p{class:"mt-3"}
+  Your one-time or periodic donation will help complete the data pipeline and ensure that credit is given for contributions made to natural history collections as quickly and as seamlessly as possible.
 
 %div{class:"d-flex justify-content-center"}
   %div{class:"flex-fill m-3"}
     %script{src:"https://donorbox.org/widget.js", paypalExpress: "false"}
     %iframe{src:"https://donorbox.org/embed/back-to-roots?show_content=true", height:"685px", width:"100%", style:"max-width:100%; min-width:100%; max-height:none!important", seamless:"seamless", name:"donorbox", frameborder:"0", scrolling:"no", allowpaymentrequest: true}
-
-%div{class:"d-flex justify-content-center"}
-  %div{class:"flex-fill"}
-    %script{src:"https://donorbox.org/widget.js", paypalExpress:"false"}
-    %iframe{src:"https://donorbox.org/embed/back-to-roots?only_donor_wall=true", frameborder:"0", name:"donorbox", scrolling:"no", seamless:"seamless", style:"width: 100%; max-width:500px; min-width:310px; max-height: none !important"}

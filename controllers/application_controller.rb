@@ -83,17 +83,17 @@ module Sinatra
 
           app.get '/dataset/:id' do
             dataset_users
-            haml :'datasets/users', locals: { active_page: "datasets", active_tab: "people"  }
+            haml :'datasets/users', locals: { active_page: "datasets", active_tab: "people" }
           end
 
           app.get '/dataset/:id/agents' do
             dataset_agents
-            haml :'datasets/agents', locals: { active_page: "datasets", active_tab: "agents", active_subtab: "default"  }
+            haml :'datasets/agents', locals: { active_page: "datasets", active_tab: "agents", active_subtab: "default" }
           end
 
           app.get '/dataset/:id/agents/counts' do
             dataset_agents_counts
-            haml :'datasets/agents_counts', locals: { active_page: "datasets", active_tab: "agents", active_subtab: "counts"  }
+            haml :'datasets/agents_counts', locals: { active_page: "datasets", active_tab: "agents", active_subtab: "counts" }
           end
 
           app.get '/dataset.json' do
@@ -103,7 +103,11 @@ module Sinatra
           end
 
           app.get '/donate' do
-            haml :'donate'
+            haml :'donate', locals: { active_page: "donate" }
+          end
+
+          app.get '/donate/wall' do
+            haml :'donate_wall', locals: { active_page: "wall" }
           end
 
           app.get '/trainers' do
