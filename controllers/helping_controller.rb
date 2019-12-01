@@ -242,7 +242,7 @@ module Sinatra
             check_redirect
 
             @viewed_user = find_user(params[:id])
-            haml :'help/offline', locals: { active_page: "help" }
+            haml :'help/upload', locals: { active_page: "help" }
           end
 
           app.get '/help-others/:id/candidates.csv' do
@@ -272,7 +272,7 @@ module Sinatra
             rescue => e
               flash.now[:error] = e.message
             end
-            haml :'help/upload', locals: { active_page: "help" }
+            haml :'help/upload_result', locals: { active_page: "help" }
           end
 
           app.put '/help-others/:id/visibility' do
