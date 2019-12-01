@@ -15,8 +15,6 @@
     = haml :'partials/profile_tabs', layout: false, locals: { active_page: "specimens" }
     = haml :'partials/profile_subtabs', layout: false, locals: { active_tab: "candidates"}
 
-= haml :'partials/upload_claim_modal', layout: false, locals: { csv_download_url: "/profile/candidates.csv", csv_upload_url: "/profile/upload-claims"}
-
 - alert_class = "info"
 - placeholder = @user.fullname
 - if !@searched_user.nil?
@@ -54,11 +52,7 @@
       collected,
       %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
       identified, or Both.
-      - if @searched_user.nil?
-        Or
-        %a{href: "#", "data-toggle":"modal", "data-target":"#modal_claims"} work offline then upload
-        your claims.
-      - else
+      - if !@searched_user.nil?
         Claim the following specimen records
         %span{class:"font-weight-bold"}
           as your own.
