@@ -10,6 +10,17 @@ task :environment do
   require_relative './application'
 end
 
+# Monkey patch Rails.root because ActionView dependencies break neo4j migrations
+if defined?(Rails)
+  module Rails
+    class << self
+      def root
+        Pathname.new(BLOODHOUND.root)
+      end
+    end
+  end
+end
+
 if !defined?(RSpec)
   puts "spec targets require RSpec"
 else
