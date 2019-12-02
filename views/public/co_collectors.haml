@@ -17,7 +17,7 @@
     - if @viewed_user.is_public?
       = haml :'partials/user_tabs', layout: false, locals: { active_page: "network" }
 
-      %nav{id:"network-nav", class:"navbar navbar-light navbar-expand bg-light"}
+      %nav{id:"network-nav", class:"navbar navbar-light navbar-expand bg-light overflow-auto"}
         %ul{class:"navbar-nav"}
           %li{class:"nav-item"}
             %a{class:"nav-link#{locals[:active_tab] == "co_collectors" ? " active" : nil}", href:"/#{@viewed_user.identifier}/co-collectors"} Co-collectors

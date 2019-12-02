@@ -9,7 +9,7 @@
   %div{class:"col-12 col-lg-8 mt-2"}
     = haml :'partials/dataset_tabs', layout:false, locals: { active_tab: locals[:active_tab] }
 
-    %nav{id:"network-nav", class:"navbar navbar-light navbar-expand bg-light"}
+    %nav{id:"network-nav", class:"navbar navbar-light navbar-expand bg-light overflow-auto"}
       %ul{class:"navbar-nav"}
         %li{class:"nav-item"}
           %a{class:"nav-link#{locals[:active_subtab] == "default" ? " active" : nil}", href:"/dataset/#{@dataset.datasetKey}/agents"} Alphabetical
