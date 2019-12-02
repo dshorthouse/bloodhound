@@ -76,7 +76,8 @@ Finally:
 
 ### Step 6: Populate dataset metadata
 
-     $ RACK_ENV=production ./bin/gbif_datasets.rb --update
+     $ RACK_ENV=production ./bin/gbif_datasets.rb --new
+     $ RACK_ENV=production ./bin/gbif_datasets.rb --flush
 
 Or from scratch:
 

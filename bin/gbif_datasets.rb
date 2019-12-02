@@ -16,11 +16,11 @@ OptionParser.new do |opts|
     options[:all] = true
   end
 
-  opts.on("-u", "--update", "Add metadata for new datasets, not previously downloaded") do
-    options[:update] = true
+  opts.on("-n", "--new", "Add metadata for new datasets, not previously downloaded") do
+    options[:new] = true
   end
 
-  opts.on("-f", "--flush", "Flush previously ingested datasets that are no longer present in the occurrence data") do
+  opts.on("-f", "--flush", "Flush previously ingested datasets that are no longer present in occurrence data") do
     options[:flush] = true
   end
 
@@ -37,21 +37,25 @@ end.parse!
 datasets = Bloodhound::GbifDataset.new
 
 if options[:populate]
-  keys = Occurrence.distinct.pluck(:datasetKey)
+  keys = Occurrence.select(:datasetKey).distinct.pluck(:datasetKey).compact
   Dataset.import keys.map{|k| { datasetKey: k }}, batch_size: 1_000, on_duplicate_key_ignore: true, validate: false
   datasets.update_all
 elsif options[:all]
   datasets.update_all
-elsif options[:update]
-  occurrence_keys = Occurrence.distinct.pluck(:datasetKey)
-  dataset_keys = Dataset.pluck(:datasetKey)
-  Dataset.where(datasetKey: occurrence_keys - dataset_keys).find_each do |d|
-    datasets.process_dataset(d.datasetkey)
+elsif options[:new]
+  occurrence_keys = Occurrence.select(:datasetKey).distinct.pluck(:datasetKey).compact
+  dataset_keys = Dataset.select(:datasetKey).distinct.pluck(:datasetKey)
+  (occurrence_keys - dataset_keys).each do |d|
+    datasets.process_dataset(d)
+    puts d.green
   end
 elsif options[:flush]
-  occurrence_keys = Occurrence.distinct.pluck(:datasetKey)
-  dataset_keys = Dataset.pluck(:datasetKey)
-  Dataset.where(datasetKey: dataset_keys - occurrence_keys).destroy_all
+  occurrence_keys = Occurrence.select(:datasetKey).distinct.pluck(:datasetKey).compact
+  dataset_keys = Dataset.select(:datasetKey).distinct.pluck(:datasetKey)
+  (dataset_keys - occurrence_keys).each do |d|
+    Dataset.find_by_datasetKey(d).destroy
+    puts d.red
+  end
 elsif options[:datasetkey]
   datasets.process_dataset(options[:datasetkey])
 end
