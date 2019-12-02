@@ -130,7 +130,7 @@ module Bloodhound
         WHERE {
           ?item wdt:P31 wd:Q5 .
           ?item wdt:#{property} ?id .
-          ?item schema:dateModified ?change . 
+          ?item schema:dateModified ?change .
           SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
           OPTIONAL { ?item p:P569/psv:P569 [wikibase:timePrecision ?birth_precision; wikibase:timeValue ?birth]
           BIND(if(?birth_precision=11,?birth,if(?birth_precision=10,concat(month(?birth)," ",year(?birth)),year(?birth))) as ?date_of_birth) }
@@ -259,7 +259,9 @@ module Bloodhound
       month = nil
       day = nil
       d = Hash[[:year, :month, :day, :hour, :min, :sec].zip(
-        time.scan(/(-?\d+)-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/).first.map(&:to_i)
+        time.scan(/(-?\d+)-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/)
+            .first
+            .map(&:to_i)
       )]
       if precision > 8
         year = d[:year]
@@ -275,18 +277,36 @@ module Bloodhound
 
     def wiki_user_data(wikicode)
       wiki_user = Wikidata::Item.find(wikicode)
-      if !wiki_user || wiki_user.properties("P31")[0].title != "human"
+
+      if !wiki_user ||
+          wiki_user.properties("P31").size == 0 ||
+         !wiki_user.properties("P31")[0].respond_to?("title") ||
+          wiki_user.properties("P31")[0].title != "human"
         return
       end
+
       parsed = Namae.parse(wiki_user.title)[0] rescue nil
 
       family = parsed.family rescue nil
       given = parsed.given rescue nil
       particle = parsed.particle rescue nil
-      country = wiki_user.properties("P27").compact.map(&:title).join("|") rescue nil
-      country_code = wiki_user.properties("P27").compact.map{|a| find_country_code(a.title) || "" }.compact.join("|").presence rescue nil
-      keywords = wiki_user.properties("P106").map{|k| k.title if !/^Q\d+/.match?(k.title)}.compact.join("|") rescue nil
-      orcid = wiki_user.properties("P496").first.value rescue nil
+      country = wiki_user.properties("P27")
+                         .compact
+                         .map(&:title)
+                         .join("|") rescue nil
+      country_code = wiki_user.properties("P27")
+                              .compact
+                              .map{|a| find_country_code(a.title) || "" }
+                              .compact
+                              .join("|")
+                              .presence rescue nil
+      keywords = wiki_user.properties("P106")
+                          .map{|k| k.title if !/^Q\d+/.match?(k.title)}
+                          .compact
+                          .join("|") rescue nil
+      orcid = wiki_user.properties("P496")
+                       .first
+                       .value rescue nil
 
       image_url = nil
       signature_url = nil
@@ -340,14 +360,23 @@ module Bloodhound
       start_time = { year: nil, month: nil, day: nil }
       end_time = { year: nil, month: nil, day: nil }
 
-      qualifiers = wiki_user.hash[:claims][property.to_sym].select{|a| a[:mainsnak][:datavalue][:value][:id] == org.id}.first.qualifiers rescue nil
+      qualifiers = wiki_user.hash[:claims][property.to_sym]
+                            .select{|a| a[:mainsnak][:datavalue][:value][:id] == org.id}
+                            .first
+                            .qualifiers rescue nil
       if !qualifiers.nil?
-        start_precision = qualifiers[:P580].first.datavalue.value.precision rescue nil
+        start_precision = qualifiers[:P580].first
+                                           .datavalue
+                                           .value
+                                           .precision rescue nil
         if !start_precision.nil?
           start_time = parse_wikitime(qualifiers[:P580].first.datavalue.value.time, start_precision)
         end
 
-        end_precision = qualifiers[:P582].first.datavalue.value.precision rescue nil
+        end_precision = qualifiers[:P582].first
+                                         .datavalue
+                                         .value
+                                         .precision rescue nil
         if !end_precision.nil?
           end_time = parse_wikitime(qualifiers[:P582].first.datavalue.value.time, end_precision)
         end
