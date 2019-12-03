@@ -22,6 +22,19 @@ class UserOccurrence < ActiveRecord::Base
      ["identified","recorded","identified,recorded","recorded,identified"]
    end
 
+   def self.unlinked_count
+     self.left_joins(:occurrence).where(occurrences: { id: nil }).count
+   end
+
+   def self.unlinked_delete
+     self.select(:id)
+         .left_joins(:occurrence)
+         .where(occurrences: { id: nil })
+         .find_each do |ids|
+       self.where(id: ids).delete_all
+     end
+   end
+
    def recorded?
      action.include? "recorded"
    end

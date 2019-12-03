@@ -109,17 +109,15 @@ Replacing the database through load requires that the database first be deleted 
 
 Unfortunately, gbifIDs are not persistent. These occasionally disappear through processing at GBIF's end. As a result, claims may no longer point to an existing occurrence record and these must then be purged from the user_occurrences table. The following SQL statement can remove these with successive data imports from GBIF:
 
-      DELETE uo FROM user_occurrences uo LEFT JOIN occurrences o ON uo.occurrence_id = o.gbifID WHERE o.gbifID IS NULL;
-      DELETE ao FROM article_occurrences ao LEFT JOIN occurrences o ON ao.occurrence_id = o.gbifID WHERE o.gbifID IS NULL;
+      irb
+      require "./application"
+      UserOccurrence.unlinked_count
+      UserOccurrence.unlinked_delete
 
-Other considerations are how to get MySQL dump files back on the server. For fastest execution, dump separate tables into each dump file.
+      ArticleOccurrence.unlinked_count
+      ArticleOccurrence.unlinked_delete
 
-      mysqlcheck -u root -o bloodhound
-      mysqldump --user root --opt bloodhound agents | gzip > agents.sql.gz
-      mysqldump --user root --opt bloodhound occurrences | gzip > occurrences.sql.gz
-      etc...
-
-Alternatively, mydumper and myloader can be used to accelerate these tasks.
+To migrate tables, use mydumper and myloader:
 
       brew install mydumper
       mydumper --user root --database bloodhound --tables-list agents,occurrences,occurrence_recorders,occurrence_determiners,taxa,taxon_occurrences,taxon_determiners --compress --no-schemas --threads 8 --outputdir /Users/dshorthouse/Documents/bloodhound_dump
