@@ -109,7 +109,7 @@ Replacing the database through load requires that the database first be deleted 
 
 Unfortunately, gbifIDs are not persistent. These occasionally disappear through processing at GBIF's end. As a result, claims may no longer point to an existing occurrence record and these must then be purged from the user_occurrences table. The following SQL statement can remove these with successive data imports from GBIF:
 
-      irb
+      RACK_ENV=production irb
       require "./application"
       UserOccurrence.unlinked_count
       UserOccurrence.unlinked_delete
