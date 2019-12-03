@@ -34,29 +34,29 @@ CREATE TABLE `article_occurrences` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `ar_internal_metadata` (
-  `key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `datasets` (
   `id` bigint(20) NOT NULL,
-  `datasetKey` tinytext COLLATE utf8mb4_bin NOT NULL,
-  `title` text COLLATE utf8mb4_bin,
-  `description` text COLLATE utf8mb4_bin,
-  `doi` tinytext COLLATE utf8mb4_bin,
-  `license` tinytext COLLATE utf8mb4_bin,
-  `image_url` tinytext COLLATE utf8mb4_bin,
+  `datasetKey` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `doi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `license` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `image_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `destroyed_users` (
   `id` int(11) NOT NULL,
-  `identifier` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `redirect_to` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+  `identifier` varchar(25) NOT NULL,
+  `redirect_to` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `messages` (
   `id` bigint(20) NOT NULL,
@@ -195,8 +195,8 @@ ALTER TABLE `articles`
 ALTER TABLE `article_occurrences`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `article_occurrence_idx` (`article_id`,`occurrence_id`),
-  ADD KEY `article_idx` (`article_id`),
-  ADD KEY `occurrence_idx` (`occurrence_id`);
+  ADD KEY `occurrence_idx` (`occurrence_id`),
+  ADD KEY `article_idx` (`article_id`);
 
 ALTER TABLE `ar_internal_metadata`
   ADD PRIMARY KEY (`key`);
@@ -242,7 +242,8 @@ ALTER TABLE `taxa`
   ADD UNIQUE KEY `family_idx` (`family`);
 
 ALTER TABLE `taxon_occurrences`
-  ADD UNIQUE KEY `occurrence_id_idx` (`occurrence_id`);
+  ADD UNIQUE KEY `occurrence_id_idx` (`occurrence_id`),
+  ADD KEY `taxon_id_idx` (`taxon_id`);
 
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
