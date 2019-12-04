@@ -13,16 +13,7 @@
 
 = haml :'partials/help_others_tabs', layout: false, locals: { active_tab: "upload" }
 
-%div{class: "alert alert-info tiny-margins", role: "alert"}
-  Download discovered specimen records, work offline, then upload new claims as a csv. A file containing at most
-  %span{class:"font-weight-bold"} #{number_with_delimiter(Settings.helping_download_limit)} records is generated.
-  If you have many more than this, you may work in batches.
-  %br
-  This routine does not update underlying specimen data nor does it update existing claims. If existing claims are present in the upload, these will be skipped.
-
-%div{class:"row"}
-  %div{class:"col-sm-12 col-lg-10 col-xl-8"}
-    %img{src: "/images/candidates-instructions.png", alt: "Instructions for offline claims", class:"rounded img-fluid"}
+= haml :'partials/upload_instructions', layout: false
 
 %form{id:"form-wrapper", method: :post, action: "/help-others/#{@viewed_user.identifier}/upload-result", enctype: "multipart/form-data", "accept-charset": "UTF-8", class: "form mt-4"}
   - relaxed = params["relaxed"] == "1" ? "?relaxed=1" : nil
