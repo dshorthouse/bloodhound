@@ -5,6 +5,7 @@ Sinatra app to parse people names from structured biodiversity occurrence data, 
 
 ## Recent Updates
 
+- **December 1, 2019**: Include datasets indexed by GBIF, each with pages for people and agents.
 - **February 15, 2019**: Use Wikidata as optional identifier for the deceased.
 - **February 3, 2019**: Allow download of candidate specimen records then upload of claims.
 - **January 26, 2019**: Present citations of user specimens based on contents of GBIF data packages.
