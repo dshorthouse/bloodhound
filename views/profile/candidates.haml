@@ -12,8 +12,8 @@
   %div{class:"col-12 col-lg-4"}
     %h1{class:"h3"}= @user.fullname
   %div{class:"col-12 col-lg-8 mt-2"}
-    = haml :'partials/profile_tabs', layout: false, locals: { active_page: "specimens" }
-    = haml :'partials/profile_subtabs', layout: false, locals: { active_tab: "candidates"}
+    = haml :'partials/profile/tabs', layout: false, locals: { active_page: "specimens" }
+    = haml :'partials/profile/subtabs', layout: false, locals: { active_tab: "candidates"}
 
 - alert_class = "info"
 - placeholder = @user.fullname

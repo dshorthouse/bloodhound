@@ -17,7 +17,7 @@
         %a{href:"https://orcid.org"} ORCID
         or
         %a{href: "https://www.wikidata.org"} Wikidata
-    = haml :'partials/help_others_search', layout: false
+    = haml :'partials/help/search', layout: false
 
 - if @results.empty?
   %div{class: "alert alert-info tiny-margins", role: "alert"}

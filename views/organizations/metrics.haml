@@ -1,4 +1,4 @@
-= haml :'partials/organization_twitter_img', layout: false
+= haml :'partials/organization/twitter_img', layout: false
 
 -content_for :title do
   #{@organization.name}
@@ -8,13 +8,13 @@
     %link{href: "https://unpkg.com/leaflet@1.4.0/dist/leaflet.css", rel: "stylesheet", type: "text/css"}
 
 -content_for :scripts do
-  = haml :'partials/organization_jumbotron_scripts', layout:false
+  = haml :'partials/organization/jumbotron_scripts', layout:false
 
 %div{class:"row"}
-  = haml :'partials/organization_jumbotron', layout:false
+  = haml :'partials/organization/jumbotron', layout:false
 
   %div{class:"col-12 col-lg-8 mt-2"}
-    = haml :'partials/organization_tabs', layout:false, locals: { active_tab: 'organization-metrics' }
+    = haml :'partials/organization/tabs', layout:false, locals: { active_tab: 'organization-metrics' }
 
     %h4{class:"mt-3"} Impact on Activities in Other Organizations
 

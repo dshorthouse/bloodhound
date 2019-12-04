@@ -9,19 +9,19 @@
     });
 
 -content_for :jumbotron do
-  = haml :'partials/help_others_jumbotron', layout: false
+  = haml :'partials/help/jumbotron', layout: false
 
-= haml :'partials/help_others_tabs', layout: false, locals: { active_tab: "ignored" }
+= haml :'partials/help/tabs', layout: false, locals: { active_tab: "ignored" }
 
 - if @results.empty?
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     Bloodhound trainers have not flagged specimens to be ignored.
 - else
-  = haml :'partials/help_fixed_navbar', layout: false
+  = haml :'partials/help/fixed_navbar', layout: false
   %div{id: "helper-info", class: "alert alert-info tiny-margins", role: "alert"}
-    Choose 
-    %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
-    collected, 
+    Choose
+    %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+    collected,
     %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
     identified, or Both to reclaim specimens mistakenly marked as "Not them".
 

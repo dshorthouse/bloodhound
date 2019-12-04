@@ -9,9 +9,9 @@
     });
 
 -content_for :jumbotron do
-  = haml :'partials/help_others_jumbotron', layout: false
+  = haml :'partials/help/jumbotron', layout: false
 
-= haml :'partials/help_others_tabs', layout: false, locals: { active_tab: "upload" }
+= haml :'partials/help/tabs', layout: false, locals: { active_tab: "upload" }
 
 = haml :'partials/upload_instructions', layout: false
 

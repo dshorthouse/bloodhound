@@ -9,7 +9,7 @@
     });
 
 -content_for :jumbotron do
-  = haml :'partials/help_others_jumbotron', layout: false
+  = haml :'partials/help/jumbotron', layout: false
 
 - if !authorized?
   %p Want to help attribute specimens to #{@viewed_user.fullname}?
@@ -36,7 +36,7 @@
       %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
         %span{"aria-hidden":"true"} &times;
 
-  = haml :'partials/help_others_tabs', layout: false, locals: { active_tab: "discovered" }
+  = haml :'partials/help/tabs', layout: false, locals: { active_tab: "discovered" }
 
   - if @results.empty?
     %div{class: "alert alert-info tiny-margins", role: "alert"}
@@ -47,7 +47,7 @@
         %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
         %label{for:"relaxed", class:"relaxed"} Make less exact.
   - else
-    = haml :'partials/help_fixed_navbar', layout: false
+    = haml :'partials/help/fixed_navbar', layout: false
 
     %div{id:"helper-info", class: "alert alert-info tiny-margins", role: "alert"}
       Help attribute #{number_with_delimiter(@total, delimeter: ",")} #{'specimen'.pluralize(@total)}.

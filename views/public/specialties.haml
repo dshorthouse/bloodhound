@@ -1,4 +1,4 @@
-= haml :'partials/user_twitter_img', layout: false
+= haml :'partials/user/twitter_img', layout: false
 
 - content_for(:title, "#{@viewed_user.fullname}")
 
@@ -10,12 +10,12 @@
     });
 
 %div{class:"row"}
-  = haml :'partials/user_jumbotron', layout: false
+  = haml :'partials/user/jumbotron', layout: false
   %div{class:"col-12 col-lg-8 mt-2"}
     - if @viewed_user.is_public?
-      = haml :'partials/user_tabs', layout: false, locals: { active_page: "specialties" }
+      = haml :'partials/user/tabs', layout: false, locals: { active_page: "specialties" }
 
-      - if @families_identified.empty? && @families_recorded.empty? 
+      - if @families_identified.empty? && @families_recorded.empty?
         %div{class: "alert alert-info tiny-margins", role: "alert"}
           Specialties have not yet been recorded.
 

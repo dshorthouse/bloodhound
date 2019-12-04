@@ -1,4 +1,4 @@
-= haml :'partials/user_twitter_img', layout: false
+= haml :'partials/user/twitter_img', layout: false
 
 - content_for(:title, "#{@viewed_user.fullname}")
 
@@ -10,10 +10,10 @@
     });
 
 %div{class:"row"}
-  = haml :'partials/user_jumbotron', layout: false
+  = haml :'partials/user/jumbotron', layout: false
   %div{class:"col-12 col-lg-8 mt-2"}
     - if @viewed_user.is_public?
-      = haml :'partials/user_tabs', layout: false, locals: { active_page: "specimens" }
+      = haml :'partials/user/tabs', layout: false, locals: { active_page: "specimens" }
 
       - if @results.empty?
         %div{class: "alert alert-info tiny-margins", role: "alert"}
@@ -23,7 +23,7 @@
       - if !@results.empty?
         %div{class: "alert alert-info row tiny-margins", role: "alert", style:"padding-left:0.1em;padding-right:0.1em"}
           %div{class: "col col-9"}
-            %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
+            %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
             collected or
             %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
             identified #{number_with_delimiter(@pagy.count)} #{'specimen'.pluralize(@pagy.count)}. Not all available columns are shown.

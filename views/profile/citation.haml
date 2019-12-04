@@ -12,7 +12,7 @@
   %div{class:"col-12 col-lg-4"}
     %h1{class:"h3"}= @user.fullname
   %div{class:"col-12 col-lg-8 mt-2"}
-    = haml :'partials/profile_tabs', layout: false, locals: { active_page: "citations" }
+    = haml :'partials/profile/tabs', layout: false, locals: { active_page: "citations" }
 
 - if @results.empty?
   %div{class: "alert alert-info tiny-margins", role: "alert"}
@@ -21,11 +21,11 @@
 - else
   %div{class: "alert alert-info row tiny-margins", role: "alert"}
     %div{class: "col col-12"}
-      Choose 
-      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18} 
-      collected, 
+      Choose
+      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+      collected,
       %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-      identified, or Both to 
+      identified, or Both to
       %span{class:"font-weight-bold"} adjust your claims.
 
   %h4 Specimens Used In

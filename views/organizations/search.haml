@@ -16,11 +16,11 @@
         #{number_with_delimiter(Organization.active_user_organizations.count)} organizations from employment and academic records in
         %a{href: "https://orcid.org/"} ORCID
         accounts
-    = haml :'partials/organization_search', layout: false
+    = haml :'partials/organization/search', layout: false
 
 - if @results.empty?
   %div{class: "alert alert-warning tiny-margins", role: "alert"}
-    No organizations found for 
+    No organizations found for
     %span{class: "font-weight-bold"} #{h(params[:q])}
 - else
   %div{class: "alert alert-info tiny-margins", role: "alert"}

@@ -12,7 +12,7 @@
   %div{class:"col-12 col-lg-4"}
     %h1{class:"h3"}= @user.fullname
   %div{class:"col-12 col-lg-8 mt-2"}
-    = haml :'partials/profile_tabs', layout: false, locals: { active_page: "messages" }
+    = haml :'partials/profile/tabs', layout: false, locals: { active_page: "messages" }
 
 - if @results.empty?
   %div{class: "alert alert-info tiny-margins", role: "alert"}

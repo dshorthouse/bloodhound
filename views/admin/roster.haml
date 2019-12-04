@@ -12,7 +12,7 @@
   %div{class:"jumbotron jumbotron-fluid alert-warning d-flex flex-wrap"}
     %div{class:"mr-auto"}
       %h1{class:"h2"} All People
-    = haml :'partials/admin_user_search', layout: false
+    = haml :'partials/admin/user_search', layout: false
 
 - sort = locals[:sort] == "asc" ? "desc" : "asc"
 %div{class:"table-responsive-lg"}

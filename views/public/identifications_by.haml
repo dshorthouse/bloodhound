@@ -1,4 +1,4 @@
-= haml :'partials/user_twitter_img', layout: false
+= haml :'partials/user/twitter_img', layout: false
 
 - content_for(:title, "#{@viewed_user.fullname}")
 
@@ -12,10 +12,10 @@
     });
 
 %div{class:"row"}
-  = haml :'partials/user_jumbotron', layout: false
+  = haml :'partials/user/jumbotron', layout: false
   %div{class:"col-12 col-lg-8 mt-2"}
     - if @viewed_user.is_public?
-      = haml :'partials/user_tabs', layout: false, locals: { active_page: "network" }
+      = haml :'partials/user/tabs', layout: false, locals: { active_page: "network" }
 
       %nav{id:"network-nav", class:"navbar navbar-light navbar-expand bg-light"}
         %ul{class:"navbar-nav"}
@@ -41,7 +41,7 @@
                   %div{class:"card", style:"border:0px"}
                 - else
                   - cache_fragment(u.identifier) do
-                    = haml :'partials/user_card', layout: false, locals: { user: u }
+                    = haml :'partials/user/card', layout: false, locals: { user: u }
 
         = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
 

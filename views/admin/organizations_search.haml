@@ -12,7 +12,7 @@
   %div{class:"jumbotron jumbotron-fluid alert-warning d-flex flex-wrap"}
     %div{class:"mr-auto"}
       %h1{class:"h2"} Organizations
-    = haml :'partials/admin_organization_search', layout: false
+    = haml :'partials/admin/organization_search', layout: false
 
 - if @results.empty?
   %div{class: "alert alert-info tiny-margins", role: "alert"}

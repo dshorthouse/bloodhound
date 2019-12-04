@@ -1,4 +1,4 @@
-= haml :'partials/dataset_twitter_img', layout: false
+= haml :'partials/dataset/twitter_img', layout: false
 
 -content_for :title do
   #{@dataset.title} People
@@ -11,10 +11,10 @@
     });
 
 %div{class:"row"}
-  = haml :'partials/dataset_jumbotron', layout:false
+  = haml :'partials/dataset/jumbotron', layout:false
 
   %div{class:"col-12 col-lg-8 mt-2"}
-    = haml :'partials/dataset_tabs', layout:false, locals: { active_tab: locals[:active_tab] }
+    = haml :'partials/dataset/tabs', layout:false, locals: { active_tab: locals[:active_tab] }
 
     - if @pagy.count == 0
       %div{class: "alert alert-info tiny-margins", role: "alert"}
@@ -30,6 +30,6 @@
               %div{class:"card", style:"border:0px"}
             - else
               - cache_fragment(u.identifier) do
-                = haml :'partials/user_card', layout: false, locals: { user: u }
+                = haml :'partials/user/card', layout: false, locals: { user: u }
 
       = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

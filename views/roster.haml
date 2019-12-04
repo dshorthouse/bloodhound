@@ -10,14 +10,14 @@
     $(function() {
       Application.init("", "GET", "/roster");
     });
-    
+
 -content_for :jumbotron do
   %div{id:"roster-jumbotron", class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
       %h1{class:"h2"} Public Profiles
       %p.lead.text-muted
         #{number_with_delimiter(User.where(is_public: true).count)} people who share their profiles and the profiles of others they revere
-    = haml :'partials/user_search', layout: false
+    = haml :'partials/user/search', layout: false
 
 - if @results.empty? && params[:q] && params[:q].present?
   %div{class: "alert alert-warning tiny-margins", role: "alert"}
@@ -38,6 +38,6 @@
           - if params[:q] && params[:q].present?
             - u = User.find(u[:_id])
           - cache_fragment(u.identifier) do
-            = haml :'partials/user_card', layout: false, locals: { user: u }
+            = haml :'partials/user/card', layout: false, locals: { user: u }
 
   = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

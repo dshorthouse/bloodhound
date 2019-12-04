@@ -12,7 +12,7 @@
   %div{class:"jumbotron jumbotron-fluid alert-warning d-flex flex-wrap"}
     %div{class:"mr-auto"}
       %h1{class:"h2"} Organizations
-    = haml :'partials/admin_organization_search', layout: false
+    = haml :'partials/admin/organization_search', layout: false
 
 - sort = locals[:sort] == "asc" ? "desc" : "asc"
 %div{class:"table-responsive-lg"}
@@ -34,7 +34,7 @@
     %tbody
       - @results.each do |o|
         %tr
-          %td 
+          %td
             %a{href: "/admin/organization/#{o.id}"} #{o.name}
           %td #{o.address}
           %td

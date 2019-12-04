@@ -14,14 +14,14 @@
       %div{class:"col-12 col-lg-4 alert-warning mb-2"}
         %h1{class:"h3"}= @admin_user.fullname
       %div{class:"col-12 col-lg-8 mt-2"}
-        = haml :'partials/admin_user_tabs', layout: false, locals: { active_page: "help" }
+        = haml :'partials/admin/user_tabs', layout: false, locals: { active_page: "help" }
 
 - if @results.empty?
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     This Bloodhound trainer has not helped claim this user's specimens.
 
 - else
-  = haml :'partials/admin_fixed_navbar', layout: false
+  = haml :'partials/admin/fixed_navbar', layout: false
   %div{id: "helper-info", class: "alert alert-info row tiny-margins", role: "alert"}
     %div{class: "col col-12"}
       Choose

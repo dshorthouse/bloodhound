@@ -14,7 +14,7 @@
       %h1{class:"h2"} Help Attribute Specimens
       %p.lead.text-muted
         Basic instructions to get you started
-    = haml :'partials/help_others_search', layout: false
+    = haml :'partials/help/search', layout: false
 
 %ul{class: "nav nav-tabs pl-2"}
   %li{class: "nav-item"}
@@ -33,15 +33,15 @@
       %li
         %strong
           Living:
-        Ask them to create an 
+        Ask them to create an
         %a{href: "https://orcid.org/register"} ORCID account
-        with a publicly available name. If they assign themselves one or more of the keywords 
+        with a publicly available name. If they assign themselves one or more of the keywords
         %span{class: "font-italic"} #{Settings.orcid.keywords.join(", ")}
         to their ORCID account, Bloodhound will add them the following day
       %li
         %strong
           Deceased:
-        Search on 
+        Search on
         %a{href:"https://www.wikidata.org"} Wikidata
         and ensure they have a birth and death date accurate to the day and there is a value for any of the properties:
         %span{class: "font-italic"} #{::Bloodhound::WikidataSearch::PEOPLE_PROPERTIES.keys.join(", ")}

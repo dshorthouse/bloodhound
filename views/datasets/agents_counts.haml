@@ -1,13 +1,13 @@
-= haml :'partials/dataset_twitter_img', layout: false
+= haml :'partials/dataset/twitter_img', layout: false
 
 -content_for :title do
   #{@dataset.title} Agents
 
 %div{class:"row"}
-  = haml :'partials/dataset_jumbotron', layout:false
+  = haml :'partials/dataset/jumbotron', layout:false
 
   %div{class:"col-12 col-lg-8 mt-2"}
-    = haml :'partials/dataset_tabs', layout:false, locals: { active_tab: locals[:active_tab] }
+    = haml :'partials/dataset/tabs', layout:false, locals: { active_tab: locals[:active_tab] }
 
     %nav{id:"network-nav", class:"navbar navbar-light navbar-expand bg-light overflow-auto"}
       %ul{class:"navbar-nav"}

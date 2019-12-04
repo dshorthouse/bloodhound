@@ -32,4 +32,4 @@
       - group.each do |u|
         - if !u.nil?
           - cache_fragment(u.identifier) do
-            = haml :'partials/user_card', layout: false, locals: { user: u }
+            = haml :'partials/user/card', layout: false, locals: { user: u }

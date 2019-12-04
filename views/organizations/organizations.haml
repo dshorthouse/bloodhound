@@ -18,7 +18,7 @@
         accounts and
         %a{href: "https://www.wikidata.org"} Wikidata
         entries
-    = haml :'partials/organization_search', layout: false
+    = haml :'partials/organization/search', layout: false
 
 - @results.in_groups_of(3).each do |group|
   %div{class: "card-deck"}

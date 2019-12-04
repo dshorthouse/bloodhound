@@ -14,7 +14,7 @@
       %h1{class:"h2"} Agent Search
       %p.lead.text-muted
         #{number_with_delimiter(@count)} unverified and unresolved names found in natural history specimen data
-    = haml :'partials/agent_search', layout: false
+    = haml :'partials/agent/search', layout: false
 
 - if params[:q] && !params[:q].empty? && @formatted_results.empty?
   %div{class: "alert alert-warning tiny-margins", role: "alert"}

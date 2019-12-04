@@ -1,4 +1,4 @@
-= haml :'partials/user_twitter_img', layout: false
+= haml :'partials/user/twitter_img', layout: false
 
 - content_for(:title, "#{@viewed_user.fullname}")
 
@@ -21,7 +21,7 @@
     %script{src: "/js/jquery-jvectormap-world-mill.js"}
     :javascript
       var countryData=#{@total[:country_counts].to_json};
-  
+
       $(function() {
         var map = $('#world-map');
         DISQUSWIDGETS.getCount({reset: true});
@@ -44,7 +44,7 @@
               regions: [{
                 values: Object.keys(countryData).reduce(function (result,item) {
                   result[item] = countryData[item].count;
-                  return result; 
+                  return result;
                 }, {}),
                 scale: ['#C8EEFF', '#0071A4'],
                 normalizeFunction: 'polynomial'
@@ -62,10 +62,10 @@
       });
 
 %div{class:"row"}
-  = haml :'partials/user_jumbotron', layout: false
+  = haml :'partials/user/jumbotron', layout: false
   %div{class:"col-12 col-lg-8 mt-2"}
     - if @viewed_user.is_public?
-      = haml :'partials/user_tabs', layout: false, locals: { active_page: "overview" }
+      = haml :'partials/user/tabs', layout: false, locals: { active_page: "overview" }
 
       %div{class:"d-flex flex-row mt-3 alert alert-info justify-content-between"}
         - if @total[:number_identified] == 0 && @total[:number_recorded] == 0 && @total[:number_helped] == 0

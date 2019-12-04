@@ -11,9 +11,9 @@
     });
 
 %div{class:"row"}
-  = haml :'partials/admin_profile_jumbotron', layout: false, locals: { active_page: "settings" }
+  = haml :'partials/admin/profile_jumbotron', layout: false, locals: { active_page: "settings" }
   %div{class:"col-12 col-lg-8 mt-2"}
-    = haml :'partials/admin_user_tabs', layout: false, locals: { active_page: nil }
+    = haml :'partials/admin/user_tabs', layout: false, locals: { active_page: nil }
 
     %div{class:"citation-wrapper mt-3"}
       %h4 Settings
