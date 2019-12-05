@@ -154,7 +154,7 @@ module Bloodhound
       end
 
       new_wikicodes.each do |wikicode, name|
-        parsed = Namae.parse(name)[0] rescue nil
+        parsed = DwcAgent.parse(name)[0] rescue nil
         next if parsed.nil? || parsed.family.nil? || parsed.given.nil?
 
         u = User.find_or_create_by({ wikidata: wikicode })
