@@ -3,7 +3,7 @@
   %head
     %meta{charset: "UTF-8" }/
     %meta{name:"description", content:"#{I18n.t('home.tagline')}"}/
-    %meta{name:"keywords", content:"credit,specimens,natural,history,attribution,collection,museum,orcid,gbif"}/
+    %meta{name:"keywords", content:"credit,specimens,natural,history,collection,museum,attribution,tracker,tracking,gbif"}/
     %meta{name:"author", content:"David P. Shorthouse"}/
     %meta{name:"viewport", content:"width=device-width, initial-scale=1"}/
     %meta{name:"twitter:card", content:"summary"}/
@@ -34,95 +34,17 @@
     %link{href: "/css/typeahead.css", rel: "stylesheet", type: "text/css"}
     = yield_content :stylesheets
 
-    %script{src: "https://kit.fontawesome.com/c0c5b90533.js", crossorigin:"anonymous"}
-    %script{src: "/js/jquery-3.3.1.min.js"}
-    %script{src: "/js/popper.min.js", crossorigin:"anonymous"}
+    %script{src: "https://kit.fontawesome.com/c0c5b90533.js", crossorigin: "anonymous"}
+    %script{src: "/js/jquery-3.3.1.min.js", crossorigin: "anonymous"}
+    %script{src: "/js/popper.min.js", crossorigin: "anonymous"}
     %script{src: "/js/bootstrap.min.js", crossorigin: "anonymous"}
-    %script{src: "/js/bootstrap-toggle.min.js"}
-    %script{src: "/js/typeahead.bundle.min.js"}
+    %script{src: "/js/bootstrap-toggle.min.js", crossorigin: "anonymous"}
+    %script{src: "/js/typeahead.bundle.min.js", crossorigin: "anonymous"}
     = yield_content :scripts
 
   %body{class:"d-flex flex-column"}
     %header
-      %nav{class:"navbar navbar-expand-md navbar-dark bg-dark"}
-        %a{class:"navbar-brand", href:"/"}
-          %img{src: "/images/logo.png", height:48, alt: "Bloodhound"}
-        %button{class:"navbar-toggler", type:"button", "data-toggle":"collapse", "data-target":"#navbarSupportedContent", "aria-controls":"navbarSupportedContent", "aria-expanded":"false", "aria-label":"Toggle navigation"}
-          %span{class:"navbar-toggler-icon"}
-        %div{class: "collapse navbar-collapse", id:"navbarSupportedContent"}
-          %ul{class: "navbar-nav mr-auto"}
-            %li{class: "nav-item"}
-              %a{ href: "/roster", class:"nav-link#{locals[:active_page] == "roster" ? " active" : nil}" }
-                %i{class:"fas fa-users"}
-                = I18n.t('layout.profiles')
-            %li{class: "nav-item"}
-              %a{ href: "/trainers", class: "nav-link#{locals[:active_page] == "trainers" ? " active" : nil}"}
-                %i{class:"fas fa-bone"}
-                = I18n.t('layout.trainers')
-            %li{class: "nav-item"}
-              %a{ href: "/organizations", class:"nav-link#{locals[:active_page] == "organizations" ? " active" : nil}" }
-                %i{class:"fas fa-building"}
-                = I18n.t('layout.organizations')
-            %li{class: "nav-item"}
-              %a{ href: "/datasets", class:"nav-link#{locals[:active_page] == "datasets" ? " active" : nil}" }
-                %i{class:"fas fa-database"}
-                = I18n.t('layout.datasets')
-            %li{class: "nav-item"}
-              %a{ href: "/countries", class:"nav-link#{locals[:active_page] == "countries" ? " active" : nil}" }
-                %i{class:"fas fa-globe"}
-                = I18n.t('layout.countries')
-            %li{class: "nav-item"}
-              %a{ href: '/agents', class: "nav-link#{locals[:active_page] == "agents" ? " active" : nil}" }
-                %i{class:"fas fa-user-secret"}
-                = I18n.t('layout.agents')
-          %ul{class: "navbar-nav"}
-            - if authorized?
-              %li{class: "nav-item"}
-                %a{ href: "/help-others", class: "nav-link#{locals[:active_page] == "help" ? " active" : nil}"}
-                  %i{class:"fas fa-hands-helping"}
-                  = I18n.t('layout.help_others')
-            - if authorized?
-              %li{class: "nav-item"}
-                %div{class:"btn-group"}
-                  %a{class:"btn btn-outline-light#{locals[:active_page] == "profile" ? " active" : " text-muted"}", href:"/profile", role:"button"}
-                    - if @user.image_url
-                      - if locals[:active_page] == "profile"
-                        %img{src:"#{profile_image(@user, 'thumbnail')}", alt:"#{@user.fullname}"}
-                      - else
-                        %img{src:"#{profile_image(@user, 'thumbnail_grey')}", alt:"#{@user.fullname}"}
-                    - else
-                      %i{class:"fas fa-user", alt:"#{@user.fullname}"}
-                  %button{class:"btn btn-outline-light dropdown-toggle", type:"button", "data-toggle": "dropdown", "aria-haspopup": "true", "aria-expanded": "false"}
-                    %span{class:"sr-only"}= I18n.t('layout.toggle_dropdown')
-                  %div{class:"dropdown-menu dropdown-menu-right"}
-                    %a{href:"/profile", class:"dropdown-item"}
-                      %i{class:"fas fa-user"}
-                      = I18n.t('layout.overview')
-                    %a{href:"/profile/specimens", class:"dropdown-item"}
-                      %i{class:"fas fa-th"}
-                      = I18n.t('layout.specimens')
-                    %a{href:"/profile/messages", class:"dropdown-item"}
-                      %i{class:"fas fa-heart"}
-                      = I18n.t('layout.messages_received')
-                    %a{href:"/profile/citations", class:"dropdown-item"}
-                      %i{class:"fas fa-flask"}
-                      = I18n.t('layout.science_enabled')
-                    %a{href:"/profile/settings", class:"dropdown-item"}
-                      %i{class:"fas fa-cog"}
-                      = I18n.t('layout.settings')
-                    - if admin_authorized?
-                      %a{href: "/admin", class:"dropdown-item"}
-                        %i{class:"fas fa-users-cog"}
-                        = I18n.t('layout.administration')
-                    %a{ href: "/logout", class: "dropdown-item" }
-                      %i{class:"fas fa-sign-out-alt"}
-                      = I18n.t('layout.logout')
-            - else
-              %li
-                %a{ href:"/auth/orcid?lang=#{I18n.locale}", role: "button", class: "btn btn-outline-light connect-orcid-button" }
-                  %i{class:"fab fa-orcid"}
-                  = I18n.t('home.orcid_login')
-
+      = haml :'global_navigation', layout: false
       = yield_content :jumbotron
 
     %main{id:"main", class:"mb-5"}
@@ -130,26 +52,4 @@
         = yield
 
     %footer{class: "footer mt-auto py-3 border-top d-flex justify-content-end"}
-      %div{class:"px-2 px-sm-3 px-md-5"}
-        %h5= I18n.t('layout.resources')
-        %ul{class: "list-unstyled text-small"}
-          %li
-            %a{href: "/integrations", class: "text-muted"}= I18n.t('layout.integrations')
-          %li
-            %a{href: "/developers", class: "text-muted"}= I18n.t('layout.for_developers')
-      %div{class: "px-2 px-sm-3 px-md-5"}
-        %h5= I18n.t('layout.about')
-        %ul{class: "list-unstyled text-small"}
-          %li
-            %a{href: "/about", class: "text-muted"}= I18n.t('layout.rationale')
-          %li
-            %a{href: "/how-it-works", class: "text-muted"}= I18n.t('layout.how_works')
-          %li
-            %a{href: "https://github.com/dshorthouse/bloodhound/issues", class: "text-muted"}= I18n.t('layout.feedback')
-      %div{class:"pr-2 pr-md-3"}
-        %ul{class: "list-unstyled text-small"}
-          %li{class:"text-center"}
-            %a{ href:"/donate", role: "button", class: "btn btn-sm btn-success" }= I18n.t('layout.support')
-          %li{class:"text-center"}
-            %a{href: "https://twitter.com/BloodhoundTrack", class:"mt-2 twitter"}
-              %i{class:"fab fa-twitter"}
+      = haml :'global_footer', layout: false
