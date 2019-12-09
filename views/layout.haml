@@ -40,10 +40,13 @@
     %script{src: "/js/bootstrap.min.js", crossorigin: "anonymous"}
     %script{src: "/js/bootstrap-toggle.min.js", crossorigin: "anonymous"}
     %script{src: "/js/typeahead.bundle.min.js", crossorigin: "anonymous"}
+    %script{src: "/js/js.cookie.min.js", crossorigin: "anonymous"}
     = yield_content :scripts
 
   %body{class:"d-flex flex-column"}
     %header
+      - if Settings.offline_warning.off_time
+        = haml :'global_offline_warning', layout: false
       = haml :'global_navigation', layout: false
       = yield_content :jumbotron
 
