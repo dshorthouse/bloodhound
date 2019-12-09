@@ -4,7 +4,7 @@
     if (Cookies.get(cookie_name) !== "hide") {
         $('#offline_warning').modal('show')
                              .on('hide.bs.modal', function(e) {
-                                Cookies.set(cookie_name, "hide");
+                                Cookies.set(cookie_name, "hide", { expires: 7 });
                              });
     }
   });
