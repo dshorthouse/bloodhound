@@ -10,7 +10,7 @@
     $(function() {
       Application.init("", "GET", "/roster");
     });
-    
+
 -content_for :jumbotron do
   %div{id:"roster-jumbotron", class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
@@ -19,7 +19,7 @@
         #{number_with_delimiter(User.where(is_public: true).count)} people who share their profiles and the profiles of others they revere
     = haml :'partials/user_search', layout: false
 
-- if @results.empty? && params[:q] && params[:q].present?
+- if @pagy.count == 0 && params[:q] && params[:q].present?
   %div{class: "alert alert-warning tiny-margins", role: "alert"}
     No one found by the name
     %span{class: "font-weight-bold"} #{h(params[:q])}

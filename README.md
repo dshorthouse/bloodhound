@@ -121,7 +121,7 @@ Unfortunately, gbifIDs are not persistent. These occasionally disappear through 
 To migrate tables, use mydumper and myloader:
 
       brew install mydumper
-      mydumper --user root --password <PASSWORD> --database bloodhound --tables-list agents,occurrences,occurrence_recorders,occurrence_determiners,taxa,taxon_occurrences,taxon_determiners --compress --no-schemas --threads 8 --outputdir /Users/dshorthouse/Documents/bloodhound_dump
+      mydumper --user root --password <PASSWORD> --database bloodhound --tables-list agents,occurrences,occurrence_recorders,occurrence_determiners,taxa,taxon_occurrences,taxon_determiners --compress --threads 8 --rows=100000 --trx-consistency-only --outputdir /Users/dshorthouse/Documents/bloodhound_dump
 
       apt-get install mydumper
       nohup myloader --database bloodhound --user bloodhound --password <PASSWORD> --threads 8 --queries-per-transaction 100 --compress-protocol --directory /home/dshorthouse/bloodhound_restore &

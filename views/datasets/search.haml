@@ -52,8 +52,5 @@
               %div{class: "card-footer"}
                 %div{class: "col small text-left text-muted"}
                 %div{class: "col small text-right text-muted"}
-                  - count = dataset.users.count
-                  %span{class:"badge badge-light"} #{number_with_delimiter(count)}
-                  #{'person'.pluralize(count)}
 
   = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

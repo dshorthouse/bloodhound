@@ -42,7 +42,7 @@ CREATE TABLE `ar_internal_metadata` (
 
 CREATE TABLE `datasets` (
   `id` bigint(20) NOT NULL,
-  `datasetKey` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `datasetKey` binary(36) NOT NULL,
   `title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `doi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
@@ -69,7 +69,7 @@ CREATE TABLE `messages` (
 
 CREATE TABLE `occurrences` (
   `gbifID` bigint(11) UNSIGNED NOT NULL,
-  `datasetKey` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `datasetKey` binary(36) DEFAULT NULL,
   `occurrenceID` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `dateIdentified` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `decimalLatitude` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
@@ -203,7 +203,7 @@ ALTER TABLE `ar_internal_metadata`
 
 ALTER TABLE `datasets`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `index_datasets_on_datasetKey` (`datasetKey`(50));
+  ADD UNIQUE KEY `index_datasets_on_datasetKey` (`datasetKey`) USING BTREE;
 
 ALTER TABLE `destroyed_users`
   ADD PRIMARY KEY (`id`),
@@ -217,7 +217,7 @@ ALTER TABLE `messages`
 ALTER TABLE `occurrences`
   ADD PRIMARY KEY (`gbifID`) USING BTREE,
   ADD KEY `typeStatus_idx` (`typeStatus`(256)),
-  ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`);
+  ADD KEY `datasetKey_idx` (`datasetKey`);
 
 ALTER TABLE `occurrence_determiners`
   ADD KEY `agent_idx` (`agent_id`),

@@ -100,7 +100,7 @@ module Sinatra
                             .order(created: :desc)
                             .distinct
 
-        @pagy, @results = pagy(qry, items: 20)
+        @pagy, @results = pagy_arel(qry, items: 20)
       end
 
       def find_user(id)
