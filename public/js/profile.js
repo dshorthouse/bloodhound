@@ -13,6 +13,7 @@ var Profile = (function($, window) {
       this.activate_profile_image();
       this.activate_zenodo();
       this.activate_email();
+      this.message_counter();
     },
     activate_profile_image: function() {
       var popup = $('#profile-upload-option'), self = this;
@@ -105,6 +106,19 @@ var Profile = (function($, window) {
           $('#zenodoModal').modal('hide');
           location.reload();
         });
+      });
+    },
+    message_counter: function() {
+      var self = this;
+      $.ajax({
+        method: "GET",
+        url: self.path + "/message-count.json"
+      }).done(function(data) {
+        if (data.count > 0 && data.count <= 50) {
+          $(".badge-notify-message").text(data.count).show();
+        } else if (data.count > 50) {
+          $(".badge-notify-message").text("50+").show();
+        }
       });
     },
     calculateAspectRatioFit: function(srcWidth, srcHeight) {

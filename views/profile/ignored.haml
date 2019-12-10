@@ -2,18 +2,14 @@
   Ignored
 
 -content_for :scripts do
-  %script{src: "/js/application.js"}
-  :javascript
-    $(function() {
-      Application.init(#{@user.id}, "PUT", "/profile");
-    });
+  = haml :'partials/profile/scripts', layout: false, locals: { action_type: "PUT" }
 
 %div{class:"row"}
   %div{class:"col-12 col-lg-4"}
     %h1{class:"h3"}= @user.fullname
   %div{class:"col-12 col-lg-8 mt-2"}
     = haml :'partials/profile/tabs', layout: false, locals: { active_page: "specimens" }
-    = haml :'partials/profile/subtabs', layout: false, locals: { active_tab: "ignored"}
+    = haml :'partials/profile/subtabs_specimens', layout: false, locals: { active_tab: "ignored"}
 
 %div{class: "alert alert-info tiny-margins", role: "alert"}
   - if @results.empty?

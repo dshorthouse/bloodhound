@@ -191,7 +191,21 @@ class User < ActiveRecord::Base
   end
 
   def helped
-    claims_given.map(&:user).uniq
+    claims_given.pluck(:user_id)
+                .uniq
+                .map{|u| User.find(u)}
+  end
+
+  def latest_helped
+    subq = claims_given.select("user_occurrences.user_id AS user_id, MAX(user_occurrences.created) AS created, COUNT(user_occurrences.user_id) AS attribution_count")
+                       .group("user_occurrences.user_id")
+
+    claims_given.select(:user_id, :created, :attribution_count)
+                .joins(:user)
+                .joins("INNER JOIN (#{subq.to_sql}) sub ON sub.user_id = user_occurrences.user_id AND sub.created = user_occurrences.created")
+                .preload(:user)
+                .order(created: :desc)
+                .distinct
   end
 
   def claims_received

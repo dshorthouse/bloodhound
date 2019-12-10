@@ -2,11 +2,7 @@
   Citation
 
 -content_for :scripts do
-  %script{src: "/js/application.js"}
-  :javascript
-    $(function() {
-      Application.init(#{@user[:id]}, "PUT", "/profile");
-    });
+  = haml :'partials/profile/scripts', layout: false, locals: { action_type: "PUT" }
 
 %div{class:"row"}
   %div{class:"col-12 col-lg-4"}

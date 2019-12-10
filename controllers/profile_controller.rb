@@ -161,6 +161,12 @@ module Sinatra
             haml :'profile/support_table', locals: { active_page: "profile" }
           end
 
+          app.get '/profile/helped' do
+            protected!
+            @pagy, @results = pagy_arel(@user.latest_helped)
+            haml :'profile/helped', locals: { active_page: "profile" }
+          end
+
           app.get '/profile/messages' do
             protected!
             @user.messages_received.update_all({ read: true })
