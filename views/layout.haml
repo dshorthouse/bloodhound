@@ -45,7 +45,7 @@
 
   %body{class:"d-flex flex-column"}
     %header
-      - if Settings.offline_warning.off_time
+      - if Settings.offline_warning.off_datetime
         = haml :'global_offline_warning', layout: false
       = haml :'global_navigation', layout: false
       = yield_content :jumbotron
