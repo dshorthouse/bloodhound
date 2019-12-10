@@ -224,17 +224,12 @@ dl.dl-horizontal dd.line-break {
     position:relative;
     display:inline-block;
 }
-.badge-notify{
+.badge-notify {
     display:none;
     position: absolute;
     right:-5px;
     top:-5px;
-}
-.badge-notify-message{
-    display:none;
-    position: absolute;
-    right:-5px;
-    top:-5px;
+    z-index: 1;
 }
 
 /* CARDS */

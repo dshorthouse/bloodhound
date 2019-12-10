@@ -7,12 +7,12 @@
     %a{class: "nav-link#{locals[:active_page] == "specimens" ? " active" : nil}", href: "/profile/specimens"}
       %i{class:"fas fa-th"}
       Specimens
-    %span{class: "badge-notify badge badge-danger badge-pill"}
+    %span{id:"specimen-counter", class: "badge-notify badge badge-danger badge-pill"}
   %li{class: "nav-item badge-item"}
     %a{class: "nav-link#{locals[:active_page] == "helped" ? " active" : nil}", href: "/profile/helped"}
       %i{class:"fas fa-hands-helping"}
       People Helped
-    %span{class: "badge-notify-message badge badge-success badge-pill"}
+    %span{id:"message-counter", class: "badge-notify badge badge-success badge-pill"}
   %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_page] == "citations" ? " active" : nil}", href: "/profile/citations"}
       %i{class:"fas fa-flask"}

@@ -420,9 +420,9 @@ var Application = (function($, window) {
           url: self.path + "/candidate-count.json?relaxed=0&user_id=" + self.user_id
         }).done(function(data) {
           if (data.count > 0 && data.count <= 50) {
-            $(".badge-notify").text(data.count).show();
+            $("#specimen-counter").text(data.count).show();
           } else if (data.count > 50) {
-            $(".badge-notify").text("50+").show();
+            $("#specimen-counter").text("50+").show();
           }
         });
       }

@@ -2,7 +2,7 @@
   %li{class: "nav-item badge-item"}
     %a{class: "nav-link#{locals[:active_tab] == "discovered" ? " active" : nil}", href: "/help-others/#{@viewed_user.identifier}"}
       Discovered
-    %span{class: "badge-notify badge badge-danger badge-pill"}
+    %span{id:"specimen-counter", class: "badge-notify badge badge-danger badge-pill"}
   %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_tab] == "specimens" ? " active" : nil}", href: "/help-others/#{@viewed_user.identifier}/specimens"} Fix Claims
   %li{class: "nav-item"}

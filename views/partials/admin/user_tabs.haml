@@ -6,7 +6,7 @@
   %li{class: "nav-item badge-item"}
     %a{class: "nav-link#{locals[:active_page] == "candidates" ? " active" : nil}", href: "/admin/user/#{@admin_user.identifier}/candidates?relaxed=0"}
       Discovered
-    %span{class: "badge-notify badge badge-danger badge-pill"}
+    %span{id: "#specimen-counter", class: "badge-notify badge badge-danger badge-pill"}
   %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_page] == "ignored" ? " active" : nil}", href: "/admin/user/#{@admin_user.identifier}/ignored"} Ignored
   %li{class: "nav-item"}
