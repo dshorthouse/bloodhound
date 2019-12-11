@@ -19,6 +19,7 @@
           %input{class: "orcid-add", type: :text, name: "identifier", placeholder: "0000-0001-2345-6789", size:"12"}
 
           %input{type: :submit, class:"btn btn-success mt-3", value: "Submit"}
+          %input{type: :hidden, name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
 
 - if flash[:new_user]
   %div{class: "row"}

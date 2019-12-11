@@ -71,6 +71,7 @@
                 %form{id: "visibility-form", action: "/help-others/#{@viewed_user.identifier}/visibility", method: :post}
                   %button{type:"button", class:"btn btn-sm btn-outline-secondary", "data-dismiss":"modal"} Not yet
                   %input{type: :hidden, name: "_method", value: 'PUT'}
+                  %input{type: :hidden, name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
                   %input{type: :submit, class:"btn btn-sm btn-outline-success", value:"Yes, Make Public"}
           
       - if authorized?

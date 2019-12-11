@@ -75,9 +75,11 @@
                     %i{class:"fas fa-external-link-alt"}
                   where versioned snapshots of your claims will be stored and a DataCite DOI assigned. A citation will be provided for inclusion in your resume.
                 - if @user.zenodo_access_token.empty?
-                  %p{class:"card-text"}
-                    %a{href:"/auth/zenodo", role:"button", class:"btn btn-sm btn-outline-info"}
-                      Integrate with Zenodo
+                  %form{action: "/auth/zenodo", method: "POST" }
+                    %p{class:"card-text"}
+                      %button{class: "btn btn-sm btn-outline-info"}
+                        Integrate with Zenodo
+                      %input{type:"hidden", name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
                 - elsif !@user.zenodo_access_token.empty?
                   %p{class:"alert alert-success"}
                     %i{class:"fas fa-check-circle"}
@@ -147,6 +149,7 @@
                     %form{action: "/profile/destroy", method: :post}
                       %button{type:"button", class:"btn btn-sm btn-outline-secondary", "data-dismiss":"modal"} Cancel
                       %input{type: :hidden, name: "_method", value: 'DELETE'}
+                      %input{type: :hidden, name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
                       %input{type: :submit, class:"btn btn-sm btn-outline-danger", value:"Delete"}
 
         %div{class:"card", style:"border:0px"}

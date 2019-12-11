@@ -13,10 +13,12 @@
 
 - if !authorized?
   %p Want to help attribute specimens to #{@viewed_user.fullname}?
-  %p
-    %a{ href:"/auth/orcid?lang=#{I18n.locale}", id: "connect-orcid-button", role: "button", class: "btn btn-outline-success" }
+
+  %form{action: "/auth/orcid?lang=#{I18n.locale}", method: "POST" }
+    %button{class: "btn btn-lg btn-outline-dark"}
       %i{class:"fab fa-orcid"}
       = I18n.t('home.orcid_login')
+    %input{type:"hidden", name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
 
   - if @viewed_user.is_public?
     %p

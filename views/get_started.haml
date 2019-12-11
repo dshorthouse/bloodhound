@@ -16,10 +16,12 @@
       ORCID is a nonprofit organization helping create a world in which all who participate in research, scholarship and innovation are uniquely identified and connected to their contributions and affiliations, across disciplines, borders, and time.
 
   - if !authorized?
-    %p
-      %a{ href:"/auth/orcid", role: "button", class: "btn btn-lg btn-outline-success" }
-        %i{class:"fab fa-orcid"}
-        Log in or register with ORCID
+    %form{action: "/auth/orcid?lang=#{I18n.locale}", method: "POST" }
+      %p
+        %button{class: "btn btn-lg btn-outline-dark"}
+          %i{class:"fab fa-orcid"}
+          = I18n.t('home.orcid_login')
+        %input{type:"hidden", name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
 
   %p
     Suggested details to make publicly visible in your ORCID account

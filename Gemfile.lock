@@ -348,6 +348,7 @@ DEPENDENCIES
   pony
   rack-contrib
   rack-google-analytics
+  rack-protection
   rake
   redis
   require_all

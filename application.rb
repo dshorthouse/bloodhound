@@ -26,6 +26,7 @@ class BLOODHOUND < Sinatra::Base
   use Rack::Session::Cookie, key: 'rack.session',
                              path: '/',
                              secret: Settings.orcid.key
+  use Rack::Protection, reaction: :drop_session, use: :authenticity_token
 
   use OmniAuth::Builder do
     provider :orcid, Settings.orcid.key, Settings.orcid.secret,

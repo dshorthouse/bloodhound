@@ -105,6 +105,7 @@
                   %form{action: "/admin/user/#{@admin_user.id}", method: :post}
                     %button{type:"button", class:"btn btn-sm btn-outline-secondary", "data-dismiss":"modal"} Cancel
                     %input{type: :hidden, name: "_method", value: 'DELETE'}
+                    %input{type: :hidden, name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
                     %input{type: :submit, class:"btn btn-sm btn-outline-danger", value:"Delete"}
 
         %div{class:"card", style:"border:0px"}

@@ -36,6 +36,9 @@ var Application = (function($, window) {
       this.method = typeof method !== 'undefined' ? method : "POST";
       this.path = typeof path !== 'undefined' ? path : "";
       this.identifier = typeof identifier !== 'undefined' ? identifier : "";
+      $.ajaxSetup({
+        headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') }
+      });
       this.profile_cards();
       this.bloodhound();
       this.typeahead();

@@ -73,6 +73,8 @@
                 = I18n.t('layout.logout')
       - else
         %li
-          %a{ href:"/auth/orcid?lang=#{I18n.locale}", role: "button", class: "btn btn-outline-light connect-orcid-button" }
-            %i{class:"fab fa-orcid"}
-            = I18n.t('home.orcid_login')
+          %form{action: "/auth/orcid?lang=#{I18n.locale}", method: "POST" }
+            %button{class: "btn btn-outline-light connect-orcid-button"}
+              %i{class:"fab fa-orcid"}
+              = I18n.t('home.orcid_login')
+            %input{type:"hidden", name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}

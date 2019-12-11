@@ -10,6 +10,7 @@
     %meta{name:"twitter:site" ,content:"@BloodhoundTrack"}/
     %meta{name:"twitter:description", content:"#{I18n.t('home.tagline')}"}/
     %meta{name:"twitter:creator", content:"@BloodhoundTrack"}/
+    %meta{name:"csrf-token", content:"#{env['rack.session'][:csrf]}"}/
     - if content_for?(:twitter_image)
       = yield_content :twitter_image
     - else

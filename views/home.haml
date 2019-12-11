@@ -17,9 +17,11 @@
   %p{id: "profile-buttons"}
     %a{href:"/get-started", role: "button", class:"btn btn-lg btn-outline-dark"}= I18n.t('home.get_started')
     - if !authorized?
-      %a{ href:"/auth/orcid", role: "button", class: "btn btn-lg btn-outline-dark button-login connect-orcid-button" }
-        %i{class:"fab fa-orcid"}
-        = I18n.t('home.orcid_login')
+      %form{action: "/auth/orcid?lang=#{I18n.locale}", method: "POST" }
+        %button{class: "btn btn-lg btn-outline-dark button-login connect-orcid-button"}
+          %i{class:"fab fa-orcid"}
+          = I18n.t('home.orcid_login')
+        %input{type:"hidden", name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
     - else
       %a{ href:"/profile", id: "candidates-button", role: "button", class: "btn btn-lg btn-outline-dark" }= I18n.t('home.your_profile')
 

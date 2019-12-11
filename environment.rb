@@ -62,10 +62,15 @@ require 'pluck_to_hash'
 require 'pony'
 require 'twitter'
 
+require_relative File.join(File.dirname(__FILE__), 'lib', 'omniauth_authenticity_checker')
+
 Encoding.default_internal = Encoding::UTF_8
 Encoding.default_external = Encoding::UTF_8
 
 Hashie.logger = Logger.new(nil)
+
+OmniAuth.config.allowed_request_methods = [:post]
+OmniAuth.config.before_request_phase = OmniauthAuthenticityChecker.new(reaction: :drop_session)
 
 require_all File.join(File.dirname(__FILE__), 'lib')
 require_all File.join(File.dirname(__FILE__), 'helpers')

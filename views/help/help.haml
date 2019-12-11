@@ -54,6 +54,7 @@
     %div{class:"form-group"}
       %label{for: "identifier", class:"font-weight-bold"}= "Add ORCID Identifier or Wikidata Q Number"
       %input{class: "orcid-add", type: :text, name: "identifier", placeholder: "Q1234567", size:"12"}
+      %input{type: :hidden, name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
       %input{type: :submit, class:"btn btn-success mt-3", value: "Add"}
 
 - if flash[:new_user]

@@ -29,6 +29,7 @@
             %label{for:"ignore", class:"form-check-label"} Bulk Not Them
 
           %div{class:"form-group"}
+            %input{type: :hidden, name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
             %button{type:"submit", class:"btn btn-success mt-3"} Submit
 
       %div{class:"modal-footer"}

@@ -46,6 +46,8 @@
   %button{type:"submit", class:"btn btn-success"} Submit
   %button{type: "button", class:"btn btn-danger", "data-toggle": "modal", "data-target": "#deleteModal"} Delete
 
+  %input{type: :hidden, name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
+
 %div{class:"modal fade", id:"deleteModal", tabindex:"-1", role:"dialog", "aria-labelledby":"deleteModal", "aria-hidden":"true"}
   %div{class:"modal-dialog", role:"document"}
     %div{class:"modal-content"}
@@ -59,4 +61,5 @@
         %form{action: "/admin/dataset/#{@dataset.id}", method: :post}
           %button{type:"button", class:"btn btn-sm btn-outline-secondary", "data-dismiss":"modal"} Cancel
           %input{type: :hidden, name: "_method", value: 'DELETE'}
+          %input{type: :hidden, name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
           %input{type: :submit, class:"btn btn-sm btn-outline-danger", value:"Delete"}
