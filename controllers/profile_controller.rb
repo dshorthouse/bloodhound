@@ -185,8 +185,10 @@ module Sinatra
             @user.is_public = req[:is_public]
             if req[:is_public]
               @user.made_public = Time.now
-              twitter = ::Bloodhound::Twitter.new
-              twitter.welcome_user(@user)
+              if !Settings.twitter.consumer_key.blank?
+                twitter = ::Bloodhound::Twitter.new
+                twitter.welcome_user(@user)
+              end
             end
             @user.save
             @user.update_profile

@@ -290,8 +290,10 @@ module Sinatra
               @viewed_user.update({ is_public: true, made_public: Time.now })
               @viewed_user.update_profile
               cache_clear "fragments/#{@viewed_user.identifier}"
-              twitter = ::Bloodhound::Twitter.new
-              twitter.welcome_user(@viewed_user)
+              if !Settings.twitter.consumer_key.blank?
+                twitter = ::Bloodhound::Twitter.new
+                twitter.welcome_user(@viewed_user)
+              end
               flash.next[:public] = true
               redirect "/help-others/#{@viewed_user.identifier}"
             end
