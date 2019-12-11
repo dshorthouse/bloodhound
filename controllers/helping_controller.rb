@@ -10,7 +10,8 @@ module Sinatra
           app.get '/help-others' do
             protected!
             @results = []
-            @countries = IsoCountryCodes.for_select.group_by{|u| ActiveSupport::Inflector.transliterate(u[0][0]) }
+            @countries = IsoCountryCodes.for_select
+                                        .group_by{|u| ActiveSupport::Inflector.transliterate(u[0][0]) }
             if params[:q]
               search_user
             end
@@ -255,7 +256,9 @@ module Sinatra
             end
 
             agent_ids = candidate_agents(@viewed_user).pluck(:id)
-            records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @viewed_user.user_occurrences.select(:occurrence_id)).limit(Settings.helping_download_limit)
+            records = occurrences_by_agent_ids(agent_ids).where
+                                                         .not(occurrence_id: @viewed_user.user_occurrences.select(:occurrence_id))
+                                                         .limit(Settings.helping_download_limit)
             body ::Bloodhound::IO.csv_stream_candidates(records)
           end
 

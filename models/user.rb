@@ -85,7 +85,8 @@ class User < ActiveRecord::Base
   end
 
   def hidden_occurrences
-    hidden_user_occurrences.includes(:occurrence).order(created: :desc)
+    hidden_user_occurrences.includes(:occurrence)
+                           .order(created: :desc)
   end
 
   def hidden_user_occurrences
@@ -109,9 +110,10 @@ class User < ActiveRecord::Base
   end
 
   def identified_families
-    taxon_ids = visible_user_occurrences.where(qry_identified)
-                                        .joins(:taxon_occurrence)
-                                        .pluck(:taxon_id)
+    taxon_ids = visible_user_occurrences
+                  .where(qry_identified)
+                  .joins(:taxon_occurrence)
+                  .pluck(:taxon_id)
     Hash.new(0).tap{ |h| taxon_ids.each { |f| h[f] += 1 } }
                .transform_keys{ |key| Taxon.find(key).family }
                .sort_by {|_key, value| value}
@@ -124,9 +126,10 @@ class User < ActiveRecord::Base
   end
 
   def recorded_families
-    taxon_ids = visible_user_occurrences.where(qry_recorded)
-                                        .joins(:taxon_occurrence)
-                                        .pluck(:taxon_id)
+    taxon_ids = visible_user_occurrences
+                  .where(qry_recorded)
+                  .joins(:taxon_occurrence)
+                  .pluck(:taxon_id)
     Hash.new(0).tap{ |h| taxon_ids.each { |f| h[f] += 1 } }
                .transform_keys{ |key| Taxon.find(key).family }
                .sort_by {|_key, value| value}
@@ -187,7 +190,10 @@ class User < ActiveRecord::Base
   end
 
   def helped_counts
-    claims_given.group(:user_id).count.sort_by{|a,b| b}.reverse.to_h
+    claims_given.group(:user_id)
+                .count
+                .sort_by{|a,b| b}
+                .reverse.to_h
   end
 
   def helped
@@ -217,17 +223,19 @@ class User < ActiveRecord::Base
   end
 
   def helped_by
-    visible_user_occurrences.where.not(created_by: self)
-                            .pluck(:created_by)
-                            .uniq
-                            .map{|u| User.find(u)}
+    visible_user_occurrences
+      .where.not(created_by: self)
+      .pluck(:created_by)
+      .uniq
+      .map{|u| User.find(u)}
   end
 
   def helped_by_counts
-    visible_user_occurrences.where.not(created_by: self)
-                            .pluck(:created_by)
-                            .inject(Hash.new(0)) { |total, e| total[e] += 1 ;total}
-                            .map{|u, total| { user: User.find(u), total: total }}
+    visible_user_occurrences
+      .where.not(created_by: self)
+      .pluck(:created_by)
+      .inject(Hash.new(0)) { |total, e| total[e] += 1 ;total}
+      .map{|u, total| { user: User.find(u), total: total }}
   end
 
   def country_counts
@@ -245,7 +253,12 @@ class User < ActiveRecord::Base
   end
 
   def quick_country_counts
-    visible_user_occurrences.joins(:occurrence).where(qry_recorded).select(:countryCode).distinct.count
+    visible_user_occurrences
+      .joins(:occurrence)
+      .where(qry_recorded)
+      .select(:countryCode)
+      .distinct
+      .count
   end
 
   def recorded_with
@@ -301,22 +314,25 @@ class User < ActiveRecord::Base
   end
 
   def current_organization
-    current = user_organizations.where.not(start_year: nil)
-                                .where(end_year: nil)
-                                .first
-                                .organization rescue nil
+    current = user_organizations
+                .where.not(start_year: nil)
+                .where(end_year: nil)
+                .first
+                .organization rescue nil
     if current.nil?
-      current = user_organizations.where(end_year: nil)
-                                  .first
-                                  .organization rescue nil
+      current = user_organizations
+                .where(end_year: nil)
+                .first
+                .organization rescue nil
     end
     current
   end
 
   def latest_messages_by_senders
-    messages_received.select(:user_id, :recipient_id, "MAX(created_at) AS latest")
-                     .group(:user_id, :recipient_id)
-                     .order("MAX(created_at) DESC")
+    messages_received
+      .select(:user_id, :recipient_id, "MAX(created_at) AS latest")
+      .group(:user_id, :recipient_id)
+      .order("MAX(created_at) DESC")
   end
 
   def messages_by_sender_count(id)

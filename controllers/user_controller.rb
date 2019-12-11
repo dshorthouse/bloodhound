@@ -103,7 +103,7 @@ module Sinatra
             @viewed_user = find_user(params[:id])
             check_user_public
 
-            @article = Article.find(params[:article_id])
+            @article = Article.find(params[:article_id]) rescue nil
             if !@article
               halt 404, hamls(:oops)
             end
@@ -126,7 +126,11 @@ module Sinatra
             begin
               page = (params[:page] || 1).to_i
               @pagy, @results = pagy(@viewed_user.recorded_with, page: page)
-              haml :'public/co_collectors', locals: { active_page: "roster", active_tab: "co_collectors" }
+              locals = {
+                active_page: "roster",
+                active_tab: "co_collectors"
+              }
+              haml :'public/co_collectors', locals: locals
             rescue Pagy::OverflowError
               halt 404, haml(:oops)
             end
@@ -141,7 +145,11 @@ module Sinatra
             begin
               page = (params[:page] || 1).to_i
               @pagy, @results = pagy(@viewed_user.identified_for, page: page)
-              haml :'public/identified_for', locals: { active_page: "roster", active_tab: "identified_for" }
+              locals = {
+                active_page: "roster",
+                active_tab: "identified_for"
+              }
+              haml :'public/identified_for', locals: locals
             rescue Pagy::OverflowError
               halt 404, haml(:oops)
             end
@@ -156,7 +164,11 @@ module Sinatra
             begin
               page = (params[:page] || 1).to_i
               @pagy, @results = pagy(@viewed_user.identified_by, page: page)
-              haml :'public/identifications_by', locals: { active_page: "roster", active_tab: "identifications_by" }
+              locals = {
+                active_page: "roster",
+                active_tab: "identifications_by"
+              }
+              haml :'public/identifications_by', locals: locals
             rescue Pagy::OverflowError
               halt 404, haml(:oops)
             end

@@ -12,8 +12,11 @@ module Sinatra
             ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
             begin
               occurrence = Occurrence.find(params[:id])
-              dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignore_cols.include?(column)}
-                                          .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o) }]
+              dwc_contexts = Hash[
+                  Occurrence.attribute_names
+                            .reject {|column| ignore_cols.include?(column)}
+                            .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o) }
+              ]
               response = {}
               response["@context"] = {
                   "@vocab": "http://schema.org/",

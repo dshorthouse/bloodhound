@@ -16,41 +16,49 @@ class Dataset < ActiveRecord::Base
   end
 
   def agents
-    determiners = OccurrenceDeterminer.select(:agent_id)
-                                      .joins(:occurrence)
-                                      .where(occurrences: {datasetKey: datasetKey })
-                                      .distinct
-    recorders = OccurrenceRecorder.select(:agent_id)
-                                  .joins(:occurrence)
-                                  .where(occurrences: {datasetKey: datasetKey })
-                                  .distinct
-    combined = recorders.union_all(determiners)
-                        .unscope(:order)
-                        .select(:agent_id)
-                        .distinct
+    determiners = OccurrenceDeterminer
+                    .select(:agent_id)
+                    .joins(:occurrence)
+                    .where(occurrences: {datasetKey: datasetKey })
+                    .distinct
+    recorders = OccurrenceRecorder
+                    .select(:agent_id)
+                    .joins(:occurrence)
+                    .where(occurrences: {datasetKey: datasetKey })
+                    .distinct
+    combined = recorders
+                    .union_all(determiners)
+                    .unscope(:order)
+                    .select(:agent_id)
+                    .distinct
     Agent.where(id: combined).order(:family)
   end
 
   def agents_occurrence_counts
-    determiners = OccurrenceDeterminer.joins(:occurrence)
-                                      .where(occurrences: {datasetKey: datasetKey })
-    recorders = OccurrenceRecorder.joins(:occurrence)
-                                  .where(occurrences: {datasetKey: datasetKey })
-    combined = recorders.union(determiners)
-                        .group(:agent_id)
-                        .order(Arel.sql("count(*) desc"))
-                        .count
+    determiners = OccurrenceDeterminer
+                    .joins(:occurrence)
+                    .where(occurrences: {datasetKey: datasetKey })
+    recorders = OccurrenceRecorder
+                    .joins(:occurrence)
+                    .where(occurrences: {datasetKey: datasetKey })
+    combined = recorders
+                    .union(determiners)
+                    .group(:agent_id)
+                    .order(Arel.sql("count(*) desc"))
+                    .count
   end
 
   def agents_occurrence_count
-    determiners = OccurrenceDeterminer.select(:agent_id)
-                                      .joins(:occurrence)
-                                      .where(occurrences: {datasetKey: datasetKey })
-                                      .distinct
-    recorders = OccurrenceRecorder.select(:agent_id)
-                                  .joins(:occurrence)
-                                  .where(occurrences: {datasetKey: datasetKey })
-                                  .distinct
+    determiners = OccurrenceDeterminer
+                    .select(:agent_id)
+                    .joins(:occurrence)
+                    .where(occurrences: {datasetKey: datasetKey })
+                    .distinct
+    recorders = OccurrenceRecorder
+                    .select(:agent_id)
+                    .joins(:occurrence)
+                    .where(occurrences: {datasetKey: datasetKey })
+                    .distinct
     recorders.union_all(determiners)
              .unscope(:order)
              .select(:agent_id)

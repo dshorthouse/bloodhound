@@ -13,7 +13,9 @@ class Article < ActiveRecord::Base
   after_create :make_citation
 
   def user_specimen_count(user_id)
-    article_occurrences.joins(:user_occurrences).where(user_occurrences: { user_id: user_id, visible: true } ).count
+    article_occurrences.joins(:user_occurrences)
+                       .where(user_occurrences: { user_id: user_id, visible: true } )
+                       .count
   end
 
   def claimed_specimen_count

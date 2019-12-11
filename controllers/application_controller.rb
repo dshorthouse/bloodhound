@@ -48,7 +48,9 @@ module Sinatra
 
           app.get '/countries' do
             @results = []
-            @countries = IsoCountryCodes.for_select.group_by{|u| ActiveSupport::Inflector.transliterate(u[0][0]) }
+            @countries = IsoCountryCodes
+                          .for_select
+                          .group_by{|u| ActiveSupport::Inflector.transliterate(u[0][0]) }
             haml :'countries/countries', locals: { active_page: "countries" }
           end
 
@@ -57,7 +59,8 @@ module Sinatra
             @results = []
             begin
               @country = IsoCountryCodes.find(country_code)
-              users = User.where("country_code LIKE ?", "%#{country_code}%").order(:family)
+              users = User.where("country_code LIKE ?", "%#{country_code}%")
+                          .order(:family)
               @pagy, @results = pagy(users, items: 30)
               haml :'countries/country', locals: { active_page: "countries" }
             rescue
@@ -83,17 +86,31 @@ module Sinatra
 
           app.get '/dataset/:id' do
             dataset_users
-            haml :'datasets/users', locals: { active_page: "datasets", active_tab: "people" }
+            locals = {
+              active_page: "datasets",
+              active_tab: "people"
+            }
+            haml :'datasets/users', locals: locals
           end
 
           app.get '/dataset/:id/agents' do
             dataset_agents
-            haml :'datasets/agents', locals: { active_page: "datasets", active_tab: "agents", active_subtab: "default" }
+            locals = {
+              active_page: "datasets",
+              active_tab: "agents",
+              active_subtab: "default"
+            }
+            haml :'datasets/agents', locals: locals
           end
 
           app.get '/dataset/:id/agents/counts' do
             dataset_agents_counts
-            haml :'datasets/agents_counts', locals: { active_page: "datasets", active_tab: "agents", active_subtab: "counts" }
+            locals = {
+              active_page: "datasets",
+              active_tab: "agents",
+              active_subtab: "counts"
+            }
+            haml :'datasets/agents_counts', locals: locals
           end
 
           app.get '/dataset.json' do
@@ -193,28 +210,42 @@ module Sinatra
 
           app.get '/organizations' do
             organizations
-            haml :'organizations/organizations', locals: { active_page: "organizations" }
+            locals = { active_page: "organizations" }
+            haml :'organizations/organizations', locals: locals
           end
 
           app.get '/organizations/search' do
             search_organization
-            haml :'organizations/search', locals: { active_page: "organizations" }
+            locals = { active_page: "organizations" }
+            haml :'organizations/search', locals: locals
           end
 
           app.get '/organization/:id' do
             organization
-            haml :'organizations/organization', locals: { active_page: "organizations", active_tab: "organization-current" }
+            locals = {
+              active_page: "organizations",
+              active_tab: "organization-current"
+            }
+            haml :'organizations/organization', locals: locals
           end
 
           app.get '/organization/:id/past' do
             past_organization
-            haml :'organizations/organization', locals: { active_page: "organizations", active_tab: "organization-past" }
+            locals = {
+              active_page: "organizations",
+              active_tab: "organization-past"
+            }
+            haml :'organizations/organization', locals: locals
           end
 
           app.get '/organization/:id/metrics' do
             @year = params[:year] || nil
             organization_metrics
-            haml :'organizations/metrics', locals: { active_page: "organizations", active_tab: "organization-metrics" }
+            locals = {
+              active_page: "organizations",
+              active_tab: "organization-metrics"
+            }
+            haml :'organizations/metrics', locals: locals
           end
 
           app.get '/organization/:id/citations' do
@@ -222,7 +253,11 @@ module Sinatra
               page = (params[:page] || 1).to_i
               @articles = organization_articles
               @pagy, @results = pagy(@articles, page: page)
-              haml :'organizations/citations', locals: { active_page: "organizations", active_tab: "organization-articles" }
+              locals = {
+                active_page: "organizations",
+                active_tab: "organization-articles"
+              }
+              haml :'organizations/citations', locals: locals
             rescue Pagy::OverflowError
               halt 404, haml(:oops)
             end

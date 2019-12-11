@@ -29,7 +29,11 @@ module Sinatra
             sort = params[:sort] || nil
             order = params[:order] || nil
             datasets
-            haml :'admin/datasets', locals: { active_page: "administration", sort: sort, order: order  }
+            locals = {
+              active_page: "administration",
+              sort: sort, order: order
+            }
+            haml :'admin/datasets', locals: locals
           end
 
           app.get '/admin/dataset/refresh.json' do
@@ -81,13 +85,18 @@ module Sinatra
             sort = params[:sort] || nil
             order = params[:order] || nil
             organizations
-            haml :'admin/organizations', locals: { active_page: "administration", sort: sort, order: order  }
+            locals = {
+              active_page: "administration",
+              sort: sort, order: order
+            }
+            haml :'admin/organizations', locals: locals
           end
 
           app.get '/admin/organizations/search' do
             admin_protected!
             search_organization
-            haml :'admin/organizations_search', locals: { active_page: "administration" }
+            locals = { active_page: "administration" }
+            haml :'admin/organizations_search', locals: locals
           end
 
           app.get '/admin/organization/refresh.json' do
@@ -144,19 +153,31 @@ module Sinatra
             sort = params[:sort] || nil
             order = params[:order] || nil
             admin_roster
-            haml :'admin/roster', locals: { active_page: "administration", sort: sort, order: order }
+            locals = {
+              active_page: "administration",
+              sort: sort, order: order
+            }
+            haml :'admin/roster', locals: locals
           end
 
           app.get '/admin/users/helped' do
             admin_protected!
             latest_claims("living")
-            haml :'admin/user_helped', locals: { active_page: "administration", active_tab: "orcid" }
+            locals = {
+              active_page: "administration",
+              active_tab: "orcid"
+            }
+            haml :'admin/user_helped', locals: locals
           end
 
           app.get '/admin/users/helped/wikidata' do
             admin_protected!
             latest_claims("deceased")
-            haml :'admin/user_helped', locals: { active_page: "administration", active_tab: "wikidata" }
+            locals = {
+              active_page: "administration",
+              active_tab: "wikidata"
+            }
+            haml :'admin/user_helped', locals: locals
           end
 
           app.get '/admin/users/search' do
@@ -241,7 +262,8 @@ module Sinatra
             check_redirect
             @admin_user = find_user(params[:id])
             @page = (params[:page] || 1).to_i
-            @total = @admin_user.visible_occurrences.count
+            visible_occurrences = @admin_user.visible_occurrences
+            @total = visible_occurrences.count
 
             if @page*search_size > @total
               bump_page = @total % search_size.to_i != 0 ? 1 : 0
@@ -250,7 +272,7 @@ module Sinatra
 
             @page = 1 if @page <= 0
 
-            @pagy, @results = pagy(@admin_user.visible_occurrences.order("occurrences.typeStatus desc"), items: search_size, page: @page)
+            @pagy, @results = pagy(visible_occurrences.order("occurrences.typeStatus desc"), items: search_size, page: @page)
             haml :'admin/specimens', locals: { active_page: "administration" }
           end
 
@@ -278,7 +300,8 @@ module Sinatra
             @admin_user = find_user(params[:id])
 
             @page = (params[:page] || 1).to_i
-            @total = @admin_user.helped_by_counts.count
+            helped_by = @admin_user.helped_by_counts
+            @total = helped_by.count
 
             if @page*search_size > @total
               bump_page = @total % search_size.to_i != 0 ? 1 : 0
@@ -287,7 +310,7 @@ module Sinatra
 
             @page = 1 if @page <= 0
 
-            @pagy, @results = pagy_array(@admin_user.helped_by_counts, items: search_size, page: @page)
+            @pagy, @results = pagy_array(helped_by, items: search_size, page: @page)
             haml :'admin/support', locals: { active_page: "administration" }
           end
 
@@ -298,7 +321,8 @@ module Sinatra
             @helped_user = find_user(params[:id2])
 
             @page = (params[:page] || 1).to_i
-            @total = @admin_user.claims_received_by(@helped_user.id).count
+            received_by = @admin_user.claims_received_by(@helped_user.id)
+            @total = received_by.count
 
             if @page*search_size > @total
               bump_page = @total % search_size.to_i != 0 ? 1 : 0
@@ -307,7 +331,7 @@ module Sinatra
 
             @page = 1 if @page <= 0
 
-            @pagy, @results = pagy(@admin_user.claims_received_by(@helped_user.id), items: search_size, page: @page)
+            @pagy, @results = pagy(received_by, items: search_size, page: @page)
             haml :'admin/support_table', locals: { active_page: "administration" }
           end
 
@@ -341,8 +365,9 @@ module Sinatra
               @results = []
               @total = nil
             else
-              id_scores = candidate_agents(@admin_user).map{|a| { id: a[:id], score: a[:score] } }
-                                                       .compact
+              id_scores = candidate_agents(@admin_user)
+                            .map{|a| { id: a[:id], score: a[:score] } }
+                            .compact
               if !id_scores.empty?
                 ids = id_scores.map{|a| a[:id]}
                 nodes = AgentNode.where(agent_id: ids)
@@ -395,7 +420,11 @@ module Sinatra
             specimen_pager(occurrence_ids.uniq)
 
             bulk_error_message = flash.now[:error] ? flash.now[:error] : ""
-            haml :'admin/candidates', locals: { active_page: "administration", bulk_error: bulk_error_message }
+            locals = {
+              active_page: "administration",
+              bulk_error: bulk_error_message
+            }
+            haml :'admin/candidates', locals: locals
           end
 
           app.post '/admin/user/:id/candidates/agent/:agent_id/bulk-claim' do
@@ -434,9 +463,10 @@ module Sinatra
             check_redirect
             @admin_user = find_user(params[:id])
             page = (params[:page] || 1).to_i
-            @total = @admin_user.articles_citing_specimens.count
+            cited = @admin_user.articles_citing_specimens
+            @total = cited.count
 
-            @pagy, @results = pagy(@admin_user.articles_citing_specimens, page: page)
+            @pagy, @results = pagy(cited, page: page)
             haml :'admin/citations', locals: { active_page: "administration" }
           end
 
@@ -450,7 +480,8 @@ module Sinatra
             end
 
             @page = (params[:page] || 1).to_i
-            @total = @admin_user.cited_specimens_by_article(@article.id).count
+            cited_specimens = @admin_user.cited_specimens_by_article(@article.id)
+            @total = cited_specimens.count
 
             if @page*search_size > @total
               bump_page = @total % search_size.to_i != 0 ? 1 : 0
@@ -459,7 +490,7 @@ module Sinatra
 
             @page = 1 if @page <= 0
 
-            @pagy, @results = pagy(@admin_user.cited_specimens_by_article(@article.id), page: @page, items: search_size)
+            @pagy, @results = pagy(cited_specimens, page: @page, items: search_size)
             haml :'admin/citation', locals: { active_page: "administration" }
           end
 

@@ -29,15 +29,24 @@ class Agent < ActiveRecord::Base
   end
 
   def determinations_institutions
-    determinations.pluck(:institutionCode).uniq.compact.reject{ |c| c.empty? }
+    determinations.pluck(:institutionCode)
+                  .uniq
+                  .compact
+                  .reject{ |c| c.empty? }
   end
 
   def recordings_institutions
-    recordings.pluck(:institutionCode).uniq.compact.reject{ |c| c.empty? }
+    recordings.pluck(:institutionCode)
+              .uniq
+              .compact
+              .reject{ |c| c.empty? }
   end
 
   def recordings_country_codes
-    recordings.pluck(:countryCode).uniq.compact.reject{ |c| c.empty? }
+    recordings.pluck(:countryCode)
+              .uniq
+              .compact
+              .reject{ |c| c.empty? }
   end
 
   def determinations_year_range

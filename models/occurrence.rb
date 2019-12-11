@@ -26,7 +26,12 @@ class Occurrence < ActiveRecord::Base
 
   validates :id, presence: true
 
-  IGNORED_COLUMNS_OUTPUT = ["gbifID", "datasetKey", "dateIdentified_processed", "eventDate_processed"]
+  IGNORED_COLUMNS_OUTPUT = [
+    "gbifID",
+    "datasetKey",
+    "dateIdentified_processed",
+    "eventDate_processed"
+  ]
 
   def self.enqueue(o)
     Sidekiq::Client.enqueue(Bloodhound::OccurrenceWorker, o)
@@ -39,23 +44,44 @@ class Occurrence < ActiveRecord::Base
   def coordinates
     lat = decimalLatitude.to_f
     long = decimalLongitude.to_f
-    return nil if lat == 0 || long == 0 || lat > 90 || lat < -90 || long > 180 || long < -180
+    if lat == 0 ||
+      long == 0 ||
+       lat > 90 ||
+      lat < -90 ||
+     long > 180 ||
+     long < -180
+      return nil
+    end
     [long, lat]
   end
 
   def agents
     {
-      determiners: determiners.map{|d| { id: d[:id], given: d[:given], family: d[:family] } },
-      recorders: recorders.map{|d| { id: d[:id], given: d[:given], family: d[:family] } }
+      determiners: determiners.map{|d| {
+        id: d[:id],
+        given: d[:given],
+        family: d[:family]
+        }
+      },
+      recorders: recorders.map{|d| {
+        id: d[:id],
+        given: d[:given],
+        family: d[:family]
+        }
+      }
     }
   end
 
   def user_identifications
-    user_occurrences.where(visible: true).where(qry_identified).includes(:user)
+    user_occurrences.where(visible: true)
+                    .where(qry_identified)
+                    .includes(:user)
   end
 
   def user_recordings
-    user_occurrences.where(visible: true).where(qry_recorded).includes(:user)
+    user_occurrences.where(visible: true)
+                    .where(qry_recorded)
+                    .includes(:user)
   end
 
   def qry_identified

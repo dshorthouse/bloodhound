@@ -17,7 +17,9 @@ class Organization < ActiveRecord::Base
   end
 
   def self.find_by_identifier(id)
-    self.find_by_wikidata(id) || self.find_by_ringgold(id) || self.find_by_grid(id)
+    self.find_by_wikidata(id) ||
+    self.find_by_ringgold(id) ||
+    self.find_by_grid(id)
   end
 
   def identifier
@@ -39,7 +41,8 @@ class Organization < ActiveRecord::Base
   def public_users
     users.includes(:user_organizations)
          .where(user_organizations: { end_year: nil })
-         .where(is_public: true).distinct
+         .where(is_public: true)
+         .distinct
   end
 
   def others_specimens(type = "recorded")
@@ -112,20 +115,22 @@ class Organization < ActiveRecord::Base
   end
 
   def articles
-    current = Article.select(:id, :doi, :citation, :abstract, :created, "users.id AS user_id")
-                     .joins(occurrences: { users: :organizations })
-                     .where(user_occurrences: { visible: true })
-                     .where(user_organizations: { organization_id: id })
-                     .where(user_organizations: { end_year: nil })
-                     .where("YEAR(occurrences.eventDate_processed) >= user_organizations.start_year OR YEAR(occurrences.dateIdentified_processed) >= user_organizations.start_year")
+    current = Article
+                .select(:id, :doi, :citation, :abstract, :created, "users.id AS user_id")
+                .joins(occurrences: { users: :organizations })
+                .where(user_occurrences: { visible: true })
+                .where(user_organizations: { organization_id: id })
+                .where(user_organizations: { end_year: nil })
+                .where("YEAR(occurrences.eventDate_processed) >= user_organizations.start_year OR YEAR(occurrences.dateIdentified_processed) >= user_organizations.start_year")
 
-    past = Article.select(:id, :doi, :citation, :abstract, :created, "users.id AS user_id")
-                  .joins(occurrences: { users: :organizations })
-                  .where(user_occurrences: { visible: true })
-                  .where(user_organizations: { organization_id: id })
-                  .where.not(user_organizations: { end_year: nil })
-                  .where.not(user_organizations: { start_year: nil })
-                  .where("(YEAR(occurrences.eventDate_processed) >= user_organizations.start_year AND YEAR(occurrences.eventDate_processed) <= user_organizations.end_year) OR (YEAR(occurrences.dateIdentified_processed) >= user_organizations.start_year AND YEAR(occurrences.dateIdentified_processed) <= user_organizations.end_year)")
+    past = Article
+                .select(:id, :doi, :citation, :abstract, :created, "users.id AS user_id")
+                .joins(occurrences: { users: :organizations })
+                .where(user_occurrences: { visible: true })
+                .where(user_organizations: { organization_id: id })
+                .where.not(user_organizations: { end_year: nil })
+                .where.not(user_organizations: { start_year: nil })
+                .where("(YEAR(occurrences.eventDate_processed) >= user_organizations.start_year AND YEAR(occurrences.eventDate_processed) <= user_organizations.end_year) OR (YEAR(occurrences.dateIdentified_processed) >= user_organizations.start_year AND YEAR(occurrences.dateIdentified_processed) <= user_organizations.end_year)")
 
     current.union_all(past).select(:id, :doi, :citation, :abstract, :created, "group_concat( DISTINCT user_id) AS user_ids")
            .group(:id, :doi, :citation, :abstract, :created)

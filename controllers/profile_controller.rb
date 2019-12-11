@@ -121,7 +121,9 @@ module Sinatra
 
             @page = 1 if @page <= 0
 
-            @pagy, @results = pagy(@user.visible_occurrences.order("occurrences.typeStatus desc"), items: search_size, page: @page)
+            specimens = @user.visible_occurrences
+                             .order("occurrences.typeStatus desc")
+            @pagy, @results = pagy(specimens, items: search_size, page: @page)
             haml :'profile/specimens', locals: { active_page: "profile" }
           end
 
@@ -129,7 +131,8 @@ module Sinatra
             protected!
 
             @page = (params[:page] || 1).to_i
-            @total = @user.helped_by_counts.count
+            helped_by = @user.helped_by_counts
+            @total = helped_by.count
 
             if @page*search_size > @total
               bump_page = @total % search_size.to_i != 0 ? 1 : 0
@@ -138,7 +141,7 @@ module Sinatra
 
             @page = 1 if @page <= 0
 
-            @pagy, @results = pagy_array(@user.helped_by_counts, items: search_size, page: @page)
+            @pagy, @results = pagy_array(helped_by, items: search_size, page: @page)
             haml :'profile/support', locals: { active_page: "profile" }
           end
 
@@ -148,7 +151,8 @@ module Sinatra
             @helped_user = find_user(params[:id])
 
             @page = (params[:page] || 1).to_i
-            @total = @user.claims_received_by(@helped_user.id).count
+            claims_received_by = @user.claims_received_by(@helped_user.id)
+            @total = claims_received_by.count
 
             if @page*search_size > @total
               bump_page = @total % search_size.to_i != 0 ? 1 : 0
@@ -157,7 +161,7 @@ module Sinatra
 
             @page = 1 if @page <= 0
 
-            @pagy, @results = pagy(@user.claims_received_by(@helped_user.id), items: search_size, page: @page)
+            @pagy, @results = pagy(claims_received_by, items: search_size, page: @page)
             haml :'profile/support_table', locals: { active_page: "profile" }
           end
 
@@ -241,7 +245,10 @@ module Sinatra
           app.get '/profile/candidates.csv' do
             protected!
             agent_ids = candidate_agents(@user).pluck(:id)
-            records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @user.user_occurrences.select(:occurrence_id)).limit(5_000)
+            records = occurrences_by_agent_ids(agent_ids)
+                        .where
+                        .not(occurrence_id: @user.user_occurrences.select(:occurrence_id))
+                        .limit(5_000)
             csv_stream_headers("bloodhound-candidates")
             body ::Bloodhound::IO.csv_stream_candidates(records)
           end
@@ -315,7 +322,8 @@ module Sinatra
             protected!
 
             @page = (params[:page] || 1).to_i
-            @total = @user.hidden_occurrences.count
+            hidden_occurrences = @user.hidden_occurrences
+            @total = hidden_occurrences.count
 
             if @page*search_size > @total
               bump_page = @total % search_size.to_i != 0 ? 1 : 0
@@ -324,7 +332,7 @@ module Sinatra
 
             @page = 1 if @page <= 0
 
-            @pagy, @results = pagy(@user.hidden_occurrences, items: search_size, page: @page)
+            @pagy, @results = pagy(hidden_occurrences, items: search_size, page: @page)
             haml :'profile/ignored', locals: { active_page: "profile", active_tab: "ignored" }
           end
 
@@ -343,7 +351,8 @@ module Sinatra
               halt 404
             end
 
-            @total = @user.cited_specimens_by_article(@article.id).count
+            cited_specimens = @user.cited_specimens_by_article(@article.id)
+            @total = cited_specimens.count
             if @total == 0
               halt 404
             end
@@ -355,7 +364,7 @@ module Sinatra
               @page = @total/search_size.to_i + bump_page
             end
 
-            @pagy, @results = pagy(@user.cited_specimens_by_article(@article.id), items: search_size, page: @page)
+            @pagy, @results = pagy(cited_specimens, items: search_size, page: @page)
             haml :'profile/citation', locals: { active_page: "profile" }
           end
 
