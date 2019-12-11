@@ -18,7 +18,7 @@
         accounts
     = haml :'partials/organization/search', layout: false
 
-- if @results.empty?
+- if @pagy.count == 0
   %div{class: "alert alert-warning tiny-margins", role: "alert"}
     No organizations found for
     %span{class: "font-weight-bold"} #{h(params[:q])}

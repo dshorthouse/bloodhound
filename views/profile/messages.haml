@@ -11,7 +11,7 @@
     = haml :'partials/profile/tabs', layout: false, locals: { active_page: "helped" }
     = haml :'partials/profile/subtabs_helped', layout: false, locals: { active_tab: "messages"}
 
-- if @results.empty?
+- if @pagy.count == 0
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     You have not yet received thanks for attributing specimen records to other collectors. Have you tried helping others?
 

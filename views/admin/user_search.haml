@@ -14,7 +14,7 @@
       %h1{class:"h2"} Search Accounts
     = haml :'partials/admin/user_search', layout: false
 
-- if @results.empty?
+- if @pagy.count == 0
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     No users found.
 - else

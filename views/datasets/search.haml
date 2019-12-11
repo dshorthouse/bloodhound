@@ -16,7 +16,7 @@
         #{number_with_delimiter(Dataset.count)} datasets from the Global Biodiversity Information Facility (GBIF)
     = haml :'partials/dataset/search', layout: false
 
-- if @results.empty?
+- if @pagy.count == 0
   %div{class: "alert alert-warning tiny-margins", role: "alert"}
     No datasets found for
     %span{class: "font-weight-bold"} #{h(params[:q])}

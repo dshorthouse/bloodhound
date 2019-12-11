@@ -11,12 +11,11 @@
     = haml :'partials/profile/tabs', layout: false, locals: { active_page: "specimens"}
     = haml :'partials/profile/subtabs_specimens', layout: false, locals: { active_tab: "specimens"}
 
-- if @results.empty?
+- if @pagy.count == 0
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     You have not yet claimed any specimens. See the Discovered link above.
 
-- if !@results.empty?
-
+- else
   %div{class: "alert alert-info row tiny-margins", role: "alert"}
     %div{class: "col col-9"}
       Choose

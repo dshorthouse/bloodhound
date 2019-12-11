@@ -17,7 +17,7 @@
   - alert_class = "warning"
   - placeholder = @searched_user.fullname
 
-- if @results.empty?
+- if @pagy.count == 0
   %div{class: "alert alert-info row tiny-margins", role:"alert"}
     %div{class: "col col-12 col-sm-12 col-m-8 col-lg-8"}
       Bloodhound did not sniff any specimens indexed by the Global Biodiversity Information Facility (GBIF) that you may have collected or identified.

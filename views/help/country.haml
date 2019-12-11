@@ -19,7 +19,7 @@
         %a{href: "https://www.wikidata.org"} Wikidata
     = haml :'partials/help/search', layout: false
 
-- if @results.empty?
+- if @pagy.count == 0
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     No one found from
     %span{class: "font-weight-bold"} #{@country.name}

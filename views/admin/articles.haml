@@ -10,7 +10,7 @@
     View latest
   listing on GBIF
 
-- if @results.empty?
+- if @pagy.count == 0
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     Articles have not yet been recorded.
 - else

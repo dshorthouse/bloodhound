@@ -13,7 +13,7 @@
 
 = haml :'partials/help/tabs', layout: false, locals: { active_tab: "ignored" }
 
-- if @results.empty?
+- if @pagy.count == 0
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     Bloodhound trainers have not flagged specimens to be ignored.
 - else

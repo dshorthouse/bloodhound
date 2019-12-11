@@ -10,7 +10,7 @@
   %div{class:"col-12 col-lg-8 mt-2"}
     = haml :'partials/profile/tabs', layout: false, locals: { active_page: "citations" }
 
-- if @results.empty?
+- if @pagy.count == 0
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     Your specimens were not used for this study.
 

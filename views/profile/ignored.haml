@@ -12,7 +12,7 @@
     = haml :'partials/profile/subtabs_specimens', layout: false, locals: { active_tab: "ignored"}
 
 %div{class: "alert alert-info tiny-margins", role: "alert"}
-  - if @results.empty?
+  - if @pagy.count == 0
     Specimen records you marked as "Not me" will appear here.
 
   - else

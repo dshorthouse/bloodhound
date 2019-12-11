@@ -16,7 +16,7 @@
   %div{class:"col-12 col-lg-8 mt-2"}
     = haml :'partials/organization/tabs', layout:false, locals: { active_tab: locals[:active_tab] }
 
-    - if @results.empty?
+    - if @pagy.count == 0
       %div{class: "alert alert-info tiny-margins", role: "alert"}
         - prefix = locals[:active_tab] == "organization-current" ? "Current" : "Previous"
         #{prefix} members of #{@organization.name} have not yet been recorded.

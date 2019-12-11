@@ -16,7 +16,7 @@
       %div{class:"col-12 col-lg-8 mt-2"}
         = haml :'partials/admin/user_tabs', layout: false, locals: { active_page: "messages" }
 
-- if @results.empty?
+- if @pagy.count == 0
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     Other people have not yet sent their thanks for helping to attribute their specimen records.
 

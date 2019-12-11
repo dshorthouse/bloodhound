@@ -16,7 +16,7 @@
       %div{class:"col-12 col-lg-8 mt-2"}
         = haml :'partials/admin/user_tabs', layout: false, locals: { active_page: "help" }
 
-- if @results.empty?
+- if @pagy.count == 0
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     This Bloodhound trainer has not helped claim this user's specimens.
 

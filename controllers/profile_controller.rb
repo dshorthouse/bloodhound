@@ -338,13 +338,17 @@ module Sinatra
           app.get '/profile/citation/:article_id' do
             protected!
 
-            @article = Article.find(params[:article_id])
+            @article = Article.find(params[:article_id]) rescue nil
             if !@article
               halt 404
             end
 
-            @page = (params[:page] || 1).to_i
             @total = @user.cited_specimens_by_article(@article.id).count
+            if @total == 0
+              halt 404
+            end
+
+            @page = (params[:page] || 1).to_i
 
             if @page*search_size > @total
               bump_page = @total % search_size.to_i != 0 ? 1 : 0

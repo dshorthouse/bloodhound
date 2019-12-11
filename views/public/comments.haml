@@ -37,12 +37,4 @@
         %a{href: "https://disqus.com/?ref_noscript"} comments powered by Disqus.
 
     - else
-      %div{class: "alert alert-warning"}
-        - specimen_count = @viewed_user.all_occurrences_count
-        - if specimen_count > 0
-          %i{class:"fas fa-lock"}
-          Although #{number_with_delimiter(specimen_count)} #{'specimen'.pluralize(specimen_count)} were claimed, this profile
-        - else
-          %i{class:"fas fa-lock"}
-          Profile
-        is not publicly available.
+      = haml :'partials/user/offline_message', layout: false
