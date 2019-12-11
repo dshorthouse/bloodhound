@@ -34,7 +34,7 @@ module Sinatra
 
           app.get '/help-others/help' do
             protected!
-            haml :'help/help'
+            haml :'help/help', locals: { active_page: "help" }
           end
 
           app.get '/help-others/refresh.json' do
