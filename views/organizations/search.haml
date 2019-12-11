@@ -18,11 +18,11 @@
         accounts
     = haml :'partials/organization/search', layout: false
 
-- if @pagy.count == 0
+- if @pagy && @pagy.count == 0
   %div{class: "alert alert-warning tiny-margins", role: "alert"}
     No organizations found for
     %span{class: "font-weight-bold"} #{h(params[:q])}
-- else
+- elsif @pagy && @pagy.count > 0
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     #{@pagy.count} search results for
     %span{class: "font-weight-bold"} #{h(params[:q])}
