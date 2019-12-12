@@ -263,9 +263,10 @@ dl.dl-horizontal dd.line-break {
 .card-profile:hover {
   background-color:#f8f9fa;
   cursor:pointer;
-  -webkit-box-shadow: 3px 3px 5px -5px rgba(0,0,0,0.4);
-  box-shadow: 3px 3px 5px -5px rgba(0,0,0,0.4);
   border: 1px solid rgba(0,0,0,.175);
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
 }
 
 /* CALLOUTS */

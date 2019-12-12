@@ -118,7 +118,7 @@ Unfortunately, gbifIDs are not persistent. These occasionally disappear through 
       ArticleOccurrence.unlinked_count
       ArticleOccurrence.unlinked_delete
 
-To migrate tables, use mydumper and myloader:
+To migrate tables, use mydumper and myloader. But for even faster data migration, best to drop indices before mydumper then recreate indices after myloader. This is especially true for the three largest tables: occurrences, occurrence_recorders, and occurrence_determiners.
 
       brew install mydumper
       mydumper --user root --password <PASSWORD> --database bloodhound --tables-list agents,occurrences,occurrence_recorders,occurrence_determiners,taxa,taxon_occurrences,taxon_determiners --compress --threads 8 --rows 500000 --trx-consistency-only --outputdir /Users/dshorthouse/Documents/bloodhound_dump
