@@ -121,10 +121,41 @@ Unfortunately, gbifIDs are not persistent. These occasionally disappear through 
 To migrate tables, use mydumper and myloader. But for even faster data migration, best to drop indices before mydumper then recreate indices after myloader. This is especially true for the three largest tables: occurrences, occurrence_recorders, and occurrence_determiners.
 
       brew install mydumper
-      mydumper --user root --password <PASSWORD> --database bloodhound --tables-list agents,occurrences,occurrence_recorders,occurrence_determiners,taxa,taxon_occurrences,taxon_determiners --compress --threads 8 --rows 500000 --trx-consistency-only --outputdir /Users/dshorthouse/Documents/bloodhound_dump
+
+      ALTER TABLE `occurrences` DROP KEY `typeStatus_idx`, DROP KEY `index_occurrences_on_datasetKey`;
+      ALTER TABLE `occurrence_determiners` DROP KEY `agent_idx`, DROP KEY `occurrence_idx`;
+      ALTER TABLE `occurrence_recorders` DROP KEY `agent_idx`, DROP KEY `occurrence_idx`;
+
+      mydumper --user root --password <PASSWORD> --database bloodhound --tables-list agents,occurrences,occurrence_recorders,occurrence_determiners,taxa,taxon_occurrences --compress --threads 8 --rows 500000 --trx-consistency-only --outputdir /Users/dshorthouse/Documents/bloodhound_dump
 
       apt-get install mydumper
-      nohup myloader --database bloodhound_new --user bloodhound --password <PASSWORD> --threads 8 --queries-per-transaction 100 --compress-protocol --directory /home/dshorthouse/bloodhound_restore &
+      nohup myloader --database bloodhound_new --user bloodhound --password <PASSWORD> --threads 8 --queries-per-transaction 100 --compress-protocol --overwrite-tables --directory /home/dshorthouse/bloodhound_restore &
+
+      ALTER TABLE `occurrences` ADD KEY `typeStatus_idx` (`typeStatus`(256)), ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`);
+      ALTER TABLE `occurrence_determiners` ADD KEY `agent_idx` (`agent_id`), ADD KEY `occurrence_idx` (`occurrence_id`);
+      ALTER TABLE `occurrence_recorders` ADD KEY `agent_idx` (`agent_id`), ADD KEY `occurrence_idx` (`occurrence_id`);
+
+Then, take site offline and in the bloodhound database DROP the tables with old data:
+
+      DROP TABLE `agents`;
+      DROP TABLE `occurrences`;
+      DROP TABLE `occurrence_determiners`;
+      DROP TABLE `occurrence_recorders`;
+      DROP TABLE `taxa`;
+      DROP TABLE `taxon_occurrences`;
+
+From the bloodhound_new database, rename the tables:
+
+      RENAME TABLE `bloodhound_new`.`agents` TO `bloodhound`.`agents`;
+      RENAME TABLE `bloodhound_new`.`occurrences` TO `bloodhound`.`occurrences`;
+      RENAME TABLE `bloodhound_new`.`occurrence_determiners` TO `bloodhound`.`occurrence_determiners`;
+      RENAME TABLE `bloodhound_new`.`occurrence_recorders` TO `bloodhound`.`occurrence_recorders`;
+      RENAME TABLE `bloodhound_new`.`taxa` TO `bloodhound`.`taxa`;
+      RENAME TABLE `bloodhound_new`.`taxon_occurrences` TO `bloodhound`.`taxon_occurrences`;
+
+Last of all, rebuild the Elasticsearch indices:
+
+      RACK_ENV=production ./bin/populate_search.rb --rebuild
 
 ## License
 

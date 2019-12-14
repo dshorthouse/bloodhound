@@ -53,17 +53,17 @@ module Sinatra
         body = build_name_query(searched_term)
         from = (page -1) * size
 
-        response = client.search index: Settings.elastic.agent_index, type: "agent", from: from, size: size, body: body
+        response = client.search index: Settings.elastic.agent_index, from: from, size: size, body: body
         results = response["hits"].deep_symbolize_keys
 
-        @pagy = Pagy.new(count: results[:total], items: size, page: page)
+        @pagy = Pagy.new(count: results[:total][:value], items: size, page: page)
         @results = results[:hits]
       end
 
       def search_agents(search)
         client = Elasticsearch::Client.new
         body = build_name_query(search)
-        response = client.search index: Settings.elastic.agent_index, type: "agent", size: 25, body: body
+        response = client.search index: Settings.elastic.agent_index, size: 25, body: body
         results = response["hits"].deep_symbolize_keys
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) }.compact rescue []
       end
@@ -79,10 +79,10 @@ module Sinatra
         body = build_name_query(searched_term)
         from = (page -1) * 30
 
-        response = client.search index: Settings.elastic.user_index, type: "user", from: from, size: 30, body: body
+        response = client.search index: Settings.elastic.user_index, from: from, size: 30, body: body
         results = response["hits"].deep_symbolize_keys
 
-        @pagy = Pagy.new(count: results[:total], items: 30, page: page)
+        @pagy = Pagy.new(count: results[:total][:value], items: 30, page: page)
         @results = results[:hits]
       end
 
@@ -124,10 +124,10 @@ module Sinatra
         body = build_organization_query(searched_term)
         from = (page -1) * 30
 
-        response = client.search index: Settings.elastic.organization_index, type: "organization", from: from, size: 30, body: body
+        response = client.search index: Settings.elastic.organization_index, from: from, size: 30, body: body
         results = response["hits"].deep_symbolize_keys
 
-        @pagy = Pagy.new(count: results[:total], items: 30, page: page)
+        @pagy = Pagy.new(count: results[:total][:value], items: 30, page: page)
         @results = results[:hits]
       end
 
@@ -142,10 +142,10 @@ module Sinatra
         body = build_dataset_query(searched_term)
         from = (page -1) * 30
 
-        response = client.search index: Settings.elastic.dataset_index, type: "dataset", from: from, size: 30, body: body
+        response = client.search index: Settings.elastic.dataset_index, from: from, size: 30, body: body
         results = response["hits"].deep_symbolize_keys
 
-        @pagy = Pagy.new(count: results[:total], items: 30, page: page)
+        @pagy = Pagy.new(count: results[:total][:value], items: 30, page: page)
         @results = results[:hits]
       end
 

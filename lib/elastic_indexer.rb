@@ -77,41 +77,39 @@ module Bloodhound
           }
         },
         mappings: {
-          agent: {
-            properties: {
-              id: { type: 'integer', index: false },
-              family: {
-                type: 'text',
-                analyzer: :name_part_index,
-                norms: false,
-                fields: {
-                  edge: {
-                    type: 'text',
-                    search_analyzer: :name_part_search,
-                    analyzer: :name_part_search,
-                    norms: false,
-                  }
+          properties: {
+            id: { type: 'integer', index: false },
+            family: {
+              type: 'text',
+              analyzer: :name_part_index,
+              norms: false,
+              fields: {
+                edge: {
+                  type: 'text',
+                  search_analyzer: :name_part_search,
+                  analyzer: :name_part_search,
+                  norms: false,
                 }
-              },
-              given: {
-                type: 'text',
-                analyzer: :name_part_index,
-                norms: false,
-                fields: {
-                  edge: {
-                    type: 'text',
-                    search_analyzer: :name_part_search,
-                    analyzer: :name_part_search,
-                    norms: false,
-                  }
-                }
-              },
-              fullname: {
-                type: 'text',
-                analyzer: :fullname_index,
-                search_analyzer: :fullname_search,
-                norms: false
               }
+            },
+            given: {
+              type: 'text',
+              analyzer: :name_part_index,
+              norms: false,
+              fields: {
+                edge: {
+                  type: 'text',
+                  search_analyzer: :name_part_search,
+                  analyzer: :name_part_search,
+                  norms: false,
+                }
+              }
+            },
+            fullname: {
+              type: 'text',
+              analyzer: :fullname_index,
+              search_analyzer: :fullname_search,
+              norms: false
             }
           }
         }
@@ -156,49 +154,47 @@ module Bloodhound
           }
         },
         mappings: {
-          user: {
-            properties: {
-              id: { type: 'integer', index: false },
-              orcid: { type: 'text', index: false },
-              wikidata: { type: 'text', index: false },
-              family: {
-                type: 'text',
-                analyzer: :name_part_index,
-                norms: false,
-                fields: {
-                  edge: {
-                    type: 'text',
-                    analyzer: :name_part_search,
-                    search_analyzer: :name_part_search,
-                    norms: false,
-                  }
+          properties: {
+            id: { type: 'integer', index: false },
+            orcid: { type: 'text', index: false },
+            wikidata: { type: 'text', index: false },
+            family: {
+              type: 'text',
+              analyzer: :name_part_index,
+              norms: false,
+              fields: {
+                edge: {
+                  type: 'text',
+                  analyzer: :name_part_search,
+                  search_analyzer: :name_part_search,
+                  norms: false,
                 }
-              },
-              given: {
-                type: 'text',
-                analyzer: :name_part_index,
-                norms: false,
-                fields: {
-                  edge: {
-                    type: 'text',
-                    analyzer: :name_part_search,
-                    search_analyzer: :name_part_search,
-                    norms: false,
-                  }
-                }
-              },
-              fullname: {
-                type: 'text',
-                analyzer: :fullname_index,
-                search_analyzer: :fullname_search,
-                norms: false
-              },
-              other_names: {
-                type: 'text',
-                analyzer: :fullname_index,
-                search_analyzer: :fullname_search,
-                norms: false
               }
+            },
+            given: {
+              type: 'text',
+              analyzer: :name_part_index,
+              norms: false,
+              fields: {
+                edge: {
+                  type: 'text',
+                  analyzer: :name_part_search,
+                  search_analyzer: :name_part_search,
+                  norms: false,
+                }
+              }
+            },
+            fullname: {
+              type: 'text',
+              analyzer: :fullname_index,
+              search_analyzer: :fullname_search,
+              norms: false
+            },
+            other_names: {
+              type: 'text',
+              analyzer: :fullname_index,
+              search_analyzer: :fullname_search,
+              norms: false
             }
           }
         }
@@ -233,32 +229,30 @@ module Bloodhound
           }
         },
         mappings: {
-          organization: {
-            properties: {
-              id: { type: 'text', index: false },
-              name: {
-                type: 'text',
-                search_analyzer: :standard,
-                analyzer: :organization_analyzer,
-                norms: false
-              },
-              address: {
-                type: 'text',
-                search_analyzer: :standard,
-                analyzer: :organization_analyzer,
-                norms: false
-              },
-              institution_codes: {
-                type: 'text',
-                analyzer: :institution_codes,
-                norms: false
-              },
-              isni: { type: 'text', index: false },
-              ringgold: { type: 'text', index: false },
-              grid: { type: 'text', index: false },
-              wikidata: { type: 'text', index: false },
-              preferred: { type: 'text', index: false }
-            }
+          properties: {
+            id: { type: 'text', index: false },
+            name: {
+              type: 'text',
+              search_analyzer: :standard,
+              analyzer: :organization_analyzer,
+              norms: false
+            },
+            address: {
+              type: 'text',
+              search_analyzer: :standard,
+              analyzer: :organization_analyzer,
+              norms: false
+            },
+            institution_codes: {
+              type: 'text',
+              analyzer: :institution_codes,
+              norms: false
+            },
+            isni: { type: 'text', index: false },
+            ringgold: { type: 'text', index: false },
+            grid: { type: 'text', index: false },
+            wikidata: { type: 'text', index: false },
+            preferred: { type: 'text', index: false }
           }
         }
       }
@@ -287,21 +281,19 @@ module Bloodhound
           }
         },
         mappings: {
-          dataset: {
-            properties: {
-              id: { type: 'text', index: false },
-              datasetkey: { type: 'text', index: false },
-              title: {
-                type: 'text',
-                search_analyzer: :standard,
-                analyzer: :dataset_analyzer,
-                norms: false
-              },
-              description: {
-                type: 'text',
-                analyzer: :standard,
-                norms: false
-              }
+          properties: {
+            id: { type: 'text', index: false },
+            datasetkey: { type: 'text', index: false },
+            title: {
+              type: 'text',
+              search_analyzer: :standard,
+              analyzer: :dataset_analyzer,
+              norms: false
+            },
+            description: {
+              type: 'text',
+              analyzer: :standard,
+              norms: false
             }
           }
         }
@@ -321,7 +313,7 @@ module Bloodhound
           }
         }
       end
-      @client.bulk index: @settings[:agents], type: 'agent', refresh: false, body: agents
+      @client.bulk index: @settings[:agents], refresh: false, body: agents
     end
 
     def import_agents
@@ -332,23 +324,23 @@ module Bloodhound
 
     def get_agent(a)
       begin
-        @client.get index: @settings[:agents], type: 'agent', id: a.id
+        @client.get index: @settings[:agents], id: a.id
       rescue Elasticsearch::Transport::Transport::Errors::NotFound
         nil
       end
     end
 
     def add_agent(a)
-      @client.index index: @settings[:agents], type: 'agent', id: a.id, body: agent_document(a)
+      @client.index index: @settings[:agents], id: a.id, body: agent_document(a)
     end
 
     def update_agent(a)
       doc = { doc: agent_document(a) }
-      @client.update index: @settings[:agents], type: 'agent', id: a.id, body: doc
+      @client.update index: @settings[:agents], id: a.id, body: doc
     end
 
     def delete_agent(a)
-      @client.delete index: @settings[:agents], type: 'agent', id: a.id
+      @client.delete index: @settings[:agents], id: a.id
     end
 
     def agent_document(a)
@@ -376,7 +368,7 @@ module Bloodhound
           }
         }
       end
-      @client.bulk index: @settings[:organizations], type: 'organization', refresh: false, body: organizations
+      @client.bulk index: @settings[:organizations], refresh: false, body: organizations
     end
 
     def import_organizations
@@ -387,23 +379,23 @@ module Bloodhound
 
     def get_organization(o)
       begin
-        @client.get index: @settings[:users], type: 'organization', id: o.id
+        @client.get index: @settings[:organizations], id: o.id
       rescue Elasticsearch::Transport::Transport::Errors::NotFound
         nil
       end
     end
 
     def add_organization(o)
-      @client.index index: @settings[:organizations], type: 'organization', id: o.id, body: organization_document(o)
+      @client.index index: @settings[:organizations], id: o.id, body: organization_document(o)
     end
 
     def update_organization(o)
       doc = { doc: organization_document(o) }
-      @client.update index: @settings[:organizations], type: 'organization', id: o.id, body: doc
+      @client.update index: @settings[:organizations], id: o.id, body: doc
     end
 
     def delete_organization(o)
-      @client.delete index: @settings[:organizations], type: 'organization', id: o.id
+      @client.delete index: @settings[:organizations], id: o.id
     end
 
     def organization_document(o)
@@ -436,7 +428,7 @@ module Bloodhound
           }
         }
       end
-      @client.bulk index: @settings[:users], type: 'user', refresh: false, body: users
+      @client.bulk index: @settings[:users], refresh: false, body: users
     end
 
     def import_users
@@ -449,23 +441,23 @@ module Bloodhound
 
     def get_user(u)
       begin
-        @client.get index: @settings[:users], type: 'user', id: u.id
+        @client.get index: @settings[:users], id: u.id
       rescue Elasticsearch::Transport::Transport::Errors::NotFound
         nil
       end
     end
 
     def add_user(u)
-      @client.index index: @settings[:users], type: 'user', id: u.id, body: user_document(u)
+      @client.index index: @settings[:users], id: u.id, body: user_document(u)
     end
 
     def update_user(u)
       doc = { doc: user_document(u) }
-      @client.update index: @settings[:users], type: 'user', id: u.id, body: doc
+      @client.update index: @settings[:users], id: u.id, body: doc
     end
 
     def delete_user(u)
-      @client.delete index: @settings[:users], type: 'user', id: u.id
+      @client.delete index: @settings[:users], id: u.id
     end
 
     def user_document(u)
@@ -497,7 +489,7 @@ module Bloodhound
           }
         }
       end
-      @client.bulk index: @settings[:datasets], type: 'dataset', refresh: false, body: datasets
+      @client.bulk index: @settings[:datasets], refresh: false, body: datasets
     end
 
     def import_datasets
@@ -508,23 +500,23 @@ module Bloodhound
 
     def get_dataset(d)
       begin
-        @client.get index: @settings[:datasets], type: 'dataset', id: d.id
+        @client.get index: @settings[:datasets], id: d.id
       rescue Elasticsearch::Transport::Transport::Errors::NotFound
         nil
       end
     end
 
     def add_dataset(d)
-      @client.index index: @settings[:datasets], type: 'dataset', id: d.id, body: dataset_document(d)
+      @client.index index: @settings[:datasets], id: d.id, body: dataset_document(d)
     end
 
     def update_dataset(d)
       doc = { doc: dataset_document(d) }
-      @client.update index: @settings[:datasets], type: 'dataset', id: d.id, body: doc
+      @client.update index: @settings[:datasets], id: d.id, body: doc
     end
 
     def delete_dataset(d)
-      @client.delete index: @settings[:datasets], type: 'dataset', id: d.id
+      @client.delete index: @settings[:datasets], id: d.id
     end
 
     def dataset_document(d)
