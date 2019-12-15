@@ -30,9 +30,9 @@
     %label{for:"description"} Description
     %textarea{type:"text", class:"form-control", id:"description", name:"description"}= "#{@dataset.description}"
     %small{id:"dataset-link", class:"form-text text-muted"}
-      %a{href: "https://gbif.org.org/dataset/#{@dataset.datasetKey}"}
+      %a{href: "https://gbif.org/dataset/#{@dataset.datasetKey}"}
         %img{src: "/images/gbif_40x40.png", alt:"GBIF", width:"18px"}
-      %a{href: "https://gbif.org.org/dataset/#{@dataset.datasetKey}", target:"_blank"} https://gbif.org.org/dataset/#{@dataset.datasetKey}
+      %a{href: "https://gbif.org/dataset/#{@dataset.datasetKey}", target:"_blank"} https://gbif.org/dataset/#{@dataset.datasetKey}
     %a{href:"/admin/dataset/refresh.json?datasetKey=#{@dataset.datasetKey}", role:"button", class:"btn btn-sm btn-outline-success dataset-refresh"}
       %i{class: "fas fa-sync-alt"}
       Refresh
