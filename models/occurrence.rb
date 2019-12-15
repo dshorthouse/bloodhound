@@ -85,11 +85,11 @@ class Occurrence < ActiveRecord::Base
   end
 
   def qry_identified
-    "user_occurrences.action LIKE '%identified%'"
+    "user_occurrences.action IN ('identified', 'identified,recorded', 'recorded,identified')"
   end
 
   def qry_recorded
-    "user_occurrences.action LIKE '%recorded%'"
+    "user_occurrences.action IN ('recorded', 'identified,recorded', 'recorded,identified')"
   end
 
 end
