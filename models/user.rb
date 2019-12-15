@@ -162,19 +162,19 @@ class User < ActiveRecord::Base
   end
 
   def qry_identified
-    "user_occurrences.action LIKE '%identified%'"
+    "user_occurrences.action IN ('identified', 'identified,recorded', 'recorded,identified')"
   end
 
   def qry_recorded
-    "user_occurrences.action LIKE '%recorded%'"
+    "user_occurrences.action IN ('recorded', 'recorded,identified', 'identified,recorded')"
   end
 
   def qry_identified_and_recorded
-    "user_occurrences.action LIKE '%recorded%' AND user_occurrences.action LIKE '%identified%'"
+    "user_occurrences.action IN ('recorded,identified', 'identified,recorded')"
   end
 
   def qry_identified_or_recorded
-    "(user_occurrences.action LIKE '%recorded%' OR user_occurrences.action LIKE '%identified%')"
+    "(user_occurrences.action IS NOT NULL"
   end
 
   def claims_given

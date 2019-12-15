@@ -101,7 +101,7 @@ Example:
       rm -rf /var/lib/neo4j/data/databases/graph.db
       neo4j-admin load --from=/home/dshorthouse/neo4j_backup/graph.db.dump --database=graph.db
       #reset permissions
-      chown neo4j:neo4j -R /var/lib/neo4j/data/databases/graph.db
+      chown neo4j:adm -R /var/lib/neo4j/data/databases/graph.db
       service neo4j start
 
 Replacing the database through load requires that the database first be deleted [usually found in /var/lib/neo4j/data/databases on linux machine] and then its permissions be recursively set for the neo4j:adm user:group.
@@ -126,7 +126,7 @@ To migrate tables, use mydumper and myloader. But for even faster data migration
       ALTER TABLE `occurrence_determiners` DROP KEY `agent_idx`, DROP KEY `occurrence_idx`;
       ALTER TABLE `occurrence_recorders` DROP KEY `agent_idx`, DROP KEY `occurrence_idx`;
 
-      mydumper --user root --password <PASSWORD> --database bloodhound --tables-list agents,occurrences,occurrence_recorders,occurrence_determiners,taxa,taxon_occurrences --compress --threads 8 --rows 500000 --trx-consistency-only --outputdir /Users/dshorthouse/Documents/bloodhound_dump
+      mydumper --user root --password <PASSWORD> --database bloodhound --tables-list agents,occurrences,occurrence_recorders,occurrence_determiners,taxa,taxon_occurrences --compress --threads 8 --rows 10000000 --trx-consistency-only --outputdir /Users/dshorthouse/Documents/bloodhound_dump
 
       apt-get install mydumper
       nohup myloader --database bloodhound_new --user bloodhound --password <PASSWORD> --threads 8 --queries-per-transaction 100 --compress-protocol --overwrite-tables --directory /home/dshorthouse/bloodhound_restore &

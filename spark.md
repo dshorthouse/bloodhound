@@ -97,7 +97,7 @@ val df2 = spark.
     withColumn("eventDate_processed", to_timestamp($"eventDate_processed")).
     withColumn("dateIdentified_processed", to_timestamp($"dateIdentified_processed"))
 
-val occurrences = df1.join(df2, Seq("gbifID"), "left_outer").orderBy($"gbifID")
+val occurrences = df1.join(df2, Seq("gbifID"), "left_outer").orderBy($"gbifID").distinct
 
 //set some properties for a MySQL connection
 val prop = new java.util.Properties
