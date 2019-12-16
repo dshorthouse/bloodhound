@@ -34,7 +34,7 @@
                 fill: "#e9ecef"
               },
               hover: {
-                cursor: "normal",
+                cursor: "pointer",
                 stroke: "#D3633C",
                 "stroke-width": 1
               }
@@ -55,7 +55,24 @@
               if (countryData.hasOwnProperty(code)) {
                 count = countryData[code].count;
               }
-              el.html(el.html()+' ('+count+')');
+              if (count > 0) {
+                el.removeClass("jvectormap-tip-hidden").html(el.html()+' ('+count+')');
+              } else {
+                el.addClass("jvectormap-tip-hidden");
+              }
+            },
+            onRegionOver: function(e, code) {
+              if (!countryData.hasOwnProperty(code)) {
+                var obj = map.vectorMap('get','mapObject');
+                obj.regions[code].element.config.style.hover.cursor = "normal";
+                obj.regions[code].element.config.style.hover["stroke-width"] = 0;
+                obj.regions[code].element.config.style.hover["fill-opacity"] = 1.0;
+              }
+            },
+            onRegionClick: function(e, code) {
+              if (countryData.hasOwnProperty(code)) {
+                window.location = "/#{@viewed_user.identifier}/specimens/country/" + code;
+              }
             }
           });
         }

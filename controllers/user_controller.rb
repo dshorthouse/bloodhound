@@ -75,7 +75,32 @@ module Sinatra
 
             begin
               page = (params[:page] || 1).to_i
-              @pagy, @results = pagy(@viewed_user.visible_occurrences.order("occurrences.typeStatus desc"), page: page)
+              data = @viewed_user.visible_occurrences
+                                 .order("occurrences.typeStatus desc")
+              @pagy, @results = pagy(data, page: page)
+              haml :'public/specimens', locals: { active_page: "roster" }
+            rescue Pagy::OverflowError
+              halt 404, haml(:oops)
+            end
+          end
+
+          app.get '/:id/specimens/country/:country_code' do
+            check_identifier
+            check_redirect
+            @viewed_user = find_user(params[:id])
+            check_user_public
+
+            @country = IsoCountryCodes.find(params[:country_code]) rescue nil
+            if @country.nil?
+              halt 404
+            end
+
+            begin
+              page = (params[:page] || 1).to_i
+              data = @viewed_user.visible_occurrences
+                                 .where(occurrences: { countryCode: params[:country_code] })
+                                 .order("occurrences.typeStatus desc")
+              @pagy, @results = pagy(data, page: page)
               haml :'public/specimens', locals: { active_page: "roster" }
             rescue Pagy::OverflowError
               halt 404, haml(:oops)

@@ -21,6 +21,16 @@ svg {
     font-size: smaller;
     padding: 3px;
     z-index:10000;
+    visibility:visible;
+}
+
+.jvectormap-tip-hidden {
+  padding:0px;
+  border:none;
+  background:none;
+  display:none;
+  color:none;
+  visibility:hidden;
 }
 
 .jvectormap-zoomin, .jvectormap-zoomout, .jvectormap-goback {
