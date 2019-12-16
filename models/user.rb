@@ -105,8 +105,8 @@ class User < ActiveRecord::Base
     visible_occurrences.where(qry_recorded)
   end
 
-  def identifications_recordings
-    visible_occurrences.where(qry_identified_recorded)
+  def identifications_or_recordings
+    visible_occurrences.where(qry_identified_or_recorded)
   end
 
   def identified_families
@@ -174,7 +174,7 @@ class User < ActiveRecord::Base
   end
 
   def qry_identified_or_recorded
-    "(user_occurrences.action IS NOT NULL"
+    "user_occurrences.action IS NOT NULL"
   end
 
   def claims_given
@@ -239,17 +239,28 @@ class User < ActiveRecord::Base
   end
 
   def country_counts
-    counts = recordings.pluck(:countryCode)
-                       .compact
-                       .inject(Hash.new(0)) { |h, e| h[e] += 1 ; h }
-    data = {}
-    counts.each do |k,v|
-      country = IsoCountryCodes.find(k) rescue nil
+    identifications_or_recordings.where.not(occurrences: { countryCode: nil })
+      .pluck("occurrences.countryCode", :action)
+      .each_with_object({}) do |code_action, data|
+        if !data.key?(code_action[0])
+          data[code_action[0]] = {
+            recorded: 0,
+            identified: 0
+          }
+        end
+        if code_action[1] == "recorded" || code_action[1] == "identified"
+          data[code_action[0]][code_action[1].to_sym] += 1
+        else
+          data[code_action[0]][:identified] += 1
+          data[code_action[0]][:recorded] += 1
+        end
+      end
+    .each_with_object({}) do |k, data|
+      country = IsoCountryCodes.find(k[0]) rescue nil
       if country
-        data[country.alpha2] = { name: country.name, count: v }
+        data[k[0]] = k[1].merge({name: country.name})
       end
     end
-    data
   end
 
   def quick_country_counts
