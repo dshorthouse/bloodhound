@@ -57,6 +57,8 @@ module Sinatra
             if @viewed_user.is_public?
               counts = @viewed_user.country_counts
               cited = @viewed_user.cited_specimens_counts
+              helped = @viewed_user.helped_counts
+
               identified_count = counts.values.reduce(0) {
                 |sum, val| sum + val[:identified]
               }
@@ -80,9 +82,8 @@ module Sinatra
                   recorded: recorded_count
                 },
                 attributions: {
-                  helped: @viewed_user.helped_count,
-                  number: @viewed_user.claims_given
-                                      .count
+                  helped: helped.count,
+                  number: helped.values.reduce(:+)
                 },
                 countries: {
                   identified: countries_identified,
