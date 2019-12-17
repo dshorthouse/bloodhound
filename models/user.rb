@@ -522,6 +522,11 @@ class User < ActiveRecord::Base
     cited_specimens.where(article_occurrences: { article_id: article_id })
   end
 
+  def cited_specimens_counts
+    cited_specimens.group("article_occurrences.article_id")
+                   .pluck("article_occurrences.article_id", "COUNT(article_occurrences.occurrence_id)")
+  end
+
   private
 
   def family_part

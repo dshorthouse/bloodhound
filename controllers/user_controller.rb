@@ -56,6 +56,7 @@ module Sinatra
 
             if @viewed_user.is_public?
               counts = @viewed_user.country_counts
+              cited = @viewed_user.cited_specimens_counts
               identified_count = counts.values.reduce(0) {
                 |sum, val| sum + val[:identified]
               }
@@ -88,12 +89,8 @@ module Sinatra
                   recorded: countries_recorded
                 },
                 articles: {
-                  specimens_cited: @viewed_user.cited_specimens
-                                               .count,
-                  number: @viewed_user.cited_specimens
-                                      .select(:article_id)
-                                      .distinct
-                                      .count
+                  specimens_cited: cited.map(&:second).reduce(:+),
+                  number: cited.count
                 }
               }
             end
