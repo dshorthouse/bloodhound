@@ -3,7 +3,7 @@
 - content_for(:title, "#{@viewed_user.fullname}")
 
 - content_for :stylesheets do
-  - if @viewed_user.is_public? && !@total[:country_counts].empty?
+  - if @viewed_user.is_public? && ( @stats[:countries][:recorded].count > 0 || @stats[:countries][:identified].count > 0 )
     %link{rel:"stylesheet", href:"/css/jquery-jvectormap-2.0.3.css"}
 
 - content_for :scripts do
@@ -16,17 +16,53 @@
 
   %script{id:"dsq-count-scr", src:"//#{Settings.disqus_shortname}.disqus.com/count.js", defer: ""}
 
-  - if @viewed_user.is_public? && !@total[:country_counts].empty?
+  - if @viewed_user.is_public? && ( @stats[:countries][:recorded].count > 0 || @stats[:countries][:identified].count > 0 )
     %script{src: "/js/jquery-jvectormap-2.0.3.min.js"}
     %script{src: "/js/jquery-jvectormap-world-mill.js"}
     :javascript
-      var countryData=#{@total[:country_counts].to_json};
+      var countriesRecorded = #{@stats[:countries][:recorded].to_json},
+          countriesIdentified = #{@stats[:countries][:identified].to_json};
 
       $(function() {
-        var map = $('#world-map');
         DISQUSWIDGETS.getCount({reset: true});
-        if (Object.keys(countryData).length > 0) {
-          map.vectorMap({
+
+        function regionValues(src, type) {
+          return Object.keys(src).reduce(function (result,item) {
+            result[item] = src[item][type];
+            return result;
+          }, {});
+        }
+
+        function regionTip(src, type, el, code) {
+          var count = 0;
+          if (src.hasOwnProperty(code)) {
+            count = src[code][type];
+          }
+          if (count > 0) {
+            el.removeClass("jvectormap-tip-hidden").html(el.html()+' ('+count+')');
+          } else {
+            el.addClass("jvectormap-tip-hidden");
+          }
+        }
+
+        function regionOver(map, src, code) {
+          if (!src.hasOwnProperty(code)) {
+            var obj = map.vectorMap('get','mapObject');
+            obj.regions[code].element.config.style.hover.cursor = "normal";
+            obj.regions[code].element.config.style.hover["stroke-width"] = 0;
+            obj.regions[code].element.config.style.hover["fill-opacity"] = 1.0;
+          }
+        }
+
+        function regionClick(src, code) {
+          if (src.hasOwnProperty(code)) {
+            window.location = "/#{@viewed_user.identifier}/specimens/country/" + code;
+          }
+        }
+
+        if (Object.keys(countriesRecorded).length > 0) {
+          var map_collected = $('#map-collected');
+          map_collected.vectorMap({
             map: 'world_mill',
             backgroundColor: '#fff',
             regionStyle: {
@@ -39,43 +75,60 @@
                 "stroke-width": 1
               }
             },
-            focusOn: Object.keys(countryData),
+            focusOn: Object.keys(countriesRecorded),
             series: {
               regions: [{
-                values: Object.keys(countryData).reduce(function (result,item) {
-                  result[item] = countryData[item].count;
-                  return result;
-                }, {}),
+                values: regionValues(countriesRecorded, 'recorded'),
                 scale: ['#C8EEFF', '#0071A4'],
                 normalizeFunction: 'polynomial'
               }]
             },
             onRegionTipShow: function(e, el, code) {
-              count = 0
-              if (countryData.hasOwnProperty(code)) {
-                count = countryData[code].count;
-              }
-              if (count > 0) {
-                el.removeClass("jvectormap-tip-hidden").html(el.html()+' ('+count+')');
-              } else {
-                el.addClass("jvectormap-tip-hidden");
-              }
+              regionTip(countriesRecorded, 'recorded', el, code);
             },
             onRegionOver: function(e, code) {
-              if (!countryData.hasOwnProperty(code)) {
-                var obj = map.vectorMap('get','mapObject');
-                obj.regions[code].element.config.style.hover.cursor = "normal";
-                obj.regions[code].element.config.style.hover["stroke-width"] = 0;
-                obj.regions[code].element.config.style.hover["fill-opacity"] = 1.0;
-              }
+              regionOver(map_collected, countriesRecorded, code);
             },
             onRegionClick: function(e, code) {
-              if (countryData.hasOwnProperty(code)) {
-                window.location = "/#{@viewed_user.identifier}/specimens/country/" + code;
-              }
+              regionClick(countriesRecorded, code);
             }
           });
         }
+        if (Object.keys(countriesIdentified).length > 0) {
+          var map_identified = $('#map-identified');
+          map_identified.vectorMap({
+            map: 'world_mill',
+            backgroundColor: '#fff',
+            regionStyle: {
+              initial: {
+                fill: "#e9ecef"
+              },
+              hover: {
+                cursor: "pointer",
+                stroke: "#D3633C",
+                "stroke-width": 1
+              }
+            },
+            focusOn: Object.keys(countriesIdentified),
+            series: {
+              regions: [{
+                values: regionValues(countriesIdentified, 'identified'),
+                scale: ['#C8EEFF', '#0071A4'],
+                normalizeFunction: 'polynomial'
+              }]
+            },
+            onRegionTipShow: function(e, el, code) {
+              regionTip(countriesIdentified, 'identified', el, code);
+            },
+            onRegionOver: function(e, code) {
+              regionOver(map_identified, countriesIdentified, code);
+            },
+            onRegionClick: function(e, code) {
+              regionClick(countriesIdentified, code);
+            }
+          });
+        }
+
       });
 
 %div{class:"row"}
@@ -85,29 +138,38 @@
       = haml :'partials/user/tabs', layout: false, locals: { active_page: "overview" }
 
       %div{class:"d-flex flex-row mt-3 alert alert-info justify-content-between"}
-        - if @total[:number_identified] == 0 && @total[:number_recorded] == 0 && @total[:number_helped] == 0
+        - if @stats[:specimens][:identified] == 0 && @stats[:specimens][:recorded] == 0 && @stats[:attributions][:helped] == 0
           Claims or attributions have not yet been recorded.
         - else
           %div
             %ul{class:"list-unstyled"}
-              - if @total[:number_identified] > 0
-                %li Identified #{number_with_delimiter(@total[:number_identified])} #{'specimen'.pluralize(@total[:number_identified])}
-              - if @total[:number_recorded] > 0
-                %li Collected #{number_with_delimiter(@total[:number_recorded])} #{'specimen'.pluralize(@total[:number_recorded])} from at least #{number_with_delimiter(@total[:country_counts].count)} #{'country'.pluralize(@total[:country_counts].count)}
-              - if @total[:number_helped] > 0
-                %li Attributed #{number_with_delimiter(@total[:number_claims_given])} #{'specimen'.pluralize(@total[:number_claims_given])} to #{number_with_delimiter(@total[:number_helped])} #{'person'.pluralize(@total[:number_helped])}
-              - if @total[:number_specimens_cited] > 0
-                %li #{number_with_delimiter(@total[:number_specimens_cited])} #{'specimen'.pluralize(@total[:number_specimens_cited])} used in #{number_with_delimiter(@total[:number_articles])} published #{'work'.pluralize(@total[:number_articles])}
-          - if @total[:number_recorded] > 0 || @total[:number_identified] > 0
+              - if @stats[:specimens][:identified] > 0
+                %li Identified #{number_with_delimiter(@stats[:specimens][:identified])} #{'specimen'.pluralize(@stats[:specimens][:identified])} from at least #{number_with_delimiter(@stats[:countries][:identified].count)} #{'country'.pluralize(@stats[:countries][:identified].count)}
+              - if @stats[:specimens][:recorded] > 0
+                %li Collected #{number_with_delimiter(@stats[:specimens][:recorded])} #{'specimen'.pluralize(@stats[:specimens][:recorded])} from at least #{number_with_delimiter(@stats[:countries][:recorded].count)} #{'country'.pluralize(@stats[:countries][:recorded].count)}
+              - if @stats[:attributions][:helped] > 0
+                %li Attributed #{number_with_delimiter(@stats[:attributions][:number])} #{'specimen'.pluralize(@stats[:attributions][:number])} to #{number_with_delimiter(@stats[:attributions][:helped])} #{'person'.pluralize(@stats[:attributions][:helped])}
+              - if @stats[:articles][:number] > 0
+                %li #{number_with_delimiter(@stats[:articles][:specimens_cited])} #{'specimen'.pluralize(@stats[:articles][:specimens_cited])} used in #{number_with_delimiter(@stats[:articles][:number])} published #{'work'.pluralize(@stats[:articles][:number])}
+          - if @stats[:specimens][:recorded] > 0 || @stats[:specimens][:identified] > 0
             %div{class:"col-4 col-md-2"}
               Progress
               %div{class:"progress", style:"border:1px solid rgba(0,0,0,.125);inline"}
                 %div{id:"progress-bar_#{@viewed_user.identifier}", class:"progress-bar bg-info", role:"progressbar", style:"width: 0%;inline", "aria-valuenow":"0", "aria-valuemin":"0", "aria-valuemax":"100"}
 
-      - if !@total[:country_counts].empty?
-        %div{class:"row d-flex justify-content-center"}
-          %div{class:"col col-sm-12 col-md-10 col-xl-10"}
-            #world-map{style:"width: 100%; height: 350px"}
+      - if @stats[:countries][:identified].count > 0
+        %div{class: "mt-3"}
+          %h3 Identified From
+          %div{class:"row d-flex mt-3"}
+            %div{class:"col col-sm-10"}
+              #map-identified{style:"width: 100%; height: 350px"}
+
+      - if @stats[:countries][:recorded].count > 0
+        %div{class: "mt-3"}
+          %h3 Collected From
+          %div{class:"row d-flex mt-3"}
+            %div{class:"col col-sm-10"}
+              #map-collected{style:"width: 100%; height: 350px"}
 
     - else
       = haml :'partials/user/offline_message', layout: false

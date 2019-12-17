@@ -1,5 +1,13 @@
 # encoding: utf-8
 
+class Hash
+  def without(*keys)
+    cpy = self.dup
+    keys.each { |key| cpy.delete(key) }
+    cpy
+  end
+end
+
 module Sinatra
   module Bloodhound
     module Controller
@@ -45,14 +53,47 @@ module Sinatra
             if !@viewed_user
               halt 404
             end
-            @total = {
-              number_identified: @viewed_user.identified_count,
-              number_recorded: @viewed_user.recorded_count,
-              number_helped: @viewed_user.helped_count,
-              number_claims_given: @viewed_user.claims_given.count,
-              country_counts: @viewed_user.country_counts,
-              number_specimens_cited: @viewed_user.cited_specimens.count,
-              number_articles: @viewed_user.cited_specimens.select(:article_id).distinct.count
+
+            counts = @viewed_user.country_counts
+            identified_count = counts.values.reduce(0) {
+              |sum, val| sum + val[:identified]
+            }
+            recorded_count = counts.values.reduce(0) {
+              |sum, val| sum + val[:recorded]
+            }
+            countries_identified = counts.each_with_object({}) do |code, data|
+              if code[0] != "OTHER" && code[1][:identified] > 0
+                data[code[0]] = code[1].without(:recorded)
+              end
+            end
+            countries_recorded = counts.each_with_object({}) do |code, data|
+              if code[0] != "OTHER" && code[1][:recorded] > 0
+                data[code[0]] = code[1].without(:identified)
+              end
+            end
+
+            @stats = {
+              specimens: {
+                identified: identified_count,
+                recorded: recorded_count
+              },
+              attributions: {
+                helped: @viewed_user.helped_count,
+                number: @viewed_user.claims_given
+                                    .count
+              },
+              countries: {
+                identified: countries_identified,
+                recorded: countries_recorded
+              },
+              articles: {
+                specimens_cited: @viewed_user.cited_specimens
+                                             .count,
+                number: @viewed_user.cited_specimens
+                                    .select(:article_id)
+                                    .distinct
+                                    .count
+              }
             }
             haml :'public/overview', locals: { active_page: "roster" }
           end
