@@ -50,51 +50,53 @@ module Sinatra
             check_identifier
             check_redirect
             @viewed_user = find_user(params[:id])
-            if !@viewed_user
-              halt 404
-            end
+            check_user_public
 
-            counts = @viewed_user.country_counts
-            identified_count = counts.values.reduce(0) {
-              |sum, val| sum + val[:identified]
-            }
-            recorded_count = counts.values.reduce(0) {
-              |sum, val| sum + val[:recorded]
-            }
-            countries_identified = counts.each_with_object({}) do |code, data|
-              if code[0] != "OTHER" && code[1][:identified] > 0
-                data[code[0]] = code[1].without(:recorded)
-              end
-            end
-            countries_recorded = counts.each_with_object({}) do |code, data|
-              if code[0] != "OTHER" && code[1][:recorded] > 0
-                data[code[0]] = code[1].without(:identified)
-              end
-            end
+            @stats = {}
 
-            @stats = {
-              specimens: {
-                identified: identified_count,
-                recorded: recorded_count
-              },
-              attributions: {
-                helped: @viewed_user.helped_count,
-                number: @viewed_user.claims_given
-                                    .count
-              },
-              countries: {
-                identified: countries_identified,
-                recorded: countries_recorded
-              },
-              articles: {
-                specimens_cited: @viewed_user.cited_specimens
-                                             .count,
-                number: @viewed_user.cited_specimens
-                                    .select(:article_id)
-                                    .distinct
-                                    .count
+            if @viewed_user.is_public?
+              counts = @viewed_user.country_counts
+              identified_count = counts.values.reduce(0) {
+                |sum, val| sum + val[:identified]
               }
-            }
+              recorded_count = counts.values.reduce(0) {
+                |sum, val| sum + val[:recorded]
+              }
+              countries_identified = counts.each_with_object({}) do |code, data|
+                if code[0] != "OTHER" && code[1][:identified] > 0
+                  data[code[0]] = code[1].without(:recorded)
+                end
+              end
+              countries_recorded = counts.each_with_object({}) do |code, data|
+                if code[0] != "OTHER" && code[1][:recorded] > 0
+                  data[code[0]] = code[1].without(:identified)
+                end
+              end
+
+              @stats = {
+                specimens: {
+                  identified: identified_count,
+                  recorded: recorded_count
+                },
+                attributions: {
+                  helped: @viewed_user.helped_count,
+                  number: @viewed_user.claims_given
+                                      .count
+                },
+                countries: {
+                  identified: countries_identified,
+                  recorded: countries_recorded
+                },
+                articles: {
+                  specimens_cited: @viewed_user.cited_specimens
+                                               .count,
+                  number: @viewed_user.cited_specimens
+                                      .select(:article_id)
+                                      .distinct
+                                      .count
+                }
+              }
+            end
             haml :'public/overview', locals: { active_page: "roster" }
           end
 
@@ -103,8 +105,11 @@ module Sinatra
             check_redirect
             @viewed_user = find_user(params[:id])
             check_user_public
-            @families_identified = @viewed_user.identified_families
-            @families_recorded = @viewed_user.recorded_families
+            @families_identified, @families_recorded = [], []
+            if @viewed_user.is_public?
+              @families_identified = @viewed_user.identified_families
+              @families_recorded = @viewed_user.recorded_families
+            end
             haml :'public/specialties', locals: { active_page: "roster" }
           end
 
@@ -115,10 +120,13 @@ module Sinatra
             check_user_public
 
             begin
-              page = (params[:page] || 1).to_i
-              data = @viewed_user.visible_occurrences
-                                 .order("occurrences.typeStatus desc")
-              @pagy, @results = pagy(data, page: page)
+              @pagy, @results = {}, []
+              if @viewed_user.is_public?
+                page = (params[:page] || 1).to_i
+                data = @viewed_user.visible_occurrences
+                                   .order("occurrences.typeStatus desc")
+                @pagy, @results = pagy(data, page: page)
+              end
               haml :'public/specimens', locals: { active_page: "roster" }
             rescue Pagy::OverflowError
               halt 404, haml(:oops)
@@ -137,11 +145,14 @@ module Sinatra
             end
 
             begin
-              page = (params[:page] || 1).to_i
-              data = @viewed_user.visible_occurrences
-                                 .where(occurrences: { countryCode: params[:country_code] })
-                                 .order("occurrences.typeStatus desc")
-              @pagy, @results = pagy(data, page: page)
+              @pagy, @results = {}, []
+              if @viewed_user.is_public?
+                page = (params[:page] || 1).to_i
+                data = @viewed_user.visible_occurrences
+                                   .where(occurrences: { countryCode: params[:country_code] })
+                                   .order("occurrences.typeStatus desc")
+                @pagy, @results = pagy(data, page: page)
+              end
               haml :'public/specimens', locals: { active_page: "roster" }
             rescue Pagy::OverflowError
               halt 404, haml(:oops)
@@ -155,8 +166,11 @@ module Sinatra
             check_user_public
 
             begin
-              page = (params[:page] || 1).to_i
-              @pagy, @results = pagy(@viewed_user.articles_citing_specimens, page: page)
+              @pagy, @results = {}, []
+              if @viewed_user.is_public?
+                page = (params[:page] || 1).to_i
+                @pagy, @results = pagy(@viewed_user.articles_citing_specimens, page: page)
+              end
               haml :'public/citations', locals: { active_page: "roster" }
             rescue Pagy::OverflowError
               halt 404, haml(:oops)
@@ -175,8 +189,11 @@ module Sinatra
             end
 
             begin
-              page = (params[:page] || 1).to_i
-              @pagy, @results = pagy(@viewed_user.cited_specimens_by_article(@article.id), page: page)
+              @pagy, @results = {}, []
+              if @viewed_user.is_public?
+                page = (params[:page] || 1).to_i
+                @pagy, @results = pagy(@viewed_user.cited_specimens_by_article(@article.id), page: page)
+              end
               haml :'public/citation', locals: { active_page: "roster" }
             rescue Pagy::OverflowError
               halt 404, haml(:oops)
@@ -190,8 +207,11 @@ module Sinatra
             check_user_public
 
             begin
-              page = (params[:page] || 1).to_i
-              @pagy, @results = pagy(@viewed_user.recorded_with, page: page)
+              @pagy, @results = {}, []
+              if @viewed_user.is_public?
+                page = (params[:page] || 1).to_i
+                @pagy, @results = pagy(@viewed_user.recorded_with, page: page)
+              end
               locals = {
                 active_page: "roster",
                 active_tab: "co_collectors"
@@ -209,8 +229,11 @@ module Sinatra
             check_user_public
 
             begin
-              page = (params[:page] || 1).to_i
-              @pagy, @results = pagy(@viewed_user.identified_for, page: page)
+              @pagy, @results = {}, []
+              if @viewed_user.is_public?
+                page = (params[:page] || 1).to_i
+                @pagy, @results = pagy(@viewed_user.identified_for, page: page)
+              end
               locals = {
                 active_page: "roster",
                 active_tab: "identified_for"
@@ -228,8 +251,11 @@ module Sinatra
             check_user_public
 
             begin
-              page = (params[:page] || 1).to_i
-              @pagy, @results = pagy(@viewed_user.identified_by, page: page)
+              @pagy, @results = {}, []
+              if @viewed_user.is_public?
+                page = (params[:page] || 1).to_i
+                @pagy, @results = pagy(@viewed_user.identified_by, page: page)
+              end
               locals = {
                 active_page: "roster",
                 active_tab: "identifications_by"
@@ -245,8 +271,11 @@ module Sinatra
             check_redirect
             @viewed_user = find_user(params[:id])
             check_user_public
-            @recordings_at = @viewed_user.recordings_deposited_at
-            @identifications_at = @viewed_user.identifications_deposited_at
+            @recordings_at, @identifications_at = [], []
+            if @viewed_user.is_public?
+              @recordings_at = @viewed_user.recordings_deposited_at
+              @identifications_at = @viewed_user.identifications_deposited_at
+            end
             haml :'public/deposited_at', locals: { active_page: "roster" }
           end
 
