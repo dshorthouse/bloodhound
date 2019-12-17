@@ -239,7 +239,7 @@ class User < ActiveRecord::Base
   end
 
   def country_counts
-    identifications_or_recordings.where.not(occurrences: { countryCode: nil })
+    identifications_or_recordings
       .pluck("occurrences.countryCode", :action)
       .each_with_object({}) do |code_action, data|
         if !data.key?(code_action[0])
@@ -259,6 +259,8 @@ class User < ActiveRecord::Base
       country = IsoCountryCodes.find(k[0]) rescue nil
       if country
         data[k[0]] = k[1].merge({name: country.name})
+      else
+        data["OTHER"] = k[1]
       end
     end
   end
