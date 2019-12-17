@@ -157,18 +157,18 @@
               %div{class:"progress", style:"border:1px solid rgba(0,0,0,.125);inline"}
                 %div{id:"progress-bar_#{@viewed_user.identifier}", class:"progress-bar bg-info", role:"progressbar", style:"width: 0%;inline", "aria-valuenow":"0", "aria-valuemin":"0", "aria-valuemax":"100"}
 
-      - if @stats[:countries][:identified].count > 0
-        %div{class: "mt-3"}
-          %h3 Identified From
-          %div{class:"row d-flex mt-3"}
-            %div{class:"col col-sm-10"}
+      - if @stats[:countries][:identified].count > 0 || @stats[:countries][:recorded].count > 0
+        %div{class:"row d-flex mt-3"}
+          - split_css = ""
+          - if @stats[:countries][:identified].count > 0 && @stats[:countries][:recorded].count > 0
+            - split_css = " col-md-6"
+          - if @stats[:countries][:identified].count > 0
+            %div{class:"col-10#{split_css}"}
+              %h4 Identified From
               #map-identified{style:"width: 100%; height: 350px"}
-
-      - if @stats[:countries][:recorded].count > 0
-        %div{class: "mt-3"}
-          %h3 Collected From
-          %div{class:"row d-flex mt-3"}
-            %div{class:"col col-sm-10"}
+          - if @stats[:countries][:recorded].count > 0
+            %div{class:"col-10#{split_css}"}
+              %h4 Collected From
               #map-collected{style:"width: 100%; height: 350px"}
 
     - else
