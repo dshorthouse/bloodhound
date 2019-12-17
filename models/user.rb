@@ -240,7 +240,9 @@ class User < ActiveRecord::Base
 
   def country_counts
     identifications_or_recordings
-      .pluck("occurrences.countryCode", :action)
+      .references(:occurrences)
+      .group("occurrences.countryCode", :action)
+      .pluck("occurrences.countryCode", :action, "COUNT(occurrences.countryCode)")
       .each_with_object({}) do |code_action, data|
         if !data.key?(code_action[0])
           data[code_action[0]] = {
@@ -249,20 +251,20 @@ class User < ActiveRecord::Base
           }
         end
         if code_action[1] == "recorded" || code_action[1] == "identified"
-          data[code_action[0]][code_action[1].to_sym] += 1
+          data[code_action[0]][code_action[1].to_sym] += code_action[2]
         else
-          data[code_action[0]][:identified] += 1
-          data[code_action[0]][:recorded] += 1
+          data[code_action[0]][:identified] += code_action[2]
+          data[code_action[0]][:recorded] += code_action[2]
         end
       end
-    .each_with_object({}) do |k, data|
-      country = IsoCountryCodes.find(k[0]) rescue nil
-      if country
-        data[k[0]] = k[1].merge({name: country.name})
-      else
-        data["OTHER"] = k[1]
+      .each_with_object({}) do |k, data|
+        country = IsoCountryCodes.find(k[0]) rescue nil
+        if country
+          data[k[0]] = k[1].merge({name: country.name})
+        else
+          data["OTHER"] = k[1]
+        end
       end
-    end
   end
 
   def quick_country_counts
