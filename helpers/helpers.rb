@@ -391,6 +391,48 @@ module Sinatra
         end
       end
 
+      def user_stats(user)
+        counts = user.country_counts
+        cited = user.cited_specimens_counts
+        helped = user.helped_counts
+
+        identified_count = counts.values.reduce(0) {
+          |sum, val| sum + val[:identified]
+        }
+        recorded_count = counts.values.reduce(0) {
+          |sum, val| sum + val[:recorded]
+        }
+        countries_identified = counts.each_with_object({}) do |code, data|
+          if code[0] != "OTHER" && code[1][:identified] > 0
+            data[code[0]] = code[1].without(:recorded)
+          end
+        end
+        countries_recorded = counts.each_with_object({}) do |code, data|
+          if code[0] != "OTHER" && code[1][:recorded] > 0
+            data[code[0]] = code[1].without(:identified)
+          end
+        end
+
+        {
+          specimens: {
+            identified: identified_count,
+            recorded: recorded_count
+          },
+          attributions: {
+            helped: helped.count,
+            number: helped.values.reduce(:+)
+          },
+          countries: {
+            identified: countries_identified,
+            recorded: countries_recorded
+          },
+          articles: {
+            specimens_cited: cited.map(&:second).reduce(:+),
+            number: cited.count
+          }
+        }
+      end
+
     end
   end
 end

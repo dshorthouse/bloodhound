@@ -143,14 +143,8 @@
         - else
           %div
             %ul{class:"list-unstyled"}
-              - if @stats[:specimens][:identified] > 0
-                %li Identified #{number_with_delimiter(@stats[:specimens][:identified])} #{'specimen'.pluralize(@stats[:specimens][:identified])} from at least #{number_with_delimiter(@stats[:countries][:identified].count)} #{'country'.pluralize(@stats[:countries][:identified].count)}
-              - if @stats[:specimens][:recorded] > 0
-                %li Collected #{number_with_delimiter(@stats[:specimens][:recorded])} #{'specimen'.pluralize(@stats[:specimens][:recorded])} from at least #{number_with_delimiter(@stats[:countries][:recorded].count)} #{'country'.pluralize(@stats[:countries][:recorded].count)}
-              - if @stats[:attributions][:helped] > 0
-                %li Attributed #{number_with_delimiter(@stats[:attributions][:number])} #{'specimen'.pluralize(@stats[:attributions][:number])} to #{number_with_delimiter(@stats[:attributions][:helped])} #{'person'.pluralize(@stats[:attributions][:helped])}
-              - if @stats[:articles][:number] > 0
-                %li #{number_with_delimiter(@stats[:articles][:specimens_cited])} #{'specimen'.pluralize(@stats[:articles][:specimens_cited])} used in #{number_with_delimiter(@stats[:articles][:number])} published #{'work'.pluralize(@stats[:articles][:number])}
+              = haml :'partials/user_stats', layout: false
+
           - if @stats[:specimens][:recorded] > 0 || @stats[:specimens][:identified] > 0
             %div{class:"col-4 col-md-2"}
               Progress
