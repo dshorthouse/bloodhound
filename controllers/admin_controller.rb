@@ -201,14 +201,45 @@ module Sinatra
             admin_protected!
             check_redirect
             @admin_user = find_user(params[:id])
-            @total = {
-              number_identified: @admin_user.identified_count,
-              number_recorded: @admin_user.recorded_count,
-              number_helped: @admin_user.helped_count,
-              number_claims_given: @admin_user.claims_given.count,
-              number_countries: @admin_user.quick_country_counts,
-              number_specimens_cited: @admin_user.cited_specimens.count,
-              number_articles: @admin_user.cited_specimens.select(:article_id).distinct.count
+
+            counts = @admin_user.country_counts
+            cited = @admin_user.cited_specimens_counts
+            helped = @admin_user.helped_counts
+
+            identified_count = counts.values.reduce(0) {
+              |sum, val| sum + val[:identified]
+            }
+            recorded_count = counts.values.reduce(0) {
+              |sum, val| sum + val[:recorded]
+            }
+            countries_identified = counts.each_with_object({}) do |code, data|
+              if code[0] != "OTHER" && code[1][:identified] > 0
+                data[code[0]] = code[1].without(:recorded)
+              end
+            end
+            countries_recorded = counts.each_with_object({}) do |code, data|
+              if code[0] != "OTHER" && code[1][:recorded] > 0
+                data[code[0]] = code[1].without(:identified)
+              end
+            end
+
+            @stats = {
+              specimens: {
+                identified: identified_count,
+                recorded: recorded_count
+              },
+              attributions: {
+                helped: helped.count,
+                number: helped.values.reduce(:+)
+              },
+              countries: {
+                identified: countries_identified,
+                recorded: countries_recorded
+              },
+              articles: {
+                specimens_cited: cited.map(&:second).reduce(:+),
+                number: cited.count
+              }
             }
             haml :'admin/overview', locals: { active_page: "administration" }
           end

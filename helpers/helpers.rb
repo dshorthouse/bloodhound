@@ -156,34 +156,52 @@ module Sinatra
       def candidate_agents(user)
         agents = search_agents(user.fullname)
 
-        agents.concat search_agents([user.initials, user.family].join(" "))
+        abbreviated_name = [user.initials[0..-3], user.family].join(" ")
+        agents.concat search_agents(abbreviated_name)
 
+        full_names = [user.fullname.dup]
+        full_names << abbreviated_name
         given_names = [user.given.dup]
-        given_names << user.initials.dup
+        given_names << user.initials[0..-3].dup
 
         if !user.other_names.nil?
           user.other_names.split("|").each do |other_name|
             #Attempt to ignore botanist abbreviation or naked family name, often as "other" name in wikidata
             next if user.family.include?(other_name.gsub(".",""))
+
             #Attempt to tack on family name because single given name often in ORCID
             if !other_name.include?(" ")
               other_name = [other_name, user.family].join(" ")
             end
+
+            full_names << other_name
             agents.concat search_agents(other_name)
-            given = DwcAgent.parse(other_name)[0].given rescue nil
-            if !given.nil?
+
+            parsed_other_name = DwcAgent.parse(other_name)[0] rescue nil
+
+            if !parsed_other_name.nil? && !parsed_other_name.given.nil?
+              abbreviated_name = [parsed_other_name.initials[0..-3], parsed_other_name.family].join(" ")
+              full_names << abbreviated_name
+              agents.concat search_agents(abbreviated_name)
+              given = parsed_other_name.given
               given_names << given
-              given_names << given.gsub(/([[:upper:]])[[:lower:]]+/, '\1.').gsub(/\s+/, '')
+              given_names << given.gsub(/([[:upper:]])[[:lower:]]+/, '\1.')
+                                  .gsub(/\s+/, '')
             end
           end
         end
 
         given_names.uniq!
+        full_names.uniq!
 
         if !params.has_key?(:relaxed) || params[:relaxed] == "0"
           remove_agents = []
 
           agents.each do |a|
+            # Boost score above cutoff if exact match to name or abbreviation
+            if full_names.include?(a[:fullname])
+              a[:score] += 40
+            end
             scores = given_names.map{ |g| DwcAgent.similarity_score(g, a[:given]) }
             remove_agents << a[:id] if scores.reject{|a| a == 0}.empty?
             remove_agents << a[:id] if scores.include?(0) && given_names.count == 2

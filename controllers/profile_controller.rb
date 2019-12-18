@@ -265,7 +265,8 @@ module Sinatra
               @results = []
               @total = nil
             else
-              id_scores = candidate_agents(@user).map{|a| { id: a[:id], score: a[:score] } }.compact
+              id_scores = candidate_agents(@user).map{|a| { id: a[:id], score: a[:score] } }
+                                                 .compact
 
               if !id_scores.empty?
                 ids = id_scores.map{|a| a[:id]}
