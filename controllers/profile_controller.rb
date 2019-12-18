@@ -65,14 +65,44 @@ module Sinatra
 
           app.get '/profile' do
             protected!
-            @total = {
-              number_identified: @user.identified_count,
-              number_recorded: @user.recorded_count,
-              number_helped: @user.helped_count,
-              number_claims_given: @user.claims_given.count,
-              number_countries: @user.quick_country_counts,
-              number_specimens_cited: @user.cited_specimens.count,
-              number_articles: @user.cited_specimens.select(:article_id).distinct.count
+            counts = @user.country_counts
+            cited = @user.cited_specimens_counts
+            helped = @user.helped_counts
+
+            identified_count = counts.values.reduce(0) {
+              |sum, val| sum + val[:identified]
+            }
+            recorded_count = counts.values.reduce(0) {
+              |sum, val| sum + val[:recorded]
+            }
+            countries_identified = counts.each_with_object({}) do |code, data|
+              if code[0] != "OTHER" && code[1][:identified] > 0
+                data[code[0]] = code[1].without(:recorded)
+              end
+            end
+            countries_recorded = counts.each_with_object({}) do |code, data|
+              if code[0] != "OTHER" && code[1][:recorded] > 0
+                data[code[0]] = code[1].without(:identified)
+              end
+            end
+
+            @stats = {
+              specimens: {
+                identified: identified_count,
+                recorded: recorded_count
+              },
+              attributions: {
+                helped: helped.count,
+                number: helped.values.reduce(:+)
+              },
+              countries: {
+                identified: countries_identified,
+                recorded: countries_recorded
+              },
+              articles: {
+                specimens_cited: cited.map(&:second).reduce(:+),
+                number: cited.count
+              }
             }
             haml :'profile/overview', locals: { active_page: "profile" }
           end
