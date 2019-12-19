@@ -205,7 +205,7 @@ GEM
     pony (1.13.1)
       mail (>= 2.0)
     public_suffix (4.0.1)
-    rack (2.0.7)
+    rack (2.0.8)
     rack-contrib (2.1.0)
       rack (~> 2.0)
     rack-google-analytics (1.2.0)
