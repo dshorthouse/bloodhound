@@ -279,10 +279,10 @@ class User < ActiveRecord::Base
   def recorded_with
     User.joins("JOIN user_occurrences as a ON a.user_id = users.id JOIN user_occurrences b ON a.occurrence_id = b.occurrence_id")
         .where("b.user_id = #{id}")
-        .where("b.action LIKE '%recorded%'")
+        .where("b.action IN ('recorded','recorded,identified','identified,recorded')")
         .where("b.visible = true")
         .where("a.user_id != #{id}")
-        .where("a.action LIKE '%recorded%'")
+        .where("a.action IN ('recorded','recorded,identified','identified,recorded')")
         .where("a.visible = true")
         .distinct
         .order(:family)
@@ -291,10 +291,10 @@ class User < ActiveRecord::Base
   def identified_for
     User.joins("JOIN user_occurrences as a ON a.user_id = users.id JOIN user_occurrences b ON a.occurrence_id = b.occurrence_id")
         .where("b.user_id = #{id}")
-        .where("b.action LIKE '%identified%'")
+        .where("b.action IN ('identified','recorded,identified', 'identified,recorded')")
         .where("b.visible = true")
         .where("a.user_id != #{id}")
-        .where("a.action LIKE '%recorded%'")
+        .where("a.action IN ('recorded','recorded,identified','identified,recorded')")
         .where("a.visible = true")
         .distinct
         .order(:family)
@@ -303,10 +303,10 @@ class User < ActiveRecord::Base
   def identified_by
     User.joins("JOIN user_occurrences as a ON a.user_id = users.id JOIN user_occurrences b ON a.occurrence_id = b.occurrence_id")
         .where("b.user_id = #{id}")
-        .where("b.action LIKE '%recorded%'")
+        .where("b.action IN ('recorded','recorded,identified','identified,recorded')")
         .where("b.visible = true")
         .where("a.user_id != #{id}")
-        .where("a.action LIKE '%identified%'")
+        .where("a.action IN ('identified','recorded,identified','identified,recorded')")
         .where("a.visible = true")
         .distinct
         .order(:family)
