@@ -192,11 +192,19 @@ module Bloodhound
     end
 
     def attributions_data_enum
+      attributes = [
+        "user_occurrences.id",
+        "user_occurrences.user_id",
+        "user_occurrences.occurrence_id",
+        "user_occurrences.action",
+        "users.wikidata",
+        "users.orcid"
+      ]
       Enumerator.new do |y|
         header = attribution_resource[:schema][:fields].map{ |u| u[:name] }
         y << CSV::Row.new(header, header, true).to_s
         @dataset.user_occurrences
-                .select("user_occurrences.*", "users.orcid", "users.wikidata").find_each do |o|
+                .select(attributes).find_each do |o|
           uri = !o.orcid.nil? ? "https://orcid.org/#{o.orcid}" : "https://www.wikidata.org/wiki/#{o.wikidata}"
           identified_uri = o.action.include?("identified") ? uri : nil
           recorded_uri = o.action.include?("recorded") ? uri : nil

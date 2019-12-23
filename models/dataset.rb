@@ -23,8 +23,10 @@ class Dataset < ActiveRecord::Base
   end
 
   def claimed_occurrences
-    occurrences.joins(:user_occurrences)
-               .where(user_occurrences: { visible: true })
+    UserOccurrence.select("user_occurrences.id", "occurrences.*")
+                  .joins(occurrence: :dataset)
+                  .where(datasets: { id: id })
+                  .where(user_occurrences: { visible: true })
   end
 
   def agents
