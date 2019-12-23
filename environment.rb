@@ -61,7 +61,6 @@ require 'oj'
 require 'pluck_to_hash'
 require 'pony'
 require 'twitter'
-require 'datapackage'
 
 require_relative File.join(File.dirname(__FILE__), 'lib', 'omniauth_authenticity_checker')
 

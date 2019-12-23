@@ -156,13 +156,13 @@ module Sinatra
       def candidate_agents(user)
         agents = search_agents(user.fullname)
 
-        abbreviated_name = [user.initials[0..-3], user.family].join(" ")
+        abbreviated_name = [user.initials, user.family].join(" ")
         agents.concat search_agents(abbreviated_name)
 
         full_names = [user.fullname.dup]
         full_names << abbreviated_name
         given_names = [user.given.dup]
-        given_names << user.initials[0..-3].dup
+        given_names << user.initials.dup
 
         if !user.other_names.nil?
           user.other_names.split("|").each do |other_name|

@@ -15,6 +15,18 @@ class Dataset < ActiveRecord::Base
         .distinct
   end
 
+  def user_occurrences
+    UserOccurrence.joins(:user)
+                  .joins(occurrence: :dataset)
+                  .where(datasets: { id: id })
+                  .where(user_occurrences: { visible: true })
+  end
+
+  def claimed_occurrences
+    occurrences.joins(:user_occurrences)
+               .where(user_occurrences: { visible: true })
+  end
+
   def agents
     determiners = OccurrenceDeterminer
                     .select(:agent_id)

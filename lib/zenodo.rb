@@ -125,6 +125,7 @@ module Bloodhound
 
     def add_file_string(id:, string:, file_name:)
       temp = Tempfile.new
+      temp.binmode
       temp.write(string)
       temp.close
       add_file(id: id, file_path: temp.path, file_name: file_name)
@@ -133,6 +134,7 @@ module Bloodhound
 
     def add_file_enum(id:, enum:, file_name:)
       temp = Tempfile.new
+      temp.binmode
       enum.each { |line| temp << line }
       temp.close
       add_file(id: id, file_path: temp.path, file_name: file_name)

@@ -46,6 +46,14 @@ class User < ActiveRecord::Base
     orcid || wikidata || id
   end
 
+  def uri
+    if orcid
+      "https://orcid.org/#{orcid}"
+    elsif wikidata
+      "https://www.wikidata.org/wiki/#{wikidata}"
+    end
+  end
+
   def fullname
     if !family.blank?
       [given, family_part].compact.reject(&:empty?).join(' ')
