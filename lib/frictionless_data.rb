@@ -20,6 +20,7 @@ module Bloodhound
       File.open(File.join(dir, "datapackage.json"), 'wb') { |file| file.write(JSON.pretty_generate(@package)) }
 
       #Add data files
+      #TODO: optimization by combining user_occurrences and claimed_occurrences as a single method in dataset model
       tables = ["users", "occurrences", "attributions"]
       tables.each do |table|
         file = File.open(File.join(dir, "#{table}.csv"), "wb")
