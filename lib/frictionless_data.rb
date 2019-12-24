@@ -29,7 +29,8 @@ module Bloodhound
       end
 
       #Zip directory
-      Zip::File.open(File.join(@output_dir, "#{@dataset.datasetKey}.zip"), Zip::File::CREATE) do |zipfile|
+      zip_file = File.join(@output_dir, "#{@dataset.datasetKey}.zip")
+      Zip::File.open(zip_file, Zip::File::CREATE) do |zipfile|
         ["datapackage.json"].concat(tables.map{|t| "#{t}.csv"}).each do |filename|
           zipfile.add(filename, File.join(dir, filename))
         end
@@ -94,18 +95,18 @@ module Bloodhound
         },
         primaryKey: "id"
       }
-    end    
+    end
 
     def occurrence_resource
       fields = [
         { name: "gbifID", type: "integer"},
         { name: "datasetKey", type: "string", format: "uuid" }
       ]
-      fields.concat(Occurrence.accepted_fields.map{|o| { 
+      fields.concat(Occurrence.accepted_fields.map{|o| {
               name: "#{o}",
               type: "string",
               rdfType: ("http://rs.tdwg.org/dwc/terms/#{o}" if o != "countryCode")
-            }.compact 
+            }.compact
           })
       {
         name: "occurrences",
@@ -134,7 +135,10 @@ module Bloodhound
             { name: "user_id", type: "integer" },
             { name: "occurrence_id", type: "integer "},
             { name: "identifiedBy", type: "string", format: "uri", rdfType: "http://rs.tdwg.org/dwc/iri/identifiedBy" },
-            { name: "recordedBy", type: "string", format: "uri", rdfType: "http://rs.tdwg.org/dwc/iri/recordedBy" }
+            { name: "recordedBy", type: "string", format: "uri", rdfType: "http://rs.tdwg.org/dwc/iri/recordedBy" },
+            { name: "claimant", type: "string" },
+            { name: "claimantURI", type: "string", format: "uri" },
+            { name: "claimDateTime", type: "datetime" }
           ]
         },
         foreignKeys: [
@@ -198,8 +202,12 @@ module Bloodhound
         "user_occurrences.user_id",
         "user_occurrences.occurrence_id",
         "user_occurrences.action",
+        "user_occurrences.created AS claimDateTime",
         "users.wikidata",
-        "users.orcid"
+        "users.orcid",
+        "claimants_user_occurrences.given AS claimantGiven",
+        "claimants_user_occurrences.family AS claimantFamily",
+        "claimants_user_occurrences.orcid AS claimantORCID"
       ]
       Enumerator.new do |y|
         header = attribution_resource[:schema][:fields].map{ |u| u[:name] }
@@ -209,7 +217,17 @@ module Bloodhound
           uri = !o.orcid.nil? ? "https://orcid.org/#{o.orcid}" : "https://www.wikidata.org/wiki/#{o.wikidata}"
           identified_uri = o.action.include?("identified") ? uri : nil
           recorded_uri = o.action.include?("recorded") ? uri : nil
-          data = [o.user_id, o.occurrence_id, identified_uri, recorded_uri]
+          claimant_name = [o.claimantGiven, o.claimantFamily].join(" ")
+          claimant_orcid = !o.claimantORCID.blank? ? "https://orcid.org/#{o.claimantORCID}" : nil
+          data = [
+            o.user_id,
+            o.occurrence_id,
+            identified_uri,
+            recorded_uri,
+            claimant_name,
+            claimant_orcid,
+            o.claimDateTime
+          ]
           y << CSV::Row.new(header, data).to_s
         end
       end
