@@ -16,6 +16,10 @@ OptionParser.new do |opts|
     options[:directory] = directory
   end
 
+  opts.on("-a", "--all", "Make data packages for all datasets that have at least one public claim") do
+    options[:all] = true
+  end
+
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
@@ -31,5 +35,13 @@ if options[:directory] && options[:key]
     puts "Package created for #{options[:key]}".green
   else
     puts "Package #{options[:key]} not found".red
+  end
+elsif options[:directory] && options[:all]
+  Dataset.find_each do |d|
+    next if !d.has_claim?
+    puts "Starting #{d.title}...".yellow
+    f = Bloodhound::FrictionlessData.new(uuid: d.datasetKey, output_directory: options[:directory])
+    f.create_package
+    puts "Package created for #{d.datasetKey}".green
   end
 end
