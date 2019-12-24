@@ -15,6 +15,13 @@ class Dataset < ActiveRecord::Base
         .distinct
   end
 
+  def user_ids
+    UserOccurrence.select(:id, :user_id)
+                  .joins(occurrence: :dataset)
+                  .where(datasets: { id: id })
+                  .where(user_occurrences: { visible: true })
+  end
+
   def user_occurrences
     UserOccurrence.joins(:user)
                   .joins(:claimant)

@@ -20,7 +20,8 @@ module Bloodhound
       File.open(File.join(dir, "datapackage.json"), 'wb') { |file| file.write(JSON.pretty_generate(@package)) }
 
       #Add data files
-      #TODO: optimization by combining user_occurrences and claimed_occurrences as a single method in dataset model
+      #TODO: optimize by combining user_occurrences and claimed_occurrences as a single method in dataset model
+      #TODO: users method in dataset model performs poorly with large datasets
       tables = ["users", "occurrences", "attributions"]
       tables.each do |table|
         file = File.open(File.join(dir, "#{table}.csv"), "wb")
@@ -161,24 +162,30 @@ module Bloodhound
     end
 
     def users_data_enum
+      user_ids = Set.new
       Enumerator.new do |y|
         header = user_resource[:schema][:fields].map{ |u| u[:name] }
         y << CSV::Row.new(header, header, true).to_s
-        @dataset.users.find_each do |u|
-          aliases = u.other_names.split("|").to_s if !u.other_names.blank?
-          data = [
-            u.id,
-            u.fullname,
-            u.family,
-            u.given,
-            aliases,
-            u.uri,
-            u.orcid,
-            u.wikidata,
-            u.date_born,
-            u.date_died
-          ]
-          y << CSV::Row.new(header, data).to_s
+        @dataset.user_ids.find_each(batch_size: 25_000) do |u|
+          user_ids.add u.user_id
+        end
+        user_ids.to_a.in_groups_of(25, false) do |group|
+          User.where(id: group).find_each do |u|
+            aliases = u.other_names.split("|").to_s if !u.other_names.blank?
+            data = [
+              u.id,
+              u.fullname,
+              u.family,
+              u.given,
+              aliases,
+              u.uri,
+              u.orcid,
+              u.wikidata,
+              u.date_born,
+              u.date_died
+            ]
+            y << CSV::Row.new(header, data).to_s
+          end
         end
       end
     end
@@ -187,7 +194,7 @@ module Bloodhound
       Enumerator.new do |y|
         header = occurrence_resource[:schema][:fields].map{ |u| u[:name] }
         y << CSV::Row.new(header, header, true).to_s
-        @dataset.claimed_occurrences.find_each do |o|
+        @dataset.claimed_occurrences.find_each(batch_size: 10_000) do |o|
           data = o.attributes
                   .except("dateIdentified_processed", "eventDate_processed")
                   .values
@@ -213,7 +220,7 @@ module Bloodhound
         header = attribution_resource[:schema][:fields].map{ |u| u[:name] }
         y << CSV::Row.new(header, header, true).to_s
         @dataset.user_occurrences
-                .select(attributes).find_each do |o|
+                .select(attributes).find_each(batch_size: 10_000) do |o|
           uri = !o.orcid.nil? ? "https://orcid.org/#{o.orcid}" : "https://www.wikidata.org/wiki/#{o.wikidata}"
           identified_uri = o.action.include?("identified") ? uri : nil
           recorded_uri = o.action.include?("recorded") ? uri : nil
@@ -232,7 +239,6 @@ module Bloodhound
         end
       end
     end
-
 
   end
 end
