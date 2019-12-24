@@ -32,8 +32,8 @@
       identified, or Both.
     %div{class: "col col-3 text-right"}
       %a{href: "/admin/user/#{@admin_user.identifier}/specimens.csv"}
-        %img{src: "/images/csv-icon.png", width:24, alt: "CSV download", style:"margin-right:0.5rem"}
+        %i{class:"fas fa-file-csv text-black-50 h2 m-0 p-1"}
       %a{href: "/admin/user/#{@admin_user.identifier}/specimens.json"}
-        %img{src: "/images/json-icon.png", width:24, alt: "JSON download"}
+        %i{class:"fas fa-file-code text-black-50 h2 m-0 p-1"}
 
   = haml :'partials/tables/specimens', layout: false
