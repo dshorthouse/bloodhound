@@ -26,7 +26,9 @@
         %div{class: "col col-3 text-right"}
           - if @compressed_file_size
             %a{href: "/dataset/#{@dataset.datasetKey}.zip", alt: "Frictionless Data package"}
-              %i{class:"fas fa-file-archive text-black-50 h2 m-0 p-1"}
+              %i{class:"fas fa-file-archive text-dark h5 m-0 p-1"}
+              Frictionless Data
+            (#{@compressed_file_size} MB)
 
       - @results.in_groups_of(3).each do |group|
         %div{class: "card-deck"}

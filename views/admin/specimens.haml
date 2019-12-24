@@ -31,9 +31,11 @@
       %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
       identified, or Both.
     %div{class: "col col-3 text-right"}
-      %a{href: "/admin/user/#{@admin_user.identifier}/specimens.csv"}
-        %i{class:"fas fa-file-csv text-black-50 h2 m-0 p-1"}
+      %a{href: "/admin/user/#{@admin_user.identifier}/specimens.csv", class:"mr-2"}
+        %i{class:"fas fa-file-csv text-dark h5 m-0 p-1"}
+        CSV
       %a{href: "/admin/user/#{@admin_user.identifier}/specimens.json"}
-        %i{class:"fas fa-file-code text-black-50 h2 m-0 p-1"}
+        %i{class:"fas fa-file-code text-dark h5 m-0 p-1"}
+        JSON-LD
 
   = haml :'partials/tables/specimens', layout: false
