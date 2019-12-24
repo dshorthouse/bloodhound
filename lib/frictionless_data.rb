@@ -48,15 +48,15 @@ module Bloodhound
     def descriptor
       license_name = ""
       if @dataset.license.include?("/zero/1.0/")
-        license_name = "CC0 1.0 Universal (CC0 1.0) Public Domain Dedication"
+        license_name = "public-domain-dedication"
       elsif @dataset.license.include?("/by/4.0/")
-        license_name = "Attribution 4.0 International (CC BY 4.0)"
+        license_name = "cc-by-4.0"
       elsif @dataset.license.include?("/by-nc/4.0/")
-        license_name = "Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)"
+        license_name = "cc-by-nc-4.0"
       end
 
       {
-        name: "#{@dataset.title}",
+        name: "bloodhound-attributions",
         id: "https://doi,org/#{@dataset.doi}",
         licenses: [
           {
@@ -100,7 +100,7 @@ module Bloodhound
 
     def occurrence_resource
       fields = [
-        { name: "gbifID", type: "integer"},
+        { name: "gbifID", type: "integer" },
         { name: "datasetKey", type: "string", format: "uuid" }
       ]
       fields.concat(Occurrence.accepted_fields.map{|o| {
@@ -134,7 +134,7 @@ module Bloodhound
         schema: {
           fields: [
             { name: "user_id", type: "integer" },
-            { name: "occurrence_id", type: "integer "},
+            { name: "occurrence_id", type: "integer" },
             { name: "identifiedBy", type: "string", format: "uri", rdfType: "http://rs.tdwg.org/dwc/iri/identifiedBy" },
             { name: "recordedBy", type: "string", format: "uri", rdfType: "http://rs.tdwg.org/dwc/iri/recordedBy" },
             { name: "claimedBy", type: "string" },
@@ -154,7 +154,7 @@ module Bloodhound
             fields: "occurrence_id",
             reference: {
               resource: "occurrences",
-              fields: "id"
+              fields: "gbifID"
             }
           }
         ]
