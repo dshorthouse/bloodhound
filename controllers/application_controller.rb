@@ -84,7 +84,19 @@ module Sinatra
             dataset_stats.to_json
           end
 
+          app.get '/dataset/:id.zip' do
+            file = File.join(app.root, "public", "data", "#{params[:id]}.zip")
+            if File.file?(file)
+              send_file(file)
+            else
+              status 404
+              haml :oops
+            end
+          end
+
           app.get '/dataset/:id' do
+            file = File.join(app.root, "public", "data", "#{params[:id]}.zip")
+            @compressed_file_size = (File.size(file).to_f / 2**20).round(2) rescue nil
             dataset_users
             locals = {
               active_page: "datasets",

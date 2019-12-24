@@ -8,6 +8,13 @@ class Dataset < ActiveRecord::Base
   after_update :update_search
   after_destroy :remove_search
 
+  def has_claim?
+    UserOccurrence.joins(occurrence: :dataset)
+                  .where(datasets: { id: id })
+                  .where(user_occurrences: { visible: true })
+                  .exists?
+  end
+
   def users
     User.joins(occurrences: :dataset)
         .where(datasets: { id: id })

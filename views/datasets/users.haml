@@ -18,10 +18,15 @@
 
     - if @pagy.count == 0
       %div{class: "alert alert-info tiny-margins", role: "alert"}
-        People have yet not claimed or were attributed specimens represented in this dataset.
+        People have not yet claimed or were attributed specimens represented in this dataset.
     - else
-      %div{class: "alert alert-info tiny-margins", role: "alert"}
-        #{number_with_delimiter(@pagy.count)} #{'person'.pluralize(@pagy.count)} claimed or were attributed specimens represented in this dataset.
+      %div{class: "alert alert-info tiny-margins row", role: "alert"}
+        %div{class: "col col-9"}
+          #{number_with_delimiter(@pagy.count)} #{'person'.pluralize(@pagy.count)} claimed or were attributed specimens represented in this dataset.
+        %div{class: "col col-3 text-right"}
+          - if @compressed_file_size
+            %a{href: "/dataset/#{@dataset.datasetKey}.zip", alt: "Frictionless Data package"}
+              %i{class:"fas fa-file-archive text-black-50 h2 m-0 p-1"}
 
       - @results.in_groups_of(3).each do |group|
         %div{class: "card-deck"}
