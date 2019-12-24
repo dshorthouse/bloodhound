@@ -20,6 +20,10 @@ OptionParser.new do |opts|
     options[:all] = true
   end
 
+  opts.on("-m", "--missing", "Limit creation of datasets to those that do not yet exist") do
+    options[:missing] = true
+  end
+
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
@@ -39,6 +43,10 @@ if options[:directory] && options[:key]
 elsif options[:directory] && options[:all]
   Dataset.find_each do |d|
     next if !d.has_claim?
+    if options[:missing]
+      file = File.join(options[:directory], "#{d.datasetKey}.zip")
+      next if File.file?(file)
+    end
     puts "Starting #{d.title}...".yellow
     f = Bloodhound::FrictionlessData.new(uuid: d.datasetKey, output_directory: options[:directory])
     f.create_package

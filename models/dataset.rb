@@ -23,10 +23,10 @@ class Dataset < ActiveRecord::Base
   end
 
   def user_ids
-    UserOccurrence.select(:id, :user_id)
-                  .joins(occurrence: :dataset)
-                  .where(datasets: { id: id })
-                  .where(user_occurrences: { visible: true })
+    User.select(:id)
+        .joins(occurrences: :dataset)
+        .where(datasets: { id: id })
+        .where(user_occurrences: { visible: true })
   end
 
   def user_occurrences

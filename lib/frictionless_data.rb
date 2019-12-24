@@ -162,30 +162,24 @@ module Bloodhound
     end
 
     def users_data_enum
-      user_ids = Set.new
       Enumerator.new do |y|
         header = user_resource[:schema][:fields].map{ |u| u[:name] }
         y << CSV::Row.new(header, header, true).to_s
-        @dataset.user_ids.find_each(batch_size: 25_000) do |u|
-          user_ids.add u.user_id
-        end
-        user_ids.to_a.in_groups_of(25, false) do |group|
-          User.where(id: group).find_each do |u|
-            aliases = u.other_names.split("|").to_s if !u.other_names.blank?
-            data = [
-              u.id,
-              u.fullname,
-              u.family,
-              u.given,
-              aliases,
-              u.uri,
-              u.orcid,
-              u.wikidata,
-              u.date_born,
-              u.date_died
-            ]
-            y << CSV::Row.new(header, data).to_s
-          end
+        @dataset.users.find_each do |u|
+          aliases = u.other_names.split("|").to_s if !u.other_names.blank?
+          data = [
+            u.id,
+            u.fullname,
+            u.family,
+            u.given,
+            aliases,
+            u.uri,
+            u.orcid,
+            u.wikidata,
+            u.date_born,
+            u.date_died
+          ]
+          y << CSV::Row.new(header, data).to_s
         end
       end
     end
