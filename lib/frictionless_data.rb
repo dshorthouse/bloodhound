@@ -68,6 +68,8 @@ module Bloodhound
         title: "#{@dataset.title}",
         description: "#{@dataset.description}",
         datasetKey: @dataset.datasetKey,
+        homepage: "https://bloodhound-tracker.net/dataset/#{@dataset.datasetKey}",
+        created: Time.now.to_time.iso8601
         resources: []
       }
     end
@@ -227,7 +229,7 @@ module Bloodhound
             recorded_uri,
             claimant_name,
             claimant_orcid,
-            o.claimDateTime
+            o.claimDateTime.to_time.iso8601
           ]
           y << CSV::Row.new(header, data).to_s
         end
