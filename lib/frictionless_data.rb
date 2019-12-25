@@ -69,7 +69,7 @@ module Bloodhound
         description: "#{@dataset.description}",
         datasetKey: @dataset.datasetKey,
         homepage: "https://bloodhound-tracker.net/dataset/#{@dataset.datasetKey}",
-        created: Time.now.to_time.iso8601
+        created: Time.now.to_time.iso8601,
         resources: []
       }
     end
