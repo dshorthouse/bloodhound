@@ -32,12 +32,12 @@
 
       - else
         %div{class: "alert alert-info row tiny-margins", role: "alert", style:"padding-left:0.1em;padding-right:0.1em"}
-          %div{class: "col col-9"}
+          %div{class: "col-12 col-md-8"}
             %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
             collected or
             %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
             identified #{number_with_delimiter(@pagy.count)} #{'specimen'.pluralize(@pagy.count)}. Not all available columns are shown.
-          %div{class: "col col-3 text-right"}
+          %div{class: "col-12 col-md-4 text-md-right"}
             %a{href: "/#{@viewed_user.identifier}/specimens.csv", class:"mr-2"}
               %i{class:"fas fa-file-csv text-dark h5 m-0 p-1"}
               CSV
