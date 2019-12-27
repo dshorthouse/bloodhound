@@ -85,6 +85,7 @@ module Sinatra
           end
 
           app.get '/dataset/:id.zip' do
+            cache_control :public, :must_revalidate, :no_cache, :no_store
             file = File.join(app.root, "public", "data", "#{params[:id]}.zip")
             if File.file?(file)
               send_file(file)
