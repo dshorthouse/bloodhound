@@ -46,11 +46,6 @@ a:hover, .page-link:hover{
   color:#D3633C;
   text-shadow:-1px -1px 0 #222,1px -1px 0 #222,-1px 1px 0 #222,1px 3px 0 #222;
 }
-#roster-jumbotron{
-  background-image: url('/images/curiosities2.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-}
 #main{
   padding-top:1rem;
 }
