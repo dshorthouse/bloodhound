@@ -192,7 +192,7 @@ module Bloodhound
         y << CSV::Row.new(header, header, true).to_s
         @dataset.claimed_occurrences.find_each(batch_size: 10_000) do |o|
           data = o.attributes
-                  .except("dateIdentified_processed", "eventDate_processed")
+                  .except("countryCode", "dateIdentified_processed", "eventDate_processed")
                   .values
           y << CSV::Row.new(header, data).to_s
         end
