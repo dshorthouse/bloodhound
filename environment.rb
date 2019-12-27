@@ -67,6 +67,9 @@ require_relative File.join(File.dirname(__FILE__), 'lib', 'omniauth_authenticity
 Encoding.default_internal = Encoding::UTF_8
 Encoding.default_external = Encoding::UTF_8
 
+Zip.on_exists_proc = true
+Zip.continue_on_exists_proc = true
+
 Hashie.logger = Logger.new(nil)
 
 OmniAuth.config.allowed_request_methods = [:post]

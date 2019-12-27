@@ -7,8 +7,6 @@ module Bloodhound
       @dataset = Dataset.find_by_datasetKey(uuid)
       @package = descriptor
       @output_dir = output_directory
-      Zip.on_exists_proc = true
-      Zip.continue_on_exists_proc = true
     end
 
     def create_package
