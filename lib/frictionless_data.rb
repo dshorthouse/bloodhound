@@ -29,6 +29,7 @@ module Bloodhound
 
       #Zip directory
       zip_file = File.join(@output_dir, "#{@dataset.datasetKey}.zip")
+      FileUtils.rm zip_file, :force => true if File.file?(zip_file)
       Zip::File.open(zip_file, Zip::File::CREATE) do |zipfile|
         ["datapackage.json"].concat(tables.map{|t| "#{t}.csv"}).each do |filename|
           zipfile.add(filename, File.join(dir, filename))
