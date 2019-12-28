@@ -22,7 +22,7 @@ module Sinatra
             end
 
             viewed_user = find_user(params[:id])
-            cache_control :no_cache
+            cache_control :public, :must_revalidate, :no_cache, :no_store
             headers.delete("Content-Length")
             begin
               ::Bloodhound::IO.jsonld_stream(viewed_user)

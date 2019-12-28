@@ -200,7 +200,7 @@ module Sinatra
           app.get '/profile/download.json' do
             protected!
             attachment "#{@user.orcid}.json"
-            cache_control :no_cache
+            cache_control :public, :must_revalidate, :no_cache, :no_store
             headers.delete("Content-Length")
             content_type "application/ld+json", charset: 'utf-8'
             ::Bloodhound::IO.jsonld_stream(@user)

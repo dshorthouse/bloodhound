@@ -16,17 +16,34 @@ class Dataset < ActiveRecord::Base
   end
 
   def users
-    User.joins(occurrences: :dataset)
-        .where(datasets: { id: id })
-        .where(user_occurrences: { visible: true })
-        .distinct
+    User.joins("INNER JOIN ( SELECT DISTINCT
+              user_occurrences.user_id, user_occurrences.visible
+            FROM
+              user_occurrences
+            INNER JOIN
+              occurrences ON occurrences.gbifID = user_occurrences.occurrence_id
+            INNER JOIN
+              datasets ON datasets.datasetKey = occurrences.datasetKey
+            WHERE
+              datasets.id = #{id}
+            ) a ON a.user_id = users.id")
+        .where("a.visible = true")
   end
 
   def user_ids
     User.select(:id)
-        .joins(occurrences: :dataset)
-        .where(datasets: { id: id })
-        .where(user_occurrences: { visible: true })
+        .joins("INNER JOIN ( SELECT DISTINCT
+              user_occurrences.user_id, user_occurrences.visible
+            FROM
+              user_occurrences
+            INNER JOIN
+              occurrences ON occurrences.gbifID = user_occurrences.occurrence_id
+            INNER JOIN
+              datasets ON datasets.datasetKey = occurrences.datasetKey
+            WHERE
+              datasets.id = #{id}
+            ) a ON a.user_id = users.id")
+        .where("a.visible = true")
   end
 
   def user_occurrences

@@ -125,6 +125,7 @@ To migrate tables, use mydumper and myloader. But for even faster data migration
       ALTER TABLE `occurrences` DROP KEY `typeStatus_idx`, DROP KEY `index_occurrences_on_datasetKey`;
       ALTER TABLE `occurrence_determiners` DROP KEY `agent_idx`, DROP KEY `occurrence_idx`;
       ALTER TABLE `occurrence_recorders` DROP KEY `agent_idx`, DROP KEY `occurrence_idx`;
+      ALTER TABLE `taxon_occurrences` DROP KEY `occurrence_id_idx`, DROP KEY `taxon_id_idx`;
 
       mydumper --user root --password <PASSWORD> --database bloodhound --tables-list agents,occurrences,occurrence_recorders,occurrence_determiners,taxa,taxon_occurrences --compress --threads 8 --rows 10000000 --trx-consistency-only --outputdir /Users/dshorthouse/Documents/bloodhound_dump
 
@@ -134,6 +135,7 @@ To migrate tables, use mydumper and myloader. But for even faster data migration
       ALTER TABLE `occurrences` ADD KEY `typeStatus_idx` (`typeStatus`(256)), ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`);
       ALTER TABLE `occurrence_determiners` ADD KEY `agent_idx` (`agent_id`), ADD KEY `occurrence_idx` (`occurrence_id`);
       ALTER TABLE `occurrence_recorders` ADD KEY `agent_idx` (`agent_id`), ADD KEY `occurrence_idx` (`occurrence_id`);
+      ALTER TABLE `taxon_occurrences` ADD UNIQUE KEY `occurrence_id_idx` (`occurrence_id`), ADD KEY `taxon_id_idx` (`taxon_id`);
 
 Then, take site offline and in the bloodhound database DROP the tables with old data:
 
