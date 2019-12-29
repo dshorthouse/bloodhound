@@ -22,10 +22,8 @@ class Dataset < ActiveRecord::Base
               user_occurrences
             INNER JOIN
               occurrences ON occurrences.gbifID = user_occurrences.occurrence_id
-            INNER JOIN
-              datasets ON datasets.datasetKey = occurrences.datasetKey
             WHERE
-              datasets.id = #{id}
+              occurrences.datasetKey = '#{datasetKey}'
             ) a ON a.user_id = users.id")
         .where("a.visible = true")
   end
@@ -38,10 +36,8 @@ class Dataset < ActiveRecord::Base
               user_occurrences
             INNER JOIN
               occurrences ON occurrences.gbifID = user_occurrences.occurrence_id
-            INNER JOIN
-              datasets ON datasets.datasetKey = occurrences.datasetKey
             WHERE
-              datasets.id = #{id}
+              occurrences.datasetKey = '#{datasetKey}'
             ) a ON a.user_id = users.id")
         .where("a.visible = true")
   end
@@ -49,16 +45,14 @@ class Dataset < ActiveRecord::Base
   def user_occurrences
     UserOccurrence.joins(:user)
                   .joins(:claimant)
-                  .joins(occurrence: :dataset)
-                  .where(datasets: { id: id })
-                  .where(user_occurrences: { visible: true })
+                  .joins(:occurrence)
+                  .where(occurrences: { datasetKey: datasetKey })
   end
 
   def claimed_occurrences
-    UserOccurrence.select("user_occurrences.id", "occurrences.*")
-                  .joins(occurrence: :dataset)
-                  .where(datasets: { id: id })
-                  .where(user_occurrences: { visible: true })
+    UserOccurrence.select(:id, :visible, "occurrences.*")
+                  .joins(:occurrence)
+                  .where(occurrences: { datasetKey: datasetKey })
   end
 
   def agents

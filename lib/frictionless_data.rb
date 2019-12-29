@@ -190,6 +190,7 @@ module Bloodhound
         header = occurrence_resource[:schema][:fields].map{ |u| u[:name] }
         y << CSV::Row.new(header, header, true).to_s
         @dataset.claimed_occurrences.find_each(batch_size: 10_000) do |o|
+          next if !o.visible
           data = o.attributes
                   .except("id", "dateIdentified_processed", "eventDate_processed")
                   .values
@@ -204,6 +205,7 @@ module Bloodhound
         "user_occurrences.user_id",
         "user_occurrences.occurrence_id",
         "user_occurrences.action",
+        "user_occurrences.visible",
         "user_occurrences.created AS claimDateTime",
         "users.wikidata",
         "users.orcid",
@@ -216,6 +218,7 @@ module Bloodhound
         y << CSV::Row.new(header, header, true).to_s
         @dataset.user_occurrences
                 .select(attributes).find_each(batch_size: 10_000) do |o|
+          next if !o.visible
           uri = !o.orcid.nil? ? "https://orcid.org/#{o.orcid}" : "https://www.wikidata.org/wiki/#{o.wikidata}"
           identified_uri = o.action.include?("identified") ? uri : nil
           recorded_uri = o.action.include?("recorded") ? uri : nil
