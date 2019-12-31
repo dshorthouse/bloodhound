@@ -79,6 +79,7 @@ Finally:
 
      $ RACK_ENV=production ./bin/gbif_datasets.rb --new
      $ RACK_ENV=production ./bin/gbif_datasets.rb --flush
+     $ RACK_ENV=production ./bin/gbif_datasets.rb --remove-without-agents
 
 Or from scratch:
 

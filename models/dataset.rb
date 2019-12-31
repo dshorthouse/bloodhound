@@ -15,6 +15,10 @@ class Dataset < ActiveRecord::Base
                   .exists?
   end
 
+  def has_agent?
+    agents.exists?
+  end
+
   def users
     User.joins("INNER JOIN ( SELECT DISTINCT
               user_occurrences.user_id, user_occurrences.visible

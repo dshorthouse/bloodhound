@@ -24,6 +24,10 @@ OptionParser.new do |opts|
     options[:flush] = true
   end
 
+  opts.on("-x", "--remove-without-agents", "Remove datasets that do not have any agents") do
+    options[:remove] = true
+  end
+
   opts.on("-d", "--datasetkey [datasetkey]", String, "Create/update metadata for a single dataset") do |datasetkey|
     options[:datasetkey] = datasetkey
   end
@@ -58,4 +62,10 @@ elsif options[:flush]
   end
 elsif options[:datasetkey]
   datasets.process_dataset(options[:datasetkey])
+elsif options[:remove]
+  Dataset.find_each do |d|
+    next if d.has_agent?
+    puts d.datasetKey.red
+    d.destroy
+  end
 end

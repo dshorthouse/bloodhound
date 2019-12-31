@@ -19,7 +19,6 @@ module Bloodhound
 
       #Add data files
       #TODO: optimize by combining user_occurrences and claimed_occurrences as a single method in dataset model
-      #TODO: users method in dataset model performs poorly with large datasets
       tables = ["users", "occurrences", "attributions"]
       tables.each do |table|
         file = File.open(File.join(dir, "#{table}.csv"), "wb")
