@@ -63,12 +63,12 @@ class Dataset < ActiveRecord::Base
     determiners = OccurrenceDeterminer
                     .select(:agent_id)
                     .joins(:occurrence)
-                    .where(occurrences: {datasetKey: datasetKey })
+                    .where(occurrences: { datasetKey: datasetKey })
                     .distinct
     recorders = OccurrenceRecorder
                     .select(:agent_id)
                     .joins(:occurrence)
-                    .where(occurrences: {datasetKey: datasetKey })
+                    .where(occurrences: { datasetKey: datasetKey })
                     .distinct
     combined = recorders
                     .union_all(determiners)
@@ -81,10 +81,10 @@ class Dataset < ActiveRecord::Base
   def agents_occurrence_counts
     determiners = OccurrenceDeterminer
                     .joins(:occurrence)
-                    .where(occurrences: {datasetKey: datasetKey })
+                    .where(occurrences: { datasetKey: datasetKey })
     recorders = OccurrenceRecorder
                     .joins(:occurrence)
-                    .where(occurrences: {datasetKey: datasetKey })
+                    .where(occurrences: { datasetKey: datasetKey })
     combined = recorders
                     .union(determiners)
                     .group(:agent_id)
@@ -96,12 +96,12 @@ class Dataset < ActiveRecord::Base
     determiners = OccurrenceDeterminer
                     .select(:agent_id)
                     .joins(:occurrence)
-                    .where(occurrences: {datasetKey: datasetKey })
+                    .where(occurrences: { datasetKey: datasetKey })
                     .distinct
     recorders = OccurrenceRecorder
                     .select(:agent_id)
                     .joins(:occurrence)
-                    .where(occurrences: {datasetKey: datasetKey })
+                    .where(occurrences: { datasetKey: datasetKey })
                     .distinct
     recorders.union_all(determiners)
              .unscope(:order)

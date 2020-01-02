@@ -40,19 +40,28 @@ Sinatra app to parse people names from structured biodiversity occurrence data, 
 
 See the [Apache Spark recipes](spark.md) for quickly importing into MySQL the occurrence csv from a DwC Archive downloaded from [GBIF](https://www.gbif.org). Apache Spark is used to produce the necessary source csv files for the "Parse & Populate Agents" and "Populate Taxa" steps below.
 
-### Step 2:  Parse & Populate Agents
+
+### Step 2: Check for Dramatic Changes in gbifIDs
+
+Unfortunately, gbifIDs are not persistent. These occasionally disappear through processing at GBIF's end. As a result, claims may no longer point to existing occurrence records. The following produces a count for how many claims and attributions might be orphaned:
+
+      RACK_ENV=production irb
+      require "./application"
+      UserOccurrence.unlinked_count
+
+### Step 3:  Parse & Populate Agents
 
      $ RACK_ENV=production ./bin/populate_agents.rb --truncate --directory /directory-to-spark-csv-files/
      # Can start 2+ workers, each with 40 threads to help speed-up processing
      $ RACK_ENV=production sidekiq -c 40 -q agent -r ./application.rb
 
-### Step 3: Populate Taxa
+### Step 4: Populate Taxa
 
      $ RACK_ENV=production ./bin/populate_taxa.rb --truncate --directory /directory-to-spark-csv-files/
      # Can start 2+ workers, each with 40 threads to help speed-up processing
      $ RACK_ENV=production sidekiq -c 40 -q taxon -r ./application.rb
 
-### Step 4: Cluster Agents & Store in Neo4j
+### Step 5: Cluster Agents & Store in Neo4j
 
 Truncating a large Neo4j graph.db usually does not work. Instead, it is best to entirely delete graph.db then recreate it.
 
@@ -71,11 +80,11 @@ Finally:
      # Can start 2+ workers, each with 40 threads to help speed-up processing
      $ RACK_ENV=production sidekiq -c 40 -q cluster -r ./application.rb
 
-### Step 5: Populate Search in Elasticsearch
+### Step 6: Populate Search in Elasticsearch
 
      $ RACK_ENV=production ./bin/populate_search.rb --rebuild
 
-### Step 6: Populate dataset metadata
+### Step 7: Populate dataset metadata
 
      $ RACK_ENV=production ./bin/gbif_datasets.rb --new
      $ RACK_ENV=production ./bin/gbif_datasets.rb --flush
