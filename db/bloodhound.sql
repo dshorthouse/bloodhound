@@ -217,7 +217,7 @@ ALTER TABLE `messages`
 ALTER TABLE `occurrences`
   ADD PRIMARY KEY (`gbifID`) USING BTREE,
   ADD KEY `typeStatus_idx` (`typeStatus`(256)),
-  ADD KEY `datasetKey_idx` (`datasetKey`);
+  ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`) USING BTREE;
 
 ALTER TABLE `occurrence_determiners`
   ADD KEY `agent_idx` (`agent_id`),
@@ -254,9 +254,7 @@ ALTER TABLE `users`
 ALTER TABLE `user_occurrences`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `user_occurrence_idx` (`occurrence_id`,`user_id`),
-  ADD KEY `action_idx` (`action`) USING BTREE,
   ADD KEY `created_by_idx` (`created_by`),
-  ADD KEY `user_idx` (`user_id`),
   ADD KEY `user_created_idx` (`user_id`,`created`),
   ADD KEY `user_created_by_idx` (`user_id`,`created_by`) USING BTREE;
 
