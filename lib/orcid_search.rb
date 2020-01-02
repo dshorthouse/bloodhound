@@ -74,7 +74,7 @@ module Bloodhound
             headers: { accept: 'application/orcid+json' }
           )
           results = JSON.parse(response, :symbolize_names => true)[:result] rescue []
-          if results.size > 0
+          if results && results.size > 0
             results.map { |item| yielder << item[:"orcid-identifier"][:path] }
           else
             raise StopIteration
