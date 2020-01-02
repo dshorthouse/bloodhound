@@ -23,7 +23,7 @@ class Dataset < ActiveRecord::Base
     User.joins("INNER JOIN ( SELECT DISTINCT
               user_occurrences.user_id, user_occurrences.visible
             FROM
-              user_occurrences
+              user_occurrences FORCE INDEX (user_occurrence_idx)
             INNER JOIN
               occurrences ON occurrences.gbifID = user_occurrences.occurrence_id
             WHERE
@@ -37,7 +37,7 @@ class Dataset < ActiveRecord::Base
         .joins("INNER JOIN ( SELECT DISTINCT
               user_occurrences.user_id, user_occurrences.visible
             FROM
-              user_occurrences
+              user_occurrences FORCE INDEX (user_occurrence_idx)
             INNER JOIN
               occurrences ON occurrences.gbifID = user_occurrences.occurrence_id
             WHERE
