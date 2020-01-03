@@ -86,7 +86,40 @@ module Sinatra
                                    .order("occurrences.typeStatus desc")
                 @pagy, @results = pagy(data, page: page)
               end
-              haml :'public/specimens', locals: { active_page: "roster" }
+              locals = {
+                active_page: "roster",
+                active_tab: "specimens"
+              }
+              haml :'public/specimens', locals: locals
+            rescue Pagy::OverflowError
+              halt 404, haml(:oops)
+            end
+          end
+
+          app.get '/:id/support' do
+            check_identifier
+            check_redirect
+            @viewed_user = find_user(params[:id])
+            check_user_public
+
+            begin
+              @page = (params[:page] || 1).to_i
+              helped_by = @viewed_user.helped_by_counts
+              @total = helped_by.count
+
+              if @page*search_size > @total
+                bump_page = @total % search_size.to_i != 0 ? 1 : 0
+                @page = @total/search_size.to_i + bump_page
+              end
+
+              @page = 1 if @page <= 0
+
+              @pagy, @results = pagy_array(helped_by, items: search_size, page: @page)
+              locals = {
+                active_page: "roster",
+                active_tab: "support"
+              }
+              haml :'public/support', locals: locals
             rescue Pagy::OverflowError
               halt 404, haml(:oops)
             end
@@ -112,7 +145,11 @@ module Sinatra
                                    .order("occurrences.typeStatus desc")
                 @pagy, @results = pagy(data, page: page)
               end
-              haml :'public/specimens', locals: { active_page: "roster" }
+              locals = {
+                active_page: "roster",
+                active_tab: "specimens"
+              }
+              haml :'public/specimens', locals: locals
             rescue Pagy::OverflowError
               halt 404, haml(:oops)
             end
