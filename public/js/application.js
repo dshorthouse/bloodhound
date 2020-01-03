@@ -149,7 +149,11 @@ var Application = (function($, window) {
           display : "title"
         }
         ).on("typeahead:select", function(obj, datum) {
-          window.location.href = "/dataset/" + datum.datasetkey;
+          if (self.path === "/admin") {
+            window.location.href = "/admin/dataset/" + datum.datasetkey;
+          } else {
+            window.location.href = "/dataset/" + datum.datasetkey;
+          }
         });
 
     },

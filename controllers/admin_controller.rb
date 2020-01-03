@@ -80,6 +80,13 @@ module Sinatra
             redirect "/admin/datasets"
           end
 
+          app.get '/admin/datasets/search' do
+            admin_protected!
+            search_dataset
+            locals = { active_page: "administration" }
+            haml :'admin/datasets_search', locals: locals
+          end
+
           app.get '/admin/organizations' do
             admin_protected!
             sort = params[:sort] || nil
@@ -160,41 +167,10 @@ module Sinatra
             haml :'admin/roster', locals: locals
           end
 
-          app.get '/admin/users/helped' do
-            admin_protected!
-            latest_claims("living")
-            locals = {
-              active_page: "administration",
-              active_tab: "orcid"
-            }
-            haml :'admin/user_helped', locals: locals
-          end
-
-          app.get '/admin/users/helped/wikidata' do
-            admin_protected!
-            latest_claims("deceased")
-            locals = {
-              active_page: "administration",
-              active_tab: "wikidata"
-            }
-            haml :'admin/user_helped', locals: locals
-          end
-
           app.get '/admin/users/search' do
             admin_protected!
             search_user
             haml :'admin/user_search', locals: { active_page: "administration" }
-          end
-
-          app.get '/admin/users/manage' do
-            admin_protected!
-            haml :'admin/manage_users', locals: { active_page: "administration" }
-          end
-
-          app.post '/admin/user/add' do
-            admin_protected!
-            create_user
-            redirect '/admin/users/manage'
           end
 
           app.get '/admin/user/:id' do

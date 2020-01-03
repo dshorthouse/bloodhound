@@ -12,6 +12,7 @@
   %div{class:"jumbotron jumbotron-fluid alert-warning d-flex flex-wrap"}
     %div{class:"mr-auto"}
       %h1{class:"h2"} Datasets
+    = haml :'partials/admin/dataset_search', layout: false
 
 - sort = locals[:sort] == "asc" ? "desc" : "asc"
 %div{class:"table-responsive-lg"}

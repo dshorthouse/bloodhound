@@ -130,13 +130,13 @@
 .helpers .twitter-typeahead{
   width:70%;
 }
-.orcid-add, .organization-search, .help-search {
+.orcid-add, .dataset-search, .organization-search, .help-search {
   width:100%;
   margin-right:0.25rem;
   background-color: #fff;
 }
 
-.orcid-add:focus, .organization-search:focus, .help-search:focus {
+.orcid-add:focus, .dataset-search:focus, .organization-search:focus, .help-search:focus {
   border: 2px solid #D3633C;
 }
 #profile-buttons input, #profile-buttons a{

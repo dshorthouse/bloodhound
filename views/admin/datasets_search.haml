@@ -1,5 +1,5 @@
 -content_for :title do
-  Datasets Search
+  Organizations
 
 -content_for :scripts do
   %script{src: "/js/application.js"}
@@ -9,12 +9,10 @@
     });
 
 -content_for :jumbotron do
-  %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
-    %div{class:"mr-auto p-2"}
+  %div{class:"jumbotron jumbotron-fluid alert-warning d-flex flex-wrap"}
+    %div{class:"mr-auto"}
       %h1{class:"h2"} Datasets
-      %p.lead.text-muted
-        #{number_with_delimiter(Dataset.count)} datasets from the Global Biodiversity Information Facility (GBIF)
-    = haml :'partials/dataset/search', layout: false
+    = haml :'partials/admin/dataset_search', layout: false
 
 - if @pagy && @pagy.count == 0
   %div{class: "alert alert-warning tiny-margins", role: "alert"}
@@ -40,12 +38,12 @@
                     %img{src:"#{organization_image(dataset, 'medium')}", alt:"#{dataset.title}", class:"mr-2 rounded"}
                   %div{class:"flex-grow-1"}
                     %h5
-                      %a{href: "/dataset/#{dataset.datasetKey}"} #{dataset.title}
+                      %a{href: "/admin/dataset/#{dataset.datasetKey}"} #{dataset.title}
                     %p{class:"text-muted"}
               - else
                 %div{class: "card-header"}
                   %h5
-                    %a{href: "/dataset/#{dataset.datasetKey}"} #{dataset.title}
+                    %a{href: "/admin/dataset/#{dataset.datasetKey}"} #{dataset.title}
                   %p{class:"text-muted"}
               %div{class: "card-body"}
 
