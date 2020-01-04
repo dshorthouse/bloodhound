@@ -9,11 +9,13 @@ class Dataset < ActiveRecord::Base
   after_destroy :remove_search
 
   def has_claim?
-    UserOccurrence.joins(occurrence: :dataset)
-                  .where(datasets: { id: id })
-                  .where(user_occurrences: { visible: true })
-                  .exists?
+    UserOccurrence.from("user_occurrences FORCE INDEX (user_occurrence_idx)")
+                  .joins(:occurrence)
+                  .where(occurrences: { datasetKey: datasetKey })
+                  .limit(1).exists?
   end
+
+  alias_method :has_user?, :has_claim?
 
   def has_agent?
     determiner = OccurrenceDeterminer
@@ -28,6 +30,7 @@ class Dataset < ActiveRecord::Base
   end
 
   def users
+    #TODO: tidy this to be more like has_user? method
     User.joins("INNER JOIN ( SELECT DISTINCT
               user_occurrences.user_id, user_occurrences.visible
             FROM
@@ -41,6 +44,7 @@ class Dataset < ActiveRecord::Base
   end
 
   def user_ids
+    #TODO: tidy this to be more like has_user? method
     User.select(:id)
         .joins("INNER JOIN ( SELECT DISTINCT
               user_occurrences.user_id, user_occurrences.visible
