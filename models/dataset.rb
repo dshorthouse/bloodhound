@@ -16,7 +16,15 @@ class Dataset < ActiveRecord::Base
   end
 
   def has_agent?
-    agents.exists?
+    determiner = OccurrenceDeterminer
+                    .select(:agent_id)
+                    .joins(:occurrence)
+                    .where(occurrences: { datasetKey: datasetKey }).limit(1)
+    recorder = OccurrenceRecorder
+                    .select(:agent_id)
+                    .joins(:occurrence)
+                    .where(occurrences: { datasetKey: datasetKey }).limit(1)
+    determiner.exists? || recorder.exists?
   end
 
   def users

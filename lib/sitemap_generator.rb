@@ -36,6 +36,7 @@ module Bloodhound
         @map.add "/#{user.identifier}/citations"
         @map.add "/#{user.identifier}/specimens"
         @map.add "/#{user.identifier}/comments"
+        @map.add "/#{user.identifier}/support"
       end
     end
 
