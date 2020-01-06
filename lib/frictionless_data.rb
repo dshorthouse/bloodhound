@@ -191,7 +191,7 @@ module Bloodhound
         @dataset.claimed_occurrences.find_each(batch_size: 10_000) do |o|
           next if !o.visible
           data = o.attributes
-                  .except("id", "dateIdentified_processed", "eventDate_processed")
+                  .except("id", "dateIdentified_processed", "eventDate_processed", "visible")
                   .values
           y << CSV::Row.new(header, data).to_s
         end
