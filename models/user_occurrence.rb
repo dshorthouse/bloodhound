@@ -22,11 +22,24 @@ class UserOccurrence < ActiveRecord::Base
      ["identified","recorded","identified,recorded","recorded,identified"]
    end
 
-   def self.unlinked_count
+   def self.orphaned_count
      self.left_joins(:occurrence).where(occurrences: { id: nil }).count
    end
 
-   def self.unlinked_delete
+   def self.orphaned_user_claims
+     self.select(:user_id)
+         .left_joins(:occurrence)
+         .where(occurrences: { id: nil })
+         .group(:user_id)
+         .count
+         .sort_by { |_key, value| value }
+         .reverse
+         .map{ |_key, value|
+           { user_id: _key, name: User.find(_key).fullname, orphaned: value }
+         }
+   end
+
+   def self.delete_orphaned
      self.select(:id)
          .left_joins(:occurrence)
          .where(occurrences: { id: nil })

@@ -4,11 +4,11 @@ class ArticleOccurrence < ActiveRecord::Base
 
    has_many :user_occurrences, primary_key: :occurrence_id, foreign_key: :occurrence_id
 
-   def self.unlinked_count
+   def self.orphaned_count
      self.left_joins(:occurrence).where(occurrences: { id: nil }).count
    end
 
-   def self.unlinked_delete
+   def self.orphaned_delete
      self.select(:id)
          .left_joins(:occurrence)
          .where(occurrences: { id: nil })

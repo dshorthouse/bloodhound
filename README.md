@@ -47,7 +47,9 @@ Unfortunately, gbifIDs are not persistent. These occasionally disappear through 
 
       RACK_ENV=production irb
       require "./application"
-      UserOccurrence.unlinked_count
+      require "pp"
+      UserOccurrence.orphaned_count
+      pp UserOccurrence.orphaned_user_claims
 
 ### Step 3:  Parse & Populate Agents
 
@@ -122,11 +124,11 @@ Unfortunately, gbifIDs are not persistent. These occasionally disappear through 
 
       RACK_ENV=production irb
       require "./application"
-      UserOccurrence.unlinked_count
-      UserOccurrence.unlinked_delete
+      UserOccurrence.orphaned_count
+      UserOccurrence.delete_orphaned
 
-      ArticleOccurrence.unlinked_count
-      ArticleOccurrence.unlinked_delete
+      ArticleOccurrence.orphaned_count
+      ArticleOccurrence.orphaned_delete
 
 To migrate tables, use mydumper and myloader. But for even faster data migration, best to drop indices before mydumper then recreate indices after myloader. This is especially true for the three largest tables: occurrences, occurrence_recorders, and occurrence_determiners.
 
