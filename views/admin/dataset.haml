@@ -12,6 +12,13 @@
   %div{class:"jumbotron jumbotron-fluid alert-warning"}
     %h1{class:"h2"} #{@dataset.title}
 
+- if flash[:updated]
+  %div{class:"alert alert-success alert-dismissible fade show", role: "alert", style:"display:block"}
+    %div
+      Dataset metadata was updated.
+    %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+      %span{"aria-hidden":"true"} &times;
+
 %form{id:"form-org-wrapper", method: "POST", action: "/admin/dataset/#{@dataset.id}", "accept-charset" => "UTF-8", class: "helpers"}
 
   %div{class:"form-group"}

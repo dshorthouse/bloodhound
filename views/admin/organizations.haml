@@ -14,6 +14,13 @@
       %h1{class:"h2"} Organizations
     = haml :'partials/admin/organization_search', layout: false
 
+- if flash[:destroyed]
+  %div{class:"alert alert-danger alert-dismissible fade show", role: "alert", style:"display:block"}
+    %div
+      #{flash[:destroyed].truncate(25)} was destroyed.
+    %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+      %span{"aria-hidden":"true"} &times;
+
 - sort = locals[:sort] == "asc" ? "desc" : "asc"
 %div{class:"table-responsive-lg"}
   %table{class:"table table-hover table-sm"}
