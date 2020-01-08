@@ -27,6 +27,19 @@ module Sinatra
           app.post '/admin/article/:id' do
             admin_protected!
             @article = Article.find(params[:id])
+            data = { doi: @article.doi }
+            @article.update(data)
+            flash.next[:updated] = true
+            redirect "/admin/article/#{@article.id}"
+          end
+
+          app.delete '/admin/article/:id' do
+            admin_protected!
+            article = Article.find(params[:id])
+            title = article.citation.dup
+            article.destroy
+            flash.next[:destroyed] = title
+            redirect "/admin/articles"
           end
 
           app.get '/admin/datasets' do

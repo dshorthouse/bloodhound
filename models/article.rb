@@ -10,7 +10,8 @@ class Article < ActiveRecord::Base
   serialize :gbif_dois, Array
   serialize :gbif_downloadkeys, Array
 
-  after_create :make_citation
+  after_create :update_citation
+  after_update :update_citation
 
   def user_specimen_count(user_id)
     article_occurrences.joins(:user_occurrences)
@@ -33,15 +34,14 @@ class Article < ActiveRecord::Base
 
   private
 
-  def make_citation
+  def update_citation
     begin
       response = RestClient::Request.execute(
         method: :get,
         headers: { Accept: "text/x-bibliography" },
         url: "https://doi.org/" + URI.escape(doi)
       )
-      self.citation = response
-      self.save
+      self.update_columns(citation: response)
     rescue
     end
   end
