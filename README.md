@@ -56,7 +56,7 @@ Unfortunately, gbifIDs are not persistent. These occasionally disappear through 
      $ RACK_ENV=production ./bin/populate_agents.rb --truncate --directory /directory-to-spark-csv-files/
      # Can start 2+ workers, each with 40 threads to help speed-up processing
      $ RACK_ENV=production sidekiq -c 40 -q agent -r ./application.rb
-     # For remote client, point to the REDIS_URL
+     # For remote client, point to the server REDIS_URL and likewise, adjust MySQL connection strings in config
      $ REDIS_URL=redis://192.168.2.4:6379 RACK_ENV=production sidekiq -c 40 -q agent -r ./application.rb
 
 ### Step 4: Populate Taxa
@@ -144,7 +144,7 @@ To migrate tables, use mydumper and myloader. But for even faster data migration
       mydumper --user root --password <PASSWORD> --database bloodhound --tables-list agents,occurrences,occurrence_recorders,occurrence_determiners,taxa,taxon_occurrences --compress --threads 8 --rows 10000000 --trx-consistency-only --outputdir /Users/dshorthouse/Documents/bloodhound_dump
 
       apt-get install mydumper
-      nohup myloader --database bloodhound_new --user bloodhound --password <PASSWORD> --threads 8 --queries-per-transaction 100 --compress-protocol --overwrite-tables --directory /home/dshorthouse/bloodhound_restore &
+      nohup myloader --database bloodhound_restore --user bloodhound --password <PASSWORD> --threads 8 --queries-per-transaction 100 --compress-protocol --overwrite-tables --directory /home/dshorthouse/bloodhound_restore &
 
       ALTER TABLE `occurrences` ADD KEY `typeStatus_idx` (`typeStatus`(256)), ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`);
       ALTER TABLE `occurrence_determiners` ADD KEY `agent_idx` (`agent_id`), ADD KEY `occurrence_idx` (`occurrence_id`);
@@ -160,14 +160,14 @@ Then, take site offline and in the bloodhound database DROP the tables with old 
       DROP TABLE `taxa`;
       DROP TABLE `taxon_occurrences`;
 
-From the bloodhound_new database, rename the tables:
+From the bloodhound_restore database, rename the tables, which copies from one directory to the other:
 
-      RENAME TABLE `bloodhound_new`.`agents` TO `bloodhound`.`agents`;
-      RENAME TABLE `bloodhound_new`.`occurrences` TO `bloodhound`.`occurrences`;
-      RENAME TABLE `bloodhound_new`.`occurrence_determiners` TO `bloodhound`.`occurrence_determiners`;
-      RENAME TABLE `bloodhound_new`.`occurrence_recorders` TO `bloodhound`.`occurrence_recorders`;
-      RENAME TABLE `bloodhound_new`.`taxa` TO `bloodhound`.`taxa`;
-      RENAME TABLE `bloodhound_new`.`taxon_occurrences` TO `bloodhound`.`taxon_occurrences`;
+      RENAME TABLE `bloodhound_restore`.`agents` TO `bloodhound`.`agents`;
+      RENAME TABLE `bloodhound_restore`.`occurrences` TO `bloodhound`.`occurrences`;
+      RENAME TABLE `bloodhound_restore`.`occurrence_determiners` TO `bloodhound`.`occurrence_determiners`;
+      RENAME TABLE `bloodhound_restore`.`occurrence_recorders` TO `bloodhound`.`occurrence_recorders`;
+      RENAME TABLE `bloodhound_restore`.`taxa` TO `bloodhound`.`taxa`;
+      RENAME TABLE `bloodhound_restore`.`taxon_occurrences` TO `bloodhound`.`taxon_occurrences`;
 
 Last of all, rebuild the Elasticsearch indices:
 

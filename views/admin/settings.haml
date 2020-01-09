@@ -87,6 +87,19 @@
       %div{class:"card-deck"}
         %div{class:"card"}
           %h5{class:"card-header"}
+            Deceased Redirect
+          %div{class:"card-body"}
+            %p{class:"card-text"}
+              Use a wikidata Q number instead of ORCID when user has recently passed away. Requires that user currently has an ORCID and an existing, valid wikidata Q number with all necessary data.
+            - if !@admin_user.orcid.nil?
+              %form{action: "/admin/user/#{@admin_user.id}/deceased", method: :post}
+                %input{type: :hidden, name: "_method", value: 'PUT'}
+                %input{type: :hidden, name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
+                %input{type: "text", name: "wikidata", class:"form-control mb-3", id: "wikidata"}
+                %input{type: :submit, class:"btn btn-sm btn-outline-success", value:"Update"}
+
+        %div{class:"card"}
+          %h5{class:"card-header"}
             Delete Account
           %div{class:"card-body"}
             %p{class:"card-text"} Permanently delete the account.
@@ -107,5 +120,3 @@
                     %input{type: :hidden, name: "_method", value: 'DELETE'}
                     %input{type: :hidden, name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
                     %input{type: :submit, class:"btn btn-sm btn-outline-danger", value:"Delete"}
-
-        %div{class:"card", style:"border:0px"}

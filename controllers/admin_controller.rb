@@ -181,6 +181,24 @@ module Sinatra
             haml :'admin/overview', locals: { active_page: "administration" }
           end
 
+          app.put '/admin/user/:id/deceased' do
+            admin_protected!
+            admin_user = User.find(params[:id])
+            if !admin_user.orcid.nil?
+              old_orcid = admin_user.orcid.dup
+              admin_user.orcid = nil
+              admin_user.wikidata = params[:wikidata]
+              admin_user.save
+              admin_user.reload
+              admin_user.update_profile
+              DestroyedUser.create(identifier: old_orcid, redirect_to: params[:wikidata])
+              cache_clear "fragments/#{admin_user.identifier}"
+              cache_clear "fragments/#{admin_user.identifier}-trainer"
+              flash.next[:updated] = true
+            end
+            redirect "/admin/user/#{admin_user.identifier}/settings"
+          end
+
           app.delete '/admin/user/:id' do
             admin_protected!
             @admin_user = User.find(params[:id])
