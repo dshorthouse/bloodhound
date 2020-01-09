@@ -4,7 +4,8 @@ module Bloodhound
   class FrictionlessData
 
     def initialize(uuid:, output_directory:)
-      @dataset = Dataset.find_by_datasetKey(uuid)
+      @dataset = Dataset.find_by_datasetKey(uuid) rescue nil
+      raise ArgumentError, 'Dataset not found' if @dataset.nil?
       @package = descriptor
       @output_dir = output_directory
     end

@@ -24,6 +24,24 @@ module Sinatra
             haml :'admin/article', locals: { active_page: "administration" }
           end
 
+          app.post '/admin/article/:id' do
+            admin_protected!
+            @article = Article.find(params[:id])
+            data = { doi: @article.doi }
+            @article.update(data)
+            flash.next[:updated] = true
+            redirect "/admin/article/#{@article.id}"
+          end
+
+          app.delete '/admin/article/:id' do
+            admin_protected!
+            article = Article.find(params[:id])
+            title = article.citation.dup
+            article.destroy
+            flash.next[:destroyed] = title
+            redirect "/admin/articles"
+          end
+
           app.get '/admin/datasets' do
             admin_protected!
             sort = params[:sort] || nil
@@ -70,13 +88,16 @@ module Sinatra
               description: description,
             }
             @dataset.update(data)
+            flash.next[:updated] = true
             redirect "/admin/dataset/#{@dataset.datasetKey}"
           end
 
           app.delete '/admin/dataset/:id' do
             admin_protected!
             dataset = Dataset.find(params[:id])
+            title = dataset.title.dup
             dataset.destroy
+            flash.next[:destroyed] = title
             redirect "/admin/datasets"
           end
 
@@ -145,13 +166,16 @@ module Sinatra
             wiki = wikidata_lib.institution_wikidata(code)
             data.merge!(wiki) if wiki
             @organization.update(data)
+            flash.next[:updated] = true
             redirect "/admin/organization/#{params[:id]}"
           end
 
           app.delete '/admin/organization/:id' do
             admin_protected!
             organization = Organization.find(params[:id])
+            title = organization.name.dup
             organization.destroy
+            flash.next[:destroyed] = title
             redirect "/admin/organizations"
           end
 
@@ -202,9 +226,11 @@ module Sinatra
           app.delete '/admin/user/:id' do
             admin_protected!
             @admin_user = User.find(params[:id])
+            name = @admin_user.fullname.dup
             @admin_user.destroy
             cache_clear "fragments/#{@admin_user.identifier}"
             cache_clear "fragments/#{@admin_user.identifier}-trainer"
+            flash.next[:destroyed] = name
             redirect '/admin/users'
           end
 

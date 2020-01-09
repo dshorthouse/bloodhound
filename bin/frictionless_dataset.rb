@@ -20,6 +20,10 @@ OptionParser.new do |opts|
     options[:all] = true
   end
 
+  opts.on("-l", "--list x,y,z", Array, "List of dataset keys to update") do |list|
+    options[:list] = list
+  end
+
   opts.on("-m", "--missing", "Limit creation of datasets to those that do not yet exist") do
     options[:missing] = true
   end
@@ -51,5 +55,17 @@ elsif options[:directory] && options[:all]
     f = Bloodhound::FrictionlessData.new(uuid: d.datasetKey, output_directory: options[:directory])
     f.create_package
     puts "Package created for #{d.datasetKey}".green
+  end
+elsif options[:directory] && options[:list]
+  options[:list].each do |key|
+    dataset = Dataset.find_by_datasetKey(key) rescue nil
+    if dataset
+      puts "Starting #{dataset.title}...".yellow
+      f = Bloodhound::FrictionlessData.new(uuid: key, output_directory: options[:directory])
+      f.create_package
+      puts "Package created for #{key}".green
+    else
+      puts "Package #{key} not found".red
+    end
   end
 end

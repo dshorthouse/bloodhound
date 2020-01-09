@@ -10,6 +10,13 @@
     View latest
   listing on GBIF
 
+- if flash[:destroyed]
+  %div{class:"alert alert-danger alert-dismissible fade show", role: "alert", style:"display:block"}
+    %div
+      #{flash[:destroyed].truncate(50)} was destroyed and all links to specimen records were deleted.
+    %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+      %span{"aria-hidden":"true"} &times;
+
 - if @pagy.count == 0
   %div{class: "alert alert-info tiny-margins", role: "alert"}
     Articles have not yet been recorded.
