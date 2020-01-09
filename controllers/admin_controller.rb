@@ -216,8 +216,8 @@ module Sinatra
               admin_user.reload
               admin_user.update_profile
               DestroyedUser.create(identifier: old_orcid, redirect_to: params[:wikidata])
-              cache_clear "fragments/#{admin_user.identifier}"
-              cache_clear "fragments/#{admin_user.identifier}-trainer"
+              cache_clear "fragments/#{old_orcid}"
+              cache_clear "fragments/#{old_orcid}-trainer"
               flash.next[:updated] = true
             end
             redirect "/admin/user/#{admin_user.identifier}/settings"
