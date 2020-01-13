@@ -132,7 +132,7 @@ Unfortunately, gbifIDs are not persistent. These occasionally disappear through 
       ArticleOccurrence.orphaned_count
       ArticleOccurrence.orphaned_delete
 
-To migrate tables, use mydumper and myloader. But for even faster data migration, best to drop indices before mydumper then recreate indices after myloader. This is especially true for the three largest tables: occurrences, occurrence_recorders, and occurrence_determiners.
+To migrate tables, use mydumper and myloader. But for even faster data migration, drop indices before mydumper then recreate indices after myloader. This is especially true for the three largest tables: occurrences, occurrence_recorders, and occurrence_determiners whose indices are (almost) larger than the tables themselves.
 
       brew install mydumper
 
@@ -144,6 +144,7 @@ To migrate tables, use mydumper and myloader. But for even faster data migration
       mydumper --user root --password <PASSWORD> --database bloodhound --tables-list agents,occurrences,occurrence_recorders,occurrence_determiners,taxa,taxon_occurrences --compress --threads 8 --rows 10000000 --trx-consistency-only --outputdir /Users/dshorthouse/Documents/bloodhound_dump
 
       apt-get install mydumper
+      # Restore tables use nohup into a new database `bloodhound_restore`. See https://blogs.oracle.com/jsmyth/apparmor-and-mysql if symlinks might be used in the MySQL data directory to another partition.
       nohup myloader --database bloodhound_restore --user bloodhound --password <PASSWORD> --threads 8 --queries-per-transaction 100 --compress-protocol --overwrite-tables --directory /home/dshorthouse/bloodhound_restore &
 
       ALTER TABLE `occurrences` ADD KEY `typeStatus_idx` (`typeStatus`(256)), ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`);
@@ -151,25 +152,27 @@ To migrate tables, use mydumper and myloader. But for even faster data migration
       ALTER TABLE `occurrence_recorders` ADD KEY `agent_idx` (`agent_id`), ADD KEY `occurrence_idx` (`occurrence_id`);
       ALTER TABLE `taxon_occurrences` ADD UNIQUE KEY `occurrence_id_idx` (`occurrence_id`), ADD KEY `taxon_id_idx` (`taxon_id`);
 
-Then, take site offline and in the bloodhound database DROP the tables with old data:
+One way to make this even faster is to copy database files from one database to another rather than dropping/truncating and importing, but this has to be done with a bit of care.
 
-      DROP TABLE `agents`;
-      DROP TABLE `occurrences`;
-      DROP TABLE `occurrence_determiners`;
-      DROP TABLE `occurrence_recorders`;
-      DROP TABLE `taxa`;
-      DROP TABLE `taxon_occurrences`;
+Take site offline and in the bloodhound database, remove the tablespaces from the tables that will be overwritten. Before removing, it's a good idea to keep the *.ibd files on-hand in the event something bad happens and they need to be restored.
 
-From the bloodhound_restore database, rename the tables, which copies from one directory to the other:
+      ALTER TABLE `agents` DISCARD TABLESPACE;
+      ALTER TABLE `occurrences` DISCARD TABLESPACE;
+      ALTER TABLE `occurrence_determiners` DISCARD TABLESPACE;
+      ALTER TABLE `occurrence_recorders` DISCARD TABLESPACE;
+      ALTER TABLE `taxa` DISCARD TABLESPACE;
+      ALTER TABLE `taxon_occurrences` DISCARD TABLESPACE;
 
-      RENAME TABLE `bloodhound_restore`.`agents` TO `bloodhound`.`agents`;
-      RENAME TABLE `bloodhound_restore`.`occurrences` TO `bloodhound`.`occurrences`;
-      RENAME TABLE `bloodhound_restore`.`occurrence_determiners` TO `bloodhound`.`occurrence_determiners`;
-      RENAME TABLE `bloodhound_restore`.`occurrence_recorders` TO `bloodhound`.`occurrence_recorders`;
-      RENAME TABLE `bloodhound_restore`.`taxa` TO `bloodhound`.`taxa`;
-      RENAME TABLE `bloodhound_restore`.`taxon_occurrences` TO `bloodhound`.`taxon_occurrences`;
+Now copy the *.ibd files for the above 6 tables from the bloodhound_restore database into the bloodhound database data directory then import the tablespaces:
 
-Last of all, rebuild the Elasticsearch indices:
+      ALTER TABLE `agents` IMPORT TABLESPACE;
+      ALTER TABLE `occurrences` IMPORT TABLESPACE;
+      ALTER TABLE `occurrence_determiners` IMPORT TABLESPACE;
+      ALTER TABLE `occurrence_recorders` IMPORT TABLESPACE;
+      ALTER TABLE `taxa` IMPORT TABLESPACE;
+      ALTER TABLE `taxon_occurrences` IMPORT TABLESPACE;
+
+Lastly, rebuild the Elasticsearch indices:
 
       RACK_ENV=production ./bin/populate_search.rb --rebuild
 
