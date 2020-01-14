@@ -21,6 +21,10 @@ OptionParser.new do |opts|
     options[:profiles] = true
   end
 
+  opts.on("-q", "--quickstatements", "Dump list of wikidata profiles to be used in quickstatements") do
+    options[:quickstatements] = true
+  end
+
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
@@ -74,6 +78,18 @@ if options[:directory]
       csv << ["Family", "Given", "wikidata", "ORCID", "URL"]
       users.find_each do |u|
         csv << [u.family, u.given, u.wikidata, u.orcid, Settings.base_url + "/" + u.identifier]
+      end
+    end
+  end
+
+  if options[:quickstatements]
+    csv_file = File.join(directory, "quickstatements.csv")
+    puts "Making public profiles...".green
+    users = User.where(is_public: true).where.not(wikidata: nil)
+    CSV.open(csv_file, 'w') do |csv|
+      csv << ["qid", "P6944"]
+      users.find_each do |u|
+        csv << [u.wikidata, "\"#{u.wikidata}\""]
       end
     end
   end

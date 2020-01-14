@@ -56,7 +56,7 @@ module Bloodhound
 
       {
         name: "bloodhound-attributions",
-        id: "https://doi,org/#{@dataset.doi}",
+        id: "https://doi.org/#{@dataset.doi}",
         licenses: [
           {
             name: license_name,
