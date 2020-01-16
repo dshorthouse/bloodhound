@@ -140,7 +140,7 @@ module Bloodhound
             { name: "recordedBy", type: "string", format: "uri", rdfType: "http://rs.tdwg.org/dwc/iri/recordedBy" },
             { name: "claimedBy", type: "string" },
             { name: "claimedByURI", type: "string", format: "uri" },
-            { name: "claimedDateTime", type: "datetime" }
+            { name: "claimedDateTime", type: "datetime", format: "any" }
           ]
         },
         foreignKeys: [
