@@ -18,7 +18,8 @@
       %div{class:"col-12 col-lg-4 alert-warning mb-2"}
         %h1{class:"h3"}= @admin_user.fullname
       %div{class:"col-12 col-lg-8 mt-2"}
-        = haml :'partials/admin/user_tabs', layout: false, locals: { active_page: "candidates" }
+        = haml :'partials/admin/user_tabs', layout: false, locals: { active_page: "specimens" }
+        = haml :'partials/admin/subtabs_specimens', layout: false, locals: { active_tab: "candidates"}
 
 - alert_class = "info"
 - placeholder = @admin_user.fullname
@@ -31,7 +32,7 @@
 
 - if @pagy.count == 0
   %div{class: "alert alert-info row tiny-margins", role:"alert"}
-    %div{class: "col col-12 col-sm-12 col-m-8 col-lg-8"}
+    %div{class: "col col-12 col-sm-12 col-m-8 col-lg-8 pl-0"}
       Bloodhound did not sniff any specimens indexed by the Global Biodiversity Information Facility (GBIF) that were collected or identified.
 
       %div{class:"form-check d-inline-flex"}
@@ -46,7 +47,7 @@
 - else
   = haml :'partials/admin/fixed_navbar', layout: false
   %div{id: "helper-info", class: "alert alert-#{alert_class} row candidates-alert tiny-margins", role: "alert"}
-    %div{class: "col col-12 col-sm-12 col-m-8 col-lg-8"}
+    %div{class: "col col-12 col-sm-12 col-m-8 col-lg-8 pl-0"}
       = succeed "." do
         Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for
         %span{class:"font-weight-bold"} #{placeholder}
