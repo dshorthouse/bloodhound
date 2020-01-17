@@ -347,6 +347,15 @@ module Sinatra
             haml :'admin/support_table', locals: { active_page: "administration" }
           end
 
+          app.get '/admin/user/:id/helped' do
+            admin_protected!
+            check_redirect
+            @admin_user = find_user(params[:id])
+
+            @pagy, @results = pagy_arel(@admin_user.latest_helped)
+            haml :'admin/helped', locals: { active_page: "administration" }
+          end
+
           app.get '/admin/user/:id/messages' do
             admin_protected!
             check_redirect
