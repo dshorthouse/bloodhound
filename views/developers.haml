@@ -8,7 +8,14 @@
 
 %h3 Web Services
 
-%p Bloodhound data are exposed as csv or JSON-LD documents on publicly shared profile pages. Individual occurrence records are exposed as JSON-LD documents.
+%p
+  Bloodhound data are exposed as csv or
+  %a{href: "https://json-ld.org/"}
+    JSON-LD
+  documents on publicly shared profile pages. Individual occurrence records are exposed as JSON-LD documents. Attributions and claims are shared as
+  %a{href: "https://frictionlessdata.io/"}
+    frictionless data
+  packages for every dataset.
 
 %div{class:"ml-3"}
   %h5 User Data from a Public Profile
@@ -18,10 +25,21 @@
     %a{href: "/0000-0001-7618-5230/specimens.json"} #{base_url}/0000-0001-7618-5230/specimens.json
   %p
     %small{class:"text-muted"}
-      Where 
+      Where
       %em 0000-0001-7618-5230
       is a user's ORCID identifier,
       %a{href: "https://orcid.org/0000-0001-7618-5230"} https://orcid.org/0000-0001-7618-5230
+
+  %div
+    %a{href: "/Q1035/specimens.csv"} #{base_url}/Q1035/specimens.csv
+  %div
+    %a{href: "/Q1035/specimens.json"} #{base_url}/Q1035/specimens.json
+  %p
+    %small{class:"text-muted"}
+      Where
+      %em Q1035
+      is a user's Wikidata Q number,
+      %a{href: "https://www.wikidata.org/wiki/Q1035"} https://www.wikidata.org/wiki/Q1035
 
 %div{class:"ml-3"}
   %h5 Specimen Record
@@ -29,20 +47,27 @@
     %a{href: "/occurrence/477976412.json"} #{base_url}/occurrence/477976412.json
   %p
     %small{class:"text-muted"}
-      Where 
+      Where
       %em /occurrence/477976412
       is that provided by the Global Biodiversity Information Facility (GBIF),
       %a{href: "https://gbif.org/occurrence/477976412"} https://gbif.org/occurrence/477976412.
       This same service is used in two
-      %a{href:"/integrations"} browser extensions
-      \- what the developer community calls
-      %a{href: "https://en.wikipedia.org/wiki/Eating_your_own_dog_food"}
-        %em
-          dogfooding.
+      %a{href:"/integrations"} browser extensions.
+
+%div{class:"ml-3"}
+  %h5 Datasets as Frictionless Data Packages
+  %div
+    %a{href: "/dataset/74f92761-3a24-4d85-9bfb-00b1fee0119d.zip"} #{base_url}/dataset/74f92761-3a24-4d85-9bfb-00b1fee0119d.zip
+  %p
+    %small{class:"text-muted"}
+      Where
+      %em 74f92761-3a24-4d85-9bfb-00b1fee0119d
+      is a GBIF dataset identifier,
+      %a{href: "https://gbif.org/dataset/74f92761-3a24-4d85-9bfb-00b1fee0119d"} https://gbif.org/dataset/74f92761-3a24-4d85-9bfb-00b1fee0119d
 
 %h3 Code
 %p
-  The MIT-licensed code is available on 
+  The MIT-licensed code is available on
   = succeed "." do
     %a{href: "https://github.com/dshorthouse/bloodhound" } GitHub
   Technologies at play include Apache Spark to group occurrence records by raw entries in recordedBy and identifiedBy and to import into MySQL, Neo4j to store the scores between similarly structured people names, Elasticsearch to aid in the searching of people names once parsed and cleaned, Redis to coordinate the processing queues, and Sinatra/ruby for the application layer. A stand-alone ruby gem,
@@ -58,7 +83,7 @@
   %p
     %smal{class:"text-muted"}
       Where the above csv includes a header, "Family, Given, wikidata, ORCID, URL"
-    
+
 - if @compressed_file_size
   %div{class:"ml-3"}
     %h5 All Claims and Attributions (Public Profiles)
@@ -77,7 +102,7 @@
     (38 MB, utf-8)
   %p
     %small{class:"text-muted"}
-      The above gzipped folder includes 4 csv files each with a header, "agent_id, family, given, recordings_count, recordings_year_range, recordings_institutionCode, recordings_countryCode, determinations_count", produced using 
+      The above gzipped folder includes 4 csv files each with a header, "agent_id, family, given, recordings_count, recordings_year_range, recordings_institutionCode, recordings_countryCode, determinations_count", produced using
       %a{href:"https://doi.org/10.15468/dl.ejwnnv"} https://doi.org/10.15468/dl.ejwnnv
       where "recordings_count" is the total number of collected specimens, "recordings_institutionCode" is a pipe-delimited list of institutionCode entries, and "recordings_countryCode" is a pipe-delimited list of ISO Alpha-2 country codes. The column "agent_id" is a local identifier and is not persistent.
 
@@ -90,6 +115,6 @@
     %small{class:"text-muted"}
       The above gzipped csv includes a header, "agents, gbifIDs_recordedBy, gbifIDs_identifiedBy", was constructed from
       %a{href: "https://doi.org/10.15468/dl.rohj3n"} https://doi.org/10.15468/dl.rohj3n
-      using a 
+      using a
       %a{href: "https://github.com/dshorthouse/bloodhound/blob/master/spark.md"} Scala / Apache Spark script
       where the gbifIDs_recordedBy and gbifIDs_identifiedBy columns each contain an array of GBIF IDs. The "agents" column is as presented on GBIF and will require additional parsing.
