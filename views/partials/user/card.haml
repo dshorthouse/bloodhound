@@ -1,9 +1,9 @@
-- if locals[:user].top_family_identified
-  - id_statement = "identified #{locals[:user].top_family_identified}"
-- if locals[:user].top_family_recorded
-  - recorded_statement = "collected #{locals[:user].top_family_recorded}"
+- identified = locals[:user].top_family_identified
+- id_statement = "identified #{identified}" if identified
+- recorded = locals[:user].top_family_recorded
+- recorded_statement = "collected #{recorded}" if recorded
 - statement = nil
-- if locals[:user].top_family_identified || locals[:user].top_family_recorded
+- if identified || recorded
   - statement = [id_statement,recorded_statement].compact.join(" and ")
   - statement = statement.slice(0,1).capitalize + statement.slice(1..-1)
 %div{class: "card card-profile my-3"}
