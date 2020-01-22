@@ -65,15 +65,6 @@
       is a GBIF dataset identifier,
       %a{href: "https://gbif.org/dataset/74f92761-3a24-4d85-9bfb-00b1fee0119d"} https://gbif.org/dataset/74f92761-3a24-4d85-9bfb-00b1fee0119d
 
-%h3 Code
-%p
-  The MIT-licensed code is available on
-  = succeed "." do
-    %a{href: "https://github.com/dshorthouse/bloodhound" } GitHub
-  Technologies at play include Apache Spark to group occurrence records by raw entries in recordedBy and identifiedBy and to import into MySQL, Neo4j to store the scores between similarly structured people names, Elasticsearch to aid in the searching of people names once parsed and cleaned, Redis to coordinate the processing queues, and Sinatra/ruby for the application layer. A stand-alone ruby gem,
-  %a{href:"https://github.com/dshorthouse/dwc_agent"} dwc_agent
-  may be used to parse people names and additionally score them for structural similarity.
-
 %h3 Raw Data
 
 %div{class:"ml-3"}
@@ -118,3 +109,12 @@
       using a
       %a{href: "https://github.com/dshorthouse/bloodhound/blob/master/spark.md"} Scala / Apache Spark script
       where the gbifIDs_recordedBy and gbifIDs_identifiedBy columns each contain an array of GBIF IDs. The "agents" column is as presented on GBIF and will require additional parsing.
+
+%h3 Code
+%p
+  The MIT-licensed code is available on
+  = succeed "." do
+    %a{href: "https://github.com/dshorthouse/bloodhound" } GitHub
+  Technologies at play include Apache Spark to group occurrence records by raw entries in recordedBy and identifiedBy and to import into MySQL, Neo4j to store the scores between similarly structured people names, Elasticsearch to aid in the searching of people names once parsed and cleaned, Redis to coordinate the processing queues, and Sinatra/ruby for the application layer. A stand-alone ruby gem,
+  %a{href:"https://github.com/dshorthouse/dwc_agent"} dwc_agent
+  may be used to parse people names and additionally score them for structural similarity.

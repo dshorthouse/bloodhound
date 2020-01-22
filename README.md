@@ -154,7 +154,7 @@ To migrate tables, use mydumper and myloader. But for even faster data migration
 
 One way to make this even faster is to copy database files from one database to another rather than dropping/truncating and importing, but this has to be done with a bit of care.
 
-Take site offline and in the bloodhound database, remove the tablespaces from the tables that will be overwritten. Before removing, it's a good idea to keep the *.ibd files on-hand in the event something bad happens and they need to be restored.
+Take site offline and in the bloodhound database, remove the tablespaces from the tables that will be overwritten. Before removing, it's a good idea to keep the \*.ibd files on-hand in the event something bad happens and they need to be restored.
 
       ALTER TABLE `agents` DISCARD TABLESPACE;
       ALTER TABLE `occurrences` DISCARD TABLESPACE;
@@ -163,7 +163,7 @@ Take site offline and in the bloodhound database, remove the tablespaces from th
       ALTER TABLE `taxa` DISCARD TABLESPACE;
       ALTER TABLE `taxon_occurrences` DISCARD TABLESPACE;
 
-Now copy the *.ibd files for the above 6 tables from the bloodhound_restore database into the bloodhound database data directory then import the tablespaces:
+Now copy the \*.ibd files for the above 6 tables from the bloodhound_restore database into the bloodhound database data directory then import the tablespaces:
 
       ALTER TABLE `agents` IMPORT TABLESPACE;
       ALTER TABLE `occurrences` IMPORT TABLESPACE;
