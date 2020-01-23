@@ -3,6 +3,12 @@
 
 -content_for :scripts do
   = haml :'partials/profile/scripts', layout: false, locals: { action_type: "PUT" }
+  %script{src: "/js/progress-bar.js"}
+  :javascript
+    $(function() {
+      var ids = $.map($('.progress-bar'), function(obj) { return $(obj).attr("id").split("_").pop(); });
+      $.when.apply($, $.each(ids, function(key, id) { ProgressBar.init(id); }));
+    });
 
 %div{class:"row"}
   %div{class:"col-12 col-lg-4"}
@@ -47,7 +53,11 @@
                 - if u.country
                   %p{class:"small text-muted mt-0 mb-0"} #{u.country.split("|").join("; ")}
 
-            %div{class: "card-body"}
+            %div{class: "card-body d-flex"}
+              %div{class: "flex-fill"}
+              %div{class: "flex-fill"}
+              %div{class:"progress flex-fill ml-auto", style:"border:1px solid rgba(0,0,0,.125);inline"}
+                %div{id:"progress-bar_#{u.identifier}", class:"progress-bar bg-info", role:"progressbar", style:"width: 0%;inline", "aria-valuenow":"0", "aria-valuemin":"0", "aria-valuemax":"100"}
 
             %div{class: "card-footer d-flex"}
               - if !u.is_public?
