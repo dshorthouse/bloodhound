@@ -4,9 +4,11 @@
 -content_for :scripts do
   %script{src: "https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"}
   %script{src:"/js/application.js"}
+  %script{src:"/js/profile.js"}
   :javascript
     $(function() {
         Application.init(#{@admin_user.id}, "PUT", "/admin");
+        Profile.init("/admin/user/#{@admin_user.identifier}");
     });
 
 -content_for :jumbotron do

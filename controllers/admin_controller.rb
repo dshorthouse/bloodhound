@@ -298,6 +298,16 @@ module Sinatra
             ::Bloodhound::IO.jsonld_stream(admin_user)
           end
 
+          app.get '/admin/user/:id/message-count.json' do
+            admin_protected!
+            admin_user = find_user(params[:id])
+            content_type "application/json"
+            return { count: 0}.to_json if admin_user.family.nil?
+
+            count = admin_user.messages_received.where(read: false).count
+            { count: count }.to_json
+          end
+
           app.get '/admin/user/:id/specimens.csv' do
             admin_protected!
             admin_user = find_user(params[:id])

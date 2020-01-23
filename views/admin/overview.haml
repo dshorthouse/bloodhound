@@ -3,9 +3,11 @@
 
 -content_for :scripts do
   %script{src:"/js/application.js"}
+  %script{src:"/js/profile.js"}
   :javascript
     $(function() {
         Application.init(#{@admin_user.id}, "PUT", "/admin");
+        Profile.init("/admin/user/#{@admin_user.identifier}");
     });
 
 %div{class:"row"}
