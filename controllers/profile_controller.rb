@@ -159,7 +159,7 @@ module Sinatra
 
           app.get '/profile/helped' do
             protected!
-            @pagy, @results = pagy_arel(@user.latest_helped)
+            @pagy, @results = pagy_arel(@user.latest_helped, items: 15)
             haml :'profile/helped', locals: { active_page: "profile" }
           end
 
