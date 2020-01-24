@@ -284,6 +284,36 @@ class User < ActiveRecord::Base
       .count
   end
 
+  def recorded_bins(years = 5)
+    recordings = visible_user_occurrences
+        .joins(:occurrence)
+        .where(qry_recorded)
+        .where.not(occurrences: { eventDate_processed: nil})
+        .select("FLOOR(YEAR(occurrences.eventDate_processed)/#{years})*#{years} as decade", "count(*) as sum")
+        .group("decade")
+        .compact
+        .map{|d| [ d.decade, d.sum ] }
+        .to_h
+    return {} if recordings.empty?
+    intervals = (recordings.min.first..recordings.max.first).step(years).map{|m| [ m, 0] }.to_h
+    intervals.merge(recordings).sort.to_h
+  end
+
+  def identified_bins(years = 5)
+    recordings = visible_user_occurrences
+        .joins(:occurrence)
+        .where(qry_identified)
+        .where.not(occurrences: { dateIdentified_processed: nil})
+        .select("FLOOR(YEAR(occurrences.dateIdentified_processed)/#{years})*#{years} as decade", "count(*) as sum")
+        .group("decade")
+        .compact
+        .map{|d| [ d.decade, d.sum ] }
+        .to_h
+    return {} if recordings.empty?
+    intervals = (recordings.min.first..recordings.max.first).step(years).map{|m| [ m, 0] }.to_h
+    intervals.merge(recordings).sort.to_h
+  end
+
   def recorded_with
     User.joins("JOIN user_occurrences as a ON a.user_id = users.id JOIN user_occurrences b ON a.occurrence_id = b.occurrence_id")
         .where("b.user_id = #{id}")

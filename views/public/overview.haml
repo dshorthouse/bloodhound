@@ -19,6 +19,7 @@
   - if @viewed_user.is_public? && ( @stats[:countries][:recorded].count > 0 || @stats[:countries][:identified].count > 0 )
     %script{src: "/js/jquery-jvectormap-2.0.3.min.js"}
     %script{src: "/js/jquery-jvectormap-world-mill.js"}
+    %script{src: "https://www.gstatic.com/charts/loader.js"}
     :javascript
       var countriesRecorded = #{@stats[:countries][:recorded].to_json},
           countriesIdentified = #{@stats[:countries][:identified].to_json};
@@ -130,6 +131,45 @@
         }
 
       });
+      function drawMultSeries() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('timeofday', 'Time of Day');
+            data.addColumn('number', 'Motivation Level');
+            data.addColumn('number', 'Energy Level');
+
+            data.addRows([
+              [{v: [8, 0, 0], f: '8 am'}, 1, .25],
+              [{v: [9, 0, 0], f: '9 am'}, 2, .5],
+              [{v: [10, 0, 0], f:'10 am'}, 3, 1],
+              [{v: [11, 0, 0], f: '11 am'}, 4, 2.25],
+              [{v: [12, 0, 0], f: '12 pm'}, 5, 2.25],
+              [{v: [13, 0, 0], f: '1 pm'}, 6, 3],
+              [{v: [14, 0, 0], f: '2 pm'}, 7, 4],
+              [{v: [15, 0, 0], f: '3 pm'}, 8, 5.25],
+              [{v: [16, 0, 0], f: '4 pm'}, 9, 7.5],
+              [{v: [17, 0, 0], f: '5 pm'}, 10, 10],
+            ]);
+
+            var options = {
+              title: 'Motivation and Energy Level Throughout the Day',
+              hAxis: {
+                title: 'Time of Day',
+                format: 'h:mm a',
+                viewWindow: {
+                  min: [7, 30, 0],
+                  max: [17, 30, 0]
+                }
+              },
+              vAxis: {
+                title: 'Rating (scale of 1-10)'
+              }
+            };
+
+            var chart = new google.visualization.ColumnChart($('#chart')[0]);
+            chart.draw(data, options);
+      }
+      google.charts.load('current', { packages: ['corechart', 'bar'] });
+      google.charts.setOnLoadCallback(drawMultSeries);
 
 %div{class:"row"}
   = haml :'partials/user/jumbotron', layout: false
@@ -164,6 +204,7 @@
             %div{class:"col-10#{split_css}"}
               %h4 Collected From
               #map-collected{style:"width: 100%; height: 350px"}
+        %div{id: "chart"}
 
     - else
       = haml :'partials/user/offline_message', layout: false
