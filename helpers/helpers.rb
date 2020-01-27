@@ -391,6 +391,7 @@ module Sinatra
         end
       end
 
+      #TODO: use wikidata birth and death dates to filter activity_dates
       def user_stats(user)
         counts = user.country_counts
         cited = user.cited_specimens_counts
@@ -440,7 +441,7 @@ module Sinatra
             specimens_cited: cited.map(&:second).reduce(:+),
             number: cited.count
           },
-          activity_dates: activity_dates.delete_if{|k,v| k > Date.today.year || k < 1700 }
+          activity_dates: activity_dates.delete_if{|k,v| k > Date.today.year || k <= 1700 || v == [0,0] }
                                         .sort
                                         .map{|k,v| v.flatten.unshift(k.to_s) }
         }
