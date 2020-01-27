@@ -293,7 +293,7 @@ module Sinatra
             claimed = viewed_user.all_occurrences_count
             agent_ids = candidate_agents(viewed_user).map{|a| a[:id] }.compact
             unclaimed = occurrences_by_agent_ids(agent_ids)
-                          .where.not(occurrence_id: viewed_user.user_occurrences.select(:occurrence_id))
+                          .where.not({ occurrence_id: viewed_user.user_occurrences.select(:occurrence_id) })
                           .distinct
                           .count(:occurrence_id)
             { claimed: claimed, unclaimed: unclaimed }.to_json

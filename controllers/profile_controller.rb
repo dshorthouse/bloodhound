@@ -292,7 +292,7 @@ module Sinatra
             @searched_user = Agent.find(params[:id])
             id_scores = [{ id: @searched_user.id, score: 3 }]
 
-            node = AgentNode.find_by(agent_id: @searched_user.id)
+            node = AgentNode.find_by({ agent_id: @searched_user.id })
             if !node.nil?
               id_scores.concat(node.agent_nodes_weights.map{|a| { id: a[0], score: a[1] }})
             end

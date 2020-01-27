@@ -227,7 +227,7 @@ class User < ActiveRecord::Base
   end
 
   def claims_received_by(id)
-    visible_occurrences.where(created_by: id).order(created: :desc)
+    visible_occurrences.where({ created_by: id }).order(created: :desc)
   end
 
   def helped_by
@@ -286,10 +286,10 @@ class User < ActiveRecord::Base
 
   def recorded_with
     User.joins("JOIN user_occurrences as a ON a.user_id = users.id JOIN user_occurrences b ON a.occurrence_id = b.occurrence_id")
-        .where("b.user_id = #{id}")
+        .where("b.user_id = ?", id)
         .where("b.action IN ('recorded','recorded,identified','identified,recorded')")
         .where("b.visible = true")
-        .where("a.user_id != #{id}")
+        .where("a.user_id != ?", id)
         .where("a.action IN ('recorded','recorded,identified','identified,recorded')")
         .where("a.visible = true")
         .distinct
@@ -298,10 +298,10 @@ class User < ActiveRecord::Base
 
   def identified_for
     User.joins("JOIN user_occurrences as a ON a.user_id = users.id JOIN user_occurrences b ON a.occurrence_id = b.occurrence_id")
-        .where("b.user_id = #{id}")
+        .where("b.user_id = ?", id)
         .where("b.action IN ('identified','recorded,identified', 'identified,recorded')")
         .where("b.visible = true")
-        .where("a.user_id != #{id}")
+        .where("a.user_id != ?", id)
         .where("a.action IN ('recorded','recorded,identified','identified,recorded')")
         .where("a.visible = true")
         .distinct
@@ -310,10 +310,10 @@ class User < ActiveRecord::Base
 
   def identified_by
     User.joins("JOIN user_occurrences as a ON a.user_id = users.id JOIN user_occurrences b ON a.occurrence_id = b.occurrence_id")
-        .where("b.user_id = #{id}")
+        .where("b.user_id = ?", id)
         .where("b.action IN ('recorded','recorded,identified','identified,recorded')")
         .where("b.visible = true")
-        .where("a.user_id != #{id}")
+        .where("a.user_id != ?", id)
         .where("a.action IN ('identified','recorded,identified','identified,recorded')")
         .where("a.visible = true")
         .distinct
@@ -359,11 +359,11 @@ class User < ActiveRecord::Base
   end
 
   def messages_by_sender_count(id)
-    messages_received.where(user_id: id).count
+    messages_received.where({ user_id: id }).count
   end
 
   def messages_by_recipient(recipient_id)
-    messages_sent.where(recipient_id: recipient_id)
+    messages_sent.where({ recipient_id: recipient_id })
   end
 
   def bulk_claim(agent:, conditions:, ignore: false)
@@ -446,7 +446,7 @@ class User < ActiveRecord::Base
   end
 
   def update_profile
-    UserOrganization.where(user_id: id).destroy_all
+    UserOrganization.where({ user_id: id }).destroy_all
     if wikidata
       update_wikidata_profile
     elsif orcid
