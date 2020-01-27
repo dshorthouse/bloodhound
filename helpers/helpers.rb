@@ -227,7 +227,7 @@ module Sinatra
       end
 
       def occurrences_by_agent_ids(agent_ids = [])
-        OccurrenceRecorder.where(agent_id: agent_ids)
+        OccurrenceRecorder.where({ agent_id: agent_ids })
                           .union_all(OccurrenceDeterminer.where(agent_id: agent_ids))
                           .includes(:occurrence)
       end
@@ -362,7 +362,7 @@ module Sinatra
       end
 
       def trainers
-        results = UserOccurrence.where.not(created_by: User::BOT_IDS)
+        results = UserOccurrence.where.not({ created_by: User::BOT_IDS })
                                 .where("user_occurrences.user_id != user_occurrences.created_by")
                                 .group([:user_id, :created_by])
                                 .pluck(:created_by)

@@ -26,7 +26,7 @@ module Sinatra
 
             agent_ids = candidate_agents(user).pluck(:id)
             count = occurrences_by_agent_ids(agent_ids)
-                      .where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
+                      .where.not({ occurrence_id: user.user_occurrences.select(:occurrence_id) })
                       .pluck(:occurrence_id)
                       .uniq
                       .count
@@ -100,8 +100,7 @@ module Sinatra
             visible = req[:visible] rescue true
             occurrence_ids = req[:occurrence_ids].split(",")
             if !visible
-              UserOccurrence.where(occurrence_id: occurrence_ids)
-                            .where(user_id: req[:user_id].to_i)
+              UserOccurrence.where({ occurrence_id: occurrence_ids, user_id: req[:user_id].to_i })
                             .destroy_all
             end
             data = occurrence_ids.map{|o| {
@@ -138,7 +137,7 @@ module Sinatra
             req = JSON.parse(request.body.read).symbolize_keys
             occurrence_ids = req[:occurrence_ids].split(",")
             visible = req[:visible] rescue true
-            UserOccurrence.where(id: occurrence_ids, user_id: req[:user_id].to_i)
+            UserOccurrence.where({ id: occurrence_ids, user_id: req[:user_id].to_i })
                           .update_all({ action: req[:action], visible: visible, created_by: @user.id })
             { message: "ok" }.to_json
           end
@@ -147,7 +146,7 @@ module Sinatra
             protected!
             content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys
-            uo = UserOccurrence.find_by(id: params[:id])
+            uo = UserOccurrence.find(params[:id])
             uo.action = req[:action] ||= nil
             uo.visible = req[:visible] ||= true
             uo.created_by = @user.id
@@ -180,7 +179,7 @@ module Sinatra
                 id_scores = candidate_agents(@viewed_user).map{|a| { id: a[:id], score: a[:score] } }.compact
                 if !id_scores.empty?
                   ids = id_scores.map{|a| a[:id]}
-                  nodes = AgentNode.where(agent_id: ids)
+                  nodes = AgentNode.where({ agent_id: ids })
                   if !nodes.empty?
                     (nodes.map(&:agent_id) - ids).each do |id|
                       id_scores << { id: id, score: 1 } #TODO: how to more effectively use the edge weights here?
@@ -256,9 +255,9 @@ module Sinatra
             end
 
             agent_ids = candidate_agents(@viewed_user).pluck(:id)
-            records = occurrences_by_agent_ids(agent_ids).where
-                                                         .not(occurrence_id: @viewed_user.user_occurrences.select(:occurrence_id))
-                                                         .limit(Settings.helping_download_limit)
+            records = occurrences_by_agent_ids(agent_ids)
+                        .where.not({ occurrence_id: @viewed_user.user_occurrences.select(:occurrence_id) })
+                        .limit(Settings.helping_download_limit)
             body ::Bloodhound::IO.csv_stream_candidates(records)
           end
 
