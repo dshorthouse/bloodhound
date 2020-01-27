@@ -289,10 +289,10 @@ class User < ActiveRecord::Base
         .joins(:occurrence)
         .where(qry_recorded)
         .where.not(occurrences: { eventDate_processed: nil})
-        .select("FLOOR(YEAR(occurrences.eventDate_processed)/#{years})*#{years} as decade", "count(*) as sum")
-        .group("decade")
+        .select("FLOOR(YEAR(occurrences.eventDate_processed)/#{years})*#{years} as bin", "count(*) as sum")
+        .group("bin")
         .compact
-        .map{|d| [ d.decade, d.sum ] }
+        .map{|d| [ d.bin, d.sum ] }
         .to_h
     return {} if recordings.empty?
     intervals = (recordings.min.first..recordings.max.first).step(years).map{|m| [ m, 0] }.to_h
@@ -304,10 +304,10 @@ class User < ActiveRecord::Base
         .joins(:occurrence)
         .where(qry_identified)
         .where.not(occurrences: { dateIdentified_processed: nil})
-        .select("FLOOR(YEAR(occurrences.dateIdentified_processed)/#{years})*#{years} as decade", "count(*) as sum")
-        .group("decade")
+        .select("FLOOR(YEAR(occurrences.dateIdentified_processed)/#{years})*#{years} as bin", "count(*) as sum")
+        .group("bin")
         .compact
-        .map{|d| [ d.decade, d.sum ] }
+        .map{|d| [ d.bin, d.sum ] }
         .to_h
     return {} if recordings.empty?
     intervals = (recordings.min.first..recordings.max.first).step(years).map{|m| [ m, 0] }.to_h

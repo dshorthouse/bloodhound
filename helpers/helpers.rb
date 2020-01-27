@@ -413,6 +413,16 @@ module Sinatra
           end
         end
 
+        r = user.recorded_bins
+        r.each{|k,v| r[k] = [0,v]}
+
+        i = user.identified_bins
+        i.each {|k,v| i[k] = [v,0]}
+
+        activity_dates = r.merge(i) do |k, first_val, second_val|
+          [[first_val[0], second_val[0]].max, [first_val[1], second_val[1]].max]
+        end
+
         {
           specimens: {
             identified: identified_count,
@@ -429,7 +439,8 @@ module Sinatra
           articles: {
             specimens_cited: cited.map(&:second).reduce(:+),
             number: cited.count
-          }
+          },
+          activity_dates: activity_dates.map{|k,v| v.flatten.unshift(k.to_s) }
         }
       end
 
