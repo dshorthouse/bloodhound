@@ -89,6 +89,16 @@
 
           var chart = new google.visualization.ColumnChart($('#chart')[0]);
           chart.draw(data, options);
+          google.visualization.events.addListener(chart, 'onmouseover', function() { $('#chart').css('cursor','pointer'); });
+          google.visualization.events.addListener(chart, 'onmouseout', function() { $('#chart').css('cursor','default'); });
+                   
+          google.visualization.events.addListener(chart, 'select', function() {
+            var sel = chart.getSelection()[0];
+            if (typeof sel.row !== "undefined" && sel.row !== null) {
+              var yr = data.getValue(sel.row, 0), label = data.getColumnLabel(sel.column);
+              window.location = "/#{@viewed_user.identifier}/specimens/" + label.toLowerCase() + "/" + yr + "-" + (parseInt(yr, 10)+5);
+            }
+          });
         }
 
         if (Object.keys(countriesRecorded).length > 0) {
@@ -162,7 +172,6 @@
 
         google.charts.load('current', { packages: ['corechart', 'bar'] });
         google.charts.setOnLoadCallback(drawMultSeries);
-
       });
 
 %div{class:"row"}

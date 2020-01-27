@@ -22,20 +22,21 @@
           %li{class:"nav-item"}
             %a{class:"nav-link#{locals[:active_tab] == "support" ? " active" : nil}", href:"/#{@viewed_user.identifier}/support"} Helped By
 
-      - if !@country.nil?
+      - if !@filter.nil?
         %div{class: "alert alert-warning", role: "alert"}
           %i{class:"fas fa-filter"}
           Filtered by
           = succeed "." do
             %span{class:"font-weight-bold"}
-              #{@country.name}
+              #{@filter[:value]}
           %a{href: "/#{@viewed_user.identifier}/specimens"}
             Remove
 
       - if @pagy.count == 0
         %div{class: "alert alert-info tiny-margins", role: "alert"}
           - claim_type = @viewed_user.orcid ? "claimed or attributed" : "attributed"
-          Specimens have not yet been #{claim_type}.
+          - filter_message = !@filter.nil? ? " with this applied filter" : ""
+          Specimens have not yet been #{claim_type}#{filter_message}.
 
       - else
         %div{class: "alert alert-info row tiny-margins", role: "alert", style:"padding-left:0.1em;padding-right:0.1em"}

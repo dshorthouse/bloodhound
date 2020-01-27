@@ -131,10 +131,15 @@ module Sinatra
             @viewed_user = find_user(params[:id])
             check_user_public
 
-            @country = IsoCountryCodes.find(params[:country_code]) rescue nil
-            if @country.nil?
+            country = IsoCountryCodes.find(params[:country_code]) rescue nil
+            if country.nil?
               halt 404
             end
+
+            @filter = {
+              type: "country",
+              value: country.name
+            }
 
             begin
               @pagy, @results = {}, []
@@ -143,6 +148,53 @@ module Sinatra
                 data = @viewed_user.visible_occurrences
                                    .where(occurrences: { countryCode: params[:country_code] })
                                    .order("occurrences.typeStatus desc")
+                @pagy, @results = pagy(data, page: page)
+              end
+              locals = {
+                active_page: "roster",
+                active_tab: "specimens"
+              }
+              haml :'public/specimens', locals: locals
+            rescue Pagy::OverflowError
+              halt 404, haml(:oops)
+            end
+          end
+
+          app.get '/:id/specimens/:type/:start-:end' do
+            start_date = Date.new(params[:start].to_i)
+            end_date = Date.new(params[:end].to_i)
+
+            if !["collected","identified"].include?(params[:type]) || 
+                end_date > Date.today || 
+                start_date > Date.today ||
+                start_date > end_date
+              halt 404, haml(:oops)
+            end
+
+            check_identifier
+            check_redirect
+            @viewed_user = find_user(params[:id])
+            check_user_public
+
+            @filter = {
+              type: "#{params[:type]}",
+              value: "#{params[:type]} #{params[:start]}–#{params[:end]}"
+            }
+
+            begin
+              @pagy, @results = {}, []
+              if @viewed_user.is_public?
+                page = (params[:page] || 1).to_i
+                if params[:type] == "collected"
+                  field = "eventDate"
+                  data = @viewed_user.recordings
+                else
+                  field = "dateIdentified"
+                  data = @viewed_user.identifications
+                end
+                
+                data = data.where("occurrences.#{field}_processed >= ? AND occurrences.#{field}_processed < ?", start_date, end_date)
+                           .order("occurrences.typeStatus desc")
                 @pagy, @results = pagy(data, page: page)
               end
               locals = {

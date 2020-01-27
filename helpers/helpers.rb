@@ -440,7 +440,9 @@ module Sinatra
             specimens_cited: cited.map(&:second).reduce(:+),
             number: cited.count
           },
-          activity_dates: activity_dates.map{|k,v| v.flatten.unshift(k.to_s) }
+          activity_dates: activity_dates.delete_if{|k,v| k > Date.today.year || k < 1700 }
+                                        .sort
+                                        .map{|k,v| v.flatten.unshift(k.to_s) }
         }
       end
 
