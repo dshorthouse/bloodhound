@@ -14,19 +14,16 @@
     });
 
   - if @viewed_user.is_public?
-    %script{src: "/js/progress-bar.js"}
-    :javascript
-      $(function() {
-        ProgressBar.init("#{@viewed_user.identifier}");
-      });
-
-    - if @stats[:countries][:recorded].count > 0 || @stats[:countries][:identified].count > 0 || @stats[:activity_dates].count > 0
+    - if @stats[:specimens][:identified] > 0 || @stats[:specimens][:recorded] > 0
+      %script{src: "/js/progress-bar.js"}
       %script{src: "//www.gstatic.com/charts/loader.js"}
       :javascript
         $(function() {
           var countriesRecorded = #{@stats[:countries][:recorded].to_a.unshift(["Country", "Collected"])},
               countriesIdentified = #{@stats[:countries][:identified].to_a.unshift(["Country", "Identified"])},
               dateData = #{@stats[:activity_dates].to_a.unshift(["Year", "Identified", "Collected"])};
+
+          ProgressBar.init("#{@viewed_user.identifier}");
 
           function drawVisualizations() {
             var chartData = google.visualization.arrayToDataTable(dateData),
@@ -79,7 +76,9 @@
               });
             });
 
-            chart.draw(chartData, chartOptions);
+            if (dateData.length > 1) {
+              chart.draw(chartData, chartOptions);
+            }
             collectedMap.draw(google.visualization.arrayToDataTable(countriesRecorded), mapOptions);
             identifiedMap.draw(google.visualization.arrayToDataTable(countriesIdentified), mapOptions);
           }
@@ -120,8 +119,9 @@
             %h4 Collected From
             #map-collected{style:"width: 100%; height: 350px"}
 
-        %h4 Dates Specimens Identified and Collected
-        %div{id: "chart"}
+      - if @stats[:activity_dates].length > 0
+        %h4 Dates Identified and Collected
+      %div{id: "chart"}
 
     - else
       = haml :'partials/user/offline_message', layout: false
