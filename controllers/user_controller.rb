@@ -164,8 +164,8 @@ module Sinatra
             start_date = Date.new(params[:start].to_i)
             end_date = Date.new(params[:end].to_i)
 
-            if !["collected","identified"].include?(params[:type]) || 
-                end_date > Date.today || 
+            if !["collected","identified"].include?(params[:type]) ||
+                end_date > Date.today ||
                 start_date > Date.today ||
                 start_date > end_date
               halt 404, haml(:oops)
@@ -178,7 +178,7 @@ module Sinatra
 
             @filter = {
               type: "#{params[:type]}",
-              value: "#{params[:type]} #{params[:start]}–#{params[:end]}"
+              value: "#{params[:type]} #{params[:start]} – #{params[:end]}"
             }
 
             begin
@@ -192,7 +192,7 @@ module Sinatra
                   field = "dateIdentified"
                   data = @viewed_user.identifications
                 end
-                
+
                 data = data.where("occurrences.#{field}_processed >= ? AND occurrences.#{field}_processed < ?", start_date, end_date)
                            .order("occurrences.typeStatus desc")
                 @pagy, @results = pagy(data, page: page)
