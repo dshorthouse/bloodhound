@@ -61,7 +61,7 @@ class BLOODHOUND < Sinatra::Base
   include Pagy::Frontend
   Pagy::VARS[:items] = 30
 
-  use Rack::GoogleAnalytics, tracker: Settings.google_analytics
+  use Rack::GoogleAnalytics, tracker: Settings.google.analytics
 
   helpers Sinatra::ContentFor
   helpers Sinatra::Bloodhound::Formatters

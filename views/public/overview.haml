@@ -7,7 +7,11 @@
     %link{rel:"stylesheet", href:"/css/jquery-jvectormap-2.0.3.css"}
 
 - content_for :scripts do
-  %script{id:"dsq-count-scr", src:"//#{Settings.disqus_shortname}.disqus.com/count.js", defer: ""}
+  %script{id:"dsq-count-scr", src:"//#{Settings.disqus.shortname}.disqus.com/count.js", defer: ""}
+  :javascript
+    $(function() {
+      DISQUSWIDGETS.getCount({reset: true});
+    });
 
   - if @viewed_user.is_public?
     %script{src: "/js/progress-bar.js"}
@@ -26,7 +30,6 @@
             chartData = #{@stats[:activity_dates].to_json};
 
         $(function() {
-          DISQUSWIDGETS.getCount({reset: true});
 
           function regionValues(src, type) {
             return Object.keys(src).reduce(function (result,item) {

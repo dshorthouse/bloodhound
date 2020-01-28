@@ -3,7 +3,7 @@
 - content_for(:title, "#{@viewed_user.fullname}")
 
 - content_for :scripts do
-  %script{id:"dsq-count-scr", src:"//#{Settings.disqus_shortname}.disqus.com/count.js", defer: ""}
+  %script{id:"dsq-count-scr", src:"//#{Settings.disqus.shortname}.disqus.com/count.js", defer: ""}
   :javascript
     $(function() {
       DISQUSWIDGETS.getCount({ reset: true });
@@ -18,7 +18,7 @@
     %div{class: "alert alert-info tiny-margins", role: "alert"}
       Share an anecdote about a collecting trip, event or anything else.
 
-    - if Settings.disqus_shortname
+    - if Settings.disqus.shortname
       %div{id: "disqus_thread"}
 
       :javascript
@@ -28,7 +28,7 @@
         };
         (function() {
           var d = document, s = d.createElement('script');
-          s.src = "https://#{Settings.disqus_shortname}.disqus.com/embed.js";
+          s.src = "https://#{Settings.disqus.shortname}.disqus.com/embed.js";
           s.setAttribute('data-timestamp', +new Date());
           (d.head || d.body).appendChild(s);
         })();

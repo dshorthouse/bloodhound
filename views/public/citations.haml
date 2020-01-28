@@ -3,7 +3,7 @@
 - content_for(:title, "#{@viewed_user.fullname}")
 
 - content_for :scripts do
-  %script{id:"dsq-count-scr", src:"//#{Settings.disqus_shortname}.disqus.com/count.js", defer: ""}
+  %script{id:"dsq-count-scr", src:"//#{Settings.disqus.shortname}.disqus.com/count.js", defer: ""}
   %script{src: "https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"}
   :javascript
     $(function() {

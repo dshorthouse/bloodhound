@@ -3,7 +3,7 @@
 - content_for(:title, "#{@viewed_user.fullname}")
 
 - content_for :scripts do
-  %script{id:"dsq-count-scr", src:"//#{Settings.disqus_shortname}.disqus.com/count.js", defer: ""}
+  %script{id:"dsq-count-scr", src:"//#{Settings.disqus.shortname}.disqus.com/count.js", defer: ""}
   :javascript
     $(function() {
       DISQUSWIDGETS.getCount({ reset: true });
@@ -14,7 +14,7 @@
   %div{class:"col-12 col-lg-8 mt-2"}
     - if @viewed_user.is_public?
       = haml :'partials/user/tabs', layout: false, locals: { active_page: "specimens" }
-      
+
       %nav{id:"specimen-nav", class:"navbar navbar-light navbar-expand bg-light overflow-auto"}
         %ul{class:"navbar-nav"}
           %li{class:"nav-item"}
