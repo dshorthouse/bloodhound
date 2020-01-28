@@ -215,6 +215,109 @@ module Sinatra
             haml :'help/specimens', locals: { active_page: "help" }
           end
 
+          app.get '/help-others/:id/specimens/:type/:start-:end' do
+            protected!
+            check_identifier
+            check_redirect
+
+            start_date = Date.new(params[:start].to_i)
+            end_date = Date.new(params[:end].to_i)
+
+            if !["collected","identified"].include?(params[:type]) ||
+                end_date > Date.today ||
+                start_date > Date.today ||
+                start_date > end_date
+              halt 404, haml(:oops)
+            end
+
+            @filter = {
+              type: "#{params[:type]}",
+              value: "#{params[:type]} #{params[:start]} – #{params[:end]}"
+            }
+
+            @viewed_user = find_user(params[:id])
+
+            @page = (params[:page] || 1).to_i
+            if params[:type] == "collected"
+              field = "eventDate"
+              data = @viewed_user.claims_received
+                                 .where(@viewed_user.qry_recorded)
+            else
+              field = "dateIdentified"
+              data = @viewed_user.claims_received
+                                 .where(@viewed_user.qry_identified)
+            end
+
+            data = data.joins(:occurrence)
+                       .where("occurrences.#{field}_processed >= ? AND occurrences.#{field}_processed < ?", start_date, end_date)
+
+            @total = data.count
+
+            if @page*search_size > @total
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
+            end
+
+            @page = 1 if @page <= 0
+
+            @pagy, @results = pagy(data, items: search_size, page: @page)
+            haml :'help/specimens', locals: { active_page: "help" }
+          end
+
+          app.get '/help-others/:id/specimens/:type/:country_code' do
+            protected!
+            check_identifier
+            check_redirect
+
+            if !["collected","identified"].include?(params[:type])
+              halt 404, haml(:oops)
+            end
+
+            country = IsoCountryCodes.find(params[:country_code]) rescue nil
+            if country.nil?
+              halt 404
+            end
+
+            @filter = {
+              type: "country",
+              value: "#{params[:type]} from #{country.name}"
+            }
+
+            @viewed_user = find_user(params[:id])
+
+            @page = (params[:page] || 1).to_i
+
+            if params[:type] == "collected"
+              data = @viewed_user.claims_received.where(@viewed_user.qry_recorded)
+            else
+              data = @viewed_user.claims_received.where(@viewed_user.qry_identified)
+            end
+            data = data.joins(:occurrence)
+                       .where(occurrences: { countryCode: params[:country_code] })
+
+            @total = data.count
+
+            if @page*search_size > @total
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
+            end
+
+            @page = 1 if @page <= 0
+
+            @pagy, @results = pagy(data, items: search_size, page: @page)
+            haml :'help/specimens', locals: { active_page: "help" }
+          end
+
+          app.get '/help-others/:id/visualizations' do
+            protected!
+            check_identifier
+            check_redirect
+
+            @viewed_user = find_user(@params[:id])
+            @stats = user_stats(@viewed_user)
+            haml :'help/visualizations', locals: { active_page: "help" }
+          end
+
           app.get '/help-others/:id/ignored' do
             protected!
             check_identifier

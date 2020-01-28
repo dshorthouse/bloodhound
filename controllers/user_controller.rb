@@ -171,8 +171,13 @@ module Sinatra
               halt 404, haml(:oops)
             end
           end
-  
+
           app.get '/:id/specimens/:type/:country_code' do
+
+            if !["collected","identified"].include?(params[:type])
+              halt 404, haml(:oops)
+            end
+
             check_identifier
             check_redirect
             @viewed_user = find_user(params[:id])
