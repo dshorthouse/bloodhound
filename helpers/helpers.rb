@@ -404,12 +404,12 @@ module Sinatra
         }
         countries_identified = counts.each_with_object({}) do |code, data|
           if code[0] != "OTHER" && code[1][:identified] > 0
-            data[code[0]] = code[1].without(:recorded)
+            data[code[0]] = code[1][:identified]
           end
         end
         countries_recorded = counts.each_with_object({}) do |code, data|
           if code[0] != "OTHER" && code[1][:recorded] > 0
-            data[code[0]] = code[1].without(:identified)
+            data[code[0]] = code[1][:recorded]
           end
         end
 

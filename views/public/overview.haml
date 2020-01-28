@@ -21,160 +21,74 @@
       });
 
     - if @stats[:countries][:recorded].count > 0 || @stats[:countries][:identified].count > 0 || @stats[:activity_dates].count > 0
-      %script{src: "/js/jquery-jvectormap-2.0.3.min.js"}
-      %script{src: "/js/jquery-jvectormap-world-mill.js"}
       %script{src: "//www.gstatic.com/charts/loader.js"}
       :javascript
-        var countriesRecorded = #{@stats[:countries][:recorded].to_json},
-            countriesIdentified = #{@stats[:countries][:identified].to_json},
-            chartData = #{@stats[:activity_dates].to_json};
-
         $(function() {
+          var countriesRecorded = #{@stats[:countries][:recorded].to_a.unshift(["Country", "Collected"])},
+              countriesIdentified = #{@stats[:countries][:identified].to_a.unshift(["Country", "Identified"])},
+              dateData = #{@stats[:activity_dates].to_a.unshift(["Year", "Identified", "Collected"])};
 
-          function regionValues(src, type) {
-            return Object.keys(src).reduce(function (result,item) {
-              result[item] = src[item][type];
-              return result;
-            }, {});
-          }
+          function drawVisualizations() {
+            var chartData = google.visualization.arrayToDataTable(dateData),
+                collectedMap = new google.visualization.GeoChart($('#map-collected')[0]),
+                identifiedMap = new google.visualization.GeoChart($('#map-identified')[0]),
+                chart = new google.visualization.ColumnChart($('#chart')[0]),
+                chartOptions = {
+                  title: '',
+                  hAxis: {
+                    title: 'Year',
+                    format: '0000',
+                    titleTextStyle: {
+                      italic: false,
+                      fontSize: 18,
+                      bold: true
+                    }
+                  },
+                  vAxis: {
+                    title: '# specimens',
+                    titleTextStyle: {
+                      italic: false,
+                      fontSize: 18,
+                      bold: true
+                    }
+                  },
+                  colors: ['#bce7fa', '#0071a4'],
+                  chartArea: {
+                    right: 130,
+                    left: 60,
+                  }
+                },
+                mapOptions = {
+                  colorAxis: { colors: ['#bce7fa', '#0071a4'] },
+                  legend: 'none'
+                };
 
-          function regionTip(src, type, el, code) {
-            var count = 0;
-            if (src.hasOwnProperty(code)) {
-              count = src[code][type];
-            }
-            if (count > 0) {
-              el.removeClass("jvectormap-tip-hidden").html(el.html()+' ('+count+')');
-            } else {
-              el.addClass("jvectormap-tip-hidden");
-            }
-          }
-
-          function regionOver(map, src, code) {
-            if (!src.hasOwnProperty(code)) {
-              var obj = map.vectorMap('get','mapObject');
-              obj.regions[code].element.config.style.hover.cursor = "normal";
-              obj.regions[code].element.config.style.hover["stroke-width"] = 0;
-              obj.regions[code].element.config.style.hover["fill-opacity"] = 1.0;
-            }
-          }
-
-          function regionClick(src, code) {
-            if (src.hasOwnProperty(code)) {
-              window.location = "/#{@viewed_user.identifier}/specimens/country/" + code;
-            }
-          }
-
-          function drawMultSeries() {
-            var data = new google.visualization.DataTable();
-
-            data.addColumn('string', 'Year');
-            data.addColumn('number', 'Identified');
-            data.addColumn('number', 'Collected');
-
-            data.addRows(chartData);
-
-            var options = {
-              title: '',
-              hAxis: {
-                title: 'Year',
-                format: '0000'
-              },
-              vAxis: {
-                title: '# specimens'
-              },
-              colors: ['#bce7fa', '#0071a4'],
-              chartArea: {
-                right: 130,
-                left: 60,
-              }
-            };
-
-            var chart = new google.visualization.ColumnChart($('#chart')[0]);
-            chart.draw(data, options);
             google.visualization.events.addListener(chart, 'onmouseover', function() { $('#chart').css('cursor','pointer'); });
             google.visualization.events.addListener(chart, 'onmouseout', function() { $('#chart').css('cursor','default'); });
-
             google.visualization.events.addListener(chart, 'select', function() {
               var sel = chart.getSelection()[0];
               if (typeof sel.row !== "undefined" && sel.row !== null) {
-                var yr = data.getValue(sel.row, 0), label = data.getColumnLabel(sel.column);
+                var yr = chartData.getValue(sel.row, 0), label = chartData.getColumnLabel(sel.column);
                 window.location = "/#{@viewed_user.identifier}/specimens/" + label.toLowerCase() + "/" + yr + "-" + (parseInt(yr, 10)+5);
               }
             });
+            $.each([collectedMap, identifiedMap], function() {
+              var label = (this === collectedMap) ? "collected" : "identified";
+              google.visualization.events.addListener(this, 'regionClick', function(e) {
+                window.location = "/#{@viewed_user.identifier}/specimens/" + label + "/" + e.region;
+              });
+            });
+
+            chart.draw(chartData, chartOptions);
+            collectedMap.draw(google.visualization.arrayToDataTable(countriesRecorded), mapOptions);
+            identifiedMap.draw(google.visualization.arrayToDataTable(countriesIdentified), mapOptions);
           }
 
-          if (Object.keys(countriesRecorded).length > 0) {
-            var map_collected = $('#map-collected');
-            map_collected.vectorMap({
-              map: 'world_mill',
-              backgroundColor: '#fff',
-              regionStyle: {
-                initial: {
-                  fill: "#e9ecef"
-                },
-                hover: {
-                  cursor: "pointer",
-                  stroke: "#D3633C",
-                  "stroke-width": 1
-                }
-              },
-              focusOn: Object.keys(countriesRecorded),
-              series: {
-                regions: [{
-                  values: regionValues(countriesRecorded, 'recorded'),
-                  scale: ['#C8EEFF', '#0071A4'],
-                  normalizeFunction: 'polynomial'
-                }]
-              },
-              onRegionTipShow: function(e, el, code) {
-                regionTip(countriesRecorded, 'recorded', el, code);
-              },
-              onRegionOver: function(e, code) {
-                regionOver(map_collected, countriesRecorded, code);
-              },
-              onRegionClick: function(e, code) {
-                regionClick(countriesRecorded, code);
-              }
-            });
-          }
-          if (Object.keys(countriesIdentified).length > 0) {
-            var map_identified = $('#map-identified');
-            map_identified.vectorMap({
-              map: 'world_mill',
-              backgroundColor: '#fff',
-              regionStyle: {
-                initial: {
-                  fill: "#e9ecef"
-                },
-                hover: {
-                  cursor: "pointer",
-                  stroke: "#D3633C",
-                  "stroke-width": 1
-                }
-              },
-              focusOn: Object.keys(countriesIdentified),
-              series: {
-                regions: [{
-                  values: regionValues(countriesIdentified, 'identified'),
-                  scale: ['#C8EEFF', '#0071A4'],
-                  normalizeFunction: 'polynomial'
-                }]
-              },
-              onRegionTipShow: function(e, el, code) {
-                regionTip(countriesIdentified, 'identified', el, code);
-              },
-              onRegionOver: function(e, code) {
-                regionOver(map_identified, countriesIdentified, code);
-              },
-              onRegionClick: function(e, code) {
-                regionClick(countriesIdentified, code);
-              }
-            });
-          }
-
-          google.charts.load('current', { packages: ['corechart', 'bar'] });
-          google.charts.setOnLoadCallback(drawMultSeries);
+          google.charts.load('current', {
+            packages: ['corechart', 'bar', 'geochart'],
+            mapsApiKey: "#{Settings.google.api_key}"
+          });
+          google.charts.setOnLoadCallback(drawVisualizations);
         });
 
 %div{class:"row"}
@@ -197,20 +111,15 @@
               %div{class:"progress", style:"border:1px solid rgba(0,0,0,.125);inline"}
                 %div{id:"progress-bar_#{@viewed_user.identifier}", class:"progress-bar bg-info", role:"progressbar", style:"width: 0%;inline", "aria-valuenow":"0", "aria-valuemin":"0", "aria-valuemax":"100"}
 
-      - if @stats[:countries][:identified].count > 0 || @stats[:countries][:recorded].count > 0
+      - if @stats[:specimens][:identified] > 0 || @stats[:specimens][:recorded] > 0
         %div{class:"row d-flex mt-3"}
-          - split_css = ""
-          - if @stats[:countries][:identified].count > 0 && @stats[:countries][:recorded].count > 0
-            - split_css = " col-md-6"
-          - if @stats[:countries][:identified].count > 0
-            %div{class:"col-10#{split_css}"}
-              %h4 Identified From
-              #map-identified{style:"width: 100%; height: 350px"}
-          - if @stats[:countries][:recorded].count > 0
-            %div{class:"col-10#{split_css}"}
-              %h4 Collected From
-              #map-collected{style:"width: 100%; height: 350px"}
-      - if @stats[:activity_dates].count > 0
+          %div{class:"col-10 col-md-6"}
+            %h4 Identified From
+            #map-identified{style:"width: 100%; height: 350px"}
+          %div{class:"col-10 col-md-6"}
+            %h4 Collected From
+            #map-collected{style:"width: 100%; height: 350px"}
+
         %h4 Dates Specimens Identified and Collected
         %div{id: "chart"}
 
