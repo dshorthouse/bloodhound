@@ -651,6 +651,13 @@ class User < ActiveRecord::Base
                    .pluck("article_occurrences.article_id", "COUNT(article_occurrences.occurrence_id)")
   end
 
+  def flush_caches
+    return if !::Module::const_get("BLOODHOUND")
+    BLOODHOUND.cache_clear("blocks/#{identifier}-stats")
+    BLOODHOUND.cache_clear("fragments/#{identifier}")
+    BLOODHOUND.cache_clear("fragments/#{identifier}-trainer")
+  end
+
   private
 
   def family_part

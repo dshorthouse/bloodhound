@@ -40,6 +40,10 @@ module Bloodhound
       process_data_packages(article)
       article.processed = true
       article.save
+
+      article.claimants.each do |user|
+        user.flush_caches
+      end
     end
 
     def process_articles
@@ -47,6 +51,10 @@ module Bloodhound
         process_data_packages(article)
         article.processed = true
         article.save
+
+        article.claimants.each do |user|
+          user.flush_caches
+        end
       end
     end
 

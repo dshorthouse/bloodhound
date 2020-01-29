@@ -216,7 +216,7 @@ module Sinatra
               admin_user.reload
               admin_user.update_profile
               DestroyedUser.create(identifier: old_orcid, redirect_to: params[:wikidata])
-              clear_caches(admin_user)
+              admin_user.flush_caches
               flash.next[:updated] = true
             end
             redirect "/admin/user/#{admin_user.identifier}/settings"
@@ -227,7 +227,7 @@ module Sinatra
             @admin_user = User.find(params[:id])
             name = @admin_user.fullname.dup
             @admin_user.destroy
-            clear_caches(@admin_user)
+            @admin_user.flush_caches
             flash.next[:destroyed] = name
             redirect '/admin/users'
           end
@@ -239,7 +239,7 @@ module Sinatra
             if file_name
               @admin_user.image_url = file_name
               @admin_user.save
-              clear_caches(@admin_user)
+              @admin_user.flush_caches
               { message: "ok" }.to_json
             else
               { message: "failed" }.to_json
@@ -254,7 +254,7 @@ module Sinatra
             end
             @admin_user.image_url = nil
             @admin_user.save
-            clear_caches(@admin_user)
+            @admin_user.flush_caches
             { message: "ok" }.to_json
           end
 
@@ -609,7 +609,7 @@ module Sinatra
             content_type "application/json", charset: 'utf-8'
             admin_user = User.find(params[:user_id].to_i)
             admin_user.update_profile
-            clear_caches(admin_user)
+            admin_user.flush_caches
             { message: "ok" }.to_json
           end
 
@@ -626,7 +626,7 @@ module Sinatra
             end
             admin_user.save
             admin_user.update_profile
-            cache_clear "fragments/#{admin_user.identifier}"
+            admin_user.flush_caches
             { message: "ok" }.to_json
           end
 

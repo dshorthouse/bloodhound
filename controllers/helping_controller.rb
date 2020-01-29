@@ -43,7 +43,7 @@ module Sinatra
             content_type "application/json", charset: 'utf-8'
             user = User.find(params[:user_id].to_i)
             user.update_profile
-            clear_caches(user)
+            user.flush_caches
             { message: "ok" }.to_json
           end
 
@@ -308,7 +308,7 @@ module Sinatra
             if !@viewed_user.is_public
               @viewed_user.update({ is_public: true, made_public: Time.now })
               @viewed_user.update_profile
-              cache_clear "fragments/#{@viewed_user.identifier}"
+              @viewed_user.flush_caches
               if !Settings.twitter.consumer_key.blank?
                 twitter = ::Bloodhound::Twitter.new
                 twitter.welcome_user(@viewed_user)
