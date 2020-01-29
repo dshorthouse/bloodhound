@@ -226,6 +226,26 @@ class User < ActiveRecord::Base
     visible_occurrences.where.not(created_by: self).order(created: :desc)
   end
 
+  def claims_type_before_birth(type = "recordings")
+    field = (type == "recordings") ? "eventDate" : "dateIdentified"
+    subq = (type == "recordings") ? qry_recorded : qry_identified
+    visible_occurrences.joins(:occurrence)
+                       .where.not(created_by: self)
+                       .where(subq)
+                       .where("occurrences.#{field}_processed <= ?", date_born)
+                       .order(created: :desc)
+  end
+
+  def claims_type_after_death(type = "recordings")
+    field = (type == "recordings") ? "eventDate" : "dateIdentified"
+    subq = (type == "recordings") ? qry_recorded : qry_identified
+    visible_occurrences.joins(:occurrence)
+                       .where.not(created_by: self)
+                       .where(subq)
+                       .where("occurrences.#{field}_processed >= ? AND occurrences.#{field}_processed <= ?", date_died, Date.today)
+                       .order(created: :desc)
+  end
+
   def claims_received_by(id)
     visible_occurrences.where({ created_by: id }).order(created: :desc)
   end
@@ -289,6 +309,7 @@ class User < ActiveRecord::Base
         .joins(:occurrence)
         .where(qry_recorded)
         .where.not(occurrences: { eventDate_processed: nil})
+        .where("occurrences.eventDate_processed <= CURDATE()")
         .select("FLOOR(YEAR(occurrences.eventDate_processed)/#{years})*#{years} as bin", "count(*) as sum")
         .group("bin")
         .compact
@@ -304,6 +325,7 @@ class User < ActiveRecord::Base
         .joins(:occurrence)
         .where(qry_identified)
         .where.not(occurrences: { dateIdentified_processed: nil})
+        .where("occurrences.dateIdentified_processed <= CURDATE()")
         .select("FLOOR(YEAR(occurrences.dateIdentified_processed)/#{years})*#{years} as bin", "count(*) as sum")
         .group("bin")
         .compact

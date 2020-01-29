@@ -103,15 +103,38 @@
   %div{id: "chart", style:"width: 0%; height: 0%; display:none;"}
 
 - if @viewed_user.wikidata
-  %h4 Other Filters
+  %h4 Problems Discovered
 
-  #TODO: query these straight away
-
-  %p
-    Collections made before birth
-  %p
-    Collections made after death
-  %p
-    Identifications made before birth
-  %p
-    Identififcations made after death
+  %ul{class:"mt-3"}
+    %li
+      Collections made before birth:
+      - count = @viewed_user.claims_type_before_birth("recordings").count
+      - if count > 0
+        %a{href: "/help-others/#{@viewed_user.identifier}/specimens/collected/0-#{@viewed_user.date_born.year}"}
+          (#{count} view)
+      - else
+        %span{class:"text-success"} (none)
+    %li
+      Collections made after death:
+      - count = @viewed_user.claims_type_after_death("recordings").count
+      - if count > 0
+        %a{href: "/help-others/#{@viewed_user.identifier}/specimens/collected/#{@viewed_user.date_died.year}-#{Date.today.year}"}
+          (#{count} view)
+      - else
+        %span{class:"text-success"} (none)
+    %li
+      Identifications made before birth:
+      - count = @viewed_user.claims_type_before_birth("identified").count
+      - if count > 0
+        %a{href: "/help-others/#{@viewed_user.identifier}/specimens/identified/0-#{@viewed_user.date_born.year}"}
+          (#{count} view)
+      - else
+        %span{class:"text-success"} (none)
+    %li
+      Identifications made after death:
+      - count = @viewed_user.claims_type_after_death("identified").count
+      - if count > 0
+        %a{href: "/help-others/#{@viewed_user.identifier}/specimens/identified/#{@viewed_user.date_died.year}-#{Date.today.year}"}
+          (#{count} view)
+      - else
+        %span{class:"text-success"} (none)
