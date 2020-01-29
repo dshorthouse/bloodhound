@@ -216,8 +216,7 @@ module Sinatra
               admin_user.reload
               admin_user.update_profile
               DestroyedUser.create(identifier: old_orcid, redirect_to: params[:wikidata])
-              cache_clear "fragments/#{old_orcid}"
-              cache_clear "fragments/#{old_orcid}-trainer"
+              clear_caches(admin_user)
               flash.next[:updated] = true
             end
             redirect "/admin/user/#{admin_user.identifier}/settings"
@@ -228,8 +227,7 @@ module Sinatra
             @admin_user = User.find(params[:id])
             name = @admin_user.fullname.dup
             @admin_user.destroy
-            cache_clear "fragments/#{@admin_user.identifier}"
-            cache_clear "fragments/#{@admin_user.identifier}-trainer"
+            clear_caches(@admin_user)
             flash.next[:destroyed] = name
             redirect '/admin/users'
           end
@@ -241,8 +239,7 @@ module Sinatra
             if file_name
               @admin_user.image_url = file_name
               @admin_user.save
-              cache_clear "fragments/#{@admin_user.identifier}"
-              cache_clear "fragments/#{@admin_user.identifier}-trainer"
+              clear_caches(@admin_user)
               { message: "ok" }.to_json
             else
               { message: "failed" }.to_json
@@ -257,8 +254,7 @@ module Sinatra
             end
             @admin_user.image_url = nil
             @admin_user.save
-            cache_clear "fragments/#{@admin_user.identifier}"
-            cache_clear "fragments/#{@admin_user.identifier}-trainer"
+            clear_caches(@admin_user)
             { message: "ok" }.to_json
           end
 
@@ -613,8 +609,7 @@ module Sinatra
             content_type "application/json", charset: 'utf-8'
             admin_user = User.find(params[:user_id].to_i)
             admin_user.update_profile
-            cache_clear "fragments/#{admin_user.identifier}"
-            cache_clear "fragments/#{admin_user.identifier}-trainer"
+            clear_caches(admin_user)
             { message: "ok" }.to_json
           end
 

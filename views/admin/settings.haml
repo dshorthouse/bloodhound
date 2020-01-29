@@ -75,7 +75,7 @@
                 - else
                   %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD", width:"18px"}
 
-            %div{class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
+            %div{id:"refresh-message", class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
               - source = @admin_user.orcid ? "ORCID" : "Wikidata"
               Data from #{source} were refreshed.
               %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}

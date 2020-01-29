@@ -40,6 +40,12 @@ module Sinatra
         end
       end
 
+      def clear_caches(user)
+        cache_clear "fragments/#{user.identifier}"
+        cache_clear "fragments/#{user.identifier}-trainer"
+        cache_clear "blocks/#{user.identifier}-stats"
+      end
+
       def search_agent(opts = { item_size: 25 })
         @results = []
         filters = []

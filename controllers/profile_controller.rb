@@ -34,8 +34,7 @@ module Sinatra
             organization = user.current_organization.as_json.symbolize_keys rescue nil
             user.update(visited: Time.now)
             session[:omniauth] = OpenStruct.new({ id: user.id })
-            cache_clear "fragments/#{user.identifier}"
-            cache_clear "fragments/#{user.identifier}-trainer"
+            clear_caches(user)
             redirect '/profile'
           end
 
@@ -75,8 +74,7 @@ module Sinatra
             if file_name
               @user.image_url = file_name
               @user.save
-              cache_clear "fragments/#{@user.identifier}"
-              cache_clear "fragments/#{@user.identifier}-trainer"
+              clear_caches(@user)
               { message: "ok" }.to_json
             else
               { message: "failed" }.to_json
@@ -90,8 +88,7 @@ module Sinatra
             end
             @user.image_url = nil
             @user.save
-            cache_clear "fragments/#{@user.identifier}"
-            cache_clear "fragments/#{@user.identifier}-trainer"
+            clear_caches(@user)
             { message: "ok" }.to_json
           end
 
@@ -379,16 +376,14 @@ module Sinatra
             protected!
             content_type "application/json", charset: 'utf-8'
             @user.update_profile
-            cache_clear "fragments/#{@user.identifier}"
-            cache_clear "fragments/#{@user.identifier}-trainer"
+            clear_caches(@user)
             { message: "ok" }.to_json
           end
 
           app.delete '/profile/destroy' do
             protected!
             @user.destroy
-            cache_clear "fragments/#{@user.identifier}"
-            cache_clear "fragments/#{@user.identifier}-trainer"
+            clear_caches(@user)
             session.clear
             redirect '/'
           end

@@ -54,7 +54,7 @@ module Sinatra
 
             @stats = {}
             if @viewed_user.is_public?
-              @stats = user_stats(@viewed_user)
+              @stats = cache_block("#{@viewed_user.identifier}-stats") { user_stats(@viewed_user) }
             end
             haml :'public/overview', locals: { active_page: "roster" }
           end

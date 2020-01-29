@@ -43,8 +43,7 @@ module Sinatra
             content_type "application/json", charset: 'utf-8'
             user = User.find(params[:user_id].to_i)
             user.update_profile
-            cache_clear "fragments/#{user.identifier}"
-            cache_clear "fragments/#{user.identifier}-trainer"
+            clear_caches(user)
             { message: "ok" }.to_json
           end
 
