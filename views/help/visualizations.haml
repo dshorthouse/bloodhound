@@ -50,13 +50,13 @@
               var sel = chart.getSelection()[0];
               if (typeof sel.row !== "undefined" && sel.row !== null) {
                 var yr = chartData.getValue(sel.row, 0), label = chartData.getColumnLabel(sel.column);
-                window.location = "/help-others/#{@viewed_user.identifier}/specimens/" + label.toLowerCase() + "/" + yr + "-" + (parseInt(yr, 10)+5);
+                window.location = "/help-others/#{@viewed_user.identifier}/specimens?action=" + label.toLowerCase() + "&start_year=" + yr + "&end_year=" + (parseInt(yr, 10)+5);
               }
             });
             $.each([collectedMap, identifiedMap], function() {
               var label = (this === collectedMap) ? "collected" : "identified";
               google.visualization.events.addListener(this, 'regionClick', function(e) {
-                window.location = "/help-others/#{@viewed_user.identifier}/specimens/" + label + "/" + e.region;
+                window.location = "/help-others/#{@viewed_user.identifier}/specimens?action=" + label + "&country_code=" + e.region;
               });
             });
 
@@ -96,7 +96,7 @@
         Collections made before birth:
         - count = @viewed_user.claims_type_before_birth("recordings").count
         - if count > 0
-          %a{href: "/help-others/#{@viewed_user.identifier}/specimens/collected/0-#{@viewed_user.date_born.year}"}
+          %a{href: "/help-others/#{@viewed_user.identifier}/specimens?action=collected&start_year=0&end_year=#{@viewed_user.date_born.year}"}
             (#{count} view)
         - else
           %span{class:"text-success"} (none)
@@ -104,7 +104,7 @@
         Collections made after death:
         - count = @viewed_user.claims_type_after_death("recordings").count
         - if count > 0
-          %a{href: "/help-others/#{@viewed_user.identifier}/specimens/collected/#{@viewed_user.date_died.year}-#{Date.today.year}"}
+          %a{href: "/help-others/#{@viewed_user.identifier}/specimens?action=collected&start_year=#{@viewed_user.date_died.year}&end_year=#{Date.today.year}"}
             (#{count} view)
         - else
           %span{class:"text-success"} (none)
@@ -112,7 +112,7 @@
         Identifications made before birth:
         - count = @viewed_user.claims_type_before_birth("identified").count
         - if count > 0
-          %a{href: "/help-others/#{@viewed_user.identifier}/specimens/identified/0-#{@viewed_user.date_born.year}"}
+          %a{href: "/help-others/#{@viewed_user.identifier}/specimens?action=identified&start_year=0&end_year=#{@viewed_user.date_born.year}"}
             (#{count} view)
         - else
           %span{class:"text-success"} (none)
@@ -120,7 +120,7 @@
         Identifications made after death:
         - count = @viewed_user.claims_type_after_death("identified").count
         - if count > 0
-          %a{href: "/help-others/#{@viewed_user.identifier}/specimens/identified/#{@viewed_user.date_died.year}-#{Date.today.year}"}
+          %a{href: "/help-others/#{@viewed_user.identifier}/specimens?action=identified&start_year=#{@viewed_user.date_died.year}&end_year=#{Date.today.year}"}
             (#{count} view)
         - else
           %span{class:"text-success"} (none)
