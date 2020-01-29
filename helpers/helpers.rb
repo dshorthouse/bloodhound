@@ -257,6 +257,59 @@ module Sinatra
         end
       end
 
+      def specimen_filters
+        if params[:action] && !["collected","identified"].include?(params[:action])
+          halt 404, haml(:oops)
+        elsif params[:action] && ["collected","identified"].include?(params[:action])
+          if params[:action] == "collected"
+            results = @viewed_user.recordings
+            if params[:start_year]
+              start_date = Date.new(params[:start_year].to_i)
+              if start_date > Date.today
+                halt 404, haml(:oops)
+              end
+              results = results.where("occurrences.eventDate_processed >= ?", start_date)
+            end
+            if params[:end_year]
+              end_date = Date.new(params[:end_year].to_i)
+              if end_date > Date.today
+                halt 404, haml(:oops)
+              end
+              results = results.where("occurrences.eventDate_processed < ?", end_date)
+            end
+          end
+          if params[:action] == "identified"
+            results = @viewed_user.identifications
+            if params[:start_year]
+              start_date = Date.new(params[:start_year].to_i)
+              if start_date > Date.today
+                halt 404, haml(:oops)
+              end
+              results = results.where("occurrences.dateIdentified_processed >= ?", start_date)
+            end
+            if params[:end_year]
+              end_date = Date.new(params[:end_year].to_i)
+              if end_date > Date.today
+                halt 404, haml(:oops)
+              end
+              results = results.where("occurrences.dateIdentified_processed < ?", end_date)
+            end
+          end
+        else
+          results = @viewed_user.visible_occurrences
+        end
+
+        if params[:country_code]
+          country = IsoCountryCodes.find(params[:country_code]) rescue nil
+          if country.nil?
+            halt 404
+          end
+          results = results.where(occurrences: { countryCode: params[:country_code] })
+        end
+
+        results
+      end
+
       def roster
         @pagy, @results = pagy(User.where(is_public: true).order(:family))
       end

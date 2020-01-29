@@ -78,12 +78,22 @@ module Sinatra
             @viewed_user = find_user(params[:id])
             check_user_public
 
+            range = nil
+            if params[:start_year] || params[:end_year]
+              range = [params[:start_year], params[:end_year]].join(" – ")
+            end
+            country = IsoCountryCodes.find(params[:country_code]).name rescue nil
+            @filter = {
+              action: params[:action],
+              country: country,
+              range: range
+            }.compact
+
             begin
               @pagy, @results = {}, []
               if @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
-                data = @viewed_user.visible_occurrences
-                                   .order("occurrences.typeStatus desc")
+                data = specimen_filters.order("occurrences.typeStatus desc")
                 @pagy, @results = pagy(data, page: page)
               end
               locals = {
@@ -120,97 +130,6 @@ module Sinatra
                 active_tab: "support"
               }
               haml :'public/support', locals: locals
-            rescue Pagy::OverflowError
-              halt 404, haml(:oops)
-            end
-          end
-
-          app.get '/:id/specimens/:type/:start-:end' do
-            start_date = Date.new(params[:start].to_i)
-            end_date = Date.new(params[:end].to_i)
-
-            if !["collected","identified"].include?(params[:type]) ||
-                end_date > Date.today ||
-                start_date > Date.today ||
-                start_date > end_date
-              halt 404, haml(:oops)
-            end
-
-            check_identifier
-            check_redirect
-            @viewed_user = find_user(params[:id])
-            check_user_public
-
-            @filter = {
-              type: "#{params[:type]}",
-              value: "#{params[:type]} #{params[:start]} – #{params[:end]}"
-            }
-
-            begin
-              @pagy, @results = {}, []
-              if @viewed_user.is_public?
-                page = (params[:page] || 1).to_i
-                if params[:type] == "collected"
-                  field = "eventDate"
-                  data = @viewed_user.recordings
-                else
-                  field = "dateIdentified"
-                  data = @viewed_user.identifications
-                end
-
-                data = data.where("occurrences.#{field}_processed >= ? AND occurrences.#{field}_processed < ?", start_date, end_date)
-                           .order("occurrences.typeStatus desc")
-                @pagy, @results = pagy(data, page: page)
-              end
-              locals = {
-                active_page: "roster",
-                active_tab: "specimens"
-              }
-              haml :'public/specimens', locals: locals
-            rescue Pagy::OverflowError
-              halt 404, haml(:oops)
-            end
-          end
-
-          app.get '/:id/specimens/:type/:country_code' do
-
-            if !["collected","identified"].include?(params[:type])
-              halt 404, haml(:oops)
-            end
-
-            check_identifier
-            check_redirect
-            @viewed_user = find_user(params[:id])
-            check_user_public
-
-            country = IsoCountryCodes.find(params[:country_code]) rescue nil
-            if country.nil?
-              halt 404
-            end
-
-            @filter = {
-              type: "country",
-              value: "#{params[:type]} from #{country.name}"
-            }
-
-            begin
-              @pagy, @results = {}, []
-              if @viewed_user.is_public?
-                page = (params[:page] || 1).to_i
-                if params[:type] == "collected"
-                  data = @viewed_user.recordings
-                else
-                  data = @viewed_user.identifications
-                end
-                data = data.where(occurrences: { countryCode: params[:country_code] })
-                           .order("occurrences.typeStatus desc")
-                @pagy, @results = pagy(data, page: page)
-              end
-              locals = {
-                active_page: "roster",
-                active_tab: "specimens"
-              }
-              haml :'public/specimens', locals: locals
             rescue Pagy::OverflowError
               halt 404, haml(:oops)
             end
