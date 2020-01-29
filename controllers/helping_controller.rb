@@ -232,7 +232,7 @@ module Sinatra
             check_redirect
 
             @viewed_user = find_user(@params[:id])
-            @stats = user_stats(@viewed_user)
+            @stats = helping_user_stats(@viewed_user)
             haml :'help/visualizations', locals: { active_page: "help" }
           end
 

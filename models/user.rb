@@ -295,6 +295,36 @@ class User < ActiveRecord::Base
       end
   end
 
+  def country_counts_helped
+    identifications_or_recordings
+      .where.not(created_by: self)
+      .references(:occurrences)
+      .group("occurrences.countryCode", :action)
+      .pluck("occurrences.countryCode", :action, "COUNT(occurrences.countryCode)")
+      .each_with_object({}) do |code_action, data|
+        if !data.key?(code_action[0])
+          data[code_action[0]] = {
+            recorded: 0,
+            identified: 0
+          }
+        end
+        if code_action[1] == "recorded" || code_action[1] == "identified"
+          data[code_action[0]][code_action[1].to_sym] += code_action[2]
+        else
+          data[code_action[0]][:identified] += code_action[2]
+          data[code_action[0]][:recorded] += code_action[2]
+        end
+      end
+      .each_with_object({}) do |k, data|
+        country = IsoCountryCodes.find(k[0]) rescue nil
+        if country
+          data[k[0]] = k[1].merge({name: country.name})
+        else
+          data["OTHER"] = k[1]
+        end
+      end
+  end
+
   def quick_country_counts
     visible_user_occurrences
       .joins(:occurrence)
@@ -320,8 +350,42 @@ class User < ActiveRecord::Base
     intervals.merge(recordings).sort.to_h
   end
 
+  def recorded_bins_helped(years = 5)
+    recordings = visible_user_occurrences
+        .where.not(created_by: self)
+        .joins(:occurrence)
+        .where(qry_recorded)
+        .where.not(occurrences: { eventDate_processed: nil})
+        .where("occurrences.eventDate_processed <= CURDATE()")
+        .select("FLOOR(YEAR(occurrences.eventDate_processed)/#{years})*#{years} as bin", "count(*) as sum")
+        .group("bin")
+        .compact
+        .map{|d| [ d.bin, d.sum ] }
+        .to_h
+    return {} if recordings.empty?
+    intervals = (recordings.min.first..recordings.max.first).step(years).map{|m| [ m, 0] }.to_h
+    intervals.merge(recordings).sort.to_h
+  end
+
   def identified_bins(years = 5)
     recordings = visible_user_occurrences
+        .joins(:occurrence)
+        .where(qry_identified)
+        .where.not(occurrences: { dateIdentified_processed: nil})
+        .where("occurrences.dateIdentified_processed <= CURDATE()")
+        .select("FLOOR(YEAR(occurrences.dateIdentified_processed)/#{years})*#{years} as bin", "count(*) as sum")
+        .group("bin")
+        .compact
+        .map{|d| [ d.bin, d.sum ] }
+        .to_h
+    return {} if recordings.empty?
+    intervals = (recordings.min.first..recordings.max.first).step(years).map{|m| [ m, 0] }.to_h
+    intervals.merge(recordings).sort.to_h
+  end
+
+  def identified_bins_helped(years = 5)
+    recordings = visible_user_occurrences
+        .where.not(created_by: self)
         .joins(:occurrence)
         .where(qry_identified)
         .where.not(occurrences: { dateIdentified_processed: nil})
