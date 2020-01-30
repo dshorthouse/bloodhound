@@ -64,11 +64,21 @@
 
   - if authorized?
     %div{class:"mt-3 pt-3 border-top"}
-      %a{href: "/help-others/#{@viewed_user.identifier}", class: "mr-2"}
+      %a{href: "/help-others/#{@viewed_user.identifier}", class: "mr-2 mb-2"}
         %i{class:"fas fa-hands-helping"}
         Help Attribute
+
+      - if @viewed_user.is_public?
+        %a{href:"/help-others/refresh.json?user_id=#{@viewed_user.id}", class:"profile-flush mr-2 mb-2"}
+          %i{class: "fas fa-sync-alt"}
+          Rebuild stats
   
       - if admin_authorized?
-        %a{href: "/admin/user/#{@viewed_user.identifier}/settings"}
+        %a{href: "/admin/user/#{@viewed_user.identifier}/settings", class:"mb-2"}
           %i{class:"fas fa-cog"}
           Settings
+
+    %div{id:"flush-message", class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
+      Caches for counts and visualizations were rebuilt.
+      %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+        %span{"aria-hidden":"true"} &times;

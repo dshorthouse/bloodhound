@@ -360,7 +360,7 @@ var Application = (function($, window) {
     activate_refresh: function(){
       var self = this;
       $("a.profile-refresh").on("click", function(e) {
-        var button = $(this);
+        var link = $(this);
 
         e.stopPropagation();
         e.preventDefault();
@@ -368,10 +368,10 @@ var Application = (function($, window) {
             method: "GET",
             url: self.path + "/refresh.json?user_id=" + self.user_id,
             beforeSend: function(xhr) {
-              button.addClass("disabled").find("i").addClass("fa-spin");
+              link.addClass("disabled").find("i").addClass("fa-spin");
             }
         }).done(function(data) {
-          button.find("i").removeClass("fa-spin");
+          link.find("i").removeClass("fa-spin");
           $("#refresh-message").alert().show();
           $("#refresh-message").on("closed.bs.alert", function () {
             location.reload();
@@ -380,17 +380,18 @@ var Application = (function($, window) {
         return false;
       });
       $("a.profile-flush").on("click", function(e) {
-        var button = $(this);
+        var link = $(this);
 
         e.stopPropagation();
         e.preventDefault();
         $.ajax({
             method: "GET",
-            url: self.path + "/refresh.json?user_id=" + self.user_id,
+            url: "/help-others/refresh.json?user_id=" + self.user_id,
             beforeSend: function(xhr) {
-              button.addClass("disabled");
+              link.addClass("disabled").find("i").addClass("fa-spin");
             }
         }).done(function(data) {
+          link.find("i").removeClass("fa-spin");
           $("#flush-message").alert().show();
           $("#flush-message").on("closed.bs.alert", function () {
             location.reload();
