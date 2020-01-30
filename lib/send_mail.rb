@@ -69,10 +69,10 @@ module Bloodhound
 
     def user_articles(user)
       Article.joins(article_occurrences: :user_occurrences)
-             .where(mail_sent: false)
              .where(user_occurrences: { user_id: user.id, visible: true })
              .distinct
-             .pluck_to_hash(:doi, :citation)
+             .pluck_to_hash(:doi, :citation, :mail_sent)
+             .delete_if{|o| o[:mail_sent]}
     end
 
     def construct_message(user, articles)
