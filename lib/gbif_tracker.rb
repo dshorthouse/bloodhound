@@ -132,7 +132,7 @@ module Bloodhound
               if entry
                 entry.extract(tmp_csv)
                 #WARNING: requires GNU parallel to split CSV files
-                system("cat #{tmp_csv.path} | parallel --header : --pipe -N 1000 'cat > #{tmp_csv.path}-{#}.csv' > /dev/null 2>&1")
+                system("cat #{tmp_csv.path} | parallel --header : --pipe -N 50000 'cat > #{tmp_csv.path}-{#}.csv' > /dev/null 2>&1")
                 items = []
                 all_files = Dir.glob(File.dirname(tmp_csv) + "/**/#{File.basename(tmp_csv.path)}*.csv")
                 all_files.each do |csv|
@@ -141,7 +141,7 @@ module Bloodhound
                     next if occurrence_id.nil?
                     items << ArticleOccurrence.new(article_id: article.id, occurrence_id: occurrence_id)
                   end
-                  ArticleOccurrence.import items, batch_size: 1_000, on_duplicate_key_ignore: true, validate: false
+                  ArticleOccurrence.import items, batch_size: 50_000, on_duplicate_key_ignore: true, validate: false
                   File.unlink(csv)
                 end
               end
