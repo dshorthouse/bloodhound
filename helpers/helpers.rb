@@ -281,7 +281,7 @@ module Sinatra
               if end_date > Date.today
                 halt 404, haml(:oops)
               end
-              results = results.where("occurrences.eventDate_processed < ?", end_date)
+              results = results.where("occurrences.eventDate_processed <= ?", end_date)
             end
           end
           if params[:action] == "identified"
@@ -298,7 +298,7 @@ module Sinatra
               if end_date > Date.today
                 halt 404, haml(:oops)
               end
-              results = results.where("occurrences.dateIdentified_processed < ?", end_date)
+              results = results.where("occurrences.dateIdentified_processed <= ?", end_date)
             end
           end
         else
@@ -335,7 +335,7 @@ module Sinatra
               if end_date > Date.today
                 halt 404, haml(:oops)
               end
-              results = results.where("occurrences.eventDate_processed < ?", end_date)
+              results = results.where("occurrences.eventDate_processed <= ?", end_date)
             end
           end
           if params[:action] == "identified"
@@ -352,7 +352,7 @@ module Sinatra
               if end_date > Date.today
                 halt 404, haml(:oops)
               end
-              results = results.where("occurrences.dateIdentified_processed < ?", end_date)
+              results = results.where("occurrences.dateIdentified_processed <= ?", end_date)
             end
           end
         else
