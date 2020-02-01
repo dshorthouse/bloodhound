@@ -386,7 +386,7 @@ var Application = (function($, window) {
         e.preventDefault();
         $.ajax({
             method: "GET",
-            url: "/help-others/refresh.json?user_id=" + self.user_id,
+            url: "/help-others/refresh-stats.json?user_id=" + self.user_id,
             beforeSend: function(xhr) {
               link.addClass("disabled").find("i").addClass("fa-spin");
             }
