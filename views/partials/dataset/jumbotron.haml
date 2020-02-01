@@ -10,12 +10,12 @@
       %img{src:"https://abekpgaoen.cloudimg.io/bound/350x200/q100/#{@dataset.image_url}", class:"rounded mx-auto img-fluid", itemprop:"image", alt:"#{@dataset.title}"}
 
   - if @dataset.description
-    %p{class:"text-muted text-left"}
+    %p{class:"text-muted text-left", itemprop: "description"}
       #{h(Sanitize.fragment(@dataset.description))}
 
   - if @dataset.license && @dataset.license_icon
     %p
-      %a{href: "#{@dataset.license}"}
+      %a{href: "#{@dataset.license}", itemprop: "license"}
         %img{src:"#{@dataset.license_icon}"}
 
   - if @dataset.doi
