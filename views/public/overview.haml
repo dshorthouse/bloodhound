@@ -96,7 +96,7 @@
         });
 
 %div{class:"row"}
-  = haml :'partials/user/jumbotron', layout: false
+  = haml :'partials/user/jumbotron', layout: false, locals: { active_page: "overview" }
   %div{class:"col-12 col-lg-8 mt-2"}
     - if @viewed_user.is_public?
       = haml :'partials/user/tabs', layout: false, locals: { active_page: "overview" }
