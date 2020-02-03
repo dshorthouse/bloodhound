@@ -18,10 +18,10 @@ module Sinatra
             haml :'help/others', locals: { active_page: "help" }
           end
 
-          app.get '/help-others/candidate-count.json' do
+          app.get '/help-others/:id/candidate-count.json' do
             protected!
             content_type "application/json", charset: 'utf-8'
-            user = User.find(params[:user_id].to_i)
+            user = find_user(params[:id])
             return { count: 0 }.to_json if user.family.nil?
 
             agent_ids = candidate_agents(user).pluck(:id)
@@ -38,10 +38,10 @@ module Sinatra
             haml :'help/help', locals: { active_page: "help" }
           end
 
-          app.get '/help-others/refresh.json' do
+          app.get '/help-others/:id/refresh.json' do
             protected!
             content_type "application/json", charset: 'utf-8'
-            user = User.find(params[:user_id].to_i)
+            user = find_user(params[:id])
             user.update_profile
             user.flush_caches
             { message: "ok" }.to_json

@@ -29,6 +29,7 @@ var Application = (function($, window) {
     user_id: "",
     path: "",
     method: "POST",
+    identifier: "",
     spinner: "<div class=\"spinner-grow\" role=\"status\"><span class=\"sr-only\">Loading...</span></div>",
     data_sources: { agent: {}, user : {}, organization : {} },
     init: function(user_id, method, path, identifier) {
@@ -158,11 +159,10 @@ var Application = (function($, window) {
 
     },
     activate_switch: function() {
-      var self = this;
       $("#toggle-public").on("change", function() {
         $.ajax({
           method: "PUT",
-          url: self.path + "/visibility.json?user_id=" + self.user_id,
+          url: $(this).attr("data-url"),
           dataType: "json",
           data: JSON.stringify({ is_public: $(this).prop("checked") })
         }).done(function(data) {
@@ -365,11 +365,11 @@ var Application = (function($, window) {
         e.stopPropagation();
         e.preventDefault();
         $.ajax({
-            method: "GET",
-            url: self.path + "/refresh.json?user_id=" + self.user_id,
-            beforeSend: function(xhr) {
-              link.addClass("disabled").find("i").addClass("fa-spin");
-            }
+          method: "GET",
+          url: link.attr("href"),
+          beforeSend: function(xhr) {
+            link.addClass("disabled").find("i").addClass("fa-spin");
+          }
         }).done(function(data) {
           link.find("i").removeClass("fa-spin");
           $("#refresh-message").alert().show();
@@ -386,7 +386,7 @@ var Application = (function($, window) {
         e.preventDefault();
         $.ajax({
             method: "GET",
-            url: "/help-others/refresh.json?user_id=" + self.user_id,
+            url: $(this).attr("href"),
             beforeSend: function(xhr) {
               link.addClass("disabled").find("i").addClass("fa-spin");
             }
@@ -411,6 +411,7 @@ var Application = (function($, window) {
               button.addClass("disabled").find("i").addClass("fa-spin");
             }
         }).done(function(data) {
+          button.find("i").removeClass("fa-spin");
           $(".alert").alert().show();
           $(".alert").on("closed.bs.alert", function () {
             location.reload();
@@ -440,18 +441,25 @@ var Application = (function($, window) {
       })
     },
     candidate_counter: function() {
-      var self = this;
-      if (self.path === "/profile" || (self.path === "/admin" && self.user_id) || (self.path === "/help-others" && self.user_id)) {
+      var self = this, slug = "";
+      if (self.path === "/profile") {
+        slug = self.path;
+      } else if (self.path === "/admin" && self.identifier) {
+        slug = self.path + "/user/" + self.identifier;
+      } else if (self.path === "/help-others" && self.identifier) {
+        slug = self.path + "/" + self.identifier;
+      }
+      if (slug) {
         $.ajax({
           method: "GET",
-          url: self.path + "/candidate-count.json?relaxed=0&user_id=" + self.user_id
+          url: slug + "/candidate-count.json?relaxed=0"
         }).done(function(data) {
           if (data.count > 0 && data.count <= 50) {
             $("#specimen-counter").text(data.count).show();
           } else if (data.count > 50) {
             $("#specimen-counter").text("50+").show();
           }
-        });
+        }); 
       }
     },
     helper_navbar: function() {

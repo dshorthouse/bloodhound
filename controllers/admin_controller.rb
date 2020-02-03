@@ -127,7 +127,7 @@ module Sinatra
             haml :'admin/organizations_search', locals: locals
           end
 
-          app.get '/admin/organization/refresh.json' do
+          app.get '/admin/organization/:organization_id/refresh.json' do
             admin_protected!
             content_type "application/json", charset: 'utf-8'
 
@@ -412,15 +412,15 @@ module Sinatra
             haml :'admin/candidates', locals: { active_page: "administration" }
           end
 
-          app.get '/admin/candidate-count.json' do
+          app.get '/admin/user/:id/candidate-count.json' do
             admin_protected!
             content_type "application/json", charset: 'utf-8'
-            user = User.find(params[:user_id].to_i)
-            return { count: 0 }.to_json if user.family.nil?
+            admin_user = find_user(params[:id])
+            return { count: 0 }.to_json if admin_user.family.nil?
 
-            agent_ids = candidate_agents(user).pluck(:id)
+            agent_ids = candidate_agents(admin_user).pluck(:id)
             count = occurrences_by_agent_ids(agent_ids)
-                      .where.not(occurrence_id: user.user_occurrences.select(:occurrence_id))
+                      .where.not(occurrence_id: admin_user.user_occurrences.select(:occurrence_id))
                       .pluck(:occurrence_id)
                       .uniq
                       .count
@@ -521,6 +521,32 @@ module Sinatra
             haml :'admin/citation', locals: { active_page: "administration" }
           end
 
+          app.get '/admin/user/:id/refresh.json' do
+            admin_protected!
+            content_type "application/json", charset: 'utf-8'
+            admin_user = find_user(params[:id])
+            admin_user.update_profile
+            admin_user.flush_caches
+            { message: "ok" }.to_json
+          end
+
+          app.put '/admin/user/:id/visibility.json' do
+            admin_protected!
+            content_type "application/json", charset: 'utf-8'
+            req = JSON.parse(request.body.read).symbolize_keys
+            admin_user = find_user(params[:id])
+            admin_user.is_public = req[:is_public]
+            if req[:is_public]
+              admin_user.made_public = Time.now
+              twitter = ::Bloodhound::Twitter.new
+              twitter.welcome_user(admin_user)
+            end
+            admin_user.save
+            admin_user.update_profile
+            admin_user.flush_caches
+            { message: "ok" }.to_json
+          end
+
           app.post '/admin/user-occurrence/bulk.json' do
             admin_protected!
             content_type "application/json", charset: 'utf-8'
@@ -601,32 +627,6 @@ module Sinatra
             req = JSON.parse(request.body.read).symbolize_keys
             UserOccurrence.where(id: params[:id].to_i, user_id: req[:user_id].to_i)
                           .delete_all
-            { message: "ok" }.to_json
-          end
-
-          app.get '/admin/refresh.json' do
-            admin_protected!
-            content_type "application/json", charset: 'utf-8'
-            admin_user = User.find(params[:user_id].to_i)
-            admin_user.update_profile
-            admin_user.flush_caches
-            { message: "ok" }.to_json
-          end
-
-          app.put '/admin/visibility.json' do
-            admin_protected!
-            content_type "application/json", charset: 'utf-8'
-            req = JSON.parse(request.body.read).symbolize_keys
-            admin_user = User.find(params[:user_id].to_i)
-            admin_user.is_public = req[:is_public]
-            if req[:is_public]
-              admin_user.made_public = Time.now
-              twitter = ::Bloodhound::Twitter.new
-              twitter.welcome_user(admin_user)
-            end
-            admin_user.save
-            admin_user.update_profile
-            admin_user.flush_caches
             { message: "ok" }.to_json
           end
 

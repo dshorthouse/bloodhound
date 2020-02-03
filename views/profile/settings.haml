@@ -31,7 +31,7 @@
                 %a{href: "https://twitter.com/BloodhoundTrack"} @BloodhoundTrack
             %div{class:"row"}
               %div{class:"col"}
-                %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: @user.is_public?, class:"btn-claim" }
+                %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: @user.is_public?, class:"btn-claim", "data-url": "/profile/visibility.json" }
               %div{class:"col text-right"}
                 - if @user.is_public?
                   %a{href: "/#{@user.orcid}", target: "_blank"}
@@ -45,7 +45,7 @@
           %div{class:"card-body"}
             %p{class:"card-text"} Pull new updates to your publicly available name, aliases, keywords, country, education, and employment from your ORCID account.
             %p
-              %a{ href:"/profile/refresh.json?user_id=#{@user.id}", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
+              %a{href:"/profile/refresh.json", role:"button", class:"btn btn-sm btn-outline-success profile-refresh"}
                 %i{class: "fas fa-sync-alt"}
                 Refresh
                 %i{class:"fab fa-orcid"}

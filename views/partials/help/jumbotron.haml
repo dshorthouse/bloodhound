@@ -86,7 +86,7 @@
               %i{class:"fas fa-unlock"}
               Make Public
 
-          %a{href:"/help-others/refresh.json?user_id=#{@viewed_user.id}", class:"mr-2 profile-refresh"}
+          %a{href:"/help-others/#{@viewed_user.identifier}/refresh.json", class:"mr-2 profile-refresh"}
             %i{class: "fas fa-sync-alt"}
             Refresh
             - if @viewed_user.orcid
