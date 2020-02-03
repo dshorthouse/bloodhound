@@ -185,7 +185,7 @@ module Sinatra
             { message: "ok"}.to_json
           end
 
-          app.put '/profile/email_notification.json' do
+          app.put '/profile/email-notification.json' do
             protected!
             content_type "application/json", charset: 'utf-8'
             req = JSON.parse(request.body.read).symbolize_keys

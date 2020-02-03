@@ -14,7 +14,7 @@ var ProgressBar = (function($, window) {
       var self = this, denominator, percent, message, progress_bar = $('#progress-bar_' + this.identifier);
       $.ajax({
         method: "GET",
-        url: "/" + self.identifier + "/progress.json?relaxed=0"
+        url: "/" + self.identifier + "/progress.json"
       }).done(function(data) {
         denominator = data.claimed + data.unclaimed;
         if (denominator === 0) {

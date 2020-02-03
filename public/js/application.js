@@ -321,7 +321,7 @@ var Application = (function($, window) {
             method: self.method,
             url: self.path + "/user-occurrence/" + occurrence_id + ".json",
             dataType: "json",
-            data: JSON.stringify({ user_id: self.user_id, visible: 0}),
+            data: JSON.stringify({ user_id: self.user_id, visible: 0 }),
             beforeSend: function(xhr) {
               $("label", row).addClass("disabled");
               $("button", row).addClass("disabled");
@@ -452,7 +452,7 @@ var Application = (function($, window) {
       if (slug) {
         $.ajax({
           method: "GET",
-          url: slug + "/candidate-count.json?relaxed=0"
+          url: slug + "/candidate-count.json"
         }).done(function(data) {
           if (data.count > 0 && data.count <= 50) {
             $("#specimen-counter").text(data.count).show();

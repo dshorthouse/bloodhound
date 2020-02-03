@@ -1,40 +1,47 @@
-%nav{class:"navbar navbar-expand-md navbar-dark bg-dark"}
+%nav{class:"navbar navbar-expand-sm navbar-dark bg-dark"}
   %a{class:"navbar-brand", href:"/"}
     %img{src: "/images/logo.png", height:48, alt: "Bloodhound"}
   %button{class:"navbar-toggler", type:"button", "data-toggle":"collapse", "data-target":"#navbarSupportedContent", "aria-controls":"navbarSupportedContent", "aria-expanded":"false", "aria-label":"Toggle navigation"}
     %span{class:"navbar-toggler-icon"}
   %div{class: "collapse navbar-collapse", id:"navbarSupportedContent"}
-    %ul{class: "navbar-nav mr-auto"}
-      %li{class: "nav-item"}
+    %ul{class: "navbar-nav mr-sm-auto"}
+      %li{class: "nav-item mr-2"}
         %a{ href: "/roster", class:"nav-link#{locals[:active_page] == "roster" ? " active" : nil}" }
           %i{class:"fas fa-users"}
-          = I18n.t('layout.profiles')
-      %li{class: "nav-item"}
+          %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
+            = I18n.t('layout.profiles')
+      %li{class: "nav-item mr-2"}
         %a{ href: "/trainers", class: "nav-link#{locals[:active_page] == "trainers" ? " active" : nil}"}
           %i{class:"fas fa-bone"}
-          = I18n.t('layout.trainers')
-      %li{class: "nav-item"}
+          %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
+            = I18n.t('layout.trainers')
+      %li{class: "nav-item mr-2"}
         %a{ href: "/organizations", class:"nav-link#{locals[:active_page] == "organizations" ? " active" : nil}" }
           %i{class:"fas fa-building"}
-          = I18n.t('layout.organizations')
-      %li{class: "nav-item"}
+          %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
+            = I18n.t('layout.organizations')
+      %li{class: "nav-item mr-2"}
         %a{ href: "/datasets", class:"nav-link#{locals[:active_page] == "datasets" ? " active" : nil}" }
           %i{class:"fas fa-database"}
-          = I18n.t('layout.datasets')
-      %li{class: "nav-item"}
+          %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
+            = I18n.t('layout.datasets')
+      %li{class: "nav-item mr-2"}
         %a{ href: "/countries", class:"nav-link#{locals[:active_page] == "countries" ? " active" : nil}" }
           %i{class:"fas fa-globe"}
-          = I18n.t('layout.countries')
-      %li{class: "nav-item"}
+          %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
+            = I18n.t('layout.countries')
+      %li{class: "nav-item mr-2"}
         %a{ href: '/agents', class: "nav-link#{locals[:active_page] == "agents" ? " active" : nil}" }
           %i{class:"fas fa-user-secret"}
-          = I18n.t('layout.agents')
-    %ul{class: "navbar-nav"}
+          %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
+            = I18n.t('layout.agents')
+    %ul{class: "navbar-nav mr-2"}
       - if authorized?
         %li{class: "nav-item"}
           %a{ href: "/help-others", class: "nav-link#{locals[:active_page] == "help" ? " active" : nil}"}
             %i{class:"fas fa-hands-helping"}
-            = I18n.t('layout.help_others')
+            %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
+              = I18n.t('layout.help_others')
       - if authorized?
         %li{class: "nav-item"}
           %div{class:"btn-group"}
