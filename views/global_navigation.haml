@@ -26,6 +26,11 @@
           %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
             = I18n.t('layout.datasets')
       %li{class: "nav-item mr-2"}
+        %a{ href: "/articles", class:"nav-link#{locals[:active_page] == "articles" ? " active" : nil}" }
+          %i{class:"fas fa-file-alt"}
+          %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
+            = I18n.t('layout.articles')
+      %li{class: "nav-item mr-2"}
         %a{ href: "/countries", class:"nav-link#{locals[:active_page] == "countries" ? " active" : nil}" }
           %i{class:"fas fa-globe"}
           %span{class:"d-inline-block d-sm-none d-lg-inline-block"}

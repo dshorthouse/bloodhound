@@ -41,6 +41,18 @@ module Sinatra
         }
       end
 
+      def build_article_query(search)
+        {
+          query: {
+            multi_match: {
+              query: search,
+              type: :best_fields,
+              fields: ["citation^3", "abstract"]
+            }
+          }
+        }
+      end
+
     end
   end
 end

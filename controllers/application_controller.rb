@@ -46,6 +46,24 @@ module Sinatra
             haml :'agents/agents', locals: { active_page: "agents" }
           end
 
+          app.get '/articles' do
+            articles
+            haml :'articles/articles', locals: { active_page: "articles" }
+          end
+
+          app.get '/article.json' do
+            content_type "application/json", charset: 'utf-8'
+            search_article
+            format_articles.to_json
+          end
+
+
+          app.get '/article/*' do
+            halt 404 if !params[:splat][0].is_doi?
+            @article = Article.find_by_doi(params[:splat][0])
+            haml :'articles/article', locals: { active_page: "articles" }
+          end
+
           app.get '/countries' do
             @results = []
             @countries = IsoCountryCodes

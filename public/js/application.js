@@ -65,6 +65,8 @@ var Application = (function($, window) {
       this.data_sources.organization.initialize();
       this.data_sources.dataset = this.create_bloodhound("dataset");
       this.data_sources.dataset.initialize();
+      this.data_sources.article = this.create_bloodhound("article");
+      this.data_sources.article.initialize();
     },
     create_bloodhound: function(type) {
       return new Bloodhound({
@@ -82,6 +84,7 @@ var Application = (function($, window) {
     },
     typeahead: function(){
       var self = this;
+
       $("#typeahead-agent").typeahead({
           minLength: 3,
           highlight: true
@@ -154,6 +157,23 @@ var Application = (function($, window) {
             window.location.href = "/admin/dataset/" + datum.datasetkey;
           } else {
             window.location.href = "/dataset/" + datum.datasetkey;
+          }
+        });
+
+      $("#typeahead-article").typeahead({
+          minLength: 3,
+          highlight: true
+        },
+        {
+          name: "article",
+          source : this.data_sources.article.ttAdapter(),
+          display : "citation"
+        }
+        ).on("typeahead:select", function(obj, datum) {
+          if (self.path === "/admin") {
+            window.location.href = "/admin/article/" + datum.doi;
+          } else {
+            window.location.href = "/article/" + datum.doi;
           }
         });
 

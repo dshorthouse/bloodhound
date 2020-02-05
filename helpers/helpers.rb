@@ -9,6 +9,10 @@ class String
     wiki_pattern = /^Q[0-9]{1,}$/
     wiki_pattern.match?(self)
   end
+  def is_doi?
+    doi_pattern = /^\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>])\S)+)\b$/
+    doi_pattern.match?(self)
+  end
 end
 
 module Sinatra
@@ -227,10 +231,6 @@ module Sinatra
           data = User.order("#{params[:order]} #{params[:sort]}")
         end
         @pagy, @results = pagy(data, items: 100)
-      end
-
-      def articles
-        @pagy, @results = pagy(Article.order(created: :desc))
       end
 
       def trainers

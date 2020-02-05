@@ -5,11 +5,13 @@ fr:
     your_profile: Votre profil
     sample_profiles: Exemples
     orcid_login: connecter avec ORCID
+    orcid_logo: logo ORCID
   layout:
     profiles: Profils
     trainers: Entraîneurs
     organizations: Organismes
     datasets: Jeux de Données
+    articles: Articles
     countries: Pays
     agents: Agents
     help_others: Aider les autres
