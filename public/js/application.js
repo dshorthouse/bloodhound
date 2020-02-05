@@ -449,7 +449,7 @@ var Application = (function($, window) {
       } else if (self.path === "/help-others" && self.identifier) {
         slug = self.path + "/" + self.identifier;
       }
-      if (slug) {
+      if (slug.length > 0) {
         $.ajax({
           method: "GET",
           url: slug + "/candidate-count.json"
