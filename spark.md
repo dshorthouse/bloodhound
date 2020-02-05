@@ -133,8 +133,6 @@ val unioned = spark.
     read.
     json(recordedByGroups.toJSON.union(identifiedByGroups.toJSON))
 
-//TODO: use scala-redis and push jobs straight away using JSON signature found on https://github.com/mperham/sidekiq/wiki/FAQ
-
 //concatenate arrays into strings
 def stringify(c: Column) = concat(lit("["), concat_ws(",", c), lit("]"))
 
