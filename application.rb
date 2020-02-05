@@ -66,6 +66,9 @@ class BLOODHOUND < Sinatra::Base
   helpers Sinatra::ContentFor
   helpers Sinatra::Bloodhound::Formatters
   helpers Sinatra::Bloodhound::Helpers
+  helpers Sinatra::Bloodhound::AgentHelpers
+  helpers Sinatra::Bloodhound::UserHelpers
+  helpers Sinatra::Bloodhound::OrganizationHelpers
   helpers Sinatra::Bloodhound::Queries
   helpers Sinatra::Bloodhound::Security
   helpers Sinatra::Bloodhound::Uploaders

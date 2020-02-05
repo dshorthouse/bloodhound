@@ -4,6 +4,8 @@ require File.dirname(File.dirname(__FILE__)) + '/application.rb'
 
 ARGV << '-h' if ARGV.empty?
 
+INDICES = ["agent", "article", "dataset", "organization", "user"]
+
 options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage:populate_search.rb [options]"
@@ -12,7 +14,7 @@ OptionParser.new do |opts|
     options[:rebuild] = true
   end
 
-  opts.on("-i", "--index [directory]", String, "Rebuild a particular index. Acccepted are agent, user, organization, or dataset") do |index|
+  opts.on("-i", "--index [directory]", String, "Rebuild a particular index. Acccepted are #{INDICES.join(", ")}") do |index|
     options[:index] = index
   end
 
@@ -22,42 +24,25 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-index = Bloodhound::ElasticIndexer.new
-
 if options[:rebuild]
-  index.delete_agent_index
-  index.create_agent_index
-  puts "Importing agents..."
-  index.import_agents
-  index.refresh_agent_index
-
-  index.delete_user_index
-  index.create_user_index
-  puts "Importing users..."
-  index.import_users
-  index.refresh_user_index
-
-  index.delete_organization_index
-  index.create_organization_index
-  puts "Importing organizations..."
-  index.import_organizations
-  index.refresh_organization_index
-
-  index.delete_dataset_index
-  index.create_dataset_index
-  puts "Importing datasets..."
-  index.import_datasets
-  index.refresh_dataset_index
+  INDICES.each do |index_name|
+    index = Object.const_get("Bloodhound::Elastic#{index_name.capitalize}").new
+    index.delete_index
+    index.create_index
+    puts "Importing #{index_name}s..."
+    index.import
+    index.refresh_index
+  end
 end
 
 if options[:index]
-  accepted_list = ["agent","user","organization","dataset"]
-  if accepted_list.include?(options[:index])
-    index.send("delete_#{options[:index]}_index")
-    index.send("create_#{options[:index]}_index")
+  if INDICES.include?(options[:index])
+    index = Object.const_get("Bloodhound::Elastic#{options[:index].capitalize}").new
+    index.delete_index
+    index.create_index
     puts "Importing #{options[:index]}s..."
-    index.send("import_#{options[:index]}s")
-    index.send("refresh_#{options[:index]}_index")
+    index.import
+    index.refresh_index
   else
     puts "Accepted values are #{accepted_list.join(", ")}"
   end
