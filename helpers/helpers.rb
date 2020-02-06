@@ -10,7 +10,7 @@ class String
     wiki_pattern.match?(self)
   end
   def is_doi?
-    doi_pattern = /^\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>])\S)+)\b$/
+    doi_pattern = /^10.\d{4,9}\/[-._;()\/:<>A-Z0-9]+$/i
     doi_pattern.match?(self)
   end
 end
