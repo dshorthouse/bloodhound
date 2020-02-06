@@ -51,16 +51,15 @@ module Sinatra
             haml :'articles/articles', locals: { active_page: "articles" }
           end
 
-          app.get '/article.json' do
-            content_type "application/json", charset: 'utf-8'
+          app.get '/article/search' do
             search_article
-            format_articles.to_json
+            haml :'articles/search', locals: { active_page: "articles" }
           end
-
 
           app.get '/article/*' do
             halt 404 if !params[:splat][0].is_doi?
             @article = Article.find_by_doi(params[:splat][0])
+            halt 404 if @article.nil?
             haml :'articles/article', locals: { active_page: "articles" }
           end
 

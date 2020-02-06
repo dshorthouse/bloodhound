@@ -1,7 +1,21 @@
 -content_for :title do
   Article
 
+-content_for :scripts do
+  %script{src: "https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"}
+
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
       %h1{class:"h2"} Article
+    = haml :'partials/article/search', layout: false
+
+%div{class: "card"}
+  %div{class: "card-header"}
+    %p{class: "citation card-title"}
+      #{h(@article.citation)}
+      %a{href: "https://doi.org/#{@article.doi}"} https://doi.org/#{@article.doi}
+  %div{class: "card-body"}
+    %div{"data-badge-popover":"right", "data-badge-type":"donut", "data-doi":"#{@article.doi}", "data-hide-no-mentions":"true", class:"altmetric-embed pull-left mr-2 float-left"}
+    %p{class:"card-text text-muted"} #{h(@article.abstract)}
+  %div{class: "card-footer d-flex"}
