@@ -8,44 +8,44 @@
       %li{class: "nav-item mr-2"}
         %a{ href: "/roster", class:"nav-link#{locals[:active_page] == "roster" ? " active" : nil}" }
           %i{class:"fas fa-users"}
-          %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
+          %span{class:"d-inline-block d-sm-none d-xl-inline-block"}
             = I18n.t('layout.profiles')
       %li{class: "nav-item mr-2"}
         %a{ href: "/trainers", class: "nav-link#{locals[:active_page] == "trainers" ? " active" : nil}"}
           %i{class:"fas fa-bone"}
-          %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
+          %span{class:"d-inline-block d-sm-none d-xl-inline-block"}
             = I18n.t('layout.trainers')
       %li{class: "nav-item mr-2"}
         %a{ href: "/organizations", class:"nav-link#{locals[:active_page] == "organizations" ? " active" : nil}" }
           %i{class:"fas fa-building"}
-          %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
+          %span{class:"d-inline-block d-sm-none d-xl-inline-block"}
             = I18n.t('layout.organizations')
       %li{class: "nav-item mr-2"}
         %a{ href: "/datasets", class:"nav-link#{locals[:active_page] == "datasets" ? " active" : nil}" }
           %i{class:"fas fa-database"}
-          %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
+          %span{class:"d-inline-block d-sm-none d-xl-inline-block"}
             = I18n.t('layout.datasets')
       %li{class: "nav-item mr-2"}
         %a{ href: "/articles", class:"nav-link#{locals[:active_page] == "articles" ? " active" : nil}" }
           %i{class:"fas fa-file-alt"}
-          %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
+          %span{class:"d-inline-block d-sm-none d-xl-inline-block"}
             = I18n.t('layout.articles')
       %li{class: "nav-item mr-2"}
         %a{ href: "/countries", class:"nav-link#{locals[:active_page] == "countries" ? " active" : nil}" }
           %i{class:"fas fa-globe"}
-          %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
+          %span{class:"d-inline-block d-sm-none d-xl-inline-block"}
             = I18n.t('layout.countries')
       %li{class: "nav-item mr-2"}
         %a{ href: '/agents', class: "nav-link#{locals[:active_page] == "agents" ? " active" : nil}" }
           %i{class:"fas fa-user-secret"}
-          %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
+          %span{class:"d-inline-block d-sm-none d-xl-inline-block"}
             = I18n.t('layout.agents')
     %ul{class: "navbar-nav mr-2"}
       - if authorized?
         %li{class: "nav-item"}
           %a{ href: "/help-others", class: "nav-link#{locals[:active_page] == "help" ? " active" : nil}"}
             %i{class:"fas fa-hands-helping"}
-            %span{class:"d-inline-block d-sm-none d-lg-inline-block"}
+            %span{class:"d-inline-block d-sm-none d-xl-inline-block"}
               = I18n.t('layout.help_others')
       - if authorized?
         %li{class: "nav-item"}

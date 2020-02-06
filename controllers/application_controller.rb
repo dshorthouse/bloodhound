@@ -56,11 +56,33 @@ module Sinatra
             haml :'articles/search', locals: { active_page: "articles" }
           end
 
+          app.get '/article/*/agents/counts' do
+            article_agents_counts
+            locals = {
+              active_page: "articles",
+              active_tab: "agents",
+              active_subtab: "counts"
+            }
+            haml :'articles/agents_counts', locals: locals
+          end
+
+          app.get '/article/*/agents' do
+            article_agents
+            locals = {
+              active_page: "articles",
+              active_tab: "agents",
+              active_subtab: "default"
+            }
+            haml :'articles/agents', locals: locals
+          end
+
           app.get '/article/*' do
-            halt 404 if !params[:splat][0].is_doi?
-            @article = Article.find_by_doi(params[:splat][0])
-            halt 404 if @article.nil?
-            haml :'articles/article', locals: { active_page: "articles" }
+            article_users
+            locals = {
+              active_page: "articles",
+              active_tab: "people"
+            }
+            haml :'articles/users', locals: locals
           end
 
           app.get '/countries' do

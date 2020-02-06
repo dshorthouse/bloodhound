@@ -27,5 +27,11 @@
       %div{"data-badge-popover":"right", "data-badge-type":"donut", "data-doi":"#{article.doi}", "data-hide-no-mentions":"true", class:"altmetric-embed pull-left mr-2 float-left"}
       %p{class:"card-text text-muted"} #{h(article.abstract)}
     %div{class: "card-footer d-flex"}
+      %div{class: "col small text-left text-muted"}
+        %span{class: "badge badge-light badge-pill citation-correction"} #{number_with_delimiter(article.claimed_specimen_count)}
+        #{'claim'.pluralize(article.claimed_specimen_count)}
+      %div{class: "col small text-right text-muted"}
+        %span{class: "badge badge-light badge-pill citation-correction"} #{number_with_delimiter(article.article_occurrences.count)}
+        #{'occurrence'.pluralize(article.article_occurrences.count)}
 
 = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

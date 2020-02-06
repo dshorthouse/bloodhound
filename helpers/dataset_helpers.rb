@@ -4,6 +4,13 @@ module Sinatra
   module Bloodhound
     module DatasetHelpers
 
+      def dataset_from_param
+        @dataset = Dataset.find_by_datasetKey(params[:id]) rescue nil
+        if @dataset.nil?
+          halt 404
+        end
+      end
+
       def search_dataset
         searched_term = params[:q]
         @results = []
@@ -32,36 +39,22 @@ module Sinatra
       end
 
       def dataset_users
-        @dataset = Dataset.find_by_datasetKey(params[:id]) rescue nil
-        if @dataset.nil?
-          halt 404
-        end
+        dataset_from_param
         @pagy, @results = pagy(@dataset.users.order(:family))
       end
 
       def dataset_agents
-        @dataset = Dataset.find_by_datasetKey(params[:id]) rescue nil
-        if @dataset.nil?
-          halt 404
-        end
-
+        dataset_from_param
         @pagy, @results = pagy_array(@dataset.agents.to_a, items: 75)
       end
 
       def dataset_agents_counts
-        @dataset = Dataset.find_by_datasetKey(params[:id]) rescue nil
-        if @dataset.nil?
-          halt 404
-        end
-
+        dataset_from_param
         @pagy, @results = pagy_array(@dataset.agents_occurrence_counts.to_a, items: 75)
       end
 
       def dataset_stats
-        @dataset = Dataset.find_by_datasetKey(params[:id]) rescue nil
-        if @dataset.nil?
-          halt {}
-        end
+        dataset_from_param
         { people: @dataset.users.count }
       end
 
