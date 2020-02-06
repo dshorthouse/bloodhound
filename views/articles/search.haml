@@ -14,7 +14,8 @@
     %div{class:"mr-auto p-2"}
       %h1{class:"h2"} Articles
       %p.lead.text-muted
-        #{number_with_delimiter(Article.count)} articles with cited downloads from the Global Biodiversity Information Facility (GBIF)
+        #{number_with_delimiter(Article.count)} articles that cited downloads from
+        %a{href: "https://gbif.org"} GBIF
     = haml :'partials/article/search', layout: false
 
 - if @pagy && @pagy.count == 0

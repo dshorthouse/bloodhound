@@ -26,6 +26,12 @@
       %span{class: "badge badge-light badge-pill citation-correction"} #{number_with_delimiter(@article.article_occurrences.count)}
       #{'occurrence'.pluralize(@article.article_occurrences.count)}
 
+- if admin_authorized?
+  %div{class:"mt-3 mb-3 pt-3 border-top text-center"}
+    %a{href: "/admin/article/#{@article.id}"}
+      %i{class:"fas fa-cog"}
+      Settings
+
 = haml :'partials/article/tabs', layout:false, locals: { active_tab: locals[:active_tab] }
 
 - if @pagy.count == 0
