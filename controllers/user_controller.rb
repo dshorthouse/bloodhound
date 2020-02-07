@@ -145,7 +145,7 @@ module Sinatra
               @pagy, @results = {}, []
               if @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
-                @pagy, @results = pagy(@viewed_user.articles_citing_specimens, page: page)
+                @pagy, @results = pagy(@viewed_user.articles_citing_specimens, items: 10, page: page)
               end
               haml :'public/citations', locals: { active_page: "roster" }
             rescue Pagy::OverflowError

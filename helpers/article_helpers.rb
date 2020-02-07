@@ -15,8 +15,8 @@ module Sinatra
       end
 
 
-      def articles
-        @pagy, @results = pagy(Article.order(created: :desc))
+      def articles(items: 10)
+        @pagy, @results = pagy(Article.order(created: :desc), items: items)
       end
 
       def search_article

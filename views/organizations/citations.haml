@@ -27,7 +27,7 @@
         #{number_with_delimiter(@pagy.count)} #{'publication'.pluralize(@pagy.count)} used specimen data downloaded from the Global Biodiversity Information Facility (GBIF) based on specimens collected or identified by current and previous personnel while affiliated with #{@organization.name}.
 
       %div{class:"citation-wrapper"}
-        - @articles.each do |article|
+        - @results.each do |article|
           %div{class: "card"}
             %div{class: "card-header"}
               %p{class: "citation card-title"}

@@ -303,8 +303,7 @@ module Sinatra
           app.get '/organization/:id/citations' do
             begin
               page = (params[:page] || 1).to_i
-              @articles = organization_articles
-              @pagy, @results = pagy(@articles, page: page)
+              @pagy, @results = pagy(organization_articles, items: 10, page: page)
               locals = {
                 active_page: "organizations",
                 active_tab: "organization-articles"
