@@ -205,6 +205,7 @@ GEM
       ruby_dig (~> 0.0.2)
     orm_adapter (0.5.0)
     pagy (3.7.2)
+    parallel (1.19.1)
     parsley-store (0.3.4)
     pluck_to_hash (1.0.2)
       activerecord (>= 4.0.2)
@@ -352,6 +353,7 @@ DEPENDENCIES
   oj
   omniauth-orcid
   pagy
+  parallel
   pluck_to_hash
   pony
   rack-contrib

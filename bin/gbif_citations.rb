@@ -24,7 +24,6 @@ OptionParser.new do |opts|
     options[:article_id] = article_id
   end
 
-
   opts.on("-e", "--email", "Send out email notifications to users") do
     options[:email] = true
   end
