@@ -13,6 +13,7 @@ module Bloodhound
     def add_flat_pages
       @map.add '/about'
       @map.add '/agents'
+      @map.add '/articles'
       @map.add '/countries'
       @map.add '/datasets'
       @map.add '/donate'
@@ -59,6 +60,12 @@ module Bloodhound
     def add_datasets
       Dataset.find_each do |d|
         @map.add "/dataset/#{d.datasetKey}"
+      end
+    end
+
+    def add_articles
+      Article.find_each do |a|
+        @map.add "/article/#{a.doi}"
       end
     end
 
