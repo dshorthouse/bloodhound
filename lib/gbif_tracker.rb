@@ -92,21 +92,15 @@ module Bloodhound
     end
 
     def flush_irrelevant_entries
-      processes = 8
-      total = Occurrence.count
-      batch_size = 50_000
-      batch_count = (total/batch_size).to_i
-
-      Parallel.map(0..batch_count, progress: "Flushing...", in_processes: 8) do |i|
-        start = (i == 0) ? 0 : i*batch_size+1
-        occurrence_ids = Occurrence.where("gbifID > ?", start).limit(batch_size).pluck(:id)
-        article_ids = ArticleOccurrence.where(occurrence_id: occurrence_ids).pluck(:occurrence_id)
-
-        missing = article_ids - occurrence_ids
-        if missing.size > 0
-          ArticleOccurrence.where(occurrence_id: missing).delete_all
-        end
-      end
+      sql = "DELETE
+              article_occurrences
+            FROM
+              article_occurrences
+            LEFT JOIN
+              occurrences ON article_occurrences.occurrence_id = occurrences.gbifID
+            WHERE
+              occurrences.gbifID IS NULL"
+      ActiveRecord::Base.connection.execute(sql)
     end
 
     private
