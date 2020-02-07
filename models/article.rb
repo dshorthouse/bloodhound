@@ -22,8 +22,7 @@ class Article < ActiveRecord::Base
 
   def claimed_specimen_count
     article_occurrences.select(:occurrence_id)
-                       .joins(:user_occurrences)
-                       .where(user_occurrences: { visible: true })
+                       .joins("INNER JOIN user_occurrences FORCE INDEX (user_occurrence_idx) ON article_occurrences.occurrence_id = user_occurrences.occurrence_id")
                        .distinct
                        .count
   end

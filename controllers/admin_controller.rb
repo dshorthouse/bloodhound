@@ -14,7 +14,7 @@ module Sinatra
 
           app.get '/admin/articles' do
             admin_protected!
-            articles(items: 50)
+            @pagy, @results = pagy(Article.order(created: :desc), items: 50)
             haml :'admin/articles', locals: { active_page: "administration" }
           end
 

@@ -47,7 +47,8 @@ module Sinatra
           end
 
           app.get '/articles' do
-            articles
+            articles = Article.where(processed: true).order(created: :desc)
+            @pagy, @results = pagy(articles, items: 10)
             haml :'articles/articles', locals: { active_page: "articles" }
           end
 

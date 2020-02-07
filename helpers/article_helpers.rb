@@ -14,10 +14,6 @@ module Sinatra
         end
       end
 
-      def articles(items: 10)
-        @pagy, @results = pagy(Article.order(created: :desc), items: items)
-      end
-
       def search_article
         searched_term = params[:q]
         @results = []
