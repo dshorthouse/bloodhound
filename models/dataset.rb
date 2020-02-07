@@ -30,7 +30,6 @@ class Dataset < ActiveRecord::Base
   end
 
   def users
-    #TODO: tidy this to be more like has_user? method
     User.joins("INNER JOIN ( SELECT DISTINCT
               user_occurrences.user_id, user_occurrences.visible
             FROM
@@ -44,7 +43,6 @@ class Dataset < ActiveRecord::Base
   end
 
   def user_ids
-    #TODO: tidy this to be more like has_user? method
     User.select(:id)
         .joins("INNER JOIN ( SELECT DISTINCT
               user_occurrences.user_id, user_occurrences.visible
@@ -76,12 +74,10 @@ class Dataset < ActiveRecord::Base
                     .select(:agent_id)
                     .joins(:occurrence)
                     .where(occurrences: { datasetKey: datasetKey })
-                    .distinct
     recorders = OccurrenceRecorder
                     .select(:agent_id)
                     .joins(:occurrence)
                     .where(occurrences: { datasetKey: datasetKey })
-                    .distinct
     combined = recorders
                     .union_all(determiners)
                     .unscope(:order)
@@ -97,11 +93,10 @@ class Dataset < ActiveRecord::Base
     recorders = OccurrenceRecorder
                     .joins(:occurrence)
                     .where(occurrences: { datasetKey: datasetKey })
-    combined = recorders
-                    .union(determiners)
-                    .group(:agent_id)
-                    .order(Arel.sql("count(*) desc"))
-                    .count
+    recorders.union(determiners)
+             .group(:agent_id)
+             .order(Arel.sql("count(*) desc"))
+             .count
   end
 
   def agents_occurrence_count
@@ -139,21 +134,21 @@ class Dataset < ActiveRecord::Base
   end
 
   def add_search
-    es = Bloodhound::ElasticIndexer.new
-    if !es.get_dataset(self)
-      es.add_dataset(self)
+    es = Bloodhound::ElasticDataset.new
+    if !es.get(self)
+      es.add(self)
     end
   end
 
   def update_search
-    es = Bloodhound::ElasticIndexer.new
-    es.update_dataset(self)
+    es = Bloodhound::ElasticDataset.new
+    es.update(self)
   end
 
   def remove_search
-    es = Bloodhound::ElasticIndexer.new
+    es = Bloodhound::ElasticDataset.new
     begin
-      es.delete_dataset(self)
+      es.delete(self)
     rescue
     end
   end

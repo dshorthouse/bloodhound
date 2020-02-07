@@ -180,21 +180,21 @@ class Organization < ActiveRecord::Base
   private
 
   def add_search
-    es = Bloodhound::ElasticIndexer.new
-    if !es.get_organization(self)
-      es.add_organization(self)
+    es = Bloodhound::ElasticOrganization.new
+    if !es.get(self)
+      es.add(self)
     end
   end
 
   def update_search
-    es = Bloodhound::ElasticIndexer.new
-    es.update_organization(self)
+    es = Bloodhound::ElasticOrganization.new
+    es.update(self)
   end
 
   def remove_search
-    es = Bloodhound::ElasticIndexer.new
+    es = Bloodhound::ElasticOrganization.new
     begin
-      es.delete_organization(self)
+      es.delete(self)
     rescue
     end
   end

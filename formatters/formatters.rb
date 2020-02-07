@@ -125,6 +125,16 @@ module Sinatra
         }
       end
 
+      def format_articles
+        @results.map{ |n|
+          { id: n[:_source][:id],
+            score: n[:_score],
+            citation: n[:_source][:citation],
+            doi: n[:_source][:doi]
+          }
+        }
+      end
+
       def format_lifespan(user)
         born = !user.date_born.nil? ? user.date_born.to_formatted_s(:long) : "?"
         died = !user.date_died.nil? ? user.date_died.to_formatted_s(:long) : "?"

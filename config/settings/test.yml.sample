@@ -41,6 +41,7 @@ elastic:
   user_index: 'bloodhound_users'
   organization_index: 'bloodhound_organizations'
   dataset_index: 'bloodhound_datasets'
+  article_index: 'bloodhound_articles'
 gmail:
   domain: ''
   email: '____@gmail.com'

@@ -14,7 +14,7 @@ module Sinatra
 
           app.get '/admin/articles' do
             admin_protected!
-            articles
+            articles(items: 50)
             haml :'admin/articles', locals: { active_page: "administration" }
           end
 

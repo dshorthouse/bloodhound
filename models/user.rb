@@ -670,26 +670,26 @@ class User < ActiveRecord::Base
 
   def add_search
     if !self.family.blank?
-      es = Bloodhound::ElasticIndexer.new
-      es.add_user(self)
+      es = Bloodhound::ElasticUser.new
+      es.add(self)
     end
   end
 
   def update_search
     if !self.family.blank?
-      es = Bloodhound::ElasticIndexer.new
-      if !es.get_user(self)
-        es.add_user(self)
+      es = Bloodhound::ElasticUser.new
+      if !es.get(self)
+        es.add(self)
       else
-        es.update_user(self)
+        es.update(self)
       end
     end
   end
 
   def remove_search
-    es = Bloodhound::ElasticIndexer.new
+    es = Bloodhound::ElasticUser.new
     begin
-      es.delete_user(self)
+      es.delete(self)
     rescue
     end
   end

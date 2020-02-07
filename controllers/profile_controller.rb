@@ -331,7 +331,7 @@ module Sinatra
           app.get '/profile/citations' do
             protected!
             page = (params[:page] || 1).to_i
-            @pagy, @results = pagy(@user.articles_citing_specimens, page: page)
+            @pagy, @results = pagy(@user.articles_citing_specimens, items: 10, page: page)
             haml :'profile/citations', locals: { active_page: "profile" }
           end
 

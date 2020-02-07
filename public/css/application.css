@@ -228,6 +228,9 @@ dl.dl-horizontal dd.line-break {
 }
 
 /* CARDS */
+.border-none {
+  border: 0px;
+}
 .card-header {
   background-color: transparent;
   border-bottom:0px;
