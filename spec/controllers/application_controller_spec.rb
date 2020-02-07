@@ -55,6 +55,16 @@ describe "Bloodhound Application Controller" do
     expect(last_response).to be_ok
   end
 
+  it "should allow accessing the articles page" do
+    get '/articles'
+    expect(last_response).to be_ok
+  end
+
+  it "should allow accessing the datasets page" do
+    get '/datasets'
+    expect(last_response).to be_ok
+  end
+
   it "should allow accessing the about page" do
     get '/about'
     expect(last_response).to be_ok
