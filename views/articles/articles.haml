@@ -18,7 +18,7 @@
         %a{href: "https://gbif.org"} GBIF
     = haml :'partials/article/search', layout: false
 
-- @results.find_each do |article|
+- @results.each do |article|
   %div{class: "card card-profile mb-3"}
     %div{class: "card-header"}
       %p{class: "citation card-title"}

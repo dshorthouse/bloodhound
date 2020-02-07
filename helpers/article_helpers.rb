@@ -14,7 +14,6 @@ module Sinatra
         end
       end
 
-
       def articles(items: 10)
         @pagy, @results = pagy(Article.order(created: :desc), items: items)
       end
