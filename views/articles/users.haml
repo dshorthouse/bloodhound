@@ -41,10 +41,14 @@
 
 - if @pagy.count == 0
   %div{class: "alert alert-info tiny-margins", role: "alert"}
-    People have not yet claimed or were attributed specimens represented in this article
+    People have not yet claimed or were attributed specimens represented in data downloaded from
+    %a{href:"https://gbif.org"} GBIF
+    in support of this article
 - else
   %div{class: "alert alert-info tiny-margins", role: "alert"}
-    #{@pagy.count} people collected or identified specimens used by the authors in the analyses of data for this article
+    #{@pagy.count} people collected or identified specimens included in data downloaded from
+    %a{href: "https://gbif.org"} GBIF
+    in support of this article
   - @results.in_groups_of(3).each do |group|
     %div{class: "card-deck mt-3"}
       - group.each do |u|
