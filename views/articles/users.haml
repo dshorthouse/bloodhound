@@ -39,7 +39,7 @@
     People have not yet claimed or were attributed specimens represented in this article
 - else
   %div{class: "alert alert-info tiny-margins", role: "alert"}
-    #{@pagy.count} people who collected or identified specimens used by the authors in the analyses of data for this article
+    #{@pagy.count} people collected or identified specimens used by the authors in the analyses of data for this article
   - @results.in_groups_of(3).each do |group|
     %div{class: "card-deck mt-3"}
       - group.each do |u|
