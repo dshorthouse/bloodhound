@@ -46,7 +46,7 @@
     in support of this article
 - else
   %div{class: "alert alert-info tiny-margins", role: "alert"}
-    #{@pagy.count} people collected or identified specimens included in data downloaded from
+    #{@pagy.count} #{'person'.pluralize(@pagy.count)} collected or identified specimens included in data downloaded from
     %a{href: "https://gbif.org"} GBIF
     in support of this article
   - @results.in_groups_of(3).each do |group|
