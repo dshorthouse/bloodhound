@@ -65,6 +65,7 @@ class Article < ActiveRecord::Base
                     .joins("INNER JOIN article_occurrences ON article_occurrences.occurrence_id = occurrence_recorders.occurrence_id")
                     .where(article_occurrences: { article_id: id })
     recorders.union(determiners)
+             .joins(:agent)
              .group(:agent_id)
              .order(Arel.sql("count(*) desc"))
              .count

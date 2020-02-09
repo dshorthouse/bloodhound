@@ -43,10 +43,14 @@
 
 - if @pagy.count == 0
   %div{class: "alert alert-info tiny-margins", role: "alert"}
-    Unverified and unresolved names associated with specimens used by the authors in the analyses of data for this article have not yet been recorded.
+    Unverified and unresolved names associated with specimens represented in data downloaded from
+    %a{href:"https://gbif.org"} GBIF
+    in support of this article have not been found
 - else
   %div{class: "alert alert-info tiny-margins", role: "alert"}
-    #{number_with_delimiter(@pagy.count)} unverified and unresolved names associated with specimens used by the authors in the analyses of data for this article.
+    #{number_with_delimiter(@pagy.count)} unverified and unresolved names associated with specimens in data downloaded from
+    %a{href:"https://gbif.org"} GBIF
+    in support of this article
   %div{class: "row"}
     - @results.in_groups_of(25, false).each do |group|
       %div{class: "col-12 col-sm-3 mb-3"}
