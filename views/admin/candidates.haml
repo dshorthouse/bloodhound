@@ -34,14 +34,14 @@
 
 - if @pagy.count == 0
   %div{class: "alert alert-info row tiny-margins", role:"alert"}
-    %div{class: "col col-12 col-sm-12 col-m-8 col-lg-8 pl-0"}
+    %div{class: "col col-12 col-sm-12 col-md-8 col-lg-8 pl-0"}
       Bloodhound did not sniff any specimens indexed by the Global Biodiversity Information Facility (GBIF) that were collected or identified.
 
       %div{class:"form-check d-inline-flex"}
         - checked = params[:relaxed] == "1" ? "checked" : nil
         %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
         %label{for:"relaxed", class:"relaxed"} Make less exact
-    %div{class:"col col-12 col-sm-8 col-m-6 col-lg-4"}
+    %div{class:"col col-12 col-sm-8 col-md-6 col-lg-4"}
       %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
         %div{class: "inputs search-agent form-group"}
           %label{for: "typeahead"}= "Search"
@@ -49,7 +49,7 @@
 - else
   = haml :'partials/admin/fixed_navbar', layout: false
   %div{id: "helper-info", class: "alert alert-#{alert_class} row candidates-alert tiny-margins", role: "alert"}
-    %div{class: "col col-12 col-sm-12 col-m-8 col-lg-8 pl-0"}
+    %div{class: "col col-12 col-sm-12 col-md-8 col-lg-8 pl-0"}
       = succeed "." do
         Bloodhound sniffed #{number_with_delimiter(@total, delimeter: ",")} specimens for
         %span{class:"font-weight-bold"} #{placeholder}
@@ -70,7 +70,7 @@
           %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
           %label{for:"relaxed", class:"relaxed"} Make less exact
 
-    %div{class:"col col-12 col-sm-8 col-m-6 col-lg-4"}
+    %div{class:"col col-12 col-sm-8 col-md-6 col-lg-4"}
       %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
         %div{class: "inputs search-agent form-group"}
           %label{for: "typeahead", class:"font-weight-bold col-form-label", style:"margin-right:1rem"}= "Search"

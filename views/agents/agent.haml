@@ -6,7 +6,7 @@
 
 %div{class: "alert alert-warning tiny-margins", role:"alert", style:"margin-top:0px;"}
   %div{class:"row"}
-    %div{class: "col col-10"}
+    %div{class: "col col-12 col-lg-10"}
       Sniffed #{number_with_delimiter(@pagy.count)} specimens for #{@agent.fullname}. Not all columns are shown and
       = succeed "." do
         %span{class:"font-italic"} this URL is unreliable for linking
@@ -17,7 +17,7 @@
           %i{class:"fas fa-hands-helping"}
           #{@agent.fullname}
         the person and help attribute specimens.
-    %div{class: "col col-2 text-right pr-3"}
+    %div{class: "col col-12 col-lg-2 text-lg-right pr-3"}
       - if !authorized?
         %a{ href:"/auth/orcid" }
           Login
