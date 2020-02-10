@@ -18,11 +18,7 @@
           #{@agent.fullname}
         the person and help attribute specimens.
     %div{class: "col col-12 col-lg-2 text-lg-right pr-3"}
-      - if !authorized?
-        %a{ href:"/auth/orcid" }
-          Login
-        to download
-      - else
+      - if authorized?
         %a{href: "/agent/#{@agent.id}/specimens.csv"}
           %i{class:"fas fa-file-csv text-dark h5 m-0 p-1"}
           CSV
