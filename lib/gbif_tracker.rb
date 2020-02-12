@@ -38,6 +38,7 @@ module Bloodhound
     def process_article(article_id)
       article = Article.find(article_id)
       process_data_packages(article)
+      flush_irrelevant_entries(article_id: article.id)
       article.processed = true
       article.save
 
@@ -49,6 +50,7 @@ module Bloodhound
     def process_articles
       Article.where(processed: [false, nil]).find_each do |article|
         process_data_packages(article)
+        flush_irrelevant_entries(article_id: article.id)
         article.processed = true
         article.save
 
@@ -91,19 +93,26 @@ module Bloodhound
       end.lazy
     end
 
-    def flush_irrelevant_entries
-      sql = "DELETE
-              article_occurrences
-            FROM
-              article_occurrences
-            LEFT JOIN
-              occurrences ON article_occurrences.occurrence_id = occurrences.gbifID
-            WHERE
-              occurrences.gbifID IS NULL"
+    def flush_irrelevant_entries(article_id: nil)
+      sql = delete_entries_sql
+      if article_id
+        sql << " AND article_occurrences.article_id = #{article_id}"
+      end
       ActiveRecord::Base.connection.execute(sql)
     end
 
     private
+
+    def delete_entries_sql
+      "DELETE
+          article_occurrences
+       FROM
+          article_occurrences
+       LEFT JOIN
+          occurrences ON article_occurrences.occurrence_id = occurrences.gbifID
+       WHERE
+          occurrences.gbifID IS NULL"
+    end
 
     def defaults
       { first_page_only: false, max_size: 100_000_000 }
