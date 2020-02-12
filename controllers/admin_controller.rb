@@ -20,13 +20,19 @@ module Sinatra
 
           app.get '/admin/article/:id' do
             admin_protected!
-            @article = Article.find(params[:id])
+            @article = Article.find(params[:id]) rescue nil
+            if @article.nil?
+              halt 404
+            end
             haml :'admin/article', locals: { active_page: "administration" }
           end
 
           app.post '/admin/article/:id' do
             admin_protected!
-            @article = Article.find(params[:id])
+            @article = Article.find(params[:id]) rescue nil
+            if @article.nil?
+              halt 404
+            end
             data = { doi: @article.doi }
             @article.update(data)
             flash.next[:updated] = true
@@ -35,7 +41,10 @@ module Sinatra
 
           app.delete '/admin/article/:id' do
             admin_protected!
-            article = Article.find(params[:id])
+            article = Article.find(params[:id]) rescue nil
+            if article.nil?
+              halt 404
+            end
             title = article.citation.dup
             article.destroy
             flash.next[:destroyed] = title
@@ -74,7 +83,10 @@ module Sinatra
 
           app.post '/admin/dataset/:id' do
             admin_protected!
-            @dataset = Dataset.find(params[:id])
+            @dataset = Dataset.find(params[:id]) rescue nil
+            if @dataset.nil?
+              halt 404
+            end
             title = params[:title].blank? ? nil : params[:title]
             doi = params[:doi].blank? ? nil : params[:doi]
             license = params[:license].blank? ? nil : params[:license]
@@ -94,7 +106,10 @@ module Sinatra
 
           app.delete '/admin/dataset/:id' do
             admin_protected!
-            dataset = Dataset.find(params[:id])
+            dataset = Dataset.find(params[:id]) rescue nil
+            if dataset.nil?
+              halt 404
+            end
             title = dataset.title.dup
             dataset.destroy
             flash.next[:destroyed] = title
@@ -138,13 +153,19 @@ module Sinatra
 
           app.get '/admin/organization/:id' do
             admin_protected!
-            @organization = Organization.find(params[:id])
+            @organization = Organization.find(params[:id]) rescue nil
+            if @organization.nil?
+              halt 404
+            end
             haml :'admin/organization', locals: { active_page: "administration" }
           end
 
           app.post '/admin/organization/:id' do
             admin_protected!
-            @organization = Organization.find(params[:id])
+            @organization = Organization.find(params[:id]) rescue nil
+            if @organization.nil?
+              halt 404
+            end
             name = params[:name].blank? ? nil : params[:name]
             address = params[:address].blank? ? nil : params[:address]
             isni = params[:isni].blank? ? nil : params[:isni]
@@ -172,7 +193,10 @@ module Sinatra
 
           app.delete '/admin/organization/:id' do
             admin_protected!
-            organization = Organization.find(params[:id])
+            organization = Organization.find(params[:id]) rescue nil
+            if organization.nil?
+              halt 404
+            end
             title = organization.name.dup
             organization.destroy
             flash.next[:destroyed] = title
@@ -224,7 +248,10 @@ module Sinatra
 
           app.delete '/admin/user/:id' do
             admin_protected!
-            @admin_user = User.find(params[:id])
+            @admin_user = User.find(params[:id]) rescue nil
+            if @admin_user.nil?
+              halt 404
+            end
             name = @admin_user.fullname.dup
             @admin_user.destroy
             @admin_user.flush_caches
