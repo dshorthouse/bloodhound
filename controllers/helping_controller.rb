@@ -180,8 +180,9 @@ module Sinatra
               end
 
               if @viewed_user.family.nil?
-                @results = []
-                @total = nil
+                results = []
+                @total = 0
+                @pagy, @results = pagy_array(results)
               else
                 id_scores = candidate_agents(@viewed_user).map{|a| { id: a[:id], score: a[:score] } }.compact
                 if !id_scores.empty?
