@@ -23,7 +23,7 @@
         %p{class: "text-center text-muted font-italic pt-2"}
           #{@viewed_user.keywords.split("|").join(", ")}
 
-      %div{class: "orcid text-lg-center p-0 mt-4"}
+      %div{class: "orcid text-lg-center p-0 mt-2"}
         - if @viewed_user.orcid
           %a{href: "https://orcid.org/#{@viewed_user.orcid}"}
             %i{class:"fab fa-orcid"}

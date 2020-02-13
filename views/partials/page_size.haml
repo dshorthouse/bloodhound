@@ -1,8 +1,7 @@
 %div{class: "btn-group", style:"margin-bottom:3px"}
   %button{class:"btn btn-light btn-sm dropdown-toggle", type:"button", "data-toggle":"dropdown", "aria-haspopup":"true", "aria-expanded":"false"} Per page
   %div{class:"dropdown-menu", "aria-labelledby":"dropdownMenuButton"}
-    - relaxed = params[:relaxed] == "1" ? "&relaxed=1" : ""
-    %a{href: "?page=#{@page}&per=25#{relaxed}", class: "dropdown-item"} 25
-    %a{href: "?page=#{@page}&per=50#{relaxed}", class: "dropdown-item"} 50
-    %a{href: "?page=#{@page}&per=100#{relaxed}", class: "dropdown-item"} 100
-    %a{href: "?page=#{@page}&per=250#{relaxed}", class: "dropdown-item"} 250
+    - path = Rack::Utils.build_nested_query(request.params.except("per"))
+    - [25, 50, 100, 250].each do |i|
+      - per = (path == "") ? "per=#{i}" : "&per=#{i}"
+      %a{href: "#{request.path}?#{path}#{per}", class: "dropdown-item"} #{i}
