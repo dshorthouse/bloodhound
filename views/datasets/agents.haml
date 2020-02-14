@@ -18,10 +18,10 @@
 
     - if @pagy.count == 0
       %div{class: "alert alert-info tiny-margins", role: "alert"}
-        Unverified and unresolved names that are associated with specimens represented in this dataset have not yet been recorded.
+        Raw strings from parsed collector and determiner names in specimen data included in this dataset have not yet been recorded.
     - else
       %div{class: "alert alert-info tiny-margins", role: "alert"}
-        #{number_with_delimiter(@pagy.count)} unverified and unresolved names that are associated with specimens represented in this dataset.
+        #{number_with_delimiter(@pagy.count)} raw strings from parsed collector and determiner names in specimen data included in this dataset.
       %div{class: "row"}
         - @results.in_groups_of(25, false).each do |group|
           %div{class: "col-12 col-sm-3 mb-3"}

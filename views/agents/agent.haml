@@ -4,14 +4,15 @@
 -content_for :jumbotron do
   = haml :'partials/agent/jumbotron', layout: false
 
-%div{class: "alert alert-warning tiny-margins", role:"alert", style:"margin-top:0px;"}
+%div{class: "alert alert-warning tiny-margins mt-0", role: "alert"}
+  %span{class:"font-weight-bold"} WARNING:
+  Unlike all other URLs in this site, agent URLs are unreliable for linking because they will point to different strings after every new reharvest of data from GBIF
+
+%div{class: "alert alert-info tiny-margins", role:"alert"}
   %div{class:"row"}
     %div{class: "col col-12 col-lg-10"}
-      Sniffed #{number_with_delimiter(@pagy.count)} specimens for #{@agent.fullname}. Not all columns are shown and
-      = succeed "." do
-        %span{class:"font-italic"} this URL is unreliable for linking
+      Sniffed #{number_with_delimiter(@pagy.count)} specimens for #{@agent.fullname}. Not all columns are shown.
       - if authorized?
-        %br
         Search for
         %a{href: "/help-others?q=#{@agent.fullname}"}
           %i{class:"fas fa-hands-helping"}

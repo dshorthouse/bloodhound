@@ -94,6 +94,7 @@ class Dataset < ActiveRecord::Base
                     .joins(:occurrence)
                     .where(occurrences: { datasetKey: datasetKey })
     recorders.union(determiners)
+             .joins(:agent)
              .group(:agent_id)
              .order(Arel.sql("count(*) desc"))
              .count

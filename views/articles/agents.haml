@@ -43,12 +43,12 @@
 
 - if @pagy.count == 0
   %div{class: "alert alert-info tiny-margins", role: "alert"}
-    Unverified and unresolved #{'name'.pluralize(@pagy.count)} associated with specimens represented in data downloaded from
+    Raw strings from parsed collector and determiner names in specimen data downloaded from
     %a{href:"https://gbif.org"} GBIF
     in support of this article have not been found
 - else
   %div{class: "alert alert-info tiny-margins", role: "alert"}
-    #{number_with_delimiter(@pagy.count)} unverified and unresolved #{'name'.pluralize(@pagy.count)} associated with specimens in data downloaded from
+    #{number_with_delimiter(@pagy.count)} raw strings from parsed collector and determiner names in specimen data downloaded from
     %a{href:"https://gbif.org"} GBIF
     in support of this article
   %div{class: "row"}
