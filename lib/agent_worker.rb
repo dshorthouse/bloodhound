@@ -21,10 +21,10 @@ module Bloodhound
                   .split(',')
                   .map{|r| [ r.to_i, agent.id ] }
         if !recs.empty?
-          OccurrenceRecorder.import [:occurrence_id, :agent_id], recs, batch_size: 2500, validate: false
+          OccurrenceRecorder.import [:occurrence_id, :agent_id], recs, batch_size: 2500, validate: false, on_duplicate_key_ignore: true
         end
         if !ids.empty?
-          OccurrenceDeterminer.import [:occurrence_id, :agent_id], ids, batch_size: 2500, validate: false
+          OccurrenceDeterminer.import [:occurrence_id, :agent_id], ids, batch_size: 2500, validate: false, on_duplicate_key_ignore: true
         end
       end
     end

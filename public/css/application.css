@@ -45,6 +45,7 @@ a:hover, .page-link:hover{
 #home-jumbotron h1{
   color:#D3633C;
   text-shadow:-1px -1px 0 #222,1px -1px 0 #222,-1px 1px 0 #222,1px 3px 0 #222;
+  font-weight:350;
 }
 #main{
   padding-top:1rem;
