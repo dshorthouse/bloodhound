@@ -41,11 +41,19 @@ a:hover, .page-link:hover{
   background-image: url('/images/curiosities.jpg');
   background-size: cover;
   background-repeat: no-repeat;
+  position:relative;
 }
 #home-jumbotron h1{
   color:#D3633C;
   text-shadow:-1px -1px 0 #222,1px -1px 0 #222,-1px 1px 0 #222,1px 3px 0 #222;
   font-weight:350;
+}
+#home-jumbotron div.attribution{
+  position:absolute;
+  right:0px;
+  bottom:0px;
+  background-color:#DCDCDC;
+  opacity: 0.9;
 }
 #main{
   padding-top:1rem;
