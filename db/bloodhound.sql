@@ -1,6 +1,4 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -28,14 +26,13 @@ CREATE TABLE `articles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `article_occurrences` (
-  `id` bigint(20) UNSIGNED NOT NULL,
   `article_id` int(11) NOT NULL,
   `occurrence_id` bigint(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `ar_internal_metadata` (
-  `key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -43,10 +40,10 @@ CREATE TABLE `ar_internal_metadata` (
 CREATE TABLE `datasets` (
   `id` bigint(20) NOT NULL,
   `datasetKey` binary(36) NOT NULL,
-  `title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `doi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `license` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `title` text COLLATE utf8mb4_bin,
+  `description` text COLLATE utf8mb4_bin,
+  `doi` tinytext COLLATE utf8mb4_bin,
+  `license` tinytext COLLATE utf8mb4_bin,
   `image_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -133,17 +130,17 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `family` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `given` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `particle` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
-  `orcid` varchar(25) CHARACTER SET utf8 DEFAULT NULL,
-  `wikidata` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
-  `email` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `particle` varchar(50) DEFAULT NULL,
+  `orcid` varchar(25) DEFAULT NULL,
+  `wikidata` varchar(50) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
   `other_names` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `country_code` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `country_code` varchar(50) DEFAULT NULL,
   `keywords` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `twitter` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
-  `image_url` text CHARACTER SET utf8,
-  `signature_url` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `twitter` varchar(50) DEFAULT NULL,
+  `image_url` text,
+  `signature_url` varchar(255) DEFAULT NULL,
   `date_born` date DEFAULT NULL,
   `date_died` date DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
@@ -153,12 +150,12 @@ CREATE TABLE `users` (
   `updated` timestamp NULL DEFAULT NULL,
   `visited` timestamp NULL DEFAULT NULL,
   `is_admin` tinyint(1) NOT NULL DEFAULT '0',
-  `zenodo_access_token` text CHARACTER SET utf8,
-  `zenodo_doi` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `zenodo_concept_doi` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `zenodo_access_token` text,
+  `zenodo_doi` varchar(255) DEFAULT NULL,
+  `zenodo_concept_doi` varchar(255) DEFAULT NULL,
   `wants_mail` tinyint(1) NOT NULL DEFAULT '0',
   `mail_last_sent` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `user_occurrences` (
   `id` int(11) NOT NULL,
@@ -169,7 +166,7 @@ CREATE TABLE `user_occurrences` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NULL DEFAULT NULL,
   `created_by` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `user_organizations` (
   `id` int(11) NOT NULL,
@@ -193,17 +190,15 @@ ALTER TABLE `articles`
   ADD UNIQUE KEY `doi_idx` (`doi`);
 
 ALTER TABLE `article_occurrences`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `article_occurrence_idx` (`article_id`,`occurrence_id`),
-  ADD KEY `occurrence_idx` (`occurrence_id`),
-  ADD KEY `article_idx` (`article_id`);
+  ADD PRIMARY KEY (`article_id`,`occurrence_id`),
+  ADD UNIQUE KEY `occurrence_article_idx` (`occurrence_id`,`article_id`);
 
 ALTER TABLE `ar_internal_metadata`
   ADD PRIMARY KEY (`key`);
 
 ALTER TABLE `datasets`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `index_datasets_on_datasetKey` (`datasetKey`) USING BTREE;
+  ADD UNIQUE KEY `index_datasets_on_datasetKey` (`datasetKey`);
 
 ALTER TABLE `destroyed_users`
   ADD PRIMARY KEY (`id`),
@@ -217,15 +212,15 @@ ALTER TABLE `messages`
 ALTER TABLE `occurrences`
   ADD PRIMARY KEY (`gbifID`) USING BTREE,
   ADD KEY `typeStatus_idx` (`typeStatus`(256)),
-  ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`) USING BTREE;
+  ADD KEY `index_occurrences_on_datasetKey` (`datasetKey`);
 
 ALTER TABLE `occurrence_determiners`
-  ADD KEY `agent_idx` (`agent_id`),
-  ADD KEY `occurrence_idx` (`occurrence_id`);
+  ADD PRIMARY KEY (`agent_id`,`occurrence_id`),
+  ADD UNIQUE KEY `occurrence_agent_idx` (`occurrence_id`,`agent_id`);
 
 ALTER TABLE `occurrence_recorders`
-  ADD KEY `agent_idx` (`agent_id`),
-  ADD KEY `occurrence_idx` (`occurrence_id`);
+  ADD PRIMARY KEY (`agent_id`,`occurrence_id`),
+  ADD UNIQUE KEY `occurrence_agent_idx` (`occurrence_id`,`agent_id`);
 
 ALTER TABLE `organizations`
   ADD PRIMARY KEY (`id`),
@@ -242,8 +237,7 @@ ALTER TABLE `taxa`
   ADD UNIQUE KEY `family_idx` (`family`);
 
 ALTER TABLE `taxon_occurrences`
-  ADD UNIQUE KEY `occurrence_id_idx` (`occurrence_id`),
-  ADD KEY `taxon_id_idx` (`taxon_id`);
+  ADD PRIMARY KEY (`occurrence_id`) USING BTREE;
 
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
@@ -270,9 +264,6 @@ ALTER TABLE `agents`
 ALTER TABLE `articles`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `article_occurrences`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
 ALTER TABLE `datasets`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
@@ -296,7 +287,6 @@ ALTER TABLE `user_occurrences`
 
 ALTER TABLE `user_organizations`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
