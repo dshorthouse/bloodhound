@@ -15,7 +15,7 @@
     = haml :'partials/admin/user_search', layout: false
 
 - if flash[:destroyed]
-  %div{class:"alert alert-danger alert-dismissible fade show", role: "alert", style:"display:block"}
+  %div{class:"alert alert-danger alert-dismissible fade show d-block", role: "alert"}
     %div
       #{flash[:destroyed]} was destroyed and all claims, attributions, and messages were deleted.
     %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}

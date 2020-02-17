@@ -33,7 +33,7 @@
     %div{class: "card-deck"}
       - group.each do |u|
         - if u.nil?
-          %div{class:"card", style:"border:0px"}
+          %div{class:"card border-0"}
         - else
           - if params[:q] && params[:q].present?
             - u = User.find(u[:_id])

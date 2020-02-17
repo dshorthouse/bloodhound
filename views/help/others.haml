@@ -53,7 +53,7 @@
       %div{class: "card-deck"}
         - group.each do |user|
           - if user.nil?
-            %div{class:"card", style:"border:0px"}
+            %div{class:"card border-0"}
           - else
             = haml :'partials/user/card_dynamic', layout: false, locals: { user: User.find(user[:_id]), path: "help-others" }
 

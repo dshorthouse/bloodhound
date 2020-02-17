@@ -32,7 +32,7 @@
     %div{class: "card-deck"}
       - group.each do |m|
         - if m.nil?
-          %div{class:"card", style:"border:0px"}
+          %div{class:"card border-0"}
         - else
           - u = User.find(m[:user_id])
           %div{class: "card card-profile my-3"}

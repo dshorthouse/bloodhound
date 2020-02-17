@@ -30,7 +30,7 @@
       - group.each do |m|
         - u = m.user rescue nil
         - if u.nil?
-          %div{class:"card", style:"border:0px"}
+          %div{class:"card border-0"}
         - else
           %div{class: "card card-profile my-3"}
             - if u.image_url

@@ -22,7 +22,7 @@
     %div{class: "card-deck"}
       - group.each do |o|
         - if o.nil?
-          %div{class:"card", style:"border:0px"}
+          %div{class:"card border-0"}
         - else
           - org = Organization.find(o[:_id].to_i)
           - if !o.nil?

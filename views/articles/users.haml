@@ -53,7 +53,7 @@
     %div{class: "card-deck mt-3"}
       - group.each do |u|
         - if u.nil?
-          %div{class:"card", style:"border:0px"}
+          %div{class:"card border-0"}
         - else
           - cache_fragment(u.identifier) do
             = haml :'partials/user/card', layout: false, locals: { user: u }

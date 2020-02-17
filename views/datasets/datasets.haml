@@ -21,7 +21,7 @@
   %div{class: "card-deck"}
     - group.each do |dataset|
       - if dataset.nil?
-        %div{class:"card", style:"border:0px"}
+        %div{class:"card border-0"}
       - else
         %div{class: "card card-profile m-3"}
           - if dataset.image_url

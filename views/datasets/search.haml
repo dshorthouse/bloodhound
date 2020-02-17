@@ -30,7 +30,7 @@
     %div{class: "card-deck"}
       - group.each do |d|
         - if d.nil?
-          %div{class:"card", style:"border:0px"}
+          %div{class:"card border-0"}
         - else
           - dataset = Dataset.find(d[:_id].to_i) rescue nil
           - if !dataset.nil?
