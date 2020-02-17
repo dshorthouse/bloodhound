@@ -56,8 +56,8 @@
               %img{src: "/images/wikidata_16x16.png", alt:"Wikidata iD"}
             %a{href: "/help-others/#{claim.user.identifier}"} #{claim.user.fullname_reverse}
           %td
-            %div{class:"progress", style:"border:1px solid rgba(0,0,0,.125);inline"}
-              %div{id:"progress-bar_#{claim.user.identifier}", class:"progress-bar bg-info", role:"progressbar", style:"width: 0%;inline", "aria-valuenow":"0", "aria-valuemin":"0", "aria-valuemax":"100"}
+            %div{class:"progress progress-border"}
+              %div{id:"progress-bar_#{claim.user.identifier}", class:"progress-bar bg-info", role:"progressbar", style:"width: 0%;", "aria-valuenow":"0", "aria-valuemin":"0", "aria-valuemax":"100"}
           %td
             - if claim.user.is_public?
               %span{class: "text-success"} #{claim.user.is_public}

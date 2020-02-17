@@ -75,7 +75,7 @@
     %div{class:"col col-12 col-sm-8 col-md-6 col-lg-4"}
       %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
         %div{class: "inputs search-agent form-group"}
-          %label{for: "typeahead", class:"font-weight-bold col-form-label", style:"margin-right:1rem"}= "Search"
+          %label{for: "typeahead", class:"font-weight-bold col-form-label mr-2"}= "Search"
           %input{id: "typeahead-agent", type: :text, name: "q", placeholder: "#{placeholder}", value: "#{params[:q]}", class:"typeahead"}
 
   = haml :'partials/tables/candidates', layout: false

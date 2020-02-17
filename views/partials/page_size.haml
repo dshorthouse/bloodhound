@@ -1,4 +1,4 @@
-%div{class: "btn-group", style:"margin-bottom:3px"}
+%div{class: "btn-group mb-1"}
   %button{class:"btn btn-light btn-sm dropdown-toggle", type:"button", "data-toggle":"dropdown", "aria-haspopup":"true", "aria-expanded":"false"} Per page
   %div{class:"dropdown-menu", "aria-labelledby":"dropdownMenuButton"}
     - path = Rack::Utils.build_nested_query(request.params.except("per"))
