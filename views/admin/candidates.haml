@@ -35,7 +35,9 @@
 - if @pagy.count == 0
   %div{class: "alert alert-info row tiny-margins", role:"alert"}
     %div{class: "col col-12 col-sm-12 col-md-8 col-lg-8 pl-0"}
-      Bloodhound did not sniff any specimens indexed by the Global Biodiversity Information Facility (GBIF) that were collected or identified.
+      Bloodhound did not sniff any specimens indexed by
+      %a{href:"https://gbif.org"} GBIF
+      that were collected or identified
 
       %div{class:"form-check d-inline-flex"}
         - checked = params[:relaxed] == "1" ? "checked" : nil

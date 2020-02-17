@@ -21,10 +21,13 @@
 
     - if @pagy.count == 0
       %div{class: "alert alert-info tiny-margins", role: "alert"}
-        Publications based on specimens collected or identified by current and previous personnel have not yet been recorded by the Global Biodiversity Information Facility (GBIF).
+        Publications based on specimens collected or identified by current and previous personnel have not yet been recorded by 
+        %a{href:"https://gbif.org"} GBIF
     - else
       %div{class: "alert alert-info tiny-margins", role: "alert"}
-        #{number_with_delimiter(@pagy.count)} #{'publication'.pluralize(@pagy.count)} used specimen data downloaded from the Global Biodiversity Information Facility (GBIF) based on specimens collected or identified by current and previous personnel while affiliated with #{@organization.name}.
+        #{number_with_delimiter(@pagy.count)} #{'publication'.pluralize(@pagy.count)} used specimen data downloaded from 
+        %a{href:"https://gbif.org"} GBIF
+        based on specimens collected or identified by current and previous personnel while affiliated with #{@organization.name}
 
       %div{class:"citation-wrapper"}
         - @results.each do |article|
