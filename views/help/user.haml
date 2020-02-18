@@ -70,7 +70,7 @@
   - else
     = haml :'partials/help/fixed_navbar', layout: false
 
-    %div{class: "alert alert-info tiny-margins row", role: "alert"}
+    %div{id: "helper-info", class: "alert alert-info tiny-margins row", role: "alert"}
       %div{class: "col col-12 col-sm-12 col-md-6 col-lg-8"}
         Help attribute #{number_with_delimiter(@total, delimeter: ",")} #{'specimen'.pluralize(@total)}.
         Choose
