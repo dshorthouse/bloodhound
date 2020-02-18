@@ -40,28 +40,52 @@
 
   = haml :'partials/help/tabs', layout: false, locals: { active_tab: "discovered" }
 
-  - if @pagy.count == 0
-    %div{class: "alert alert-info tiny-margins", role: "alert"}
-      Bloodhound did not sniff any unclaimed specimens.
+  - placeholder = @dataset ? @dataset.title : ""
+  - checked = params[:relaxed] == "1" ? "checked" : nil
 
-      %div{class:"form-check d-inline-flex"}
-        - checked = params[:relaxed] == "1" ? "checked" : nil
-        %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
-        %label{for:"relaxed", class:"relaxed"} Make less exact.
+  - if @dataset
+    %div{class: "alert alert-warning", role: "alert"}
+      %i{class:"fas fa-filter"}
+      Filtered by
+      %span{class:"font-weight-bold mr-2"}
+        #{@dataset.title.truncate(125, separator: ' ')}
+      %a{href: "#{@dataset.license}", itemprop: "license"}
+        %img{src:"#{@dataset.license_icon("small")}"}
+      %a{href: "/help-others/#{@viewed_user.identifier}", class:"ml-2"}
+        Remove
+
+  - if @pagy.count == 0
+    %div{class: "alert alert-info tiny-margins row", role: "alert"}
+      %div{class: "col col-12 col-sm-12 col-md-6 col-lg-8"}
+        Bloodhound did not sniff any unclaimed specimens.
+
+        %div{class:"form-check d-inline-flex"}
+          %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
+          %label{for:"relaxed", class:"relaxed"} Make less exact.
+      %div{class:"col col-12 col-sm-8 col-md-6 col-lg-4"}
+        %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
+          %div{class: "inputs search-agent form-group"}
+            %label{for: "typeahead", class:"font-weight-bold col-form-label mr-2"}= "Dataset"
+            %input{id: "typeahead-dataset", type: :text, name: "q", placeholder: "#{placeholder}", value: "#{params[:q]}", class:"typeahead"}
   - else
     = haml :'partials/help/fixed_navbar', layout: false
 
-    %div{id:"helper-info", class: "alert alert-info tiny-margins", role: "alert"}
-      Help attribute #{number_with_delimiter(@total, delimeter: ",")} #{'specimen'.pluralize(@total)}.
-      Choose
-      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
-      collected,
-      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-      identified, or Both.
-      %div{class:"form-check d-inline-flex"}
-        - checked = params[:relaxed] == "1" ? "checked" : nil
-        %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
-        %label{for:"relaxed", class:"relaxed"} Make less exact.
+    %div{class: "alert alert-info tiny-margins row", role: "alert"}
+      %div{class: "col col-12 col-sm-12 col-md-6 col-lg-8"}
+        Help attribute #{number_with_delimiter(@total, delimeter: ",")} #{'specimen'.pluralize(@total)}.
+        Choose
+        %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+        collected,
+        %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+        identified, or Both.
+        %div{class:"form-check d-inline-flex"}
+          %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
+          %label{for:"relaxed", class:"relaxed"} Make less exact.
+      %div{class:"col col-12 col-sm-8 col-md-6 col-lg-4"}
+        %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
+          %div{class: "inputs search-agent form-group"}
+            %label{for: "typeahead", class:"font-weight-bold col-form-label mr-2"}= "Dataset"
+            %input{id: "typeahead-dataset", type: :text, name: "q", placeholder: "#{placeholder}", value: "#{params[:q]}", class:"typeahead"}
 
   - if @pagy.count > 0
     %div{class:"table-responsive-lg"}

@@ -179,6 +179,8 @@ module Sinatra
                 redirect "/profile/candidates"
               end
 
+              @dataset = (params[:datasetKey]) ? Dataset.find_by_datasetKey(params[:datasetKey]) : nil
+
               if @viewed_user.family.nil?
                 results = []
                 @total = 0

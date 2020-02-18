@@ -153,6 +153,8 @@ var Application = (function($, window) {
         ).on("typeahead:select", function(obj, datum) {
           if (self.path === "/admin") {
             window.location.href = "/admin/dataset/" + datum.datasetkey;
+          } else if (self.path === "/help-others") {
+            window.location.href = "/help-others/" + self.identifier + "?datasetKey=" + datum.datasetkey;
           } else {
             window.location.href = "/dataset/" + datum.datasetkey;
           }

@@ -118,14 +118,18 @@ class Dataset < ActiveRecord::Base
              .count
   end
 
-  def license_icon
+  def license_icon(form = "button")
+    size = (form == "button") ? "88x31" : "80x15"
     if license.include?("/zero/")
-      "https://i.creativecommons.org/p/mark/1.0/88x31.png"
+      url = "https://i.creativecommons.org/p/zero/1.0/#{size}.png"
     elsif license.include?("/by/")
-      "https://i.creativecommons.org/l/by/4.0/88x31.png"
+      url = "https://i.creativecommons.org/l/by/4.0/#{size}.png"
     elsif license.include?("/by-nc/")
-      "https://i.creativecommons.org/l/by-nc/4.0/88x31.png"
+      url = "https://i.creativecommons.org/l/by-nc/4.0/#{size}.png"
+    else
+      url = "/images/Clear1x1.gif"
     end
+    url
   end
 
   private
