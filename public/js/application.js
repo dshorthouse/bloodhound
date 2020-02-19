@@ -110,6 +110,7 @@ var Application = (function($, window) {
         },
         {
           name: "user",
+          limit: 10,
           source : this.data_sources.user.ttAdapter(),
           display : "fullname_reverse"
         }
@@ -147,6 +148,7 @@ var Application = (function($, window) {
         },
         {
           name: "dataset",
+          limit: 10,
           source : this.data_sources.dataset.ttAdapter(),
           display : "title"
         }
