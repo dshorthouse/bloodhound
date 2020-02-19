@@ -132,6 +132,24 @@ class Dataset < ActiveRecord::Base
     url
   end
 
+  def institution_codes
+    occurrences.pluck(:institutionCode).compact.uniq.sort
+  end
+
+  def top_institution_codes
+    codes = occurrences.pluck(:institutionCode)
+               .inject(Hash.new(0)) { |total, e| total[e] += 1 ;total}
+    if codes.size < 5 && codes.values.sum > 10_000
+        codes.sort_by{|k,v| v}
+             .reverse
+             .first(4)
+             .to_h
+             .keys rescue []
+    else
+      []
+    end
+  end
+
   private
 
   def set_update_time

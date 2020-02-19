@@ -125,7 +125,7 @@ var Application = (function($, window) {
         });
 
       $("#typeahead-organization").typeahead({
-          minLength: 3,
+          minLength: 1,
           highlight: true
         },
         {
@@ -142,7 +142,7 @@ var Application = (function($, window) {
         });
 
       $("#typeahead-dataset").typeahead({
-          minLength: 3,
+          minLength: 1,
           highlight: true
         },
         {

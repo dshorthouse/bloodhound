@@ -26,6 +26,11 @@ module Bloodhound
                 type: "custom",
                 tokenizer: "standard",
                 filter: ["lowercase", "asciifolding", :autocomplete]
+              },
+              institution_codes: {
+                type: "custom",
+                tokenizer: "keyword",
+                filter: ["lowercase"]
               }
             }
           }
@@ -43,6 +48,11 @@ module Bloodhound
             description: {
               type: 'text',
               analyzer: :standard,
+              norms: false
+            },
+            top_institution_codes: {
+              type: 'text',
+              analyzer: :institution_codes,
               norms: false
             }
           }
@@ -62,7 +72,8 @@ module Bloodhound
         id: d.id,
         datasetkey: d.datasetKey,
         title: d.title,
-        description: d.description
+        description: d.description,
+        top_institution_codes: d.top_institution_codes
       }
     end
 

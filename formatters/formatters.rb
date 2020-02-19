@@ -119,8 +119,9 @@ module Sinatra
         @results.map{ |n|
           { id: n[:_source][:id],
             score: n[:_score],
-            title: n[:_source][:title],
-            datasetkey: n[:_source][:datasetkey]
+            title: n[:_source][:title].truncate(100, separator: ' '),
+            datasetkey: n[:_source][:datasetkey],
+            top_institution_codes: n[:_source][:top_institution_codes]
           }
         }
       end
