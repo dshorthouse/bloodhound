@@ -13,7 +13,7 @@ fr:
     datasets: Jeux de Données
     articles: Articles
     countries: Pays
-    agents: Agents
+    agent_strings: Chaînes d'Agents
     help_others: Aider les autres
     help_received: Aide reçue
     people_helped: Gens aidés

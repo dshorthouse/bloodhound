@@ -37,9 +37,9 @@
             = I18n.t('layout.countries')
       %li{class: "nav-item mr-2"}
         %a{ href: '/agents', class: "nav-link#{locals[:active_page] == "agents" ? " active" : nil}" }
-          %i{class:"fas fa-user-secret"}
+          %i{class:"fas fa-code-branch"}
           %span{class:"d-inline-block d-sm-none d-xl-inline-block"}
-            = I18n.t('layout.agents')
+            = I18n.t('layout.agent_strings')
     %ul{class: "navbar-nav mr-2"}
       - if authorized?
         %li{class: "nav-item"}

@@ -48,7 +48,7 @@
     in support of this article have not been found
 - else
   %div{class: "alert alert-info tiny-margins", role: "alert"}
-    #{number_with_delimiter(@pagy.count)} raw strings from parsed collector and determiner names in specimen data downloaded from
+    #{number_with_delimiter(@pagy.count)} raw #{'string'.pluralize(@pagy.count)} from parsed collector and determiner names in specimen data downloaded from
     %a{href:"https://gbif.org"} GBIF
     in support of this article
   %div{class: "row"}

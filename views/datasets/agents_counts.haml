@@ -1,7 +1,7 @@
 = haml :'partials/dataset/twitter_img', layout: false
 
 -content_for :title do
-  #{@dataset.title} Agents
+  #{@dataset.title} Agent Strings
 
 %div{class:"row"}
   = haml :'partials/dataset/jumbotron', layout:false
@@ -18,10 +18,10 @@
 
     - if @pagy.count == 0
       %div{class: "alert alert-info tiny-margins", role: "alert"}
-        Raw strings from parsed collector and determiner names in specimen data included in this dataset have not yet been recorded.
+        Raw strings from parsed collector and determiner names in specimen data included in this dataset have not yet been recorded
     - else
       %div{class: "alert alert-info tiny-margins", role: "alert"}
-        #{number_with_delimiter(@pagy.count)} raw strings from parsed collector and determiner names in specimen data included in this dataset.
+        #{number_with_delimiter(@pagy.count)} raw #{'string'.pluralize(@pagy.count)} from parsed collector and determiner names in specimen data included in this dataset
 
       %div{class: "row"}
         - @results.in_groups_of(25, false).each do |group|

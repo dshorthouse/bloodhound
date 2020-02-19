@@ -1,5 +1,5 @@
 -content_for :title do
-  Agents
+  Agent Strings
 
 -content_for :scripts do
   %script{src: "/js/application.js"}
@@ -11,9 +11,9 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
-      %h1{class:"h2"} Agent Search
+      %h1{class:"h2"} Agent String Search
       %p.lead.text-muted
-        #{number_with_delimiter(@count)} raw strings from parsed collector and determiner names from
+        #{number_with_delimiter(@count)} raw #{'string'.pluralize(@count)} from parsed collector and determiner names in specimen data from 
         %a{href:"https://gbif.org"} GBIF
     = haml :'partials/agent/search', layout: false
 
@@ -39,4 +39,4 @@
 - else
   %div{class: "alert alert-warning tiny-margins mt-0", role: "alert"}
     %span{class:"font-weight-bold"} WARNING:
-    Unlike all other URLs in this site, agent URLs are unreliable for linking because they will point to different strings every few weeks
+    Unlike all other URLs in this site, URLs for agent strings are unreliable for linking because they will point to different results every few weeks
