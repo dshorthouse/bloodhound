@@ -58,6 +58,11 @@ module Sinatra
         { people: @dataset.users.count }
       end
 
+      def dataset_trainers
+        dataset_from_param
+        @pagy, @results = pagy(@dataset.trainers.order(:family))
+      end
+
     end
   end
 end

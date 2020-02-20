@@ -1,0 +1,28 @@
+= haml :'partials/dataset/twitter_img', layout: false
+
+-content_for :title do
+  #{@dataset.title} Trainers
+
+%div{class:"row"}
+  = haml :'partials/dataset/jumbotron', layout:false
+
+  %div{class:"col-12 col-lg-8 mt-2"}
+    = haml :'partials/dataset/tabs', layout:false, locals: { active_tab: locals[:active_tab] }
+
+    - if @pagy.count == 0
+      %div{class: "alert alert-info tiny-margins", role: "alert"}
+        Trainers have not yet attributed specimens to collector or determimers represented in this dataset
+    - else
+      %div{class: "alert alert-info tiny-margins", role: "alert"}
+        #{number_with_delimiter(@pagy.count)} #{'trainer'.pluralize(@pagy.count)} attributed specimens to collectors or determiners represented in this dataset
+
+      - @results.in_groups_of(3).each do |group|
+        %div{class: "card-deck"}
+          - group.each do |u|
+            - if u.nil?
+              %div{class:"card border-0"}
+            - else
+              - cache_fragment("#{u.identifier}-trainer") do
+                = haml :'partials/user/card-trainer', layout: false, locals: { user: u }
+
+      = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

@@ -118,6 +118,23 @@ class Dataset < ActiveRecord::Base
              .count
   end
 
+  def trainers
+    trainers = User.joins("INNER JOIN ( SELECT DISTINCT
+              user_occurrences.created_by, user_occurrences.visible
+            FROM
+              user_occurrences FORCE INDEX (user_occurrence_idx)
+            INNER JOIN
+              occurrences ON occurrences.gbifID = user_occurrences.occurrence_id
+            WHERE
+              occurrences.datasetKey = '#{datasetKey}'
+            AND
+              user_occurrences.created_by NOT IN (#{User::BOT_IDS.join(",")})
+            AND
+              user_occurrences.created_by != user_occurrences.user_id
+            ) a ON a.created_by = users.id")
+        .where("a.visible = true")
+  end
+
   def license_icon(form = "button")
     size = (form == "button") ? "88x31" : "80x15"
     if license.include?("/zero/")

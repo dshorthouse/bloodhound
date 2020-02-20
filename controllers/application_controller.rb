@@ -146,6 +146,15 @@ module Sinatra
             haml :'datasets/users', locals: locals
           end
 
+          app.get '/dataset/:id/trainers' do
+            dataset_trainers
+            locals = {
+              active_page: "datasets",
+              active_tab: "trainers"
+            }
+            haml :'datasets/trainers', locals: locals
+          end
+
           app.get '/dataset/:id/agents' do
             dataset_agents
             locals = {
