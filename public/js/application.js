@@ -190,10 +190,13 @@ var Application = (function($, window) {
 	    }
 
       $("#relaxed").on("change", function() {
+        url = new URL(window.location.href);
         if ($(this).prop("checked")) {
-          window.location.href = url + "?relaxed=1";
+          url.searchParams.set('relaxed', 1);
+          window.location.href = url.href;
         } else {
-          window.location.href = url;
+          url.searchParams.set('relaxed', 0);
+          window.location.href = url.href;
         }
         return false;
       });
