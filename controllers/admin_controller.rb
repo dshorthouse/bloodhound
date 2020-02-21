@@ -63,6 +63,19 @@ module Sinatra
             haml :'admin/datasets', locals: locals
           end
 
+          app.get '/admin/dataset/frictionless.json' do
+            admin_protected!
+            content_type "application/json", charset: 'utf-8'
+
+            vars = {
+              uuid: params[:datasetKey],
+              output_directory: File.join(File.dirname(__FILE__), "..", "public", "data")
+            }
+
+            ::Bloodhound::FrictionlessDataAsync.perform_async(vars)
+            { message: "ok" }.to_json
+          end
+
           app.get '/admin/dataset/refresh.json' do
             admin_protected!
             content_type "application/json", charset: 'utf-8'

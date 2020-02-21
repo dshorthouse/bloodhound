@@ -296,6 +296,8 @@ GEM
     sparql-client (3.1.0)
       net-http-persistent (~> 3.1)
       rdf (~> 3.1)
+    sucker_punch (2.1.2)
+      concurrent-ruby (~> 1.0)
     temple (0.8.2)
     thin (1.7.2)
       daemons (~> 1.0, >= 1.0.9)
@@ -382,6 +384,7 @@ DEPENDENCIES
   sinatra-outputbuffer
   sinatra-support
   sparql-client
+  sucker_punch
   thin
   twitter
   wikidata-client
