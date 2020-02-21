@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 module Bloodhound
-  class FrictionlessDataAsync
+  class FrictionlessDataWorker
     include SuckerPunch::Job
 
     def perform(data)

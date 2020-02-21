@@ -72,7 +72,7 @@ module Sinatra
               output_directory: File.join(File.dirname(__FILE__), "..", "public", "data")
             }
 
-            ::Bloodhound::FrictionlessDataAsync.perform_async(vars)
+            ::Bloodhound::FrictionlessDataWorker.perform_async(vars)
             { message: "ok" }.to_json
           end
 
