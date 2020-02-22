@@ -42,7 +42,7 @@ module Sinatra
             if !new_user.valid_wikicontent?
               flash.next[:new_user] = { fullname: params[:identifier], slug: nil }
               es = ::Bloodhound::ElasticUser.new
-              es.delete(new_user)
+              es.delete(new_user) rescue nil
               new_user.delete
             else
               flash.next[:new_user] = { fullname: new_user.fullname, slug: new_user.wikidata }
