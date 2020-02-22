@@ -36,7 +36,14 @@
       %p
         %img{src:"/images/roundtrip.png", alt: "Data round trip", class: "img-fluid"}
 
-      %h3 Frictionless Data Packages
+    %div{class:"col-12 col-md-6"}
+      %a{class: "twitter-timeline", "data-width": 500, "data-height": 750, href:"https://twitter.com/BloodhoundTrack?ref_src=twsrc%5Etfw"} Tweets by BloodhoundTrack
+      %script{async: true, src:"https://platform.twitter.com/widgets.js", charset:"utf-8"}
+
+  %div{class: "row"}
+    %div{class: "col-12 col-md-6"}
+
+      %h3 Incorporating Enhancements
 
       %p
         Bloodhound refreshes a minimally referenceable subset of the data you publish to
@@ -82,5 +89,12 @@
         file is a join table for the other two csv files and also contains columns for who made the attribution, their ORCID ID, and a timestamp for when they made the attribution.
 
     %div{class:"col-12 col-md-6"}
-      %a{class: "twitter-timeline", "data-width": 500, "data-height": 1000, href:"https://twitter.com/BloodhoundTrack?ref_src=twsrc%5Etfw"} Tweets by BloodhoundTrack
-      %script{async: true, src:"https://platform.twitter.com/widgets.js", charset:"utf-8"}
+
+      %h3 Assessing Data Quality
+
+      %p
+        In the set of "Help Others" pages where specimen records are attributed to collectors and determiners, there are tabs to Fix and Visualize records.
+        Here, the birth and death dates of people sourced from Wikidata are cross-referenced against the dates on the specimen records attributed to them.
+        Countries on maps and date ranges on charts can also be clicked to execute dynamic filters.
+        In time and as more attributions are made, data quality reports like these on individuals' specimen records will be rolled-up to dataset-level reports.
+        These may be included as additional csv files in your Frictionless Data packages such that you may investigate and repair problem records in your collection management system as required.
