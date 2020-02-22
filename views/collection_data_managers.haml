@@ -12,11 +12,13 @@
   %p
     Bloodhound
     %a{href:"/trainers"} trainers
-    attribute specimen records to the collectors and determiners represented in your dataset(s) by linking natural history specimen records to
+    attribute specimen records to the collectors and determiners represented in your dataset(s) by linking natural history specimen records you publish to
+    %a{href:"https://gbif.org"} GBIF
+    to their
     %a{href:"https://www.wikidata.org"} Wikidata
     Q numbers or
     %a{href:"https://orcid.org"} ORCID
-    IDs. People with ORCID IDs also claim records for the specimens they collected or identified. Wikidata and ORCID identifiers have associated resources and services that are unquestionably useful for collections ranging from disambiguating people names to gauging the impact your collection has on the academic community.
+    IDs. People with ORCID IDs also claim records for the specimens they themselves collected or identified. Wikidata and ORCID identifiers have associated resources and services that are unquestionably useful for collections ranging from disambiguating people names to gauging the impact your collection has on the academic community.
 
   %div{class: "row"}
     %div{class: "col-12 col-md-6"}
@@ -26,12 +28,12 @@
         Bloodhound trainers are a welcoming, international group of enthusiasts who are driven to help you attribute specimen records to the collectors and determiners represented in your dataset(s). They work tirelessly to enhance entries in
         %a{href:"https://www.wikidata.org"}
           Wikidata
-        by adding links and attributes like birth and death dates to deceased natural historians. They are also strong advocates of
+        by adding links and attributes like birth and death dates to deceased natural historians. They are also advocates of
         %a{href:"https://orcid.org"} ORCID
         and can help you campaign for its adoption at your institution.
         The easiest way to seek help, guidance, or to appreciate the scope of their activities is to follow
         %a{href:"https://twitter.com/bloodhoundtrack"} @BloodhoundTrack
-        on Twitter. Come say thank you for their efforts and to share in conversations that will lead you to many rewarding new connections.
+        on Twitter. Come thank the trainers for their efforts and to share in conversations that will lead to rewarding new connections.
 
       %p
         %img{src:"/images/roundtrip.png", alt: "Data round trip", class: "img-fluid"}
@@ -46,9 +48,10 @@
       %h3 Incorporating Enhancements
 
       %p
-        Bloodhound refreshes a minimally referenceable subset of the data you publish to
-        %a{href: "https://gbif.org"} GBIF
-        every few weeks. See
+        Every few weeks, Bloodhound refreshes a subset of the Darwin Core data you publish to
+        = succeed "." do
+          %a{href: "https://gbif.org"} GBIF
+        See
         %a{href:"/how-it-works"} how it works
         for more details.
 
@@ -63,6 +66,7 @@
         %a{href: "https://frictionlessdata.io/software/"}
           open software libraries
         in many programming languages that read, validate, and process Frictionless Data. You can also extract the zipped package and import the UTF-8 encoded csv files into any spreadsheet software, provided the files are not excessively large.
+      %p
         The packages contain a standard
         %em datapackage.json
         metadata file and three csv files:
@@ -94,7 +98,7 @@
 
       %p
         In the set of "Help Others" pages where specimen records are attributed to collectors and determiners, there are tabs to Fix and Visualize records.
-        Here, the birth and death dates of people sourced from Wikidata are cross-referenced against the dates on the specimen records attributed to them.
+        Here, a collector's birth and death dates are cross-referenced against those on their specimen records.
         Countries on maps and date ranges on charts can also be clicked to execute dynamic filters.
-        In time and as more attributions are made, data quality reports like these on individuals' specimen records will be rolled-up to dataset-level reports.
-        These may be included as additional csv files in your Frictionless Data packages such that you may investigate and repair problem records in your collection management system as required.
+        In time and as more attributions are made, data quality reports like these on individuals' specimen records may be rolled-up to dataset-level reports.
+        These may be included as additional csv files in your Frictionless Data packages such that you can investigate and repair problem records in your collection management system as required.
