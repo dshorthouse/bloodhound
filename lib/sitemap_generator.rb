@@ -18,6 +18,7 @@ module Bloodhound
       @map.add '/datasets'
       @map.add '/donate'
       @map.add '/get-started'
+      @map.add '/collection-data-managers'
       @map.add '/developers'
       @map.add '/how-it-works'
       @map.add '/integrations'
