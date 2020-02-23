@@ -42,6 +42,36 @@
 %p
   Specimens used in the analyses for published papers are found by downloading cited data packages (less than 100MB zipped) that GBIF serves on behalf of the research community and then reattributed to collectors or determiners. The outcome is comparable to the common practice in taxonomy whereby authors of new species descriptions acknowledge the critical role collectors play in museum and biodiversity science.
 
+%h4 Integration with Wikidata
+
+%p
+  Synchrony with wikidata is maintained in several ways. With the exception of the last item on the list below, all automated methods require that people pages on wikidata have full birth and death dates accurate to the day as well as a value for any of the properties:
+  %em #{::Bloodhound::WikidataSearch::PEOPLE_PROPERTIES.keys.join(", ")}.
+%ul
+  %li
+    daily poll for new pages (
+    %a{href:"https://w.wiki/J2a"} SPARQL
+    )
+  %li
+    daily refresh for entries that were modified within previous 24 hours (
+    = succeed ", " do
+      %a{href:"https://w.wiki/J2e"} SPARQL
+    using 2020-01-01 as example date
+    )
+  %li
+    weekly query for merge events (
+    = succeed ", " do
+      %a{href: "https://w.wiki/J2g"} SPARQL
+    using 2020-01-01 as example date
+    )
+  %li
+    a Trainer may refresh on demand
+
+%p{class:"small"}
+  Example SPARQL queries above are limited to
+  %em Entomologists of the World (P5370)
+  but all the watched properties are used in production
+
 %h3 Citation & Archival
 
 %p
