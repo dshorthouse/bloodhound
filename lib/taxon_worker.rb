@@ -5,14 +5,27 @@ module Bloodhound
     include Sidekiq::Worker
     sidekiq_options queue: :taxon
 
+    REDIS_POOL = ConnectionPool.new(size: 10) { Redis.new(url: ENV['REDIS_URL']) }
+
     def perform(row)
-      taxon = Taxon.create_or_find_by(family: row["family"].to_s.strip)
-      data = row["gbifIDs_family"]
-                .tr('[]', '')
-                .split(',')
-                .map{|r| [ r.to_i, taxon.id ] }
-      if !data.empty?
-        TaxonOccurrence.import [:occurrence_id, :taxon_id],  data, batch_size: 2500, validate: false, on_duplicate_key_ignore: true
+      family_name = row["family"].to_s.strip
+
+      REDIS_POOL.with do |client|
+
+        taxon_id = client.get(family_name)
+        if !taxon_id
+          taxon_id = Taxon.create(family: family_name).id
+          client.set(family_name, taxon_id)
+        end
+        
+        data = row["gbifIDs_family"]
+                  .tr('[]', '')
+                  .split(',')
+                  .map{|r| [ r.to_i, taxon_id ] }
+        if !data.empty?
+          TaxonOccurrence.import [:occurrence_id, :taxon_id],  data, batch_size: 2500, validate: false, on_duplicate_key_ignore: true
+        end
+
       end
     end
 
