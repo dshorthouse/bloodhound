@@ -111,7 +111,7 @@ module Bloodhound
     end
 
     def import
-      Agent.find_in_batches do |batch|
+      Agent.find_in_batches(batch_size: 5_000) do |batch|
         bulk(batch)
       end
     end
