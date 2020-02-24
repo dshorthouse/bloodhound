@@ -35,6 +35,11 @@ describe "Bloodhound Application Controller" do
     expect(last_response).to be_ok
   end
 
+  it "should allow accessing the collection data managers page" do
+    get '/collection-data-managers'
+    expect(last_response).to be_ok
+  end
+
   it "should allow accessing the donate page" do
     get '/donate'
     expect(last_response).to be_ok
