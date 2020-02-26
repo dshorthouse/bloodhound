@@ -44,41 +44,84 @@
 
 %h4 Integration with Wikidata
 
-%p
-  Synchrony with wikidata is maintained in several ways. With the exception of the last item on the list below, all automated methods executed via scheduled cron jobs using
-  %a{href:"https://github.com/ruby-rdf/sparql-client"} a ruby gem
-  require that people pages on wikidata have full birth and death dates accurate to the day as well as a value for any of the properties:
-  %em #{::Bloodhound::WikidataSearch::PEOPLE_PROPERTIES.keys.join(", ")}.
-%ul
-  %li
-    daily poll for new pages (
-    %a{href:"https://w.wiki/J2a"} SPARQL
-    )
-  %li
-    daily refresh for entries that were modified within previous 24 hours (
-    = succeed ", " do
-      %a{href:"https://w.wiki/J2e"} SPARQL
-    using 2020-01-01 as example date
-    )
-  %li
-    weekly query for merge events (
-    = succeed ", " do
-      %a{href: "https://w.wiki/J2g"} SPARQL
-    using 2020-01-01 as example date
-    )
-  %li
-    a Trainer may refresh on demand
+%div{class:"media mb-3 mt-3 d-flex flex-wrap flex-column flex-md-row"}
+  %a{href:"https://www.wikidata.org"}
+    %img{class:"mb-3 mr-3", src:"/images/wikidata-logo.png", alt:"Wikidata logo"}
+  %div{class:"media-body"}
+    %p
+      Synchrony with
+      %a{href:"https://www.wikidata.org"} wikidata
+      is maintained in several ways. With the exception of the last item on the list below, all automated methods executed via scheduled cron jobs using
+      %a{href:"https://github.com/ruby-rdf/sparql-client"} a ruby gem
+      require that people pages on wikidata have full birth and death dates accurate to the day as well as a value for any of the properties:
+      %em #{::Bloodhound::WikidataSearch::PEOPLE_PROPERTIES.keys.join(", ")}.
+
+    %ul
+      %li
+        daily poll for new pages (
+        %a{href:"https://w.wiki/J2a"} SPARQL
+        )
+      %li
+        daily refresh for entries that were modified within previous 24 hours (
+        = succeed ", " do
+          %a{href:"https://w.wiki/J2e"} SPARQL
+        using 2020-01-01 as example date
+        )
+      %li
+        weekly query for merge events (
+        = succeed ", " do
+          %a{href: "https://w.wiki/J2g"} SPARQL
+        using 2020-01-01 as example date
+        )
+      %li
+        a Trainer can refresh on demand
 
 %p{class:"small"}
   Example SPARQL queries above are limited to
   %em Entomologists of the World (P5370)
   but all the watched properties are used in production
 
-%h3 Citation & Archival
+%h4 Integration with ORCID
 
-%p
-  From the settings panel in your account, you may connect with
-  %a{href:"https://zenodo.org/"} Zenodo
-  in two clicks using your ORCID credentials. Once you make this
-  %em set-it-and-forget-it
-  connection, Bloodhound pushes your specimen data into this industry-recognized, stable, longterm archive and mints a new DataCite DOI. Your Zenodo token is cached in Bloodhound and every week on your behalf, a new version of your specimen data is pushed to the archive when you make new claims. You will also receive a DataCite DOI badge on your Bloodhound profile page and a formatted citation for your professional resume. The versioned data packages stored in Zenodo each consist of a csv file and a JSON-LD document, preparing the way for future Linked Data integrations. If you accept DataCite as a trusted organization in your ORCID account, you will receive a new formatted work entry there for your specimen dataset.
+%div{class:"media mb-3 mt-3 d-flex flex-wrap flex-column flex-md-row"}
+  %a{href:"https://orcid.org"}
+    %img{class:"mb-3 mr-3", src:"/images/orcid-logo.png", alt:"ORCID logo"}
+  %div{class:"media-body"}
+    %p
+      Synchrony with
+      %a{href: "https://orcid.org"} ORCID
+      is maintained in several ways.
+
+    %ul
+      %li
+        OAuth2 pass-through authentication
+      %li
+        daily poll for new accounts by querying the API for any of the keywords:
+        %em #{Settings.orcid.keywords.join(", ")}
+      %li
+        cache full name, aliases, keywords, employment, and education along with start and end dates
+      %li
+        incorporate employment and education data using ORCID-supplied
+        %a{href:"https://www.ringgold.com/"} Ringgold
+        or
+        %a{href:"https://www.grid.ac/"} GRID
+        identifiers for organizations
+      %li
+        resolution of Ringgold or GRID identifiers against wikidata Q numbers
+      %li
+        periodic full refresh of ORCID profiles
+      %li
+        user or a Trainer can refresh on-demand
+
+%h4 Integration with Zenodo
+
+%div{class:"media mb-3 mt-3 d-flex flex-wrap flex-column flex-md-row"}
+  %a{href:"https://zenodo.org"}
+    %img{class:"mb-3 mr-3", src:"/images/zenodo-logo.png", alt:"Zenodo logo"}
+  %div{class:"media-body"}
+    %p
+      From the settings panel in your account, you may connect with
+      %a{href:"https://zenodo.org/"} Zenodo
+      in two clicks using your ORCID credentials. Once you make this
+      %em set-it-and-forget-it
+      connection, Bloodhound pushes your specimen data into this industry-recognized, stable, longterm archive and mints a new DataCite DOI. Your Zenodo token is cached in Bloodhound and every week on your behalf, a new version of your specimen data is pushed to the archive when you make new claims. You will also receive a DataCite DOI badge on your Bloodhound profile page and a formatted citation for your professional resume. The versioned data packages stored in Zenodo each consist of a csv file and a JSON-LD document, preparing the way for future Linked Data integrations. If you accept DataCite as a trusted organization in your ORCID account, you will receive a new formatted work entry there for your specimen dataset.
