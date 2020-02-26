@@ -26,21 +26,38 @@
 %h3 Inner Workings
 
 %p
-  The approximately #{Settings.gbif.download_count}
-  %a{href: "https://doi.org/#{Settings.gbif.download_doi}"} specimen records processed
-  in this project have content in their
-  %a{href: "http://rs.tdwg.org/dwc/terms/#recordedBy"} recordedBy
-  (collector) or
-  %a{href: "http://rs.tdwg.org/dwc/terms/#identifiedBy"} identifiedBy
-  Darwin Core fields and are refreshed every few weeks. Names of collectors and determiners are parsed and cleaned using the test-driven
+  Names of collectors and determiners are parsed and cleaned using the test-driven
   %a{href: "https://github.com/dshorthouse/dwc_agent"} dwc_agent ruby gem
   available for free integration in other projects. Similarity of people names is scored using a graph theory method outlined by
   %a{href: "https://orcid.org/0000-0002-7101-9767"} R.D.M. Page
   and incorporated as a method in the dwc_agent gem. These scores are used to help expand the search for candidate specimens, presented in order of greatest to least probable. If you declared alternate names in your ORCID account such as a maiden name or if aliases are mentioned in wikidata profiles, these are used to search for candidate specimen records. Processing this large number of specimen records is an intensive though repeatable process using MIT-licensed,
   %a{href: "https://github.com/dshorthouse/bloodhound"} open source code.
 
-%p
-  Specimens used in the analyses for published papers are found by downloading cited data packages (less than 100MB zipped) that GBIF serves on behalf of the research community and then reattributed to collectors or determiners. The outcome is comparable to the common practice in taxonomy whereby authors of new species descriptions acknowledge the critical role collectors play in museum and biodiversity science.
+%h4 Integration with GBIF
+
+%div{class:"media mb-3 mt-3 d-flex flex-wrap flex-column flex-md-row"}
+  %a{href:"https://gbif.org"}
+    %img{class:"mb-3 mr-3", src:"/images/gbif-logo.jpg", alt:"GBIF logo"}
+  %div{class:"media-body"}
+    %p
+      Approximately #{Settings.gbif.download_count}
+      %a{href: "https://doi.org/#{Settings.gbif.download_doi}"} specimen records
+      are downloaded from
+      %a{href:"https://gbif.org"} GBIF
+      as Darwin Core Archive files. Records with the basisOfRecord PRESERVED_SPECIMEN, FOSSIL_SPECIMEN, or LIVING_SPECIMEN are selected and then
+      %a{href:"https://github.com/dshorthouse/bloodhound/blob/master/spark.md"} processed for entries
+      in
+      %a{href: "http://rs.tdwg.org/dwc/terms/#recordedBy"} recordedBy
+      (collector) or
+      %a{href: "http://rs.tdwg.org/dwc/terms/#identifiedBy"} identifiedBy
+      fields.
+    %ul
+      %li
+        all occurrence data fully refreshed every 2 weeks
+      %li
+        daily poll for
+        %a{href:"https://www.gbif.org/resource/search?contentType=literature&relevance=GBIF_USED"} cited data download packages
+        (less than 100MB zipped), extracted and linked to attributed specimens records 
 
 %h4 Integration with Wikidata
 
