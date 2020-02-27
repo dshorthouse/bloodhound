@@ -24,12 +24,14 @@ module Sinatra
 
       def find_user(id)
         if id.is_orcid?
-          User.find_by_orcid(id)
+          user = User.find_by_orcid(id)
         elsif id.is_wiki_id?
-          User.find_by_wikidata(id)
+          user = User.find_by_wikidata(id)
         else
-          User.find(id)
+          user = User.find(id)
         end
+        halt 404 if user.nil?
+        user
       end
 
       def create_user
