@@ -1,4 +1,7 @@
 class ArticleOccurrence < ActiveRecord::Base
+
+   self.primary_keys = :article_id, :occurrence_id
+
    belongs_to :occurrence
    belongs_to :article
 
