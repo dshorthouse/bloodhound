@@ -171,6 +171,9 @@ div.list-header{
   background-color: #D3633C;
 }
 
+/* Fix Google Chart cursor flickering */
+svg > g > g:not([column-id]):last-child { pointer-events: none }
+
 .twitter {
   background-color:#4099ff;
   color:#fff;

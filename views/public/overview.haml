@@ -2,10 +2,6 @@
 
 - content_for(:title, "#{@viewed_user.fullname}")
 
-- content_for :stylesheets do
-  - if @viewed_user.is_public? && ( @stats[:countries][:recorded].count > 0 || @stats[:countries][:identified].count > 0 )
-    %link{rel:"stylesheet", href:"/css/jquery-jvectormap-2.0.3.css"}
-
 - content_for :scripts do
   %script{id:"dsq-count-scr", src:"//#{Settings.disqus.shortname}.disqus.com/count.js", defer: ""}
   :javascript
@@ -65,7 +61,9 @@
                   legend: 'none'
                 };
 
-            google.visualization.events.addListener(chart, 'onmouseover', function() { $('#chart').css('cursor','pointer'); });
+            google.visualization.events.addListener(chart, 'onmouseover', function(e) {
+              if (e.row !== null) { $('#chart').css('cursor','pointer'); }
+            });
             google.visualization.events.addListener(chart, 'onmouseout', function() { $('#chart').css('cursor','default'); });
             google.visualization.events.addListener(chart, 'select', function() {
               var sel = chart.getSelection()[0];
