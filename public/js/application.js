@@ -467,6 +467,26 @@ var Application = (function($, window) {
         });
         return false;
       });
+      $("a.article-process").on("click", function(e) {
+        var button = $(this);
+
+        e.stopPropagation();
+        e.preventDefault();
+        $.ajax({
+            method: "GET",
+            url: button.attr("href"),
+            beforeSend: function(xhr) {
+              button.addClass("disabled").find("i").addClass("fa-spin");
+            }
+        }).done(function(data) {
+          button.find("i").removeClass("fa-spin");
+          $(".alert-article-process").alert().show();
+          $(".alert").on("closed.bs.alert", function () {
+            location.reload();
+          });
+        });
+        return false;
+      });
     },
     candidate_counter: function() {
       var self = this, slug = "";

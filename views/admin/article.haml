@@ -3,6 +3,11 @@
 
 -content_for :scripts do
   %script{src: "https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"}
+  %script{src:"/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init(#{@user.id}, "POST", "/admin");
+    });
 
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid alert-warning"}
@@ -29,7 +34,16 @@
           - if @article.processed
             %span{class: "text-success"} #{@article.processed}
           - else
-            false
+            %a{href:"/admin/article/#{@article.id}/process.json", role:"button", class:"btn btn-sm btn-outline-success article-process"}
+              %i{class: "fas fa-sync-alt"}
+              Process
+              %i{class: "fas fa-file-archive"}
+
+            %div{class:"alert alert-article-process alert-success alert-dismissible fade show text-center", role: "alert"}
+              Article data are being downloaded and processed.
+              %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+                %span{"aria-hidden":"true"} &times;
+
         %dt{class: "col-sm-2"} DOI:
         %dd{class: "col-sm-10"}
           %a{href: "https://doi.org/#{@article.doi}"} #{@article.doi}

@@ -40,6 +40,8 @@
       %a{href: "https://gbif.org/dataset/#{@dataset.datasetKey}"}
         %img{src: "/images/gbif_40x40.png", alt:"GBIF", width:"18px"}
       %a{href: "https://gbif.org/dataset/#{@dataset.datasetKey}", target:"_blank"} https://gbif.org/dataset/#{@dataset.datasetKey}
+
+  %p
     %a{href:"/admin/dataset/refresh.json?datasetKey=#{@dataset.datasetKey}", role:"button", class:"btn btn-sm btn-outline-success dataset-refresh mt-3"}
       %i{class: "fas fa-sync-alt"}
       Refresh
@@ -49,15 +51,15 @@
       Rebuild
       %i{class: "fas fa-file-archive"}
 
-    %div{class:"alert alert-gbif alert-success alert-dismissible fade show text-center", role: "alert"}
-      Data from GBIF was refreshed.
-      %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
-        %span{"aria-hidden":"true"} &times;
+  %div{class:"alert alert-gbif alert-success alert-dismissible fade show text-center", role: "alert"}
+    Data from GBIF was refreshed.
+    %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+      %span{"aria-hidden":"true"} &times;
 
-    %div{class:"alert alert-frictionless alert-success alert-dismissible fade show text-center", role: "alert"}
-      Fricitonless data package is being rebuilt.
-      %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
-        %span{"aria-hidden":"true"} &times;
+  %div{class:"alert alert-frictionless alert-success alert-dismissible fade show text-center", role: "alert"}
+    Fricitonless data package is being rebuilt.
+    %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
+      %span{"aria-hidden":"true"} &times;
 
   %button{type:"submit", class:"btn btn-success"} Submit
   %button{type: "button", class:"btn btn-danger", "data-toggle": "modal", "data-target": "#deleteModal"} Delete

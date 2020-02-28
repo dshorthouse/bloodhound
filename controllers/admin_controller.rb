@@ -18,6 +18,18 @@ module Sinatra
             haml :'admin/articles', locals: { active_page: "administration" }
           end
 
+          app.get '/admin/article/:id/process.json' do
+            admin_protected!
+            content_type "application/json", charset: 'utf-8'
+
+            vars = {
+              article_id: params[:id]
+            }
+
+            ::Bloodhound::ArticleWorker.perform_async(vars)
+            { message: "ok" }.to_json
+          end
+
           app.get '/admin/article/:id' do
             admin_protected!
             @article = Article.find(params[:id]) rescue nil
