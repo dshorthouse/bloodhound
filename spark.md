@@ -10,7 +10,7 @@ On a Mac with Homebrew:
 
 ```bash
 $ brew install apache-spark
-$ spark-shell --jars /usr/local/opt/mysql-connector-java/libexec/mysql-connector-java-8.0.18.jar --driver-memory 12G
+$ spark-shell --jars /usr/local/opt/mysql-connector-java/libexec/mysql-connector-java-8.0.19.jar --driver-memory 12G
 ```
 
 ```scala

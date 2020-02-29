@@ -47,7 +47,7 @@
               legend: 'none'
             };
 
-        google.visualization.events.addListener(chart, 'onmouseover', function() {
+        google.visualization.events.addListener(chart, 'onmouseover', function(e) {
           if (e.row !== null) { $('#chart').css('cursor','pointer'); }
         });
         google.visualization.events.addListener(chart, 'onmouseout', function() { $('#chart').css('cursor','default'); });
