@@ -84,19 +84,21 @@ val df2 = spark.
     option("ignoreLeadingWhiteSpace", "true").
     load("/Users/dshorthouse/Downloads/GBIF/occurrence.txt").
     select(processedTerms.map(col): _*).
-    filter(coalesce($"countryCode",$"dateIdentified",$"eventDate").isNotNull)
+    filter(coalesce($"countryCode",$"dateIdentified",$"eventDate").isNotNull).
+    withColumnRenamed("dateIdentified","dateIdentified_processed").
+    withColumnRenamed("eventDate", "eventDate_processed").
+    withColumn("eventDate_processed", to_timestamp($"eventDate_processed")).
+    withColumn("dateIdentified_processed", to_timestamp($"dateIdentified_processed"))
 
 //optionally save the DataFrame to disk so we don't have to do the above again
-df2.withColumnRenamed("dateIdentified","dateIdentified_processed").
-    withColumnRenamed("eventDate", "eventDate_processed").
-    write.mode("overwrite").parquet("processed")
+df2.write.mode("overwrite").parquet("processed")
+
+//df2.write.format("avro").save("processed.avro")
 
 //load the saved DataFrame, can later skip the above processes and start from here
 val df2 = spark.
     read.
-    parquet("processed").
-    withColumn("eventDate_processed", to_timestamp($"eventDate_processed")).
-    withColumn("dateIdentified_processed", to_timestamp($"dateIdentified_processed"))
+    parquet("processed")
 
 val occurrences = df1.join(df2, Seq("gbifID"), "leftouter").orderBy($"gbifID").distinct
 
