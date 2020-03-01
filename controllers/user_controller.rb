@@ -21,6 +21,7 @@ module Sinatra
               halt 404, {}.to_json
             end
 
+            check_redirect
             viewed_user = find_user(params[:id])
             cache_control :public, :must_revalidate, :no_cache, :no_store
             headers.delete("Content-Length")
@@ -36,6 +37,8 @@ module Sinatra
             if !params[:id].is_orcid? && !params[:id].is_wiki_id?
               halt 404, [].to_csv
             end
+
+            check_redirect
             begin
               csv_stream_headers
               @viewed_user = find_user(params[:id])
