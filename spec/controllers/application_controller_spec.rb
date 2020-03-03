@@ -90,6 +90,16 @@ describe "Bloodhound Application Controller" do
     expect(last_response).to be_ok
   end
 
+  it "should allow accessing the on-this-day page" do
+    get '/on-this-day'
+    expect(last_response).to be_ok
+  end
+
+  it "should allow accessing the on-this-day/collected page" do
+    get '/on-this-day/collected'
+    expect(last_response).to be_ok
+  end
+
   it "should allow accessing the about user rss feed" do
     get '/user.rss'
     expect(last_response).to be_ok
