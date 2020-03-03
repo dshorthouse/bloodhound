@@ -17,31 +17,31 @@
         %p{class:"text-center text-muted p-0 m-0"}= @viewed_user.other_names.split("|").join("; ")
 
       - if @viewed_user.wikidata
-        %p{class:"text-center text-muted p-0"}= format_lifespan(@viewed_user)
+        %p{class:"text-center text-muted p-0 mb-2"}= format_lifespan(@viewed_user)
 
       - if !@viewed_user.keywords.blank?
-        %p{class: "text-center text-muted font-italic pt-2"}
+        %p{class: "text-center text-muted font-italic pt-2 mb-2"}
           #{@viewed_user.keywords.split("|").join(", ")}
 
-      %div{class: "orcid text-lg-center p-0 mt-2"}
+      %p{class: "orcid text-center p-0 mt-2"}
         - if @viewed_user.orcid
           %a{href: "https://orcid.org/#{@viewed_user.orcid}"}
             %i{class:"fab fa-orcid"}
             https://orcid.org/#{@viewed_user.orcid}
         - else
-          %img{src: "/images/wikidata_16x16.png", alt:"Wikidata iD"}
+          %img{src: "/images/wikidata_24x24.png", alt:"Wikidata iD"}
           %a{href: "https://www.wikidata.org/wiki/#{@viewed_user.wikidata}"} https://www.wikidata.org/wiki/#{@viewed_user.wikidata}
 
       - org = @viewed_user.current_organization
       - if !org.nil?
-        %p{class: "text-lg-center p-0 m-0"}
+        %p{class: "text-center p-0 m-0"}
           = succeed "," do
             %i{class:"fas fa-building"}
             %a{href: "/organization/#{org.identifier}"} #{org.name}
           #{org.address}
 
       - if !@viewed_user.country.blank?
-        %p{class:"text-lg-center p-0 m-0"}
+        %p{class:"text-center p-0 m-0"}
           %i{class:"fas fa-globe"}
           #{@viewed_user.country.split("|").join(", ")}
 
@@ -66,14 +66,14 @@
                 %ul
                 %p{id:"helpers-list-none", style:"display:none;"}
                   No other trainers have helped attribute #{@viewed_user.fullname}'s specimens.
-                
+
               %div{class:"modal-footer"}
                 %form{id: "visibility-form", action: "/help-others/#{@viewed_user.identifier}/visibility", method: :post}
                   %button{type:"button", class:"btn btn-sm btn-outline-secondary", "data-dismiss":"modal"} Not yet
                   %input{type: :hidden, name: "_method", value: 'PUT'}
                   %input{type: :hidden, name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
                   %input{type: :submit, class:"btn btn-sm btn-outline-success", value:"Yes, Make Public"}
-          
+
       - if authorized?
         %div{class: "text-center border-top mt-3 pt-3"}
           - if @viewed_user.is_public?

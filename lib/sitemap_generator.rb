@@ -23,6 +23,8 @@ module Bloodhound
       @map.add '/how-it-works'
       @map.add '/integrations'
       @map.add '/organizations'
+      @map.add '/on-this-day'
+      @map.add '/on-this-day/collected'
       @map.add '/roster'
       @map.add '/trainers'
     end

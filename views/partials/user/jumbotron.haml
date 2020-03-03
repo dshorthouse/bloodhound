@@ -9,10 +9,10 @@
     %p{class:"text-center text-muted p-0 m-0"} #{@viewed_user.other_names.split("|").join("; ")}
 
   - if @viewed_user.wikidata
-    %p{class:" text-center text-muted p-0"}= format_lifespan(@viewed_user)
+    %p{class:" text-center text-muted p-0 mb-2"}= format_lifespan(@viewed_user)
 
   - if !@viewed_user.keywords.blank?
-    %p{class: "text-center text-muted font-italic pt-2"}
+    %p{class: "text-center text-muted font-italic pt-2 mb-2"}
       #{@viewed_user.keywords.split("|").join(", ")}
 
   - if @viewed_user.signature_url
@@ -30,7 +30,7 @@
         https://www.wikidata.org/wiki/#{@viewed_user.wikidata}
 
   - if !@viewed_user.current_organization.nil?
-    %p{class: "text-lg-left p-0 m-0"}
+    %p{class: "text-lg-center p-0 m-0"}
       - path = @viewed_user.current_organization.identifier
       = succeed "," do
         %i{class:"fas fa-building"}

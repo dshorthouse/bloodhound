@@ -20,7 +20,7 @@
     %p{class:"text-center text-muted p-0 m-0"} #{@user.other_names.split("|").join("; ")}
 
   - if !@user.keywords.blank?
-    %p{class: "text-center text-muted font-italic pt-2"}
+    %p{class: "text-center text-muted font-italic pt-2 mb-2"}
       #{@user.keywords.split("|").join(", ")}
 
   %p{class: "orcid text-lg-left p-0 mt-2"}
