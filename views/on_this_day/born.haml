@@ -12,7 +12,7 @@
         format: 'yyyy-mm-dd'
       }).on("changeDate", function(e) {
         var selected_date = e.format(0, "yyyy-mm-dd");
-        window.location = "/on-this-day/born?date=" + selected_date;
+        window.location = "/on-this-day?date=" + selected_date;
       });
     });
 
