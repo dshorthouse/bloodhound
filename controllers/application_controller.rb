@@ -216,6 +216,29 @@ module Sinatra
             haml :get_started
           end
 
+          app.get '/on-this-day' do
+            @date = DateTime.now
+            if params[:date]
+              @date = DateTime.parse(params[:date]) rescue @date
+            end
+            users = User.where("MONTH(date_born) = ? and DAY(date_born) = ?", @date.month, @date.day)
+                        .order(:family)
+            @pagy, @results = pagy(users)
+            haml :'on_this_day/born', locals: { active_tab: "born" }
+          end
+
+          app.get '/on-this-day/collected' do
+            @date = DateTime.now
+            if params[:date]
+              @date = DateTime.parse(params[:date]) rescue @date
+            end
+            occurrences = Occurrence.where.not(typeStatus: nil)
+                                    .where("MONTH(eventDate_processed) = ? and DAY(eventDate_processed) = ?", @date.month, @date.day)
+                                    .limit(50)
+            @pagy, @results = pagy(occurrences)
+            haml :'on_this_day/collected', locals: { active_tab: "specimens" }
+          end
+
           app.get '/agent.json' do
             content_type "application/json", charset: 'utf-8'
             search_agent

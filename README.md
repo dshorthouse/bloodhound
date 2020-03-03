@@ -86,6 +86,10 @@ Finally:
 
 ### Step 6: Populate Search in Elasticsearch
 
+     $ RACK_ENV=production ./bin/populate_search.rb --index agent
+
+Or from scratch:
+
      $ RACK_ENV=production ./bin/populate_search.rb --rebuild
 
 ### Step 7: Populate dataset metadata

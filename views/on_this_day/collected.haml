@@ -1,0 +1,75 @@
+-content_for :title do
+  Collected On This Day
+
+-content_for :stylesheets do
+  %link{href:"/css/bootstrap-datepicker3.standalone.min.css", rel:"stylesheet", type:"text/css"}
+
+-content_for :scripts do
+  %script{src: "/js/bootstrap-datepicker.min.js"}
+  :javascript
+    $(function() {
+      $('#datepicker').datepicker({
+        format: 'yyyy-mm-dd'
+      }).on("changeDate", function(e) {
+        var selected_date = e.format(0, "yyyy-mm-dd");
+        window.location = "/on-this-day/collected?date=" + selected_date;
+      });
+    });
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
+    %div{class:"mr-auto p-2"}
+      %h1{class:"h2"} On This Day
+
+%div{class:"row"}
+  %div{class:"col-12 col-sm-8 col-lg-9"}
+    %h3{class:"ml-2"} #{@date.strftime("%B %-d")}
+  %div{class:"col-12 col-sm-4 col-lg-3"}
+    %div{class:"form-group"}
+      %div{id:"datepicker", class:"input-group date", "date-provide":"datepicker"}
+        %div{class:"input-group-prepend"}
+          %div{class:"input-group-text"}
+            %i{class:"fas fa-calendar-alt"}
+        %input{type:"text", class:"form-control", placeholder:"#{@date.strftime("%Y-%m-%d")}", size:"12"}
+
+%ul{class: "nav nav-tabs mt-3 mb-3"}
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_tab] == "born" ? " active" : nil}", href: "/on-this-day"} Born
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_tab] == "specimens" ? " active" : nil}", href: "/on-this-day/collected"} Type Specimens Collected
+
+- if @pagy.count == 0
+  %div{class: "alert alert-warning tiny-margins", role: "alert"}
+    No type specimens found collected on #{@date.strftime("%B %-d")}
+- else
+  %div{class: "alert alert-info tiny-margins", role: "alert"}
+    Results limited to 50 specimen records
+
+  %div{class:"table-responsive-lg"}
+    %table{class:"table table-hover table-sm"}
+      %thead{class: "thead-light"}
+        %tr
+          %th{scope: "col"} Scientific Name
+          %th{scope: "col"} Collected By
+          %th{scope: "col"} Identified By
+          %th{scope: "col"} Date Collected
+          %th{scope: "col"} Date Identified
+          %th{scope: "col"} Institution
+          %th{scope: "col"} Catalog Number
+          %th{scope: "col"} Type Status
+
+      %tbody
+        - @results.each do |o|
+          %tr
+            %td
+              - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
+              %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"} #{h(scientific_name)}
+            %td #{h(o.recordedBy)}
+            %td #{h(o.identifiedBy)}
+            %td #{h(o.eventDate || o.year)}
+            %td #{h(o.dateIdentified)}
+            %td #{h(o.institutionCode)}
+            %td #{h(o.catalogNumber)}
+            %td #{h(o.typeStatus)}
+
+  = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
