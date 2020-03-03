@@ -6,8 +6,10 @@
 
 -content_for :scripts do
   %script{src: "/js/bootstrap-datepicker.min.js"}
+  %script{src: "/js/application.js"}
   :javascript
     $(function() {
+      Application.init("", "GET", "/on-this-day");
       $('#datepicker').datepicker({
         format: 'yyyy-mm-dd'
       }).on("changeDate", function(e) {
