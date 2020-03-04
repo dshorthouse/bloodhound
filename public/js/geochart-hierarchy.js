@@ -1,191 +1,418 @@
-{
-  "world" : {
-    "id": 1,
+var GeoChartHierarchy = [
+  {
+    "id": "world",
+    "name": "world",
     "children": [
       {
-        "name": "Africa",
         "id": "002",
+        "name": "Africa",
         "children": [
           {
-            "name": "Northern Africa",
             "id": "015",
+            "name": "Northern Africa",
             "children": [
-              "DZ", "EG", "EH", "LY", "MA", "SD", "SS", "TN"
+              { "id":"DZ" },
+              { "id":"EG" },
+              { "id":"EH" },
+              { "id":"LY" },
+              { "id":"MA" },
+              { "id":"SD" },
+              { "id":"SS" },
+              { "id":"TN" }
             ]
           },
           {
-            "name": "Western Africa",
             "id": "011",
+            "name": "Western Africa",
             "children": [
-              "BF", "BJ", "CI", "CV", "GH", "GM", "GN", "GW", "LR", "ML", "MR", "NE", "NG", "SH", "SL", "SN", "TG"
+              { "id":"BF" },
+              { "id":"BJ" },
+              { "id":"CI" },
+              { "id":"CV" },
+              { "id":"GH" },
+              { "id":"GM" },
+              { "id":"GN" },
+              { "id":"GW" },
+              { "id":"LR" },
+              { "id":"ML" },
+              { "id":"MR" },
+              { "id":"NE" },
+              { "id":"NG" },
+              { "id":"SH" },
+              { "id":"SL" },
+              { "id":"SN" },
+              { "id":"TG" }
             ]
           },
           {
-            "name": "Middle Africa",
             "id": "017",
+            "name": "Middle Africa",
             "children": [
-              "AO", "CD", "ZR", "CF", "CG", "CM", "GA", "GQ", "ST", "TD"
+              { "id":"AO" },
+              { "id":"CD" },
+              { "id":"ZR" },
+              { "id":"CF" },
+              { "id":"CG" },
+              { "id":"CM" },
+              { "id":"GA" },
+              { "id":"GQ" },
+              { "id":"ST" },
+              { "id":"TD" }
             ]
           },
           {
-            "name": "Eastern Africa",
             "id": "014",
+            "name": "Eastern Africa",
             "children": [
-              "BI", "DJ", "ER", "ET", "KE", "KM", "MG", "MU", "MW", "MZ", "RE", "RW", "SC", "SO", "TZ", "UG", "YT", "ZM", "ZW"
+              { "id":"BI" },
+              { "id":"DJ" },
+              { "id":"ER" },
+              { "id":"ET" },
+              { "id":"KE" },
+              { "id":"KM" },
+              { "id":"MG" },
+              { "id":"MU" },
+              { "id":"MW" },
+              { "id":"MZ" },
+              { "id":"RE" },
+              { "id":"RW" },
+              { "id":"SC" },
+              { "id":"SO" },
+              { "id":"TZ" },
+              { "id":"UG" },
+              { "id":"YT" },
+              { "id":"ZM" },
+              { "id":"ZW" }
             ]
           },
           {
-            "name": "Southern Africa",
             "id": "018",
+            "name": "Southern Africa",
             "children": [
-              "BW", "LS", "NA", "SZ", "ZA"
+              { "id":"BW" },
+              { "id":"LS" },
+              { "id":"NA" },
+              { "id":"SZ" },
+              { "id":"ZA" }
             ]
           }
         ]
       },
       {
-        "name": "Europe",
         "id": "150",
+        "name": "Europe",
         "children": [
           {
-            "name": "Northern Europe",
             "id": "154",
+            "name": "Northern Europe",
             "children": [
-              "GG", "JE", "AX", "DK", "EE", "FI", "FO", "GB", "IE", "IM", "IS", "LT", "LV", "NO", "SE", "SJ"
+              { "id":"GG" },
+              { "id":"JE" },
+              { "id":"AX" },
+              { "id":"DK" },
+              { "id":"EE" },
+              { "id":"FI" },
+              { "id":"FO" },
+              { "id":"GB" },
+              { "id":"IE" },
+              { "id":"IM" },
+              { "id":"IS" },
+              { "id":"LT" },
+              { "id":"LV" },
+              { "id":"NO" },
+              { "id":"SE" },
+              { "id":"SJ" }
             ]
           },
           {
-            "name": "Western Europe",
             "id": "155",
+            "name": "Western Europe",
             "children": [
-              "AT", "BE", "CH", "DE", "DD", "FR", "FX", "LI", "LU", "MC", "NL"
+              { "id":"AT" },
+              { "id":"BE" },
+              { "id":"CH" },
+              { "id":"DE" },
+              { "id":"DD" },
+              { "id":"FR" },
+              { "id":"FX" },
+              { "id":"LI" },
+              { "id":"LU" },
+              { "id":"MC" },
+              { "id":"NL" }
             ]
           },
           {
-            "name": "Eastern Europe",
             "id": "151",
+            "name": "Eastern Europe",
             "children": [
-              "BG", "BY", "CZ", "HU", "MD", "PL", "RO", "RU", "SU", "SK", "UA"
+              { "id":"BG" },
+              { "id":"BY" },
+              { "id":"CZ" },
+              { "id":"HU" },
+              { "id":"MD" },
+              { "id":"PL" },
+              { "id":"RO" },
+              { "id":"RU" },
+              { "id":"SU" },
+              { "id":"SK" },
+              { "id":"UA" }
             ]
           },
           {
-            "name": "Southern Europe",
             "id": "039",
+            "name": "Southern Europe",
             "children": [
-              "AD", "AL", "BA", "ES", "GI", "GR", "HR", "IT", "ME", "MK", "MT", "RS", "PT", "SI", "SM", "VA", "YU"
+              { "id":"AD" },
+              { "id":"AL" },
+              { "id":"BA" },
+              { "id":"ES" },
+              { "id":"GI" },
+              { "id":"GR" },
+              { "id":"HR" },
+              { "id":"IT" },
+              { "id":"ME" },
+              { "id":"MK" },
+              { "id":"MT" },
+              { "id":"RS" },
+              { "id":"PT" },
+              { "id":"SI" },
+              { "id":"SM" },
+              { "id":"VA" },
+              { "id":"YU" }
             ]
           }
         ]
       },
       {
-        "name": "Americas",
         "id": "019",
+        "name": "Americas",
         "children": [
           {
-            "name": "Northern America",
             "id": "021",
+            "name": "Northern America",
             "children": [
-              "BM", "CA", "GL", "PM","US"
+              { "id":"BM" },
+              { "id":"CA" },
+              { "id":"GL" },
+              { "id":"PM" },
+              { "id":"US" }
             ]
           },
           {
-            "name": "Caribbean",
             "id": "029",
+            "name": "Caribbean",
             "children": [
-              "AG", "AI", "AN", "AW", "BB", "BL", "BS", "CU", "DM", "DO", "GD", "GP", "HT", "JM", "KN", "KY", "LC", "MF", "MQ", "MS", "PR", "TC", "TT", "VC", "VG", "VI"
+              { "id":"AG" },
+              { "id":"AI" },
+              { "id":"AN" },
+              { "id":"AW" },
+              { "id":"BB" },
+              { "id":"BL" },
+              { "id":"BS" },
+              { "id":"CU" },
+              { "id":"DM" },
+              { "id":"DO" },
+              { "id":"GD" },
+              { "id":"GP" },
+              { "id":"HT" },
+              { "id":"JM" },
+              { "id":"KN" },
+              { "id":"KY" },
+              { "id":"LC" },
+              { "id":"MF" },
+              { "id":"MQ" },
+              { "id":"MS" },
+              { "id":"PR" },
+              { "id":"TC" },
+              { "id":"TT" },
+              { "id":"VC" },
+              { "id":"VG" },
+              { "id":"VI" }
             ]
           },
           {
-            "name": "Central America",
             "id": "013",
+            "name": "Central America",
             "children": [
-              "BZ", "CR", "GT", "HN", "MX", "NI", "PA", "SV"
+              { "id":"BZ" },
+              { "id":"CR" },
+              { "id":"GT" },
+              { "id":"HN" },
+              { "id":"MX" },
+              { "id":"NI" },
+              { "id":"PA" },
+              { "id":"SV" }
             ]
           },
           {
-            "name": "South America",
             "id": "005",
+            "name": "South America",
             "children": [
-              "AR", "BO", "BR", "CL", "CO", "EC", "FK", "GF", "GY", "PE", "PY", "SR", "UY", "VE"
+              { "id":"AR" },
+              { "id":"BO" },
+              { "id":"BR" },
+              { "id":"CL" },
+              { "id":"CO" },
+              { "id":"EC" },
+              { "id":"FK" },
+              { "id":"GF" },
+              { "id":"GY" },
+              { "id":"PE" },
+              { "id":"PY" },
+              { "id":"SR" },
+              { "id":"UY" },
+              { "id":"VE" }
             ]
           }
         ]
       },
       {
-        "name": "Asia",
         "id": "142",
+        "name": "Asia",
         "children": [
           {
-            "name": "Central Asia",
             "id": "143",
+            "name": "Central Asia",
             "children": [
-              "TM", "TJ", "KG", "KZ", "UZ"
+              { "id":"TM" },
+              { "id":"TJ" },
+              { "id":"KG" },
+              { "id":"KZ" },
+              { "id":"UZ" }
             ]
           },
           {
-            "name": "Eastern Asia",
             "id": "030",
+            "name": "Eastern Asia",
             "children": [
-              "CN", "HK", "JP", "KP", "KR", "MN", "MO", "TW"
+              { "id":"CN" },
+              { "id":"HK" },
+              { "id":"JP" },
+              { "id":"KP" },
+              { "id":"KR" },
+              { "id":"MN" },
+              { "id":"MO" },
+              { "id":"TW" }
             ]
           },
           {
-            "name": "Southern Asia",
             "id": "034",
+            "name": "Southern Asia",
             "children": [
-              "AF", "BD", "BT", "IN", "IR", "LK", "MV", "NP", "PK"
+              { "id":"AF" },
+              { "id":"BD" },
+              { "id":"BT" },
+              { "id":"IN" },
+              { "id":"IR" },
+              { "id":"LK" },
+              { "id":"MV" },
+              { "id":"NP" },
+              { "id":"PK" }
             ]
           },
           {
-            "name": "South-Eastern Asia",
             "id": "035",
+            "name": "South-Eastern Asia",
             "children": [
-              "BN", "ID", "KH", "LA", "MM", "BU", "MY", "PH", "SG", "TH", "TL", "TP", "VN"
+              { "id":"BN" },
+              { "id":"ID" },
+              { "id":"KH" },
+              { "id":"LA" },
+              { "id":"MM" },
+              { "id":"BU" },
+              { "id":"MY" },
+              { "id":"PH" },
+              { "id":"SG" },
+              { "id":"TH" },
+              { "id":"TL" },
+              { "id":"TP" },
+              { "id":"VN" }
             ]
           },
           {
-            "name": "Western Asia",
             "id": "145",
+            "name": "Western Asia",
             "children": [
-              "AE", "AM", "AZ", "BH", "CY", "GE", "IL", "IQ", "JO", "KW", "LB", "OM", "PS", "QA", "SA", "NT", "SY", "TR", "YE", "YD"
+              { "id":"AE" },
+              { "id":"AM" },
+              { "id":"AZ" },
+              { "id":"BH" },
+              { "id":"CY" },
+              { "id":"GE" },
+              { "id":"IL" },
+              { "id":"IQ" },
+              { "id":"JO" },
+              { "id":"KW" },
+              { "id":"LB" },
+              { "id":"OM" },
+              { "id":"PS" },
+              { "id":"QA" },
+              { "id":"SA" },
+              { "id":"NT" },
+              { "id":"SY" },
+              { "id":"TR" },
+              { "id":"YE" },
+              { "id":"YD" }
             ]
           }
         ]
       },
       {
-        "name": "Oceania",
         "id": "009",
+        "name": "Oceania",
         "children": [
           {
-            "name": "Australia and New Zealand",
             "id": "053",
+            "name": "Australia and New Zealand",
             "children": [
-              "AU", "NF", "NZ"
+              { "id":"AU" },
+              { "id":"NF" },
+              { "id":"NZ" }
             ]
           },
           {
-            "name": "Melanesia",
             "id": "054",
+            "name": "Melanesia",
             "children": [
-              "FJ", "NC", "PG", "SB", "VU"
+              { "id":"FJ" },
+              { "id":"NC" },
+              { "id":"PG" },
+              { "id":"SB" },
+              { "id":"VU" }
             ]
           },
           {
-            "name": "Micronesia",
             "id": "057",
+            "name": "Micronesia",
             "children": [
-              "FM", "GU", "KI", "MH", "MP", "NR", "PW"
+              { "id":"FM" },
+              { "id":"GU" },
+              { "id":"KI" },
+              { "id":"MH" },
+              { "id":"MP" },
+              { "id":"NR" },
+              { "id":"PW" }
             ]
           },
           {
-            "name": "Polynesia",
             "id": "061",
+            "name": "Polynesia",
             "children": [
-              "AS", "CK", "NU", "PF", "PN", "TK", "TO", "TV", "WF", "WS"
+              { "id":"AS" },
+              { "id":"CK" },
+              { "id":"NU" },
+              { "id":"PF" },
+              { "id":"PN" },
+              { "id":"TK" },
+              { "id":"TO" },
+              { "id":"TV" },
+              { "id":"WF" },
+              { "id":"WS" }
             ]
           }
         ]
       }
     ]
+
   }
-}
+];
