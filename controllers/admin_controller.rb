@@ -12,6 +12,19 @@ module Sinatra
             haml :'admin/welcome', locals: { active_page: "administration" }
           end
 
+          app.get '/admin/articles/check-new.json' do
+            admin_protected!
+            content_type "application/json", charset: 'utf-8'
+
+            params = {
+              max_size: 100_000_000,
+              first_page_only: true
+            }
+            tracker = ::Bloodhound::GbifTracker.new(params)
+            tracker.create_package_records
+            { message: "ok" }.to_json
+          end
+  
           app.get '/admin/articles' do
             admin_protected!
             @pagy, @results = pagy(Article.order(created: :desc), items: 50)

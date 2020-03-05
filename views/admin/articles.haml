@@ -1,14 +1,24 @@
 -content_for :title do
   Articles
 
+-content_for :scripts do
+  %script{src:"/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init(#{@user.id}, "POST", "/admin");
+    });
+
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid alert-warning"}
     %h1{class:"h2"} Articles
 
-%p{class:"text-right"}
-  %a{href: "https://www.gbif.org/resource/search?contentType=literature&relevance=GBIF_USED"}
+%p
+  %a{ href:"/admin/articles/check-new.json", id: "articles-check", role: "button", class: "btn btn-outline-success" }
+    %i{class: "fas fa-sync-alt"}
+    Check New
+
+  %a{href: "https://www.gbif.org/resource/search?contentType=literature&relevance=GBIF_USED", role: "button", class: "btn btn-outline-success"}
     View latest
-  listing on GBIF
 
 - if flash[:destroyed]
   %div{class:"alert alert-danger alert-dismissible fade show d-block", role: "alert"}

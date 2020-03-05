@@ -69,7 +69,8 @@ val processedTerms = List(
   "datasetKey",
   "countryCode",
   "dateIdentified",
-  "eventDate"
+  "eventDate",
+  "mediaType"
 )
 
 val df2 = spark.
@@ -87,8 +88,10 @@ val df2 = spark.
     filter(coalesce($"countryCode",$"dateIdentified",$"eventDate").isNotNull).
     withColumnRenamed("dateIdentified","dateIdentified_processed").
     withColumnRenamed("eventDate", "eventDate_processed").
+    withColumnRenamed("mediaType", "hasImage").
     withColumn("eventDate_processed", to_timestamp($"eventDate_processed")).
-    withColumn("dateIdentified_processed", to_timestamp($"dateIdentified_processed"))
+    withColumn("dateIdentified_processed", to_timestamp($"dateIdentified_processed")).
+    withColumn("hasImage", $"hasImage".cast(sql.types.IntegerType))
 
 //optionally save the DataFrame to disk so we don't have to do the above again
 df2.write.mode("overwrite").parquet("processed")

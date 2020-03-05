@@ -29,7 +29,8 @@ class Occurrence < ActiveRecord::Base
   IGNORED_COLUMNS_OUTPUT = [
     "gbifID",
     "dateIdentified_processed",
-    "eventDate_processed"
+    "eventDate_processed",
+    "hasImage"
   ]
 
   def self.enqueue(o)

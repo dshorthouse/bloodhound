@@ -467,6 +467,22 @@ var Application = (function($, window) {
         });
         return false;
       });
+      $("#articles-check").on("click", function(e) {
+        var button = $(this);
+
+        e.stopPropagation();
+        e.preventDefault();
+        $.ajax({
+            method: "GET",
+            url: button.attr("href"),
+            beforeSend: function(xhr) {
+              button.addClass("disabled").find("i").addClass("fa-spin");
+            }
+        }).done(function(data) {
+          location.reload();
+        });
+        return false;
+      });
       $("a.article-process").on("click", function(e) {
         var button = $(this);
 
