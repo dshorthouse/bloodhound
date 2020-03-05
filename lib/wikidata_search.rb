@@ -291,6 +291,12 @@ module Bloodhound
 
       family = parsed.family rescue nil
       given = parsed.given rescue nil
+
+      if family.nil? && !given.nil?
+        family = given.dup
+        given = ""
+      end
+
       particle = parsed.particle rescue nil
       country = wiki_user.properties("P27")
                          .compact
