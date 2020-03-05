@@ -103,7 +103,8 @@ module Bloodhound
         { name: "gbifID", type: "integer" },
         { name: "datasetKey", type: "string", format: "uuid" }
       ]
-      fields.concat(Occurrence.accepted_fields.map{|o| {
+      accepted_fields = Occurrence.accepted_fields - ["datasetKey"]
+      fields.concat(accepted_fields.map{|o| {
               name: "#{o}",
               type: "string",
               rdfType: ("http://rs.tdwg.org/dwc/terms/#{o}" if o != "countryCode")

@@ -28,7 +28,6 @@ class Occurrence < ActiveRecord::Base
 
   IGNORED_COLUMNS_OUTPUT = [
     "gbifID",
-    "datasetKey",
     "dateIdentified_processed",
     "eventDate_processed"
   ]
