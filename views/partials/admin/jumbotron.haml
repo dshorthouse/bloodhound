@@ -1,6 +1,6 @@
 %div{class:"col-12 col-lg-4 text-center sidebar alert-warning pt-3 pb-3"}
   %form{id:"form-wrapper", method: :post, action: "/", enctype: "multipart/form-data", "accept-charset": "UTF-8", class: "form"}
-    - bg_class = @admin_user.image_url ? "" : "profile-image-bg" 
+    - bg_class = @admin_user.image_url ? "" : "profile-image-bg"
     %div{id:"profile-image", class:"image-placeholder mx-auto d-block align-self-center align-items-center #{bg_class}"}
       %img{src:"#{profile_image(@admin_user)}", class:"rounded mx-auto d-block img-fluid"}
       - if locals[:active_page] == "settings"
@@ -60,6 +60,10 @@
           %i{class:"fas fa-lock"}
           Profile is private
       %p{class:"mb-0"}
+        - if @admin_user.is_public?
+          %a{href: "/#{@admin_user.identifier}", class:"mr-2"}
+            %i{class:"fas fa-user"}
+            Public Profile
         %a{href:"/admin/user/#{@admin_user.identifier}/settings"}
           %i{class:"fas fa-cog"}
           Settings & Integrations

@@ -59,7 +59,7 @@ module Bloodhound
 
     def search_orcids_by_keyword
       if !@settings.orcid.keywords || !@settings.orcid.keywords.is_a?(Array)
-        raise ArgumentError, 'ORCID keywords to search on not in config.yml' 
+        raise ArgumentError, 'ORCID keywords to search on not in config.yml'
       end
 
       keyword_parameter = URI::encode(@settings.orcid.keywords.map{ |k| "keyword:#{k}" }.join(" OR "))
@@ -134,7 +134,7 @@ module Bloodhound
             org = orcid_place(summary[:"employment-summary"])
             if !org.nil?
               organizations << org
-            end 
+            end
           end
         end
       end
@@ -171,7 +171,7 @@ module Bloodhound
       end_year = place[:"end-date"][:year][:value].to_i rescue nil
       end_month = place[:"end-date"][:month][:value].to_i rescue nil
       end_day = place[:"end-date"][:day][:value].to_i rescue nil
-      { 
+      {
         name: name,
         address: address,
         ringgold: ringgold,
