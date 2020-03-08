@@ -18,7 +18,7 @@ module Bloodhound
     end
 
     def wikidata_people_query(property)
-      yesterday = Time.now - 86400
+      one_week_ago = Time.now - 604800
       %Q(
           SELECT DISTINCT
             ?item ?itemLabel
@@ -30,7 +30,7 @@ module Bloodhound
             BIND(if(?birth_precision=11,?birth,if(?birth_precision=10,concat(month(?birth)," ",year(?birth)),year(?birth))) as ?date_of_birth) }
             OPTIONAL { ?item p:P570/psv:P570 [wikibase:timePrecision ?death_precision; wikibase:timeValue ?death]
             BIND(if(?death_precision=11,?death,if(?death_precision=10,concat(month(?death)," ",year(?death)),year(?death))) as ?date_of_death) }
-            FILTER(?birth_precision=11 && ?death_precision=11 && ?change > "#{yesterday.iso8601}"^^xsd:dateTime)
+            FILTER(?birth_precision=11 && ?death_precision=11 && ?change > "#{one_week_ago.iso8601}"^^xsd:dateTime)
           }
         )
     end
