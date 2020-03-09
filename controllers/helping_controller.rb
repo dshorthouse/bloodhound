@@ -179,8 +179,13 @@ module Sinatra
                 redirect "/profile/candidates"
               end
 
-              @dataset = (params[:datasetKey]) ? Dataset.find_by_datasetKey(params[:datasetKey]) : nil
-              @agent = (params[:agent_id]) ? Agent.find(params[:agent_id]) : nil
+              @dataset, @agent = nil
+              if params[:datasetKey]
+                @dataset = Dataset.find_by_datasetKey(params[:datasetKey]) rescue nil
+              end
+              if params[:agent_id]
+                @agent = Agent.find(params[:agent_id]) rescue nil
+              end
 
               if @viewed_user.family.nil?
                 results = []
