@@ -56,8 +56,8 @@
 
   - if @agent
     %div{class: "alert alert-warning", role: "alert"}
-      %i{class:"fas fa-filter"}
-      Filtered by
+      %i{class:"fas fa-search"}
+      Searched for
       %span{class:"font-weight-bold mr-2"}
         #{@agent.fullname_reverse}
       %a{href: "/help-others/#{@viewed_user.identifier}", class:"ml-2"}
@@ -74,7 +74,7 @@
       %div{class:"col col-12 col-md-4 text-md-right"}
         %a{href:"/help-others/#{@viewed_user.identifier}/advanced-search"}
           %i{class:"fas fa-search-plus"}
-          Advanced Search
+          Advanced Search & Filter
   - else
     = haml :'partials/help/fixed_navbar', layout: false
 
@@ -92,7 +92,7 @@
       %div{class:"col col-12 col-md-4 text-md-right"}
         %a{href:"/help-others/#{@viewed_user.identifier}/advanced-search"}
           %i{class:"fas fa-search-plus"}
-          Advanced Search
+          Advanced Search & Filter
 
   - if @pagy.count > 0
     %div{class:"table-responsive-lg"}

@@ -30,7 +30,7 @@
   = haml :'partials/help/tabs', layout: false, locals: { active_tab: "discovered" }
 
   %div{class:"mt-3"}
-    %h4 Advanced Search
+    %h4 Advanced Search & Filter
 
     %form{method: :post, action: "/help-others/#{@viewed_user.identifier}/advanced-search", "accept-charset" => "UTF-8"}
 
@@ -57,8 +57,10 @@
   - if @dataset_results && !@dataset_results.empty?
     %a{name: "datasets"}
     %div{class: "alert alert-info tiny-margins", role: "alert"}
-      Dataset search results for
-      %span{class: "font-weight-bold"} #{h(params[:dataset])}
+      Search results for
+      = succeed "." do
+        %span{class: "font-weight-bold"} #{h(params[:dataset])}
+      Click dataset card below to execute a filter.
 
     - @dataset_results.in_groups_of(3).each do |group|
       %div{class: "card-deck"}
@@ -94,8 +96,10 @@
   - if @agent_results && !@agent_results.empty?
     %a{name: "agents"}
     %div{class: "alert alert-info tiny-margins", role: "alert"}
-      Agent String search results for
-      %span{class: "font-weight-bold"} #{h(params[:agent])}
+      Search results for
+      = succeed "." do
+        %span{class: "font-weight-bold"} #{h(params[:agent])}
+      Click agent string below to execute a search.
 
     %div{class: "row"}
       - @agent_results.in_groups_of(25, false).each do |group|
