@@ -12,7 +12,7 @@ module Sinatra
       end
 
       def search_dataset
-        searched_term = params[:q]
+        searched_term = params[:q] || params[:dataset]
         @results = []
         return if !searched_term.present?
 

@@ -180,13 +180,23 @@ module Sinatra
               end
 
               @dataset = (params[:datasetKey]) ? Dataset.find_by_datasetKey(params[:datasetKey]) : nil
+              @agent = (params[:agent_id]) ? Agent.find(params[:agent_id]) : nil
 
               if @viewed_user.family.nil?
                 results = []
                 @total = 0
                 @pagy, @results = pagy_array(results)
               else
-                id_scores = candidate_agents(@viewed_user).map{|a| { id: a[:id], score: a[:score] } }.compact
+                if @agent
+                  id_scores = [{ id: @agent.id, score: 3 }]
+
+                  node = AgentNode.find_by(agent_id: @agent.id)
+                  if !node.nil?
+                    id_scores.concat(node.agent_nodes_weights.map{|a| { id: a[0], score: a[1] }})
+                  end
+                else
+                  id_scores = candidate_agents(@viewed_user).map{|a| { id: a[:id], score: a[:score] } }.compact
+                end
                 if !id_scores.empty?
                   ids = id_scores.map{|a| a[:id]}
                   nodes = AgentNode.where({ agent_id: ids })
@@ -202,6 +212,36 @@ module Sinatra
             end
 
             haml :'help/user', locals: { active_page: "help" }
+          end
+
+          app.post '/help-others/:id/advanced-search' do
+            protected!
+            check_identifier
+            check_redirect
+
+            @viewed_user = find_user(params[:id])
+
+            @agent_results = []
+            @dataset_results = []
+            if params[:agent]
+              search_agent({ item_size: 75 })
+              @agent_results = format_agents
+            end
+            if params[:dataset]
+              search_dataset
+              @dataset_results = format_datasets
+            end
+
+            haml :'help/advanced_search', locals: { active_page: "help" }
+          end
+
+          app.get '/help-others/:id/advanced-search' do
+            protected!
+            check_identifier
+            check_redirect
+            
+            @viewed_user = find_user(params[:id])
+            haml :'help/advanced_search', locals: { active_page: "help" }
           end
 
           app.get '/help-others/:id/specimens' do

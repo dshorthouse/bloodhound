@@ -98,7 +98,9 @@ var Application = (function($, window) {
             var identifier = window.location.pathname.split("/")[3];
             window.location.href = "/admin/user/" + identifier + "/candidates/agent/" + datum.id;
           } else if (self.path === "/agents") {
-            window.location.href = "/agents?q=" + encodeURI(datum.fullname_reverse);
+            window.location.href = "/agent/" + datum.id;
+          } else if (self.path === "/help-others") {
+            window.location.href = "/help-others/" + self.identifier + "?agent_id=" + datum.id;
           } else {
             window.location.href = "/profile/candidates/agent/" + datum.id;
           }

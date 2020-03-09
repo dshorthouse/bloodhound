@@ -42,5 +42,7 @@
           %div{class: "card-footer"}
             %div{class: "col small text-left text-muted"}
             %div{class: "col small text-right text-muted"}
+              %a{href: "#{dataset.license}"}
+                %img{src:"#{dataset.license_icon("small")}"}
 
 = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1

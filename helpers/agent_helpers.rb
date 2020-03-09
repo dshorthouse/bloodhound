@@ -7,7 +7,7 @@ module Sinatra
       def search_agent(opts = { item_size: 25 })
         @results = []
         filters = []
-        searched_term = params[:q]
+        searched_term = params[:q] || params[:agent]
         return if !searched_term.present?
 
         page = (params[:page] || 1).to_i
