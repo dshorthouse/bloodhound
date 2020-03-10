@@ -122,22 +122,21 @@
             chart.draw(chartData, chartOptions);
           }
 
-          if (countriesRecorded.length > 2) {
+          if (countriesRecorded.length > 1) {
             var intx = intersection(recorded_hierarchies);
             recorded_region = intx[intx.length - 1];
-          } else if (countriesRecorded.length == 2) {
-            recorded_region = countriesRecorded[1][0];
+            collectedMap.draw(google.visualization.arrayToDataTable(countriesRecorded), $.extend(mapOptions, { "region": recorded_region }));
+          } else {
+            collectedMap.draw(google.visualization.arrayToDataTable([["None"]]), $.extend(mapOptions, { "region": recorded_region }));
           }
 
-          if (countriesIdentified.length > 2) {
+          if (countriesIdentified.length > 1) {
             var intx = intersection(identified_hierarchies);
             identified_region = intx[intx.length - 1];
-          } else if (countriesIdentified.length == 2) {
-            identified_region = countriesIdentified[1][0];
+            identifiedMap.draw(google.visualization.arrayToDataTable(countriesIdentified), $.extend(mapOptions, { "region": identified_region }));
+          } else {
+            identifiedMap.draw(google.visualization.arrayToDataTable([["None"]]), $.extend(mapOptions, { "region": identified_region }));
           }
-
-          collectedMap.draw(google.visualization.arrayToDataTable(countriesRecorded), $.extend(mapOptions, { "region": recorded_region }));
-          identifiedMap.draw(google.visualization.arrayToDataTable(countriesIdentified), $.extend(mapOptions, { "region": identified_region }));
         }
 
         google.charts.load('current', {
