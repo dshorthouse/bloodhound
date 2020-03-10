@@ -286,7 +286,7 @@ module Bloodhound
         return
       end
 
-      parsed = DwcAgent.parse(wiki_user.title)[0] rescue nil
+      parsed = DwcAgent.parse(wiki_user.dup.title)[0] rescue nil
 
       family = parsed.family rescue nil
       given = parsed.given rescue nil
