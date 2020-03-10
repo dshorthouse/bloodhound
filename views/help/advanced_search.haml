@@ -46,15 +46,15 @@
       %input{type:"hidden", name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
       %button{type:"submit", class:"btn btn-success"}= "Submit"
 
-  - if params[:dataset].size > 0 && !@dataset_results.empty? && params[:agent].size > 0 && !@agent_results.empty?
+  - if params[:dataset] && params[:dataset].size > 0 && !@dataset_results.empty? && params[:agent] && params[:agent].size > 0 && !@agent_results.empty?
     %p{class:"mt-3"}
       %a{href: "#datasets"}
         Datasets
-      | 
+      |
       %a{href:"#agents"}
         Agents
 
-  - if params[:dataset].size > 0 && !@dataset_results.empty?
+  - if params[:dataset] && params[:dataset].size > 0 && !@dataset_results.empty?
     %a{name: "datasets"}
     %div{class: "alert alert-info tiny-margins", role: "alert"}
       Search results for
@@ -92,7 +92,7 @@
                     %a{href: "#{dataset.license}"}
                       %img{src:"#{dataset.license_icon("small")}"}
 
-  - elsif params[:dataset].size > 0 && @dataset_results.empty?
+  - elsif params[:dataset] && params[:dataset].size > 0 && @dataset_results.empty?
     %div{class: "alert alert-warning tiny-margins", role: "alert"}
       Dataset not found using the search
       %span{class: "font-weight-bold"} #{h(params[:dataset])}
@@ -114,10 +114,7 @@
               %li
                 %a{href: "/help-others/#{@viewed_user.identifier}?agent_id=#{o[:id]}"} #{o[:fullname_reverse]}
 
-  - elsif params[:agent].size > 0 && @agent_results.empty?
+  - elsif params[:agent] && params[:agent].size > 0 && @agent_results.empty?
     %div{class: "alert alert-warning tiny-margins", role: "alert"}
       Agent string not found using the search
       %span{class: "font-weight-bold"} #{h(params[:agent])}
-
-
-  
