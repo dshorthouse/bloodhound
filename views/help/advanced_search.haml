@@ -36,11 +36,11 @@
 
       %div{class: "form-group"}
         %label{for: "typeahead", class:"font-weight-bold"}= "Dataset"
-        %div
+        %div{class:"col-12 col-md-8 pl-0"}
           %input{id: "typeahead-dataset", type: :text, name: "dataset", value: "#{params[:dataset]}", class:"typeahead"}
       %div{class: "form-group"}
         %label{for: "typeahead", class:"font-weight-bold"}= "Agent String"
-        %div
+        %div{class:"col-12 col-md-8 pl-0"}
           %input{id: "typeahead-agent", type: :text, name: "agent", value: "#{params[:agent]}", class:"typeahead"}
 
       %input{type:"hidden", name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
