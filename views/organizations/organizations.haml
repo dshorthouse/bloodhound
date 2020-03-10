@@ -49,4 +49,6 @@
               %span{class:"badge badge-light"} #{number_with_delimiter(count)}
               #{'member'.pluralize(count)}
 
-= pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
+- if @pagy.pages > 1
+  %div{style:"overflow-y:scroll"}
+    = pagy_bootstrap_nav(@pagy)

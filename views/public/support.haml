@@ -82,7 +82,9 @@
                             #{number_with_delimiter(u[:total])}
                           #{'specimen'.pluralize(u[:total])} attributed
 
-        = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
+        - if @pagy.pages > 1
+          %div{style:"overflow-y:scroll"}
+            = pagy_bootstrap_nav(@pagy)
 
     - else
       = haml :'partials/user/offline_message', layout: false

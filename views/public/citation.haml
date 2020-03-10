@@ -68,7 +68,9 @@
                   %td #{h(o.catalogNumber)}
                   %td #{h(o.typeStatus)}
 
-        = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
+        - if @pagy.pages > 1
+          %div{style:"overflow-y:scroll"}
+            = pagy_bootstrap_nav(@pagy)
 
     - else
       = haml :'partials/user/offline_message', layout: false

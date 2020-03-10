@@ -30,4 +30,6 @@
               - cache_fragment(u.identifier) do
                 = haml :'partials/user/card', layout: false, locals: { user: u }
 
-      = pagy_bootstrap_nav(@pagy) if @pagy.pages > 1
+      - if @pagy.pages > 1
+        %div{style:"overflow-y:scroll"}
+          = pagy_bootstrap_nav(@pagy)
