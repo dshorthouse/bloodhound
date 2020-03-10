@@ -23,6 +23,10 @@ module Sinatra
         number.to_s.reverse.gsub(/(\d{3}(?=(\d)))/, "\\1#{options[:delimiter]}").reverse
       end
 
+      def country_name(code)
+        IsoCountryCodes.find(code).name rescue nil
+      end
+
       def profile_image(user, size=nil)
         img = "/images/photo.png"
         cloud_img = "https://abekpgaoen.cloudimg.io/height/200/x/"

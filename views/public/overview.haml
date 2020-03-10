@@ -19,12 +19,14 @@
       %script{src: "/js/progress-bar.js"}
       %script{src: "/js/geochart-hierarchy.js"}
       %script{src: "//www.gstatic.com/charts/loader.js"}
+      - recorded = @stats[:countries][:recorded].to_a.map{|a| [ a[0], country_name(a[0]), a[1] ] }.unshift(["Country", "Country Name", "Collected"])
+      - identified = @stats[:countries][:identified].to_a.map{|a| [ a[0], country_name(a[0]), a[1] ] }.unshift(["Country", "Country Name", "Identified"])
       :javascript
         $(function() {
           ProgressBar.init("#{@viewed_user.identifier}");
 
-          var countriesRecorded = #{@stats[:countries][:recorded].to_a.unshift(["Country", "Collected"])},
-              countriesIdentified = #{@stats[:countries][:identified].to_a.unshift(["Country", "Identified"])},
+          var countriesRecorded = #{recorded},
+              countriesIdentified = #{identified},
               dateData = #{@stats[:activity_dates].to_a.unshift(["Year", "Identified", "Collected"])},
               recorded_region = "world",
               identified_region = "world",
