@@ -13,7 +13,7 @@ module Sinatra
         page = (params[:page] || 1).to_i
 
         size = opts[:item_size] || search_size
-        client = Elasticsearch::Client.new
+        client = Elasticsearch::Client.new url: Settings.elastic.server
         body = build_name_query(searched_term)
         from = (page -1) * size
 
@@ -25,7 +25,7 @@ module Sinatra
       end
 
       def search_agents(search)
-        client = Elasticsearch::Client.new
+        client = Elasticsearch::Client.new url: Settings.elastic.server
         body = build_name_query(search)
         response = client.search index: Settings.elastic.agent_index, size: 25, body: body
         results = response["hits"].deep_symbolize_keys

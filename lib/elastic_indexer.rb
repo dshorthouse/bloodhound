@@ -4,7 +4,7 @@ module Bloodhound
   class ElasticIndexer
 
     def initialize(opts = {})
-      @client = Elasticsearch::Client.new request_timeout: 5*60
+      @client = Elasticsearch::Client.new url: Settings.elastic.server, request_timeout: 5*60
       @settings = { index: "index" }.merge(opts)
     end
 

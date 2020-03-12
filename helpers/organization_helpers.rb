@@ -11,7 +11,7 @@ module Sinatra
 
         page = (params[:page] || 1).to_i
 
-        client = Elasticsearch::Client.new
+        client = Elasticsearch::Client.new url: Settings.elastic.server
         body = build_organization_query(searched_term)
         from = (page -1) * 30
 
