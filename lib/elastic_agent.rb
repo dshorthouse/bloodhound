@@ -5,7 +5,7 @@ module Bloodhound
   class ElasticAgent
 
     def initialize(opts = {})
-      @client = Elasticsearch::Client.new request_timeout: 5*60
+      super
       @settings = { index: 'bloodhound_agents' }.merge(opts)
     end
 
