@@ -2,17 +2,11 @@
 require_relative "elastic_indexer"
 
 module Bloodhound
-  class ElasticAgent
+  class ElasticAgent < ElasticIndexer
 
     def initialize(opts = {})
       super
-      @settings = { index: 'bloodhound_agents' }.merge(opts)
-    end
-
-    def delete_index
-      if @client.indices.exists index: @settings[:index]
-        @client.indices.delete index: @settings[:index]
-      end
+      @settings = { index: Settings.elastic.agent_index }.merge(opts)
     end
 
     def create_index
@@ -92,49 +86,10 @@ module Bloodhound
       @client.indices.create index: @settings[:index], body: config
     end
 
-
-    def refresh_index
-      @client.indices.refresh index: @settings[:index]
-    end
-
-    def bulk(batch)
-      documents = []
-      batch.each do |a|
-        documents << {
-          index: {
-            _id: a.id,
-            data: document(a)
-          }
-        }
-      end
-      @client.bulk index: @settings[:index], refresh: false, body: documents
-    end
-
     def import
       Agent.find_in_batches(batch_size: 5_000) do |batch|
         bulk(batch)
       end
-    end
-
-    def get(a)
-      begin
-        @client.get index: @settings[:index], id: a.id
-      rescue Elasticsearch::Transport::Transport::Errors::NotFound
-        nil
-      end
-    end
-
-    def add(a)
-      @client.index index: @settings[:index], id: a.id, body: document(a)
-    end
-
-    def update(a)
-      doc = { doc: document(a) }
-      @client.update index: @settings[:index], id: a.id, body: doc
-    end
-
-    def delete(a)
-      @client.delete index: @settings[:index], id: a.id
     end
 
     def document(a)

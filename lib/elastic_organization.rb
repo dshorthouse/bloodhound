@@ -6,7 +6,7 @@ module Bloodhound
 
     def initialize(opts = {})
       super
-      @settings = { index: "bloodhound_organizations" }.merge(opts)
+      @settings = { index: Settings.elastic.organization_index }.merge(opts)
     end
 
     def create_index
