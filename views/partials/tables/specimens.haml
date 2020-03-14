@@ -23,6 +23,8 @@
           %td
             - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
             %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"} #{h(scientific_name)}
+            - if o.hasImage?
+              %i{class:"fas fa-image ml-1"}
           %td #{h(o.recordedBy)}
           %td #{h(o.identifiedBy)}
           %td #{h(o.eventDate || o.year)}

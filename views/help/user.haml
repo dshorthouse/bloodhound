@@ -62,7 +62,7 @@
         #{@agent.fullname_reverse}
       %a{href: "/help-others/#{@viewed_user.identifier}", class:"ml-2"}
         Remove
-  
+
   - if @pagy.count == 0
     %div{class: "alert alert-info tiny-margins row", role: "alert"}
       %div{class: "col col-12 col-md-8"}
@@ -119,7 +119,10 @@
                 = haml :'partials/single_selector', layout: false, locals: { occurrence: o }
               %td
                 - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
-                %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"} #{h(scientific_name)}
+                %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"}
+                  #{h(scientific_name)}
+                - if o.hasImage?
+                  %i{class:"fas fa-image ml-1"}
               %td #{h(o.recordedBy)}
               %td #{h(o.identifiedBy)}
               %td #{h(o.eventDate || o.year)}

@@ -41,6 +41,10 @@ class Occurrence < ActiveRecord::Base
     Occurrence.column_names - Occurrence::IGNORED_COLUMNS_OUTPUT
   end
 
+  def hasImage?
+    hasImage
+  end
+
   def coordinates
     lat = decimalLatitude.to_f
     long = decimalLongitude.to_f
