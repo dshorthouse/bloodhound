@@ -23,13 +23,17 @@ class UserOccurrence < ActiveRecord::Base
    end
 
    def self.orphaned_count
-     self.left_joins(:occurrence).where(occurrences: { id: nil }).count
+     self.left_joins(:occurrence)
+         .where(occurrences: { id: nil })
+         .where(visible: true)
+         .count
    end
 
    def self.orphaned_user_claims
      self.select(:user_id)
          .left_joins(:occurrence)
          .where(occurrences: { id: nil })
+         .where(visible: true)
          .group(:user_id)
          .count
          .sort_by { |_key, value| value }
