@@ -84,7 +84,8 @@ CREATE TABLE `occurrences` (
   `scientificName` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `typeStatus` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `dateIdentified_processed` datetime DEFAULT NULL,
-  `eventDate_processed` datetime DEFAULT NULL
+  `eventDate_processed` datetime DEFAULT NULL,
+  `hasImage` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `occurrence_determiners` (
