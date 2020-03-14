@@ -85,13 +85,13 @@ val df2 = spark.
     option("ignoreLeadingWhiteSpace", "true").
     load("/Users/dshorthouse/Downloads/GBIF/occurrence.txt").
     select(processedTerms.map(col): _*).
-    filter(coalesce($"countryCode",$"dateIdentified",$"eventDate").isNotNull).
+    filter(coalesce($"datasetKey",$"countryCode",$"dateIdentified",$"eventDate",$"mediaType").isNotNull).
     withColumnRenamed("dateIdentified","dateIdentified_processed").
     withColumnRenamed("eventDate", "eventDate_processed").
     withColumnRenamed("mediaType", "hasImage").
     withColumn("eventDate_processed", to_timestamp($"eventDate_processed")).
     withColumn("dateIdentified_processed", to_timestamp($"dateIdentified_processed")).
-    withColumn("hasImage", $"hasImage".cast(sql.types.IntegerType))
+    withColumn("hasImage", when($"hasImage".contains("StillImage"), 1).otherwise(0))
 
 //optionally save the DataFrame to disk so we don't have to do the above again
 df2.write.mode("overwrite").parquet("processed")
