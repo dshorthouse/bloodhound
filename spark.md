@@ -85,7 +85,7 @@ val df2 = spark.
     option("ignoreLeadingWhiteSpace", "true").
     load("/Users/dshorthouse/Downloads/GBIF/occurrence.txt").
     select(processedTerms.map(col): _*).
-    filter(coalesce($"datasetKey",$"countryCode",$"dateIdentified",$"eventDate",$"mediaType").isNotNull).
+    filter(coalesce($"dateIdentified",$"eventDate").isNotNull).
     withColumnRenamed("dateIdentified","dateIdentified_processed").
     withColumnRenamed("eventDate", "eventDate_processed").
     withColumnRenamed("mediaType", "hasImage").
