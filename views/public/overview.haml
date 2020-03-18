@@ -9,13 +9,13 @@
       DISQUSWIDGETS.getCount({reset: true});
     });
 
-  - if @viewed_user.is_public?
+  - if @viewed_user.is_public? || admin_authorized?
     %script{src: "/js/application.js"}
     :javascript
       $(function() {
         Application.init("#{@viewed_user.id}");
       });
-    - if @stats[:specimens][:identified] > 0 || @stats[:specimens][:recorded] > 0
+    - if @stats[:specimens] && ( @stats[:specimens][:identified] > 0 || @stats[:specimens][:recorded] > 0 )
       %script{src: "/js/progress-bar.js"}
       %script{src: "/js/geochart-hierarchy.js"}
       %script{src: "//www.gstatic.com/charts/loader.js"}
