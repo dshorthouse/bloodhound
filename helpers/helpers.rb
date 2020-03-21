@@ -121,12 +121,12 @@ module Sinatra
         end
       end
 
-      def specimen_filters
+      def specimen_filters(user)
         if params[:action] && !["collected","identified"].include?(params[:action])
           halt 404, haml(:oops)
         elsif params[:action] && ["collected","identified"].include?(params[:action])
           if params[:action] == "collected"
-            results = @viewed_user.recordings
+            results = user.recordings
             if params[:start_year]
               start_date = Date.new(params[:start_year].to_i)
               if start_date > Date.today
@@ -143,7 +143,7 @@ module Sinatra
             end
           end
           if params[:action] == "identified"
-            results = @viewed_user.identifications
+            results = user.identifications
             if params[:start_year]
               start_date = Date.new(params[:start_year].to_i)
               if start_date > Date.today
@@ -160,7 +160,7 @@ module Sinatra
             end
           end
         else
-          results = @viewed_user.visible_occurrences
+          results = user.visible_occurrences
         end
 
         if params[:country_code]

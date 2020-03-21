@@ -96,7 +96,7 @@ module Sinatra
               @pagy, @results = {}, []
               if @viewed_user.is_public?
                 page = (params[:page] || 1).to_i
-                data = specimen_filters.order("occurrences.typeStatus desc")
+                data = specimen_filters(@viewed_user).order("occurrences.typeStatus desc")
                 @pagy, @results = pagy(data, page: page)
               end
               locals = {

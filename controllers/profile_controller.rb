@@ -100,20 +100,33 @@ module Sinatra
           app.get '/profile/specimens' do
             protected!
 
-            @page = (params[:page] || 1).to_i
-            @total = @user.visible_occurrences.count
-
-            if @page*search_size > @total
-              bump_page = @total % search_size.to_i != 0 ? 1 : 0
-              @page = @total/search_size.to_i + bump_page
+            range = nil
+            if params[:start_year] || params[:end_year]
+              range = [params[:start_year], params[:end_year]].join(" – ")
             end
+            country = IsoCountryCodes.find(params[:country_code]).name rescue nil
+            @filter = {
+              action: params[:action],
+              country: country,
+              range: range
+            }.compact
 
-            @page = 1 if @page <= 0
+            begin
+              @page = (params[:page] || 1).to_i
+              @total = @user.visible_occurrences.count
 
-            specimens = @user.visible_occurrences
-                             .order("occurrences.typeStatus desc")
-            @pagy, @results = pagy(specimens, items: search_size, page: @page)
-            haml :'profile/specimens', locals: { active_page: "profile" }
+              if @page*search_size > @total
+                bump_page = @total % search_size.to_i != 0 ? 1 : 0
+                @page = @total/search_size.to_i + bump_page
+              end
+
+              @page = 1 if @page <= 0
+              data = specimen_filters(@user).order("occurrences.typeStatus desc")
+              @pagy, @results = pagy(data, items: search_size, page: @page)
+              haml :'profile/specimens', locals: { active_page: "profile" }
+            rescue Pagy::OverflowError
+              halt 404, haml(:oops)
+            end
           end
 
           app.get '/profile/support' do

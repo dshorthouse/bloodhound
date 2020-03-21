@@ -34,9 +34,8 @@
       - if @pagy.count == 0
         %div{class: "alert alert-info tiny-margins", role: "alert"}
           - claim_type = @viewed_user.orcid ? "claimed or attributed" : "attributed"
-          - filter_message = !@filter.nil? ? " with this applied filter" : ""
+          - filter_message = @filter.length > 0 ? " with this applied filter" : ""
           Specimens have not yet been #{claim_type}#{filter_message}.
-
       - else
         %div{class: "alert alert-info row tiny-margins pl-0 pr-0", role: "alert"}
           %div{class: "col-12 col-md-8"}
