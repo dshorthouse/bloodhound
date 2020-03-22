@@ -24,7 +24,7 @@ module Sinatra
             tracker.create_package_records
             { message: "ok" }.to_json
           end
-  
+
           app.get '/admin/articles' do
             admin_protected!
             @pagy, @results = pagy(Article.order(created: :desc), items: 50)
@@ -334,19 +334,34 @@ module Sinatra
             admin_protected!
             check_redirect
             @admin_user = find_user(params[:id])
-            @page = (params[:page] || 1).to_i
-            visible_occurrences = @admin_user.visible_occurrences
-            @total = visible_occurrences.count
 
-            if @page*search_size > @total
-              bump_page = @total % search_size.to_i != 0 ? 1 : 0
-              @page = @total/search_size.to_i + bump_page
+            range = nil
+            if params[:start_year] || params[:end_year]
+              range = [params[:start_year], params[:end_year]].join(" – ")
             end
+            country = IsoCountryCodes.find(params[:country_code]).name rescue nil
+            @filter = {
+              action: params[:action],
+              country: country,
+              range: range
+            }.compact
 
-            @page = 1 if @page <= 0
+            begin
+              @page = (params[:page] || 1).to_i
+              @total = @admin_user.visible_occurrences.count
 
-            @pagy, @results = pagy(visible_occurrences.order("occurrences.typeStatus desc"), items: search_size, page: @page)
-            haml :'admin/specimens', locals: { active_page: "administration" }
+              if @page*search_size > @total
+                bump_page = @total % search_size.to_i != 0 ? 1 : 0
+                @page = @total/search_size.to_i + bump_page
+              end
+
+              @page = 1 if @page <= 0
+              data = specimen_filters(@admin_user).order("occurrences.typeStatus desc")
+              @pagy, @results = pagy(data, items: search_size, page: @page)
+              haml :'admin/specimens', locals: { active_page: "administration" }
+            rescue Pagy::OverflowError
+              halt 404, haml(:oops)
+            end
           end
 
           app.get '/admin/user/:id/specimens.json' do
