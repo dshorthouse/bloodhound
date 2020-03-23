@@ -87,6 +87,24 @@ module Bloodhound
               analyzer: :fullname_index,
               search_analyzer: :fullname_search,
               norms: false
+            },
+            date_born: {
+              type: 'date',
+              format: 'yyyy-MM-dd'
+            },
+            date_died: {
+              type: 'date',
+              format: 'yyyy-MM-dd'
+            },
+            families_collected: {
+              type: 'keyword',
+              normalizer: :taxa,
+              norms: false
+            },
+            families_identified: {
+              type: 'keyword',
+              normalizer: :taxa,
+              norms: false
             }
           }
         }
@@ -111,7 +129,11 @@ module Bloodhound
         given: u.given,
         fullname: u.fullname,
         fullname_reverse: u.fullname_reverse,
-        other_names: u.other_names.split("|").map(&:strip)
+        other_names: u.other_names.split("|").map(&:strip),
+        date_born: u.date_born,
+        date_died: u.date_died,
+        families_collected: u.identified_families.keys,
+        families_identified: u.recorded_families.keys
       }
     end
 
