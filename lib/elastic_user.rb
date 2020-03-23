@@ -21,6 +21,12 @@ module Bloodhound
                 max_gram: 50
               },
             },
+            normalizer: {
+              taxa: {
+                type: "custom",
+                filter: ["lowercase"]
+              }
+            },
             analyzer: {
               name_part_index: {
                 type: "custom",
