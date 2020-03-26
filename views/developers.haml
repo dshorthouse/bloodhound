@@ -6,7 +6,123 @@
     %div{class:"mr-auto p-2"}
       %h1{class:"h2"} For Developers
 
-%h3 Web Services
+%h3 User Search
+
+%p
+  Search for users is exposed as JSON-LD documents with elements from
+  %a{href: "https://schema.org/"}
+    https://schema.org
+  as type
+  = succeed ", " do
+    %a{href: "https://schema.org/DataFeed"} DataFeed
+  OpenSearch, and
+  = succeed "." do
+    %a{href: "https://www.w3.org/ns/activitystreams"} W3C ActivityStreams
+
+%dl
+  %dt Base URL
+  %dd{class:"pl-2"} https://api.bloodhound-tracker.net/users/search
+
+  %dt ?q=
+  %dd{class:"pl-2"} single human name (required)
+
+  %dt &families_collected=
+  %dd{class:"pl-2"} comma-separated list of taxonomic families collected (optional)
+
+  %dt &families_identified=
+  %dd{class:"pl-2"} comma-separated list of taxonomic families identified (optional)
+
+  %dt &date=
+  %dd{class:"pl-2"} a date expressed as YYYY-MM-DD, YYYY-MM, or YYYY (optional)
+
+  %dt &page=
+  %dd{class:"pl-2"} page number; there is a fixed 30 items per page (optional)
+
+  %dt &strict=
+  %dd{class:"pl-2"} boolean for MUST (=true) vs SHOULD (=false) on families_identified, families_collected, and date when any are present (optional)
+
+  %dt{class:"mt-3"} Example
+  %dd{class:"pl-2"}
+    %a{href: "https://api.bloodhound-tracker.net/users/search?q=smith&families_collected=scarabaeidae&strict=true"}
+      https://api.bloodhound-tracker.net/users/search?q=smith&families_collected=scarabaeidae&strict=true
+  %dt Response
+  %dd
+    %pre{class:"pre-scrollable bg-dark text-white border rounded p-3"}
+      %code
+        :preserve
+          {
+            "@context": {
+              "@vocab": "http://schema.org",
+              "opensearch": "http://a9.com/-/spec/opensearch/1.1/",
+              "as": "https://www.w3.org/ns/activitystreams#"
+            },
+            "@type": "DataFeed",
+            "opensearch:totalResults": 1,
+            "opensearch:itemsPerPage": 1,
+            "as:first": "https://api.bloodhound-tracker.net/users/search?q=smith&families_collected=curculionidae&strict=true&page=1",
+            "as:prev": null,
+            "as:current": "https://api.bloodhound-tracker.net/users/search?q=smith&families_collected=curculionidae&strict=true",
+            "as:next": null,
+            "as:last": "https://api.bloodhound-tracker.net/users/search?q=smith&families_collected=curculionidae&strict=true&page=1",
+            "name": "Bloodhound user search results",
+            "description": "Bloodhound user search results expressed as a schema.org JSON-LD DataFeed.
+              q={name} is a search by human name;
+              families_identified={families_identified} is a comma-separated list of taxonomic families identified;
+              families_collected={families_collected} is a comma-separated list of taxonomic families collected;
+              date={date} is a date in the form YYYY, YYYY-MM, or YYYY-MM-DD and is compared to birth and death dates;
+              page={page} is the page number and there is a fixed 30 items per page;
+              strict={true|false} is a boolean for MUST vs SHOULD on families_identified, families_collected, and date",
+            "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://api.bloodhound-tracker.net/users/search?q={name}&families_identified={families_identified}&families_collected={families_collected}&date={date}&page={page}&strict={true|false}"
+            },
+            "dataFeedElement": [
+              {
+                "@type": "DataFeedItem",
+                "item": {
+                  "@type": "Person",
+                  "@id": "https://bloodhound-tracker.net/0000-0002-8059-5133",
+                  "name": "Andrew B.T. Smith",
+                  "givenName": "Andrew B.T.",
+                  "familyName": "Smith",
+                  "alternateName": [
+                    "Smith, Andrew B.T."
+                  ],
+                  "knowsAbout": [
+                    {
+                      "@type": "ItemList",
+                      "name": "families_identified",
+                      "itemListElement": [
+                        {
+                          "@type": "ListItem",
+                          "name": "Carabidae"
+                        }
+                      ]
+                    },
+                    {
+                      "@type": "ItemList",
+                      "name": "families_collected",
+                      "itemListElement": [
+                        {
+                          "@type": "ListItem",
+                          "name": "Scarabaeidae"
+                        },
+                        {
+                          "@type": "ListItem",
+                          "name": "Curculionidae"
+                        },
+                        ...
+                      ]
+                    }
+                  ],
+                  "sameAs": "https://orcid.org/0000-0002-8059-5133"
+                }
+              }
+            ]
+          }
+
+%h3 User Data
 
 %p
   Bloodhound data are exposed as csv or
@@ -54,8 +170,11 @@
       This same service is used in two
       %a{href:"/integrations"} browser extensions.
 
+%h3 Dataset Data
+
+%p Claims and attributions are available as Frictionless Data Packages for each dataset.
+
 %div{class:"ml-3"}
-  %h5 Datasets as Frictionless Data Packages
   %div
     %a{href: "/dataset/74f92761-3a24-4d85-9bfb-00b1fee0119d.zip"} #{base_url}/dataset/74f92761-3a24-4d85-9bfb-00b1fee0119d.zip
   %p
