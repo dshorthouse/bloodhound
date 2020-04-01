@@ -10,7 +10,7 @@ On a Mac with Homebrew:
 
 ```bash
 $ brew install apache-spark
-$ spark-shell --jars /usr/local/opt/mysql-connector-java/libexec/mysql-connector-java-8.0.19.jar --driver-memory 12G
+$ spark-shell --jars /usr/local/opt/mysql-connector-java/libexec/mysql-connector-java-8.0.19.jar --packages org.apache.spark:spark-avro_2.11:2.4.5 --driver-memory 12G
 ```
 
 ```scala
@@ -18,6 +18,7 @@ import sys.process._
 import org.apache.spark.sql.Column
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions._
+import org.apache.spark.sql.avro._
 
 val verbatimTerms = List(
   "gbifID",
@@ -57,12 +58,13 @@ val df1 = spark.
     where(!$"scientificName".contains("BIOUG"))
 
 //optionally save the DataFrame to disk so we don't have to do the above again
-df1.write.mode("overwrite").parquet("verbatim")
+df1.write.mode("overwrite").format("avro").save("verbatim")
 
 //load the saved DataFrame, can later skip the above processes and start from here
 val df1 = spark.
     read.
-    parquet("verbatim")
+    format("avro").
+    load("verbatim")
 
 val processedTerms = List(
   "gbifID",
@@ -93,17 +95,23 @@ val df2 = spark.
     withColumn("dateIdentified_processed", to_timestamp($"dateIdentified_processed")).
     withColumn("hasImage", when($"hasImage".contains("StillImage"), 1).otherwise(0))
 
-//optionally save the DataFrame to disk so we don't have to do the above again
-df2.write.mode("overwrite").parquet("processed")
-
-//df2.write.format("avro").save("processed.avro")
+df2.write.mode("overwrite").format("avro").save("processed")
 
 //load the saved DataFrame, can later skip the above processes and start from here
 val df2 = spark.
     read.
-    parquet("processed")
+    format("avro").
+    load("processed")
 
 val occurrences = df1.join(df2, Seq("gbifID"), "leftouter").orderBy($"gbifID").distinct
+
+occurrences.write.mode("overwrite").format("avro").save("occurrences")
+
+//load the saved DataFrame, can later skip the above processes and start from here
+val occurrences = spark.
+    read.
+    format("avro").
+    load("occurrences")
 
 //set some properties for a MySQL connection
 val prop = new java.util.Properties
