@@ -11,6 +11,7 @@ base_url: ''
 offline_warning:
   off_datetime:
   off_duration:
+  online_when:
 google:
   analytics: ''
   api_key: ''
