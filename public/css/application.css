@@ -430,6 +430,17 @@ dl.citation{
   background-color:#fff;
 }
 
+/* pre code display */
+.token.property, .token.symbol {
+  color: #f8c555;
+}
+.token.regex, .token.string, .token.variable {
+  color: #7ec699;
+}
+.token.number {
+  color: #f08d49;
+}
+
 @media (max-width: 450px) {
   .display-2 {
     font-size:3.5rem;

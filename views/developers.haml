@@ -51,72 +51,72 @@
       %code
         :preserve
           {
-            "@context": {
-              "@vocab": "http://schema.org",
-              "opensearch": "http://a9.com/-/spec/opensearch/1.1/",
-              "as": "https://www.w3.org/ns/activitystreams#"
+            <span class="token property">"@context"</span>: {
+              <span class="token property">"@vocab"</span>: <span class="token string">"http://schema.org"</span>,
+              <span class="token property">"opensearch"</span>: <span class="token string">"http://a9.com/-/spec/opensearch/1.1/"</span>,
+              <span class="token property">"as"</span>: <span class="token string">"https://www.w3.org/ns/activitystreams#"</span>
             },
-            "@type": "DataFeed",
-            "opensearch:totalResults": 1,
-            "opensearch:itemsPerPage": 1,
-            "as:first": "https://api.bloodhound-tracker.net/users/search?q=smith&families_collected=curculionidae&strict=true&page=1",
-            "as:prev": null,
-            "as:current": "https://api.bloodhound-tracker.net/users/search?q=smith&families_collected=curculionidae&strict=true",
-            "as:next": null,
-            "as:last": "https://api.bloodhound-tracker.net/users/search?q=smith&families_collected=curculionidae&strict=true&page=1",
-            "name": "Bloodhound user search results",
-            "description": "Bloodhound user search results expressed as a schema.org JSON-LD DataFeed.
+            <span class="token property">"@type"</span>: <span class="token string">"DataFeed"</span>,
+            <span class="token property">"opensearch:totalResults"</span>: <span class="token number">1</span>,
+            <span class="token property">"opensearch:itemsPerPage"</span>: <span class="token number">1</span>,
+            <span class="token property">"as:first"</span>: <span class="token string">"https://api.bloodhound-tracker.net/users/search?q=smith&families_collected=curculionidae&strict=true&page=1"</span>,
+            <span class="token property">"as:prev"</span>: <span class="token symbol">null</span>,
+            <span class="token property">"as:current"</span>: <span class="token string">"https://api.bloodhound-tracker.net/users/search?q=smith&families_collected=curculionidae&strict=true"</span>,
+            <span class="token property">"as:next"</span>: <span class="token symbol">null</span>,
+            <span class="token property">"as:last"</span>: <span class="token string">"https://api.bloodhound-tracker.net/users/search?q=smith&families_collected=curculionidae&strict=true&page=1"</span>,
+            <span class="token property">"name"</span>: <span class="token string">"Bloodhound user search results"</span>,
+            <span class="token property">"description"</span>: <span class="token string">"Bloodhound user search results expressed as a schema.org JSON-LD DataFeed.
               q={name} is a search by human name;
               families_identified={families_identified} is a comma-separated list of taxonomic families identified;
               families_collected={families_collected} is a comma-separated list of taxonomic families collected;
               date={date} is a date in the form YYYY, YYYY-MM, or YYYY-MM-DD and is compared to birth and death dates;
               page={page} is the page number and there is a fixed 30 items per page;
-              strict={true|false} is a boolean for MUST vs SHOULD on families_identified, families_collected, and date",
-            "license": "https://creativecommons.org/publicdomain/zero/1.0/",
-            "potentialAction": {
-              "@type": "SearchAction",
-              "target": "https://api.bloodhound-tracker.net/users/search?q={name}&families_identified={families_identified}&families_collected={families_collected}&date={date}&page={page}&strict={true|false}"
+              strict={true|false} is a boolean for MUST vs SHOULD on families_identified, families_collected, and date"</span>,
+            <span class="token property">"license"</span>: <span class="token string">"https://creativecommons.org/publicdomain/zero/1.0/"</span>,
+            <span class="token property">"potentialAction"</span>: {
+              <span class="token property">"@type"</span>: <span class="token string">"SearchAction"</span>,
+              <span class="token property">"target"</span>: <span class="token string">"https://api.bloodhound-tracker.net/users/search?q={name}&families_identified={families_identified}&families_collected={families_collected}&date={date}&page={page}&strict={true|false}"</span>
             },
-            "dataFeedElement": [
+            <span class="token property">"dataFeedElement"</span>: [
               {
-                "@type": "DataFeedItem",
-                "item": {
-                  "@type": "Person",
-                  "@id": "https://bloodhound-tracker.net/0000-0002-8059-5133",
-                  "name": "Andrew B.T. Smith",
-                  "givenName": "Andrew B.T.",
-                  "familyName": "Smith",
-                  "alternateName": [
-                    "Smith, Andrew B.T."
+                <span class="token property">"@type"</span>: <span class="token string">"DataFeedItem"</span>,
+                <span class="token property">"item"</span>: {
+                  <span class="token property">"@type"</span>: <span class="token string">"Person"</span>,
+                  <span class="token property">"@id"</span>: <span class="token string">"https://bloodhound-tracker.net/0000-0002-8059-5133"</span>,
+                  <span class="token property">"name"</span>: <span class="token string">"Andrew B.T. Smith"</span>,
+                  <span class="token property">"givenName"</span>: <span class="token string">"Andrew B.T."</span>,
+                  <span class="token property">"familyName"</span>: <span class="token string">"Smith"</span>,
+                  <span class="token property">"alternateName"</span>: [
+                    <span class="token string">"Smith, Andrew B.T."</span>
                   ],
-                  "knowsAbout": [
+                  <span class="token property">"knowsAbout"</span>: [
                     {
-                      "@type": "ItemList",
-                      "name": "families_identified",
-                      "itemListElement": [
+                      <span class="token property">"@type"</span>: <span class="token string">"ItemList"</span>,
+                      <span class="token property">"name"</span>: <span class="token string">"families_identified"</span>,
+                      <span class="token property">"itemListElement"</span>: [
                         {
-                          "@type": "ListItem",
-                          "name": "Carabidae"
+                          <span class="token property">"@type"</span>: <span class="token string">"ListItem"</span>,
+                          <span class="token property">"name"</span>: <span class="token string">"Carabidae"</span>
                         }
                       ]
                     },
                     {
-                      "@type": "ItemList",
-                      "name": "families_collected",
-                      "itemListElement": [
+                      <span class="token property">"@type"</span>: <span class="token string">"ItemList"</span>,
+                      <span class="token property">"name"</span>: <span class="token string">"families_collected"</span>,
+                      <span class="token property">"itemListElement"</span>: [
                         {
-                          "@type": "ListItem",
-                          "name": "Scarabaeidae"
+                          <span class="token property">"@type"</span>: <span class="token string">"ListItem"</span>,
+                          <span class="token property">"name"</span>: <span class="token string">"Scarabaeidae"</span>
                         },
                         {
-                          "@type": "ListItem",
-                          "name": "Curculionidae"
+                          <span class="token property">"@type"</span>: <span class="token string">"ListItem"</span>,
+                          <span class="token property">"name"</span>: <span class="token string">"Curculionidae"</span>
                         },
                         ...
                       ]
                     }
                   ],
-                  "sameAs": "https://orcid.org/0000-0002-8059-5133"
+                  <span class="token property">"sameAs"</span>: <span class="token string">"https://orcid.org/0000-0002-8059-5133"</span>
                 }
               }
             ]
