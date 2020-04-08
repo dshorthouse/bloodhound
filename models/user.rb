@@ -270,7 +270,7 @@ class User < ActiveRecord::Base
     identifications_or_recordings
       .references(:occurrences)
       .group("occurrences.countryCode", :action)
-      .pluck("COALESCE(occurrences.countryCode, \"ZZ\")", :action, "COUNT(COALESCE(occurrences.countryCode, \"ZZ\"))")
+      .pluck(Arel.sql("COALESCE(occurrences.countryCode, \"ZZ\")"), :action, Arel.sql("COUNT(COALESCE(occurrences.countryCode, \"ZZ\"))"))
       .each_with_object({}) do |code_action, data|
         if !data.key?(code_action[0])
           data[code_action[0]] = {
@@ -300,7 +300,7 @@ class User < ActiveRecord::Base
       .where.not(created_by: self)
       .references(:occurrences)
       .group("occurrences.countryCode", :action)
-      .pluck("COALESCE(occurrences.countryCode, \"ZZ\")", :action, "COUNT(COALESCE(occurrences.countryCode, \"ZZ\"))")
+      .pluck(Arel.sql("COALESCE(occurrences.countryCode, \"ZZ\")"), :action, Arel.sql("COUNT(COALESCE(occurrences.countryCode, \"ZZ\"))"))
       .each_with_object({}) do |code_action, data|
         if !data.key?(code_action[0])
           data[code_action[0]] = {
