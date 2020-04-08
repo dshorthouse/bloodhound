@@ -270,7 +270,7 @@ class User < ActiveRecord::Base
     identifications_or_recordings
       .references(:occurrences)
       .group("occurrences.countryCode", :action)
-      .pluck("occurrences.countryCode", :action, "COUNT(occurrences.countryCode)")
+      .pluck("occurrences.countryCode", :action, "COUNT(COALESCE(occurrences.countryCode, \"NONE\"))")
       .each_with_object({}) do |code_action, data|
         if !data.key?(code_action[0])
           data[code_action[0]] = {
@@ -300,7 +300,7 @@ class User < ActiveRecord::Base
       .where.not(created_by: self)
       .references(:occurrences)
       .group("occurrences.countryCode", :action)
-      .pluck("occurrences.countryCode", :action, "COUNT(occurrences.countryCode)")
+      .pluck("occurrences.countryCode", :action, "COUNT(COALESCE(occurrences.countryCode, \"NONE\"))")
       .each_with_object({}) do |code_action, data|
         if !data.key?(code_action[0])
           data[code_action[0]] = {
