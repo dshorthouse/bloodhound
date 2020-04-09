@@ -138,9 +138,9 @@ module Bloodhound
             { name: "occurrence_id", type: "integer" },
             { name: "identifiedBy", type: "string", format: "uri", rdfType: "http://rs.tdwg.org/dwc/iri/identifiedBy" },
             { name: "recordedBy", type: "string", format: "uri", rdfType: "http://rs.tdwg.org/dwc/iri/recordedBy" },
-            { name: "claimedBy", type: "string" },
-            { name: "claimedByURI", type: "string", format: "uri" },
-            { name: "claimedDateTime", type: "datetime", format: "any" }
+            { name: "attributedBy", type: "string", rdfType: "http://schema.org/name" },
+            { name: "attributedByURI", type: "string", format: "uri" },
+            { name: "attributionDateTime", type: "datetime", format: "any" }
           ]
         },
         foreignKeys: [

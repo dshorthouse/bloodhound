@@ -149,11 +149,11 @@ class User < ActiveRecord::Base
     recorded_families.first[0] rescue nil
   end
 
-  def identified_count
+  def identifications_count
     visible_user_occurrences.where(qry_identified).count
   end
 
-  def recorded_count
+  def recordings_count
     visible_user_occurrences.where(qry_recorded).count
   end
 
