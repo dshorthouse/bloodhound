@@ -5,15 +5,20 @@ module Bloodhound
 
     class << self
 
+      def ignored_columns
+        ["dateIdentified_processed", "eventDate_processed", "hasImage"]
+      end
+
       def csv_stream_agent_occurrences(occurrences)
         Enumerator.new do |y|
-          header = Occurrence.attribute_names - ["dateIdentified_processed", "eventDate_processed"]
+          header = Occurrence.attribute_names - ignored_columns
           y << CSV::Row.new(header, header, true).to_s
           if !occurrences.empty?
             occurrences.find_each do |o|
               attributes = o.attributes
-              attributes.delete("dateIdentified_processed")
-              attributes.delete("eventDate_processed")
+              ignored_columns.each do |col|
+                attributes.delete(col)
+              end
               data = attributes.values
               y << CSV::Row.new(header, data).to_s
             end
@@ -23,13 +28,14 @@ module Bloodhound
 
       def csv_stream_occurrences(occurrences)
         Enumerator.new do |y|
-          header = ["action"].concat(Occurrence.attribute_names - ["dateIdentified_processed", "eventDate_processed"])
+          header = ["action"].concat(Occurrence.attribute_names - ignored_columns)
           y << CSV::Row.new(header, header, true).to_s
           if !occurrences.empty?
             occurrences.find_each do |o|
               attributes = o.occurrence.attributes
-              attributes.delete("dateIdentified_processed")
-              attributes.delete("eventDate_processed")
+              ignored_columns.each do |col|
+                attributes.delete(col)
+              end
               data = [o.action].concat(attributes.values)
               y << CSV::Row.new(header, data).to_s
             end
@@ -39,14 +45,15 @@ module Bloodhound
 
       def csv_stream_candidates(occurrences)
         Enumerator.new do |y|
-          header = ["action"].concat(Occurrence.attribute_names - ["dateIdentified_processed", "eventDate_processed"])
+          header = ["action"].concat(Occurrence.attribute_names - ignored_columns)
                              .concat(["not me"])
           y << CSV::Row.new(header, header, true).to_s
           if !occurrences.empty?
             occurrences.each do |o|
               attributes = o.occurrence.attributes
-              attributes.delete("dateIdentified_processed")
-              attributes.delete("eventDate_processed")
+              ignored_columns.each do |col|
+                attributes.delete(col)
+              end
               data = [""].concat(attributes.values)
                          .concat([""])
               y << CSV::Row.new(header, data).to_s
@@ -57,15 +64,16 @@ module Bloodhound
 
       def jsonld_stream(user)
         ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
-        id_url = user.orcid ? "https://orcid.org/#{user.orcid}" : "https://www.wikidata.org/wiki/#{user.wikidata}"
-        dwc_contexts = Hash[Occurrence.attribute_names.reject {|column| ignore_cols.include?(column)}
-                                    .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o) }]
+        dwc_contexts = Hash[Occurrence.attribute_names
+                                      .reject {|column| ignore_cols.include?(column)}
+                                      .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o)}]
         context = {
           "@vocab": "http://schema.org/",
           identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
           recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
           PreservedSpecimen: "http://rs.tdwg.org/dwc/terms/PreservedSpecimen"
         }.merge(dwc_contexts)
+         .merge({ datasetKey: "http://rs.gbif.org/terms/1.0/datasetKey" })
 
         output = StringIO.open("", "w+")
         w = Oj::StreamWriter.new(output, indent: 1)
@@ -74,14 +82,14 @@ module Bloodhound
         w.push_key("@type")
         w.push_value("Person")
         w.push_key("@id")
-        w.push_value(id_url)
+        w.push_value("https://bloodhound-tracker.net/#{user.identifier}")
         w.push_key("givenName")
         w.push_value(user.given)
         w.push_key("familyName")
         w.push_value(user.family)
         w.push_value(user.other_names.split("|"), "alternateName")
         w.push_key("sameAs")
-        w.push_value(id_url)
+        w.push_value(user.uri)
         w.push_object("@reverse")
         w.push_array("identified")
         jsonld_specimens_enum(user, "identifications").each do |o|

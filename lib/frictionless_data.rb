@@ -101,13 +101,13 @@ module Bloodhound
     def occurrence_resource
       fields = [
         { name: "gbifID", type: "integer" },
-        { name: "datasetKey", type: "string", format: "uuid" }
+        { name: "datasetKey", type: "string", format: "uuid", rdfType: "http://rs.gbif.org/terms/1.0/datasetKey" }
       ]
       accepted_fields = Occurrence.accepted_fields - ["datasetKey"]
       fields.concat(accepted_fields.map{|o| {
               name: "#{o}",
               type: "string",
-              rdfType: ("http://rs.tdwg.org/dwc/terms/#{o}" if o != "countryCode")
+              rdfType: "http://rs.tdwg.org/dwc/terms/#{o}"
             }.compact
           })
       {
@@ -194,7 +194,7 @@ module Bloodhound
           next if !o.visible || gbif_ids.include?(o.gbifID)
           gbif_ids << o.gbifID
           data = o.attributes
-                  .except("id", "dateIdentified_processed", "eventDate_processed", "visible")
+                  .except("id", "dateIdentified_processed", "eventDate_processed", "visible", "hasImage")
                   .values
           y << CSV::Row.new(header, data).to_s
         end

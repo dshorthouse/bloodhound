@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
     if orcid
       "https://orcid.org/#{orcid}"
     elsif wikidata
-      "https://www.wikidata.org/wiki/#{wikidata}"
+      "https://www.wikidata.org/entity/#{wikidata}"
     end
   end
 
