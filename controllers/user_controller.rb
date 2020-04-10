@@ -25,12 +25,13 @@ module Sinatra
             viewed_user = find_user(params[:id])
             cache_control :public, :must_revalidate, :no_cache, :no_store
             headers.delete("Content-Length")
-            begin
-              ::Bloodhound::IO.jsonld_stream(viewed_user)
-            rescue
-              status 404
-              {}.to_json
-            end
+            #begin
+              ld = ::Bloodhound::IO.new({ user: viewed_user, params: params, request: request })
+              ld.jsonld_stream
+            #rescue
+            #  status 404
+            #  {}.to_json
+            #end
           end
 
           app.get '/:id/specimens.csv' do
