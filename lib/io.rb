@@ -127,7 +127,11 @@ module Bloodhound
         if identifications[:metadata][:prev].nil? && recordings[:metadata][:prev].nil?
           prev_url = nil
         else
-          prev_url = "#{base_url}#{identifications[:metadata][:prev_url] || recordings[:metadata][:prev_url]}"
+          if identifications[:metadata][:prev].nil?
+            prev_url = "#{base_url}#{recordings[:metadata][:prev_url]}"
+          else
+            prev_url = "#{base_url}#{identifications[:metadata][:prev_url]}"
+          end
         end
         w.push_value(prev_url, "as:prev")
 
@@ -142,7 +146,11 @@ module Bloodhound
         if identifications[:metadata][:next].nil? && recordings[:metadata][:next].nil?
           next_url = nil
         else
-          next_url = "#{base_url}#{identifications[:metadata][:next_url] || recordings[:metadata][:next_url]}"
+          if identifications[:metadata][:next].nil?
+            next_url = "#{base_url}#{recordings[:metadata][:next_url]}"
+          else
+            next_url = "#{base_url}#{identifications[:metadata][:next_url]}"
+          end
         end
         w.push_value(next_url, "as:next")
 
