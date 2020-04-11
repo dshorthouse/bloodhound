@@ -213,8 +213,8 @@ module Sinatra
             cache_control :public, :must_revalidate, :no_cache, :no_store
             headers.delete("Content-Length")
             content_type "application/ld+json", charset: 'utf-8'
-            io = ::Bloodhound::IO.new({ user: @user, params: params, request: request })
-            io.jsonld_stream("paged")
+            io = ::Bloodhound::IO.new({ user: @user })
+            io.jsonld_stream("all")
           end
 
           app.get '/profile/download.csv' do
