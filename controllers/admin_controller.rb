@@ -390,7 +390,8 @@ module Sinatra
             admin_user = find_user(params[:id])
             records = admin_user.visible_occurrences
             csv_stream_headers
-            body ::Bloodhound::IO.csv_stream_occurrences(records)
+            io = ::Bloodhound::IO.new
+            body io.csv_stream_occurrences(records)
           end
 
           app.get '/admin/user/:id/support' do
