@@ -20,8 +20,12 @@ module Bloodhound
       "#{request.env['rack.url_scheme']}://#{request.env['HTTP_HOST']}"
     end
 
-    def ignored_columns
-      ["dateIdentified_processed", "eventDate_processed", "hasImage"]
+    def ignored_cols(keep_gbifID = true)
+      if keep_gbifID
+        ["dateIdentified_processed", "eventDate_processed", "hasImage"]
+      else
+        Occurrence::IGNORED_COLUMNS_OUTPUT
+      end
     end
 
     def params
@@ -34,12 +38,12 @@ module Bloodhound
 
     def csv_stream_agent_occurrences(occurrences)
       Enumerator.new do |y|
-        header = Occurrence.attribute_names - ignored_columns
+        header = Occurrence.attribute_names - ignored_cols
         y << CSV::Row.new(header, header, true).to_s
         if !occurrences.empty?
           occurrences.find_each do |o|
             attributes = o.attributes
-            ignored_columns.each do |col|
+            ignored_cols.each do |col|
               attributes.delete(col)
             end
             data = attributes.values
@@ -51,12 +55,12 @@ module Bloodhound
 
     def csv_stream_occurrences(occurrences)
       Enumerator.new do |y|
-        header = ["action"].concat(Occurrence.attribute_names - ignored_columns)
+        header = ["action"].concat(Occurrence.attribute_names - ignored_cols)
         y << CSV::Row.new(header, header, true).to_s
         if !occurrences.empty?
           occurrences.find_each do |o|
             attributes = o.occurrence.attributes
-            ignored_columns.each do |col|
+            ignored_cols.each do |col|
               attributes.delete(col)
             end
             data = [o.action].concat(attributes.values)
@@ -68,13 +72,13 @@ module Bloodhound
 
     def csv_stream_candidates(occurrences)
       Enumerator.new do |y|
-        header = ["action"].concat(Occurrence.attribute_names - ignored_columns)
+        header = ["action"].concat(Occurrence.attribute_names - ignored_cols)
                            .concat(["not me"])
         y << CSV::Row.new(header, header, true).to_s
         if !occurrences.empty?
           occurrences.each do |o|
             attributes = o.occurrence.attributes
-            ignored_columns.each do |col|
+            ignored_cols.each do |col|
               attributes.delete(col)
             end
             data = [""].concat(attributes.values)
@@ -85,12 +89,11 @@ module Bloodhound
       end
     end
 
-    def jsonld_stream
-      ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
+    def jsonld_context
       dwc_contexts = Hash[Occurrence.attribute_names
-                                    .reject {|column| ignore_cols.include?(column)}
-                                    .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignore_cols.include?(o)}]
-      context = {
+                                    .reject {|column| ignored_cols(false).include?(column)}
+                                    .map{|o| ["#{o}", "http://rs.tdwg.org/dwc/terms/#{o}"] if !ignored_cols(false).include?(o)}]
+      {
         "@vocab": "http://schema.org/",
         identified: "http://rs.tdwg.org/dwc/iri/identifiedBy",
         recorded: "http://rs.tdwg.org/dwc/iri/recordedBy",
@@ -98,11 +101,13 @@ module Bloodhound
         as: "https://www.w3.org/ns/activitystreams#"
       }.merge(dwc_contexts)
        .merge({ datasetKey: "http://rs.gbif.org/terms/1.0/datasetKey" })
+    end
 
+    def jsonld_stream(scope = "paged")
       output = StringIO.open("", "w+")
       w = Oj::StreamWriter.new(output, indent: 1)
       w.push_object()
-      w.push_value(context.as_json, "@context")
+      w.push_value(jsonld_context.as_json, "@context")
       w.push_key("@type")
       w.push_value("Person")
       w.push_key("@id")
@@ -115,46 +120,62 @@ module Bloodhound
       w.push_key("sameAs")
       w.push_value(@user.uri)
 
-      identifications = jsonld_occurrences("identifications")
-      recordings = jsonld_occurrences("recordings")
+      if scope == "paged"
+        identifications = jsonld_occurrences_paged("identifications")
+        recordings = jsonld_occurrences_paged("recordings")
 
-      first_url = "#{base_url}#{identifications[:metadata][:first_url] || recordings[:metadata][:first_url]}"
-      w.push_value(first_url, "as:first")
+        if identifications[:metadata][:prev].nil? && recordings[:metadata][:prev].nil?
+          prev_url = nil
+        else
+          prev_url = "#{base_url}#{identifications[:metadata][:prev_url] || recordings[:metadata][:prev_url]}"
+        end
+        w.push_value(prev_url, "as:prev")
 
-      if identifications[:metadata][:prev].nil? && recordings[:metadata][:prev].nil?
-        prev_url = nil
+        current_stub = identifications[:metadata][:page_url] || recordings[:metadata][:page_url]
+        if current_stub.nil?
+          current_url = nil
+        else
+          current_url = "#{base_url}#{current_stub}"
+        end
+        w.push_value(current_url, "as:current")
+
+        if identifications[:metadata][:next].nil? && recordings[:metadata][:next].nil?
+          next_url = nil
+        else
+          next_url = "#{base_url}#{identifications[:metadata][:next_url] || recordings[:metadata][:next_url]}"
+        end
+        w.push_value(next_url, "as:next")
+
+        w.push_object("@reverse")
+        w.push_array("identified")
+        identifications[:results].each do |o|
+          w.push_value(o.as_json)
+        end
+        w.pop
+        w.push_array("recorded")
+        recordings[:results].each do |o|
+          w.push_value(o.as_json)
+        end
+        w.pop
       else
-        prev_url = "#{base_url}#{identifications[:metadata][:prev_url] || recordings[:metadata][:prev_url]}"
+        w.push_object("@reverse")
+        w.push_array("identified")
+        jsonld_occurrences_enum("identifications").each do |o|
+          w.push_value(o.as_json)
+        end
+        w.pop
+        w.push_array("recorded")
+        jsonld_occurrences_enum("recordings").each do |o|
+          w.push_value(o.as_json)
+        end
+        w.pop
       end
-      w.push_value(prev_url, "as:prev")
 
-      #TODO: fix current URL, first, prev URL when page number exceeds what's available
-      current_url = "#{base_url}#{identifications[:metadata][:page_url] || recordings[:metadata][:page_url]}"
-      w.push_value(current_url, "as:current")
-
-      if identifications[:metadata][:next].nil? && recordings[:metadata][:next].nil?
-        next_url = nil
-      else
-        next_url = "#{base_url}#{identifications[:metadata][:next_url] || recordings[:metadata][:next_url]}"
-      end
-      w.push_value(next_url, "as:next")
-
-      w.push_object("@reverse")
-      w.push_array("identified")
-      identifications[:results].each do |o|
-        w.push_value(o.as_json)
-      end
-      w.pop
-      w.push_array("recorded")
-      recordings[:results].each do |o|
-        w.push_value(o.as_json)
-      end
-      w.pop
       w.pop_all
       output.string()
     end
 
-    def jsonld_occurrences(type="identifcations")
+    def jsonld_occurrences_paged(type = "identifcations")
       begin
         pagy, results = pagy_countless(@user.send(type), items: 100)
         metadata = pagy_metadata(pagy)
@@ -170,14 +191,24 @@ module Bloodhound
         }
       end
 
-      ignore_cols = Occurrence::IGNORED_COLUMNS_OUTPUT
       items = results.map do |o|
         { "@type": "PreservedSpecimen",
           "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
           sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
-        }.merge(o.occurrence.attributes.reject {|column| ignore_cols.include?(column)})
+        }.merge(o.occurrence.attributes.reject {|column| ignored_cols(false).include?(column)})
       end
       { metadata: metadata, results: items }
+    end
+
+    def jsonld_occurrences_enum(type = "identifications")
+      Enumerator.new do |y|
+        @user.send(type).find_each do |o|
+          y << { "@type": "PreservedSpecimen",
+                 "@id": "https://gbif.org/occurrence/#{o.occurrence.id}",
+                 sameAs: "https://gbif.org/occurrence/#{o.occurrence.id}"
+               }.merge(o.occurrence.attributes.reject {|column| ignored_cols(false).include?(column)})
+        end
+      end
     end
 
   end

@@ -213,14 +213,16 @@ module Sinatra
             cache_control :public, :must_revalidate, :no_cache, :no_store
             headers.delete("Content-Length")
             content_type "application/ld+json", charset: 'utf-8'
-            ::Bloodhound::IO.jsonld_stream(@user)
+            io = ::Bloodhound::IO.new({ user: @user, params: params, request: request })
+            io.jsonld_stream("paged")
           end
 
           app.get '/profile/download.csv' do
             protected!
             records = @user.visible_occurrences
             csv_stream_headers(@user.orcid)
-            body ::Bloodhound::IO.csv_stream_occurrences(records)
+            io = ::Bloodhound::IO.new
+            body io.csv_stream_occurrences(records)
           end
 
           app.get '/profile/candidate-count.json' do

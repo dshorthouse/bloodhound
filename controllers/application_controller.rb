@@ -36,7 +36,8 @@ module Sinatra
             agent = Agent.find(id)
             records = agent.occurrences
             csv_stream_headers(agent.id)
-            body ::Bloodhound::IO.csv_stream_agent_occurrences(records)
+            io = ::Bloodhound::IO.new
+            body io.csv_stream_agent_occurrences(records)
           end
 
           app.get '/agents' do

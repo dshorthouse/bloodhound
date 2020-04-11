@@ -367,11 +367,11 @@ module Sinatra
           app.get '/admin/user/:id/specimens.json' do
             admin_protected!
             admin_user = find_user(params[:id])
-            attachment "#{admin_user.identifier}.json"
             cache_control :no_cache
             headers.delete("Content-Length")
             content_type "application/ld+json", charset: 'utf-8'
-            ::Bloodhound::IO.jsonld_stream(admin_user)
+            io = ::Bloodhound::IO.new({ user: admin_user, params: params, request: request })
+            io.jsonld_stream("paged")
           end
 
           app.get '/admin/user/:id/message-count.json' do
@@ -389,7 +389,8 @@ module Sinatra
             admin_user = find_user(params[:id])
             records = admin_user.visible_occurrences
             csv_stream_headers
-            body ::Bloodhound::IO.csv_stream_occurrences(records)
+            io = ::Bloodhound::IO.new
+            body io.csv_stream_occurrences(records)
           end
 
           app.get '/admin/user/:id/support' do

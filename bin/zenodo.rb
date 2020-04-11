@@ -44,9 +44,10 @@ if options[:new]
 
     doi_id = z.new_deposit(name: u.fullname_reverse, orcid: u.orcid)
     id = doi_id[:recid]
-    csv = Bloodhound::IO.csv_stream_occurrences(u.visible_occurrences)
+    io = Bloodhound::IO.new({ user: u })
+    csv = io.csv_stream_occurrences(u.visible_occurrences)
     z.add_file_enum(id: id, enum: csv, file_name: u.orcid + ".csv")
-    json = Bloodhound::IO.jsonld_stream(u)
+    json = io.jsonld_stream("all")
     z.add_file_string(id: id, string: json, file_name: u.orcid + ".json")
     pub = z.publish(id: id)
     u.zenodo_doi = pub[:doi]
@@ -71,9 +72,10 @@ elsif options[:orcid]
       z.delete_file(id: id, file_id: file_id)
     end
 
-    csv = Bloodhound::IO.csv_stream_occurrences(u.visible_occurrences)
+    io = Bloodhound::IO.new({ user: u })
+    csv = io.csv_stream_occurrences(u.visible_occurrences)
     z.add_file_enum(id: id, enum: csv, file_name: u.orcid + ".csv")
-    json = Bloodhound::IO.jsonld_stream(u)
+    json = io.jsonld_stream("all")
     z.add_file_string(id: id, string: json, file_name: u.orcid + ".json")
 
     pub = z.publish(id: id)
@@ -88,7 +90,7 @@ elsif options[:orcid]
   else
     puts "User does not yet have a data package in Zenodo".red
   end
- 
+
 elsif options[:all] || options[:within_week]
   qry = User.where.not(zenodo_doi: nil)
   if options[:within_week]
@@ -109,9 +111,10 @@ elsif options[:all] || options[:within_week]
       z.delete_file(id: id, file_id: file_id)
     end
 
-    csv = Bloodhound::IO.csv_stream_occurrences(u.visible_occurrences)
+    io = Bloodhound::IO.new({ user: u })
+    csv = io.csv_stream_occurrences(u.visible_occurrences)
     z.add_file_enum(id: id, enum: csv, file_name: u.orcid + ".csv")
-    json = Bloodhound::IO.jsonld_stream(u)
+    json = io.jsonld_stream("all")
     z.add_file_string(id: id, string: json, file_name: u.orcid + ".json")
 
     pub = z.publish(id: id)
