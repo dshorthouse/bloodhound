@@ -32,14 +32,14 @@ var Application = (function($, window) {
     identifier: "",
     spinner: "<div class=\"spinner-grow\" role=\"status\"><span class=\"sr-only\">Loading...</span></div>",
     data_sources: { agent: {}, user : {}, organization : {} },
+
     init: function(user_id, method, path, identifier) {
       this.user_id = typeof user_id !== 'undefined' ? user_id : "";
       this.method = typeof method !== 'undefined' ? method : "POST";
       this.path = typeof path !== 'undefined' ? path : "";
       this.identifier = typeof identifier !== 'undefined' ? identifier : "";
-      $.ajaxSetup({
-        headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') }
-      });
+
+      this.ajax_setup();
       this.profile_cards();
       this.bloodhound();
       this.typeahead();
@@ -49,6 +49,28 @@ var Application = (function($, window) {
       this.candidate_counter();
       this.helper_navbar();
       this.helper_modal();
+    },
+    ajax_setup: function() {
+      var jqxhrs = [];
+
+      $.ajaxSetup({
+        headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') }
+      });
+
+      $(window).bind("beforeunload", function (e) {
+        $.each(jqxhrs, function (idx, jqxhr) {
+          if (jqxhr) { jqxhr.abort(); }
+        });
+      });
+      var register_xhr = function(e, jqxhr, settings) {
+        jqxhrs.push(jqxhr);
+      };
+      var unregister_xhr = function(e, jqxhr, settings) {
+        var idx = $.inArray(jqxhr, jqxhrs);
+        jqxhrs.splice(idx, 1);
+      };
+      $(document).ajaxSend(register_xhr);
+      $(document).ajaxComplete(unregister_xhr);
     },
     profile_cards: function() {
       $(".card-profile").on("click", function(e) {
