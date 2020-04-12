@@ -1,0 +1,9 @@
+%ul{class: "nav nav-tabs mt-3 mb-3"}
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_tab] == "search" ? " active" : nil}", href: "/developers"} Search
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_tab] == "structured_data" ? " active" : nil}", href: "/developers/structured-data"} Structured Data
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_tab] == "raw_data" ? " active" : nil}", href: "/developers/raw-data"} Raw Data
+  %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_tab] == "code" ? " active" : nil}", href: "/developers/code"} Code

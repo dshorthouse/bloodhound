@@ -202,7 +202,19 @@ module Sinatra
           app.get '/developers' do
             file = File.join(app.root, "public", "data", "bloodhound-public-claims.csv.gz")
             @compressed_file_size = (File.size(file).to_f / 2**20).round(2) rescue nil
-            haml :developers
+            haml :'developers/search', locals: { active_tab: "search" }
+          end
+
+          app.get '/developers/structured-data' do
+            haml :'developers/structured_data', locals: { active_tab: "structured_data" }
+          end
+
+          app.get '/developers/raw-data' do
+            haml :'developers/raw_data', locals: { active_tab: "raw_data" }
+          end
+
+          app.get '/developers/code' do
+            haml :'developers/code', locals: { active_tab: "code" }
           end
 
           app.get '/how-it-works' do

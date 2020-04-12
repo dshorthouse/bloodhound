@@ -30,8 +30,23 @@ describe "Bloodhound Application Controller" do
     expect(last_response).to be_ok
   end
 
-  it "should allow accessing the developers page" do
+  it "should allow accessing the developers search page" do
     get '/developers'
+    expect(last_response).to be_ok
+  end
+
+  it "should allow accessing the developers structured-data page" do
+    get '/developers/structured-data'
+    expect(last_response).to be_ok
+  end
+
+  it "should allow accessing the developers raw-data page" do
+    get '/developers/raw-data'
+    expect(last_response).to be_ok
+  end
+
+  it "should allow accessing the developers code page" do
+    get '/developers/code'
     expect(last_response).to be_ok
   end
 

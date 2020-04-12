@@ -1,0 +1,19 @@
+-content_for :title do
+  For Developers: Code
+
+-content_for :jumbotron do
+  %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
+    %div{class:"mr-auto p-2"}
+      %h1{class:"h2"} For Developers
+
+= haml :'partials/developers/tabs', layout:false, locals: { active_tab: locals[:active_tab] }
+
+%h3{class:"mt-4 mb-3"} Code
+
+%p{class:"mb-4"}
+  The MIT-licensed code is available on
+  = succeed "." do
+    %a{href: "https://github.com/dshorthouse/bloodhound" } GitHub
+  Technologies at play include Apache Spark to group occurrence records by raw entries in recordedBy and identifiedBy and to import into MySQL, Neo4j to store the scores between similarly structured people names, Elasticsearch to aid in the searching of people names once parsed and cleaned, Redis to coordinate the processing queues, and Sinatra/ruby for the application layer. A stand-alone ruby gem,
+  %a{href:"https://github.com/dshorthouse/dwc_agent"} dwc_agent
+  may be used to parse people names and additionally score them for structural similarity.
