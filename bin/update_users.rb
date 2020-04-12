@@ -125,48 +125,48 @@ if options[:wikidata]
     u.delete
     puts "#{u.wikidata} deleted. Missing either family name, birth or death date or has an ORCID".red
   else
-    Sinatra::Base.cache_clear "fragments/#{u.identifier}"
+    u.flush_caches
     puts "#{u.fullname_reverse} created/updated".green
   end
 elsif options[:orcid]
   u = User.find_or_create_by({ orcid: options[:orcid] })
-  Sinatra::Base.cache_clear "fragments/#{u.identifier}"
+  u.flush_caches
   puts "#{u.fullname_reverse} created/updated".green
 elsif options[:logged]
   User.where.not(visited: nil).find_each do |u|
     u.update_profile
-    Sinatra::Base.cache_clear "fragments/#{u.identifier}"
+    u.flush_caches
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:public]
   User.where(is_public: true).find_each do |u|
     u.update_profile
-    Sinatra::Base.cache_clear "fragments/#{u.identifier}"
+    u.flush_caches
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:all]
   User.find_each do |u|
     u.update_profile
-    Sinatra::Base.cache_clear "fragments/#{u.identifier}"
+    u.flush_caches
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:claimed]
   User.where(id: UserOccurrence.select(:user_id).group(:user_id)).find_each do |u|
     u.update_profile
-    Sinatra::Base.cache_clear "fragments/#{u.identifier}"
+    u.flush_caches
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:update_wikidata]
   wikidata_lib = Bloodhound::WikidataSearch.new
   User.where.not(wikidata: nil).find_each do |u|
     u.update_profile
-    Sinatra::Base.cache_clear "fragments/#{u.identifier}"
+    u.flush_caches
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:update_orcid]
   User.where.not(orcid: nil).find_each do |u|
     u.update_profile
-    Sinatra::Base.cache_clear "fragments/#{u.identifier}"
+    u.flush_caches
     puts "#{u.fullname_reverse}".green
   end
 elsif options[:modified_wikidata]
