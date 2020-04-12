@@ -2,9 +2,6 @@
 # encoding: utf-8
 require File.dirname(File.dirname(__FILE__)) + '/application.rb'
 
-Sinatra::Base.root = File.dirname(File.dirname(__FILE__))
-Sinatra::Base.register Sinatra::Cacher
-
 ARGV << '-h' if ARGV.empty?
 
 options = {}
