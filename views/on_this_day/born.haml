@@ -47,11 +47,13 @@
   %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_tab] == "born" ? " active" : nil}", href: "/on-this-day"} Collector Born
   %li{class: "nav-item"}
+    %a{class: "nav-link#{locals[:active_tab] == "died" ? " active" : nil}", href: "/on-this-day/died"} Collector Died
+  %li{class: "nav-item"}
     %a{class: "nav-link#{locals[:active_tab] == "specimens" ? " active" : nil}", href: "/on-this-day/collected"} Type Specimens Collected
 
 - if @pagy.count == 0
   %div{class: "alert alert-warning tiny-margins", role: "alert"}
-    No one found born on #{@date.strftime("%B %-d")}
+    No one found who was born on #{@date.strftime("%B %-d")}
 - else
   - @results.in_groups_of(3).each do |group|
     %div{class: "card-deck"}

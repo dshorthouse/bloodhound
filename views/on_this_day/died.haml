@@ -1,18 +1,29 @@
 -content_for :title do
-  Collected On This Day
+  Collector Died On This Day
 
 -content_for :stylesheets do
   %link{href:"/css/bootstrap-datepicker3.standalone.min.css", rel:"stylesheet", type:"text/css"}
 
 -content_for :scripts do
   %script{src: "/js/bootstrap-datepicker.min.js"}
+  %script{src: "/js/application.js"}
   :javascript
     $(function() {
+      var browser_today = new Date();
+      var browser_date = browser_today.getFullYear()+'-'+('0'+(browser_today.getMonth()+1)).slice(-2)+'-'+('0'+browser_today.getDate()).slice(-2);
+      var server_date = "#{@date.strftime("%Y-%m-%d")}";
+      var date_param = function(){
+        return window.location.href.search("[?&]date=") != -1;
+      };
+      if (!date_param() && server_date !== browser_date) {
+        window.location = "/on-this-day?date=" + browser_date;
+      }
+      Application.init("", "GET", "/on-this-day");
       $('#datepicker').datepicker({
         format: 'yyyy-mm-dd'
       }).on("changeDate", function(e) {
         var selected_date = e.format(0, "yyyy-mm-dd");
-        window.location = "/on-this-day/collected?date=" + selected_date;
+        window.location = "/on-this-day?date=" + selected_date;
       });
     });
 
@@ -42,40 +53,18 @@
 
 - if @pagy.count == 0
   %div{class: "alert alert-warning tiny-margins", role: "alert"}
-    No type specimens found collected on #{@date.strftime("%B %-d")}
+    No one found who died on #{@date.strftime("%B %-d")}
 - else
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    Results limited to 50 holotype or paratype specimen records
-
-  %div{class:"table-responsive-lg"}
-    %table{class:"table table-hover table-sm"}
-      %thead{class: "thead-light"}
-        %tr
-          %th{scope: "col"} Scientific Name
-          %th{scope: "col"} Collected By
-          %th{scope: "col"} Identified By
-          %th{scope: "col"} Date Collected
-          %th{scope: "col"} Date Identified
-          %th{scope: "col"} Institution
-          %th{scope: "col"} Catalog Number
-          %th{scope: "col"} Type Status
-
-      %tbody
-        - @results.each do |o|
-          %tr
-            %td
-              - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
-              %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"}
-                #{h(scientific_name)}
-              - if o.hasImage?
-                %i{class:"fas fa-image ml-1"}
-            %td #{h(o.recordedBy)}
-            %td #{h(o.identifiedBy)}
-            %td #{h(o.eventDate || o.year)}
-            %td #{h(o.dateIdentified)}
-            %td #{h(o.institutionCode)}
-            %td #{h(o.catalogNumber)}
-            %td #{h(o.typeStatus)}
+  - @results.in_groups_of(3).each do |group|
+    %div{class: "card-deck"}
+      - group.each do |u|
+        - if u.nil?
+          %div{class:"card border-0"}
+        - else
+          - if params[:q] && params[:q].present?
+            - u = User.find(u[:_id])
+          - cache_fragment(u.identifier) do
+            = haml :'partials/user/card', layout: false, locals: { user: u }
 
   - if @pagy.pages > 1
     %div{style:"overflow-y:scroll"}

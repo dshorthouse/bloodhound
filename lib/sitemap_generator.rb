@@ -27,6 +27,7 @@ module Bloodhound
       @map.add '/integrations'
       @map.add '/organizations'
       @map.add '/on-this-day'
+      @map.add '/on-this-day/died'
       @map.add '/on-this-day/collected'
       @map.add '/roster'
       @map.add '/trainers'

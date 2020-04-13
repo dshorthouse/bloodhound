@@ -240,6 +240,17 @@ module Sinatra
             haml :'on_this_day/born', locals: { active_tab: "born" }
           end
 
+          app.get '/on-this-day/died' do
+            @date = DateTime.now
+            if params[:date]
+              @date = DateTime.parse(params[:date]) rescue @date
+            end
+            users = User.where("MONTH(date_died) = ? and DAY(date_died) = ?", @date.month, @date.day)
+                        .order(:family)
+            @pagy, @results = pagy(users)
+            haml :'on_this_day/died', locals: { active_tab: "died" }
+          end
+
           app.get '/on-this-day/collected' do
             @date = DateTime.now
             if params[:date]
