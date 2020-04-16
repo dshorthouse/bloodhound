@@ -124,6 +124,20 @@ val url = "jdbc:mysql://localhost:3306/bloodhound?serverTimezone=UTC&useSSL=fals
 // Best to drop indices then recreate later
 // ALTER TABLE `occurrences` DROP KEY `typeStatus_idx`, DROP KEY `index_occurrences_on_datasetKey`;
 
+//check new occurrences against existing user_occurrences table to see how many orphaned occurrences we have
+val user_occurrences = spark.read.jdbc(url, "user_occurrences", prop)
+val missing = occurrences.
+    join(user_occurrences, $"gbifID" === $"occurrence_id", "rightouter").
+    where("gbifID IS NULL").
+    count
+
+//check user_occurrences against new occurrences table to see how many orphaned claims we have
+val user_occurrences = spark.read.jdbc(url, "user_occurrences", prop)
+val missing = user_occurrences.
+      join(occurrences, $"occurrence_id" === $"gbifID", "leftouter").
+      where("occurrence_id IS NULL").
+      count
+
 //write occurrences data to the database
 occurrences.write.mode("append").jdbc(url, "occurrences", prop)
 
