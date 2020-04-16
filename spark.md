@@ -161,14 +161,6 @@ unioned.select("agents", "gbifIDs_recordedBy", "gbifIDs_identifiedBy").
     option("escape", "\"").
     csv("agents-unioned-csv")
 
-// Best to drop indices then recreate later, after all jobs are complete
-// ALTER TABLE `occurrence_determiners` DROP KEY `agent_idx`, DROP KEY `occurrence_idx`;
-// ALTER TABLE `occurrence_recorders` DROP KEY `agent_idx`, DROP KEY `occurrence_idx`;
-
-// Recreate indices
-// ALTER TABLE `occurrence_determiners` ADD KEY `agent_idx` (`agent_id`), ADD KEY `occurrence_idx` (`occurrence_id`);
-// ALTER TABLE `occurrence_recorders` ADD KEY `agent_idx` (`agent_id`), ADD KEY `occurrence_idx` (`occurrence_id`);
-
 //aggregate families (Taxa)
 val familyGroups = occurrences.
     filter($"family".isNotNull).

@@ -102,3 +102,19 @@
         Countries on maps and date ranges on charts can also be clicked to execute dynamic filters.
         In time and as more attributions are made, data quality reports like these on individuals' specimen records may be rolled-up to dataset-level reports.
         These may be included as additional csv files in your Frictionless Data packages such that you can investigate and repair problem records in your collection management system as required.
+
+      %h3 Reconcile
+
+      %div{class:"media mb-3 mt-3 d-flex flex-wrap flex-column flex-md-row"}
+        %a{href:"https://openrefine.org/"}
+          %img{class:"mb-3 mr-3", src:"/images/openrefine-logo.png", alt:"OpenRefine logo"}
+        %div{class:"media-body"}
+          %a{href:"https://openrefine.org/"} OpenRefine
+          reconciliation endpoint:
+          %a{href:"https://api.bloodhound-tracker.net/reconcile"} https://api.bloodhound-tracker.net/reconcile
+
+          %h5{class:"mt-3"} Recommended Use
+          %p
+            The endpoint works best when there is a single name in a person column.
+            Other columns such as Family collected or identified and/or date collected or identified may be optionally used to help adjust the score of returned results.
+            Dates of birth and death (when known) are cross-referenced against the date column you use.
