@@ -138,8 +138,8 @@ module Bloodhound
         other_names: u.other_names.split("|").map(&:strip),
         date_born: u.date_born,
         date_died: u.date_died,
-        families_collected: u.identified_families.keys,
-        families_identified: u.recorded_families.keys
+        families_collected: u.recorded_families.keys.map(&:strip),
+        families_identified: u.identified_families.keys.map(&:strip)
       }
     end
 

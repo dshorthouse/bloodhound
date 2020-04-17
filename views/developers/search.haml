@@ -1,5 +1,5 @@
 -content_for :title do
-  For Developers: Search
+  For Developers: Search & Reconcile
 
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
@@ -126,3 +126,5 @@
               }
             ]
           }
+
+= haml :'partials/developers/reconcile', layout: false
