@@ -306,7 +306,7 @@ dl.dl-horizontal dd.line-break {
 }
 
 .bd-callout-info {
-  order-left-color: #5bc0de;
+  border-left-color: #5bc0de;
 }
 
 .bd-callout-warning {
@@ -320,6 +320,11 @@ dl.dl-horizontal dd.line-break {
 .bd-callout-danger {
   border-left-color: #d9534f;
 }
+
+.bd-callout-bloodhound {
+  border-left-color: #D3633C;
+}
+
 .relaxed{margin-bottom:0px;}
 .button-login{display:none;}
 .citation-wrapper .card {
