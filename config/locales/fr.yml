@@ -1,4 +1,8 @@
 fr:
+  pagy:
+    nav:
+      prev: "&lsaquo;&nbsp;Prev"
+      next: "Next&nbsp;&rsaquo;"
   home:
     tagline: Réclamez les spécimens que vous avez collectés ou identifiés, suivez leur utilisation dans les nouvelles publications scientifiques et aidez à reconnaître vos pairs, vos mentors et vos organismes.
     get_started: Commencer
@@ -36,12 +40,22 @@ fr:
     feedback: Commentaires
     twitter: Bloodhound sur Twitter
     support: Faire un don
+  about:
+    about_title: Rationale
+    the_problem: The Problem
+    metrics: Metrics on Organizations
   roster:
     roster_title: Public Profiles
     lede:
         "%{user_count} people who share their profiles and the profiles of others they revere"
     no_one_found: No one found by the name
     search_result_count: "%{search_count} search results for"
+  on_this_day:
+    global_title: On This Day
+    born_title: Collector Born On This Day
+    collector_born: Collector Born
+    collector_died: Collector Died
+    type_collected: Type Specimens Collected
   trainers:
     trainers_title: Trainers
     lede: "%{trainer_count} people who have attributed natural history specimens to their peers, mentors, and role models"
@@ -62,3 +76,13 @@ fr:
     not_authorized: Non autorisé ou session terminée.
   offline:
     message: Bloodhound est actuellement hors ligne, suivant l’odeur de nouvelles données.
+  specimen:
+    scientific_name: Nom scientifique
+    collected_by: Collected By
+    identified_by: Identified By
+    date_collected: Date Collected
+    date_identified: Date Identified
+    institution: Institution
+    catalog_number: Catalog Number
+    type_status: Type Status
+    trainer: Trainer

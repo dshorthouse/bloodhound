@@ -1,10 +1,10 @@
 -content_for :title do
-  Rationale
+  = I18n.t('about.about_title')
 
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
-      %h1{class:"h2"} Rationale
+      %h1{class:"h2"}= I18n.t('about.about_title')
 
 %p
   Despite the world-wide importance of natural history collections, many are at risk because they are critically underfunded or undervalued. A contributing factor for this apparent neglect is the lack of a professional reward system that quantifies and illustrates the breadth and depth of expertise required to collect and identify specimens, maintain them, digitize their labels, mobilize the data, and enhance these data as errors and omissions are identified by stakeholders. See thoughts by
@@ -23,7 +23,7 @@
   %div{class: "bd-callout bd-callout-bloodhound font-italic"}
     "1.a.i: Develop mechanisms to support and reflect the skills, expertise and experience of individual and organizational contributions to the GBIF network, including revision of identity management system and integration of ORCID identifiers".
 
-%h3 The Problem
+%h3= I18n.t('about.the_problem')
 
 %p
   A bottleneck that prevents the full execution of GBIF's plan is a legacy of intractable, text-based content shared from natural history museums that ambiguously record people or organizations implicated in specimen data, none of which include pre-determined links to ORCID identifiers. Typical content shared by natural history museums under the Darwin Core terms
@@ -32,7 +32,7 @@
   %a{href: "http://rs.tdwg.org/dwc/terms/#identifidBy"} identifiedBy
   (determiners or identifiers) is unstructured and variable. It may include variously ordered or unorderd people names, suffer from insensitivity to cultural preferences, additionally express full or abbreviated names of organizations and expeditions, or other notes and markings that collectively make extraction of people names from these fields extremely difficult. The full solution requires multiple approaches. A progressive, modern approach associates ORCID or wikidata identifiers with people mentioned on specimens as labels are digitized. A retrospective approach engages natural historians with an open interface used to claim their specimens or attribute them to others. In so doing, people may quickly showcase their breadth of expertise and efforts. If sufficient numbers of people claim their specimens and attribute them to others, we may unwittingly develop reconciled authority files to help museum staff employ an integrated approach that incorporates look-ups of disambiguated people names.
 
-%h3 Metrics on Organizations
+%h3= I18n.t('about.metrics')
 
 %div{class: "bd-callout bd-callout-bloodhound font-italic"}
   A single visit to a distant museum by a graduate student to examine and identify specimens can have a significant impact on her career. It also carries with it, her affiliation with her graduate school.

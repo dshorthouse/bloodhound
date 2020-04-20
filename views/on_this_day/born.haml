@@ -1,5 +1,5 @@
 -content_for :title do
-  Collector Born On This Day
+  = I18n.t('on_this_day.born_title')
 
 -content_for :stylesheets do
   %link{href:"/css/bootstrap-datepicker3.standalone.min.css", rel:"stylesheet", type:"text/css"}
@@ -30,7 +30,7 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
-      %h1{class:"h2"} On This Day
+      %h1{class:"h2"}= I18n.t('on_this_day.global_title')
 
 %div{class:"row"}
   %div{class:"col-12 col-sm-8 col-lg-9"}
@@ -45,11 +45,11 @@
 
 %ul{class: "nav nav-tabs mt-3 mb-3"}
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_tab] == "born" ? " active" : nil}", href: "/on-this-day"} Collector Born
+    %a{class: "nav-link#{locals[:active_tab] == "born" ? " active" : nil}", href: "/on-this-day"}= I18n.t('on_this_day.collector_born')
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_tab] == "died" ? " active" : nil}", href: "/on-this-day/died"} Collector Died
+    %a{class: "nav-link#{locals[:active_tab] == "died" ? " active" : nil}", href: "/on-this-day/died"}= I18n.t('on_this_day.collector_died')
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_tab] == "specimens" ? " active" : nil}", href: "/on-this-day/collected"} Type Specimens Collected
+    %a{class: "nav-link#{locals[:active_tab] == "specimens" ? " active" : nil}", href: "/on-this-day/collected"}= I18n.t('on_this_day.type_collected')
 
 - if @pagy.count == 0
   %div{class: "alert alert-warning tiny-margins", role: "alert"}

@@ -19,7 +19,7 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
-      %h1{class:"h2"} On This Day
+      %h1{class:"h2"}= I18n.t('on_this_day.global_title')
 
 %div{class:"row"}
   %div{class:"col-12 col-sm-8 col-lg-9"}
@@ -34,11 +34,11 @@
 
 %ul{class: "nav nav-tabs mt-3 mb-3"}
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_tab] == "born" ? " active" : nil}", href: "/on-this-day"} Collector Born
+    %a{class: "nav-link#{locals[:active_tab] == "born" ? " active" : nil}", href: "/on-this-day"}= I18n.t('on_this_day.collector_born')
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_tab] == "died" ? " active" : nil}", href: "/on-this-day/died"} Collector Died
+    %a{class: "nav-link#{locals[:active_tab] == "died" ? " active" : nil}", href: "/on-this-day/died"}= I18n.t('on_this_day.collector_died')
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_tab] == "specimens" ? " active" : nil}", href: "/on-this-day/collected"} Type Specimens Collected
+    %a{class: "nav-link#{locals[:active_tab] == "specimens" ? " active" : nil}", href: "/on-this-day/collected"}= I18n.t('on_this_day.type_collected')
 
 - if @pagy.count == 0
   %div{class: "alert alert-warning tiny-margins", role: "alert"}
@@ -51,14 +51,14 @@
     %table{class:"table table-hover table-sm"}
       %thead{class: "thead-light"}
         %tr
-          %th{scope: "col"} Scientific Name
-          %th{scope: "col"} Collected By
-          %th{scope: "col"} Identified By
-          %th{scope: "col"} Date Collected
-          %th{scope: "col"} Date Identified
-          %th{scope: "col"} Institution
-          %th{scope: "col"} Catalog Number
-          %th{scope: "col"} Type Status
+          %th{scope: "col"}= I18n.t('specimen.scientific_name')
+          %th{scope: "col"}= I18n.t('specimen.collected_by')
+          %th{scope: "col"}= I18n.t('specimen.identified_by')
+          %th{scope: "col"}= I18n.t('specimen.date_collected')
+          %th{scope: "col"}= I18n.t('specimen.date_identified')
+          %th{scope: "col"}= I18n.t('specimen.institution')
+          %th{scope: "col"}= I18n.t('specimen.catalog_number')
+          %th{scope: "col"}= I18n.t('specimen.type_status')
 
       %tbody
         - @results.each do |o|
