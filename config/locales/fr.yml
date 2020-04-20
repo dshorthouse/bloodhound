@@ -32,7 +32,7 @@ fr:
     resources: Ressources
     integrations: Intégrations
     for_developers: Pour les informaticiens
-    for_collection_data_managers: Pour less gestionnaires de collections
+    for_collection_data_managers: Pour les gestionnaires de collections
     on_this_day: Aujourd'hui
     about: À propos
     rationale: Raisonnement
@@ -74,7 +74,7 @@ fr:
   donate:
     donate_title: Donate
     lede: Your one-time or periodic donation will help complete the data pipeline and ensure that credit is given for contributions made to natural history collections as quickly and as seamlessly as possible.
-    campaing: Campaign
+    campaign: Campaign
     donor_wall: Donor Wall
   donor_wall:
     donor_wall_title: Donor Wall
