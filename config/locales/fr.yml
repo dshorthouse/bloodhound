@@ -36,6 +36,23 @@ fr:
     feedback: Commentaires
     twitter: Bloodhound sur Twitter
     support: Faire un don
+  roster:
+    roster_title: Public Profiles
+    lede:
+        "%{user_count} people who share their profiles and the profiles of others they revere"
+    no_one_found: No one found by the name
+    search_result_count: "%{search_count} search results for"
+  trainers:
+    trainers_title: Trainers
+    lede: "%{trainer_count} people who have attributed natural history specimens to their peers, mentors, and role models"
+  donate:
+    donate_title: Donate
+    lede: Your one-time or periodic donation will help complete the data pipeline and ensure that credit is given for contributions made to natural history collections as quickly and as seamlessly as possible.
+    campaing: Campaign
+    donor_wall: Donor Wall
+  donor_wall:
+    donor_wall_title: Donor Wall
+    lede: Thanks to the following donors who are supporting the completion of the data pipeline.
   oops:
     not_found_title: Pas trouvé
     not_found: Désolé, cette page n'a pas été trouvée

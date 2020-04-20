@@ -1,19 +1,18 @@
 -content_for :title do
-  Donor Wall
+  = I18n.t('donor_wall.donar_wall_title')
 
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
-      %h1{class:"h2"} Donate
+      %h1{class:"h2"}= I18n.t('donor_wall.donor_wall_title')
 
 %ul{class: "nav nav-tabs pl-2"}
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "donate" ? " active" : nil}", href: "/donate"} Campaign
+    %a{class: "nav-link#{locals[:active_page] == "donate" ? " active" : nil}", href: "/donate"}= I18n.t('donate.campaign')
   %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_page] == "wall" ? " active" : nil}", href: "/donate/wall"} Donor Wall
+    %a{class: "nav-link#{locals[:active_page] == "wall" ? " active" : nil}", href: "/donate/wall"}= I18n.t('donate.donor_wall')
 
-%p{class:"mt-3"}
-  Thanks to the following donors who are supporting the completion of the data pipeline.
+%p{class:"mt-3"}= I18n.t('donor_wall.lede')
 
 %div{class:"d-flex justify-content-center"}
   %div{class:"flex-fill"}

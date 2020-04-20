@@ -1,5 +1,5 @@
 -content_for :title do
-  Profiles
+  = I18n.t('roster.roster_title')
 
 -content_for :stylesheets do
   %link{rel:"alternate", type:"application/rss+xml", title:"RSS Feed for New User Profiles", href:"/user.rss"}
@@ -14,19 +14,19 @@
 -content_for :jumbotron do
   %div{id:"roster-jumbotron", class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
-      %h1{class:"h2"} Public Profiles
+      %h1{class:"h2"}= I18n.t('roster.roster_title')
       %p.lead.text-muted
-        #{number_with_delimiter(User.where(is_public: true).count)} people who share their profiles and the profiles of others they revere
+        = I18n.t('roster.lede', user_count: number_with_delimiter(User.where(is_public: true).count))
     = haml :'partials/user/search', layout: false
 
 - if @pagy.count == 0 && params[:q] && params[:q].present?
   %div{class: "alert alert-warning tiny-margins", role: "alert"}
-    No one found by the name
+    = I18n.t('roster.no_one_found')
     %span{class: "font-weight-bold"} #{h(params[:q])}
 - else
   - if params[:q] && params[:q].present?
     %div{class: "alert alert-info tiny-margins", role: "alert"}
-      #{@pagy.count} search results for
+      = I18n.t('roster.search_result_count', search_count: @pagy.count)
       %span{class: "font-weight-bold"} #{h(params[:q])}
 
   - @results.in_groups_of(3).each do |group|
