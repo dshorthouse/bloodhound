@@ -44,6 +44,14 @@ fr:
     about_title: Rationale
     the_problem: The Problem
     metrics: Metrics on Organizations
+  agents:
+    agents_title: Agent Strings
+    search_title: Agent String Search
+    lede: "%{agent_count} raw strings from parsed collector and determiner names in specimen data from GBIF"
+    search_none: No agent string found for
+    search_count: "%{search_count} search results for"
+    warning: "WARNING:"
+    warning_statement: Unlike all other URLs in this site, URLs for agent strings are unreliable for linking because they will point to different results every few weeks
   roster:
     roster_title: Public Profiles
     lede:
