@@ -1,8 +1,4 @@
 fr:
-  pagy:
-    nav:
-      prev: "&lsaquo;&nbsp;Prev"
-      next: "Next&nbsp;&rsaquo;"
   home:
     tagline: Réclamez les spécimens que vous avez collectés ou identifiés, suivez leur utilisation dans les nouvelles publications scientifiques et aidez à reconnaître vos pairs, vos mentors et vos organismes.
     get_started: Commencer
@@ -79,6 +75,10 @@ fr:
   donor_wall:
     donor_wall_title: Donor Wall
     lede: Thanks to the following donors who are supporting the completion of the data pipeline.
+  dataset:
+    placeholder: papillons du Brésil
+  organization:
+    placeholder: Musée canadien de la nature
   oops:
     not_found_title: Pas trouvé
     not_found: Désolé, cette page n'a pas été trouvée
@@ -98,3 +98,5 @@ fr:
     catalog_number: Catalog Number
     type_status: Type Status
     trainer: Trainer
+  general:
+    search: Chercher

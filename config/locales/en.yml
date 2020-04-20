@@ -1,8 +1,4 @@
 en:
-  pagy:
-    nav:
-      prev: "&lsaquo;&nbsp;Previous"
-      next: "Next&nbsp;&rsaquo;"
   home:
     tagline: Claim the natural history specimens you collected or identified, track their use in new science, and help acknowledge your peers, mentors, and organizations.
     get_started: Get started
@@ -79,6 +75,10 @@ en:
   donor_wall:
     donor_wall_title: Donor Wall
     lede: Thanks to the following donors who are supporting the completion of the data pipeline.
+  dataset:
+    placeholder: Butterflies of Brazil
+  organization:
+    placeholder: Canadian Museum of Nature
   oops:
     not_found_title: Not found
     not_found: Sorry, that page was not found.
@@ -98,3 +98,5 @@ en:
     catalog_number: Catalog Number
     type_status: Type Status
     trainer: Trainer
+  general:
+    search: Search
