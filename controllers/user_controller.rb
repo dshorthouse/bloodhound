@@ -23,31 +23,41 @@ module Sinatra
 
             check_redirect
             viewed_user = find_user(params[:id])
+
+            if viewed_user.orcid && !viewed_user.is_public?
+              halt 404, {}.to_json
+            end
+
             cache_control :public, :must_revalidate, :no_cache, :no_store
             headers.delete("Content-Length")
             begin
               io = ::Bloodhound::IO.new({ user: viewed_user, params: params, request: request })
               io.jsonld_stream("paged")
             rescue
-              status 404
-              {}.to_json
+              halt 404, {}.to_json
             end
           end
 
           app.get '/:id/specimens.csv' do
+            content_type "text/csv", charset: 'utf-8'
             if !params[:id].is_orcid? && !params[:id].is_wiki_id?
               halt 404, [].to_csv
             end
 
             check_redirect
+            @viewed_user = find_user(params[:id])
+
+            if @viewed_user.orcid && !@viewed_user.is_public?
+              halt 404, [].to_csv
+            end
+
             begin
               csv_stream_headers
-              @viewed_user = find_user(params[:id])
               records = @viewed_user.visible_occurrences
               io = ::Bloodhound::IO.new
               body io.csv_stream_occurrences(records)
             rescue
-              status 404
+              halt 404, [].to_csv
             end
           end
 
