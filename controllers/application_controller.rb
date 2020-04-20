@@ -32,6 +32,7 @@ module Sinatra
 
           app.get '/agent/:id/specimens.csv' do
             protected!
+            content_type "text/csv", charset: 'utf-8'
             id = params[:id].to_i
             agent = Agent.find(id)
             records = agent.occurrences
@@ -126,13 +127,13 @@ module Sinatra
           end
 
           app.get '/dataset/:id.zip' do
+            content_type "application/zip", charset: 'utf-8'
             cache_control :public, :must_revalidate, :no_cache, :no_store
             file = File.join(app.root, "public", "data", "#{params[:id]}.zip")
             if File.file?(file)
               send_file(file)
             else
-              status 404
-              haml :oops
+              halt 404
             end
           end
 

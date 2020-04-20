@@ -63,8 +63,7 @@ module Sinatra
               }
               response.to_json
             rescue
-              status 404
-              {}.to_json
+              halt 404, {}.to_json
             end
           end
 

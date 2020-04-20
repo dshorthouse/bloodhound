@@ -244,7 +244,7 @@ module Sinatra
             protected!
             check_identifier
             check_redirect
-            
+
             @viewed_user = find_user(params[:id])
             haml :'help/advanced_search', locals: { active_page: "help" }
           end
@@ -323,6 +323,7 @@ module Sinatra
 
           app.get '/help-others/:id/candidates.csv' do
             protected!
+            content_type "text/csv", charset: 'utf-8'
             csv_stream_headers
             check_identifier
             @viewed_user = find_user(params[:id])
@@ -376,12 +377,12 @@ module Sinatra
 
           app.get '/help-others/:id/helpers.json' do
             protected!
+            content_type "application/json", charset: 'utf-8'
             check_identifier
             viewed_user = find_user(params[:id])
             if !viewed_user
-              halt 404
+              halt 404, {}.to_json
             end
-            content_type "application/json", charset: 'utf-8'
             helpers = viewed_user.helped_by - [@user]
             { helpers: helpers }.to_json
           end

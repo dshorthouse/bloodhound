@@ -366,19 +366,19 @@ module Sinatra
 
           app.get '/admin/user/:id/specimens.json' do
             admin_protected!
+            content_type "application/ld+json", charset: 'utf-8'
             admin_user = find_user(params[:id])
             attachment "#{admin_user.identifier}.json"
             cache_control :no_cache
             headers.delete("Content-Length")
-            content_type "application/ld+json", charset: 'utf-8'
             io = ::Bloodhound::IO.new({ user: admin_user })
             io.jsonld_stream("all")
           end
 
           app.get '/admin/user/:id/message-count.json' do
             admin_protected!
+            content_type "application/json", charset: 'utf-8'
             admin_user = find_user(params[:id])
-            content_type "application/json"
             return { count: 0}.to_json if admin_user.family.nil?
 
             count = admin_user.messages_received.where(read: false).count
@@ -387,6 +387,7 @@ module Sinatra
 
           app.get '/admin/user/:id/specimens.csv' do
             admin_protected!
+            content_type "text/csv", charset: 'utf-8'
             admin_user = find_user(params[:id])
             records = admin_user.visible_occurrences
             csv_stream_headers
@@ -455,6 +456,7 @@ module Sinatra
 
           app.get '/admin/user/:id/candidates.csv' do
             protected!
+            content_type "text/csv", charset: 'utf-8'
             @admin_user = find_user(params[:id])
             agent_ids = candidate_agents(@admin_user).pluck(:id)
             records = occurrences_by_agent_ids(agent_ids).where.not(occurrence_id: @admin_user.user_occurrences.select(:occurrence_id))

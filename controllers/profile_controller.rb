@@ -227,7 +227,7 @@ module Sinatra
 
           app.get '/profile/candidate-count.json' do
             protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             return { count: 0}.to_json if @user.family.nil?
 
             agent_ids = candidate_agents(@user).map{|a| a[:id] }.compact
@@ -241,7 +241,7 @@ module Sinatra
 
           app.get '/profile/message-count.json' do
             protected!
-            content_type "application/json"
+            content_type "application/json", charset: 'utf-8'
             return { count: 0}.to_json if @user.family.nil?
 
             count = @user.messages_received.where(read: false).count
@@ -250,6 +250,7 @@ module Sinatra
 
           app.get '/profile/candidates.csv' do
             protected!
+            content_type "text/csv", charset: 'utf-8'
             agent_ids = candidate_agents(@user).pluck(:id)
             records = occurrences_by_agent_ids(agent_ids)
                         .where
