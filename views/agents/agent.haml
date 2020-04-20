@@ -1,27 +1,19 @@
 -content_for :title do
-  #{@agent.fullname} Specimens
+  = I18n.t('agents.agent_name_title', agent_name: "#{@agent.fullname}")
 
 -content_for :jumbotron do
   = haml :'partials/agent/jumbotron', layout: false
 
 %div{class: "alert alert-warning tiny-margins mt-0", role: "alert"}
-  %span{class:"font-weight-bold"} WARNING:
-  Unlike all other URLs in this site, URLs for agent strings are unreliable for linking because they will point to different results every few weeks
+  %span{class:"font-weight-bold"}= I18n.t('agents.warning')
+  = I18n.t('agents.warning_statement')
 
 %div{class: "alert alert-info tiny-margins", role:"alert"}
   %div{class:"row"}
     %div{class: "col col-12 col-lg-10"}
-      Sniffed #{number_with_delimiter(@pagy.count)} specimens for the string
-      %span{class:"font-italic"}
-        = succeed '.' do
-          #{@agent.fullname}
-      Not all columns are shown.
+      = I18n.t('agents.sniffed_statement', specimen_count: number_with_delimiter(@pagy.count))
       - if authorized?
-        Search for
-        %a{href: "/help-others?q=#{@agent.fullname}"}
-          %i{class:"fas fa-hands-helping"}
-          #{@agent.fullname}
-        the person and help attribute specimens.
+        = I18n.t('agents.search_html', agent_link: "<a href=\"/help-others?q=#{@agent.fullname}\"><i class=\"fas fa-hands-helping mr-1\"></i>#{@agent.fullname}</a>")
     %div{class: "col col-12 col-lg-2 text-lg-right pr-3"}
       - if authorized?
         %a{href: "/agent/#{@agent.id}/specimens.csv"}
@@ -32,14 +24,14 @@
   %table{class:"table table-hover table-sm"}
     %thead{class: "thead-light"}
       %tr
-        %th{scope: "col"} Scientific Name
-        %th{scope: "col"} Collected By
-        %th{scope: "col"} Identified By
-        %th{scope: "col"} Date Collected
-        %th{scope: "col"} Date Identified
-        %th{scope: "col"} Institution
-        %th{scope: "col"} Catalog Number
-        %th{scope: "col"} Type Status
+        %th{scope: "col"}= I18n.t('specimen.scientific_name')
+        %th{scope: "col"}= I18n.t('specimen.collected_by')
+        %th{scope: "col"}= I18n.t('specimen.identified_by')
+        %th{scope: "col"}= I18n.t('specimen.date_collected')
+        %th{scope: "col"}= I18n.t('specimen.date_identified')
+        %th{scope: "col"}= I18n.t('specimen.institution')
+        %th{scope: "col"}= I18n.t('specimen.catalog_number')
+        %th{scope: "col"}= I18n.t('specimen.type_status')
 
     %tbody
       - @results.each do |o|
