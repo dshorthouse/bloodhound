@@ -12,12 +12,9 @@
     = haml :'partials/profile/subtabs_helped', layout: false, locals: { active_tab: "messages"}
 
 - if @pagy.count == 0
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    You have not yet received thanks for attributing specimen records to other collectors. Have you tried helping others?
-
+  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('profile.no_thanks_received_alert')
 - else
-  %div{class: "alert alert-info row tiny-margins", role: "alert"}
-    You have received thanks for attributing specimens.
+  %div{class: "alert alert-info row tiny-margins", role: "alert"}= I18n.t('profile.thanks_received_alert')
 
   - @results.in_groups_of(3).each do |group|
     %div{class: "card-deck"}

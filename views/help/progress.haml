@@ -14,19 +14,11 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap alert-warning-light"}
     %div{class: "mr-auto p-2"}
-      %h1{class:"h2"} Latest Recipients
-      %p{class:"lead text-muted"} Join the trainers by helping to attribute specimens
+      %h1{class:"h2"}= I18n.t('help.latest_title')
+      %p{class:"lead text-muted"}= I18n.t('help.latest_lede')
     = haml :'partials/help/search', layout: false
 
-%ul{class: "nav nav-tabs pl-2"}
-  %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/help-others"} By Country
-  %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/help-others/new-people"} New People
-  %li{class: "nav-item"}
-    %a{class: "nav-link active", href: "/help-others/progress"} Latest Recipients
-  %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/help-others/help"} Help / Add
+= haml :'partials/help/main_tabs', layout: false, locals: { active_main_tab: "latest" }
 
 %div
   %nav{id:"network-nav", class:"navbar navbar-light navbar-expand bg-light overflow-auto"}
@@ -40,11 +32,11 @@
   %table{class:"table table-hover table-sm"}
     %thead{class: "thead-light"}
       %tr
-        %th{scope: "col"} Person
-        %th{scope: "col"} Progress
-        %th{scope: "col"} Public
-        %th{scope: "col"} Latest Trainer
-        %th{scope: "col"} Latest Claim
+        %th{scope: "col"}= I18n.t('help.person')
+        %th{scope: "col"}= I18n.t('help.progress')
+        %th{scope: "col"}= I18n.t('help.public')
+        %th{scope: "col"}= I18n.t('help.latest_trainer')
+        %th{scope: "col"}= I18n.t('help.latest_claim')
 
     %tbody
       - @results.each do |claim|

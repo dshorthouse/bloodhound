@@ -14,8 +14,7 @@
 = haml :'partials/help/tabs', layout: false, locals: { active_tab: "ignored" }
 
 - if @pagy.count == 0
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    Bloodhound trainers have not flagged specimens to be ignored.
+  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('help.not_ignored_alert')
 - else
   = haml :'partials/help/fixed_navbar', layout: false
   %div{id: "helper-info", class: "alert alert-info tiny-margins", role: "alert"}

@@ -5,7 +5,7 @@
       %img{src:"#{profile_image(@user)}", class:"rounded mx-auto d-block img-fluid", alt:"#{@user.fullname}"}
       - if locals[:active_page] == "settings"
         %span
-          %a{href:"#"} Change profile photo
+          %a{href:"#"}= I18n.t('profile.change_photo')
         %ul{id:"profile-upload-option", class:"list-group"}
           %li{class:"list-group-item profile-upload-option-list"}
             %input{name:"user-image", id:"user-image", type:"file", accept:"image/x-png,image/jpeg"}
@@ -56,4 +56,4 @@
       %p{class:"m-0"}
         %a{href:"/profile/settings"}
           %i{class:"fas fa-cog"}
-          Settings & Integrations
+          = I18n.t('profile.settings')

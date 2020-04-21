@@ -12,12 +12,9 @@
     = haml :'partials/profile/tabs', layout: false, locals: { active_page: "citations" }
 
 - if @pagy.count == 0
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    Use of your specimen data has not yet been recorded.
+  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('profile.no_science')
 - else
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    #{number_with_delimiter(@pagy.count)} #{'publication'.pluralize(@pagy.count)} made use of your specimen data downloaded from 
-    %a{href:"https://gbif.org"} GBIF
+  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('profile.has_science', pub_count: number_with_delimiter(@pagy.count))
 
   %div{class:"citation-wrapper"}
     - @results.each do |article|

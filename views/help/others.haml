@@ -1,5 +1,5 @@
 -content_for :title do
-  Help Users
+  = I18n.t('help.country_title')
 
 -content_for :scripts do
   %script{src: "/js/application.js"}
@@ -11,8 +11,8 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap alert-warning-light"}
     %div{class: "mr-auto p-2"}
-      %h1{class:"h2"} Help Attribute Specimens
-      %P{class:"lead text-muted"} Join the trainers in acknowledging your peers, mentors, or anyone who inspires you
+      %h1{class:"h2"}= I18n.t('help.country_title')
+      %P{class:"lead text-muted"}= I18n.t('help.country_lede')
     = haml :'partials/help/search', layout: false
 
 - if @results.empty? && params[:q] && !params[:q].empty?
@@ -26,17 +26,7 @@
     for suggestions.
 
 - if @results.empty? || params[:q].nil?
-
-  %ul{class: "nav nav-tabs pl-2"}
-    %li{class: "nav-item"}
-      %a{class: "nav-link active", href: "/help-others"} By Country
-    %li{class: "nav-item"}
-      %a{class: "nav-link", href: "/help-others/new-people"} New People
-    %li{class: "nav-item"}
-      %a{class: "nav-link", href: "/help-others/progress"} Latest Recipients
-    %li{class: "nav-item"}
-      %a{class: "nav-link", href: "/help-others/help"} Help / Add
-
+  = haml :'partials/help/main_tabs', layout: false, locals: { active_main_tab: "country" }
   = haml :'partials/help/countries', layout: false
 
 - else

@@ -12,12 +12,10 @@
     = haml :'partials/profile/subtabs_specimens', layout: false, locals: { active_tab: "support"}
 
 - if @pagy.count == 0
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    Bloodhound trainers have not yet helped you claim specimens.
+  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('profile.no_help_alert')
 
 - else
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    Bloodhound trainers have helped you claim specimens. Send them your appreciation.
+  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('profile.thanks_alert')
 
   - @results.in_groups_of(3).each do |group|
     %div{class: "card-deck"}

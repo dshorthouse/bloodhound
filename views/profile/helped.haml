@@ -18,12 +18,9 @@
     = haml :'partials/profile/subtabs_helped', layout: false, locals: { active_tab: "helped"}
 
 - if @pagy.count == 0
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    You have not yet attributed specimens to anyone.
-
+  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('profile.not_helped_alert')
 - else
-  %div{class: "alert alert-info row tiny-margins", role: "alert"}
-    You helped attribute specimens to the following people, with the most recent shown first.
+  %div{class: "alert alert-info row tiny-margins", role: "alert"}= I18n.t('profile.helped_alert')
 
   - @results.in_groups_of(3).each do |group|
     %div{class: "card-deck"}

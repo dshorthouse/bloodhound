@@ -22,15 +22,7 @@
         %a{href: "https://www.wikidata.org"} Wikidata
     = haml :'partials/help/search', layout: false
 
-%ul{class: "nav nav-tabs pl-2"}
-  %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/help-others"} By Country
-  %li{class: "nav-item"}
-    %a{class: "nav-link active", href: "/help-others/new-people"} New People
-  %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/help-others/progress"} Latest Recipients
-  %li{class: "nav-item"}
-    %a{class: "nav-link", href: "/help-others/help"} Help / Add
+= haml :'partials/help/main_tabs', layout: false, locals: { active_main_tab: "new" }
 
 %div
   %nav{id:"network-nav", class:"navbar navbar-light navbar-expand bg-light overflow-auto"}

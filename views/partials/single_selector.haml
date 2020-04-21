@@ -6,4 +6,4 @@
     %input{type:"radio", name:"selection-#{locals[:occurrence].id}",  class:"action-radio #{locals[:klass]}", "data-occurrence-id":"#{locals[:occurrence].id}", "data-action": "identified", autocomplete:"off"}
       %img{src:"/images/microscope-unselected.png", alt:"Identified", title: "Identified",width:18}
   %label{class:"btn  btn-choice btn-light"}
-    %input{type:"radio", name:"selection-#{locals[:occurrence].id}",  class:"action-radio #{locals[:klass]}", "data-occurrence-id":"#{locals[:occurrence].id}", "data-action": "recorded,identified", autocomplete:"off"} Both
+    %input{type:"radio", name:"selection-#{locals[:occurrence].id}",  class:"action-radio #{locals[:klass]}", "data-occurrence-id":"#{locals[:occurrence].id}", "data-action": "recorded,identified", autocomplete:"off"}= I18n.t('general.both')

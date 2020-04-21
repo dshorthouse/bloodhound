@@ -31,7 +31,7 @@
     %div{class:"col col-12 col-sm-8 col-md-6 col-lg-4"}
       %form{id:"#form-wrapper", method: "get", action: "/", "accept-charset" => "UTF-8", class: "form-inline"}
         %div{class: "inputs search-agent form-group"}
-          %label{for: "typeahead", class:"font-weight-bold col-form-label mr-2"}= "Search"
+          %label{for: "typeahead", class:"font-weight-bold col-form-label mr-2"}= I18n.t('general.search')
           %input{id: "typeahead-agent", type: :text, name: "q", placeholder: "#{placeholder}", value: "#{params[:q]}", class:"typeahead"}
 - else
   %div{class: "alert alert-#{alert_class} row candidates-alert tiny-margins", role: "alert"}

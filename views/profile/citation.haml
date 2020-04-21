@@ -11,9 +11,7 @@
     = haml :'partials/profile/tabs', layout: false, locals: { active_page: "citations" }
 
 - if @pagy.count == 0
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    Your specimens were not used for this study.
-
+  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('profile.no_citation_alert')
 - else
   %div{class: "alert alert-info row tiny-margins", role: "alert"}
     %div{class: "col col-12"}

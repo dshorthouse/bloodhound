@@ -30,29 +30,29 @@
   = haml :'partials/help/tabs', layout: false, locals: { active_tab: "discovered" }
 
   %div{class:"mt-3"}
-    %h4 Advanced Search & Filter
+    %h4= I18n.t('help.advanced_search_title')
 
     %form{method: :post, action: "/help-others/#{@viewed_user.identifier}/advanced-search", "accept-charset" => "UTF-8"}
 
       %div{class: "form-group"}
-        %label{for: "typeahead", class:"font-weight-bold"}= "Dataset"
+        %label{for: "typeahead", class:"font-weight-bold"}= I18n.t("help.dataset")
         %div{class:"col-12 col-md-8 pl-0"}
           %input{id: "typeahead-dataset", type: :text, name: "dataset", value: "#{params[:dataset]}", class:"typeahead"}
       %div{class: "form-group"}
-        %label{for: "typeahead", class:"font-weight-bold"}= "Agent String"
+        %label{for: "typeahead", class:"font-weight-bold"}= I18n.t(help.agent_string)
         %div{class:"col-12 col-md-8 pl-0"}
           %input{id: "typeahead-agent", type: :text, name: "agent", value: "#{params[:agent]}", class:"typeahead"}
 
       %input{type:"hidden", name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
-      %button{type:"submit", class:"btn btn-success"}= "Submit"
+      %button{type:"submit", class:"btn btn-success"}= I18n.t('general.submit')
 
   - if params[:dataset] && params[:dataset].size > 0 && !@dataset_results.empty? && params[:agent] && params[:agent].size > 0 && !@agent_results.empty?
     %p{class:"mt-3"}
       %a{href: "#datasets"}
-        Datasets
+        = I18n.t('help.datasets')
       |
       %a{href:"#agents"}
-        Agents
+        = I18n.t('help.agents')
 
   - if params[:dataset] && params[:dataset].size > 0 && !@dataset_results.empty?
     %a{name: "datasets"}

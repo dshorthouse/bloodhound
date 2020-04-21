@@ -30,23 +30,23 @@
       - if @stats[:specimens][:identified] > 0 || @stats[:specimens][:recorded] > 0
         %div{class:"row d-flex mt-3"}
           %div{class:"col-10 col-md-6"}
-            %h4 Identified From
+            %h4= I18n.t('profile.identified_from')
             #map-identified{style:"width: 100%; height: 350px"}
           %div{class:"col-10 col-md-6"}
-            %h4 Collected From
+            %h4= I18n.t('profile.collected_from')
             #map-collected{style:"width: 100%; height: 350px"}
       - else
         #map-identified{style:"width: 0%; height: 0%; display: none;"}
         #map-collected{style:"width: 0%; height: 0%; display: none;"}
 
       - if @stats[:activity_dates].length > 0
-        %h4 Dates Identified and Collected
+        %h4= I18n.t('profile.dates_identified_colledted')
         %div{id: "chart"}
       - else
         %div{id: "chart", style:"width: 0%; height: 0%; display:none;"}
 
       - if @user.zenodo_concept_doi
-        %h4 For Your Resume
+        %h4= I18n.t('profile.resume')
         %p{class:"citation"}
           #{@user.fullname_reverse}. #{DateTime.now.year}. Natural history specimens collected and/or identified and deposited. [Data set]. Zenodo.
           %a{href: "https://doi.org/#{@user.zenodo_concept_doi}"}
