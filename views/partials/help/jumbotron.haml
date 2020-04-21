@@ -14,16 +14,16 @@
       %h1{class:"mt-3 h2 text-center", itemprop: "name"}= @viewed_user.fullname
 
       - if !@viewed_user.other_names.blank?
-        %p{class:"text-center text-muted p-0 m-0"}= @viewed_user.other_names.split("|").join("; ")
+        %p{class:"text-center text-muted p-0 mt-1 mb-1"}= @viewed_user.other_names.split("|").join("; ")
 
       - if @viewed_user.wikidata
-        %p{class:"text-center text-muted p-0 mb-2"}= format_lifespan(@viewed_user)
+        %p{class:"text-center text-muted p-0 mt-1 mb-1"}= format_lifespan(@viewed_user)
 
       - if !@viewed_user.keywords.blank?
-        %p{class: "text-center text-muted font-italic pt-0 mb-2"}
+        %p{class: "text-center text-muted font-italic p-0 mt-1 mb-1"}
           #{@viewed_user.keywords.split("|").join(", ")}
 
-      %p{class: "orcid text-center p-0 mt-2"}
+      %p{class: "orcid text-center p-0 mt-3 mb-1"}
         - if @viewed_user.orcid
           %a{href: "https://orcid.org/#{@viewed_user.orcid}"}
             %i{class:"fab fa-orcid"}
@@ -34,14 +34,14 @@
 
       - org = @viewed_user.current_organization
       - if !org.nil?
-        %p{class: "text-center p-0 m-0"}
+        %p{class: "text-center p-0 mt-1 mb-1"}
           = succeed "," do
             %i{class:"fas fa-building"}
             %a{href: "/organization/#{org.identifier}"} #{org.name}
           #{org.address}
 
       - if !@viewed_user.country.blank?
-        %p{class:"text-center p-0 m-0"}
+        %p{class:"text-center p-0 mt-1 mb-1"}
           %i{class:"fas fa-globe"}
           #{@viewed_user.country.split("|").join(", ")}
 

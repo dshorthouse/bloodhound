@@ -17,19 +17,19 @@
   %h1{class:"h3"}= @user.fullname
 
   - if !@user.other_names.blank?
-    %p{class:"text-center text-muted p-0 m-0"} #{@user.other_names.split("|").join("; ")}
+    %p{class:"text-center text-muted p-0 mt-1 mb-1"} #{@user.other_names.split("|").join("; ")}
 
   - if !@user.keywords.blank?
-    %p{class: "text-center text-muted font-italic pt-0 mb-2"}
+    %p{class: "text-center text-muted font-italic pt-0 mt-1 mb-1"}
       #{@user.keywords.split("|").join(", ")}
 
-  %p{class: "orcid text-lg-left p-0 mt-2"}
+  %p{class: "orcid text-lg-left p-0 mt-3 mb-1"}
     %a{href: "https://orcid.org/#{@user.orcid}"}
       %i{class:"fab fa-orcid"}
       https://orcid.org/#{@user.orcid}
 
   - if !@user.current_organization.nil?
-    %p{class: "text-lg-left p-0 m-0"}
+    %p{class: "text-lg-left p-0 mt-1 mb-1"}
       - path = @user.current_organization.identifier
       %i{class:"fas fa-building"}
       = succeed "," do
@@ -37,7 +37,7 @@
       #{@user.current_organization.address}
 
   - if !@user.country.blank?
-    %p{class:"text-lg-left p-0 m-0"}
+    %p{class:"text-lg-left p-0 mt-1 mb-1"}
       %i{class:"fas fa-globe"}
       #{@user.country}
 
