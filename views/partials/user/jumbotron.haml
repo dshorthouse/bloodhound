@@ -12,7 +12,7 @@
     %p{class:" text-center text-muted p-0 mb-2"}= format_lifespan(@viewed_user)
 
   - if !@viewed_user.keywords.blank?
-    %p{class: "text-center text-muted font-italic pt-2 mb-2"}
+    %p{class: "text-center text-muted font-italic pt-0 mb-2"}
       #{@viewed_user.keywords.split("|").join(", ")}
 
   - if @viewed_user.signature_url
