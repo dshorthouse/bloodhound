@@ -107,6 +107,11 @@ en:
     deposited_at: Deposited At
     specimens: Specimens
     science_enabled: Science Enabled
+    helped_by: Helped By
+    no_trainer: Specimens have not been attributed by a trainer.
+    attributions_by: "Attributions made by:"
+    private_no_claims: Profile is not publicly available.
+    private_with_claims: "Although %{specimen_count} specimens were claimed or attributed, this profile is not publicly available."
   general:
     search: Search
     help_attribute: Help Attribute
