@@ -37,44 +37,43 @@ fr:
     twitter: Bloodhound sur Twitter
     support: Faire un don
   about:
-    about_title: Rationale
-    the_problem: The Problem
-    metrics: Metrics on Organizations
+    about_title: Raisonnement
+    the_problem: Le problème
+    metrics: Mesures sur les organisations
   agents:
-    agents_title: Agent Strings
-    search_title: Agent String Search
-    lede: "%{agent_count} raw strings from parsed collector and determiner names in specimen data from GBIF"
-    search_none: No agent string found for
-    search_count: "%{search_count} search results for"
+    agents_title: Chaînes d'agent
+    search_title: Recherche de chaîne d'agent
+    lede: "%{agent_count} chaînes brutes du collecteur et détermineur analysé dans les données de spécimen du GBIF"
+    search_none: Aucune chaîne d'agent trouvée pour
+    search_count: "%{search_count} résultats pour"
     warning: "WARNING:"
-    warning_statement: Unlike all other URLs in this site, URLs for agent strings are unreliable for linking because they will point to different results every few weeks
+    warning_statement: Contrairement à toutes les autres URL de ce site, les URL des chaînes d'agent ne sont pas fiables car elles pointeront vers des résultats différents toutes les quelques semaines
     agent_name_title: "%{agent_name} Specimens"
-    agent_lede: A raw string from parsed collector and determiner names in natural history specimen data
-    sniffed_statement: "Sniffed %{specimen_count} specimens. Not all columns are shown."
-    search_html: "Search for %{agent_link} the person and help attribute specimens."
+    agent_lede: Une chaîne brute provenant de noms de collecteurs et de détermineurs analysés dans les données de spécimens d'histoire naturelle
+    sniffed_statement: "Reniflé %{specimen_count} spécimens. Toutes les colonnes ne sont pas affichées."
+    search_html: "Recherchez %{agent_link} la personne et aidez à attribuer des spécimens."
   roster:
-    roster_title: Public Profiles
-    lede:
-        "%{user_count} people who share their profiles and the profiles of others they revere"
-    no_one_found: No one found by the name
-    search_result_count: "%{search_count} search results for"
+    roster_title: Profils publics
+    lede: "%{user_count} personnes qui partagent leurs profils et les profils des autres qu'ils vénèrent"
+    no_one_found: Personne trouvé par le nom
+    search_result_count: "%{search_count} résultats pour"
   on_this_day:
-    global_title: On This Day
-    born_title: Collector Born On This Day
-    collector_born: Collector Born
-    collector_died: Collector Died
-    type_collected: Type Specimens Collected
+    global_title: Ce jour-là
+    born_title: Collectionneur né ce jour-là
+    collector_born: Collectionneur né
+    collector_died: Collectionneur mort
+    type_collected: Spécimens types collectés
   trainers:
-    trainers_title: Trainers
-    lede: "%{trainer_count} people who have attributed natural history specimens to their peers, mentors, and role models"
+    trainers_title: Entraîneurs
+    lede: "%{trainer_count} personnes qui ont attribué des spécimens d'histoire naturelle à leurs pairs, mentors et modèles"
   donate:
-    donate_title: Donate
-    lede: Your one-time or periodic donation will help complete the data pipeline and ensure that credit is given for contributions made to natural history collections as quickly and as seamlessly as possible.
-    campaign: Campaign
-    donor_wall: Donor Wall
+    donate_title: Faire un don
+    lede: Votre don unique ou périodique contribuera à compléter le pipeline de données et à garantir que le crédit est accordé aux contributions faites aux collections d'histoire naturelle le plus rapidement et le plus facilement possible.
+    campaign: Campagne
+    donor_wall: Mur des donateurs
   donor_wall:
-    donor_wall_title: Donor Wall
-    lede: Thanks to the following donors who are supporting the completion of the data pipeline.
+    donor_wall_title: Mur des donateurs
+    lede: Merci aux donateurs suivants qui soutiennent l'achèvement des données.
   dataset:
     placeholder: papillons du Brésil
   organization:
@@ -90,13 +89,25 @@ fr:
     message: Bloodhound est actuellement hors ligne, suivant l’odeur de nouvelles données.
   specimen:
     scientific_name: Nom scientifique
-    collected_by: Collected By
-    identified_by: Identified By
-    date_collected: Date Collected
-    date_identified: Date Identified
+    collected_by: Collecté par
+    identified_by: Identifié par
+    date_collected: Date de collecte
+    date_identified: Date identifiée
     institution: Institution
-    catalog_number: Catalog Number
-    type_status: Type Status
-    trainer: Trainer
+    catalog_number: Numéro de catalogue
+    type_status: État du type
+    trainer: Entraîneur
+  user:
+    field_notes: Notes du terrain
+    caches_rebuilt: Les dénombrements et les visualisations ont été reconstruites.
+    overview: Aperçu
+    specialties: Spécialtés
+    network: Réseau
+    deposited_at: Déposé à
+    specimens: Spécimens
+    science_enabled: Science activée
   general:
     search: Chercher
+    help_attribute: Attribuer
+    rebuild_stats: Reconstruire les statistiques
+    settings: Paramètres
