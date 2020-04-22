@@ -3,6 +3,8 @@ fr:
     about_title: Raisonnement
     the_problem: Le problème
     metrics: Mesures sur les organisations
+  admin:
+    change_photo: Change profile photo
   agents:
     agents_title: Chaînes d'agent
     search_title: Recherche de chaîne d'agent
@@ -213,6 +215,8 @@ fr:
     thanks_received_alert: You have received thanks for attributing specimens.
     no_thanks_received_alert: You have not yet received thanks for attributing specimen records to other collectors. Have you tried helping others?
     change_photo: Change profile photo
+    remove: Remove
+    cancel: Cancel
     settings: Settings & Integrations
     no_science: Use of your specimen data has not yet been recorded.
     no_citation_alert: Your specimens were not used for this study.
@@ -236,6 +240,7 @@ fr:
     catalog_number: Numéro de catalogue
     type_status: État du type
     trainer: Entraîneur
+    not_me: Pas moi
   trainers:
     trainers_title: Entraîneurs
     lede: "%{trainer_count} personnes qui ont attribué des spécimens d'histoire naturelle à leurs pairs, mentors et modèles"

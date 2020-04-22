@@ -11,8 +11,8 @@
             %input{name:"user-image", id:"user-image", type:"file", accept:"image/x-png,image/jpeg"}
             %input{type: :hidden, name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
             %span Upload
-          %li{id:"profile-remove", class:"list-group-item profile-upload-option-list"} Remove
-          %li{id:"profile-cancel", class:"list-group-item profile-upload-option-list"} Cancel
+          %li{id:"profile-remove", class:"list-group-item profile-upload-option-list"}= I18n.t('profile.remove')
+          %li{id:"profile-cancel", class:"list-group-item profile-upload-option-list"}= I18n.t('profile.cancel')
 
   %h1{class:"h3"}= @user.fullname
 
