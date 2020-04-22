@@ -269,8 +269,42 @@ en:
     deposited_at: Deposited At
     specimens: Specimens
     science_enabled: Science Enabled
+    science_enabled_specimens: Science Enabled by Specimen Data
     helped_by: Helped By
     no_trainer: Specimens have not been attributed by a trainer.
     attributions_by: "Attributions made by:"
     private_no_claims: Profile is not publicly available.
     private_with_claims: "Although %{specimen_count} specimens were claimed or attributed, this profile is not publicly available."
+    no_specimens_cited: Specimens have not been cited for this research article.
+    specimen_used: Specimen Data Used In
+    no_publications: Publications have not yet been recorded by GBIF
+    publication_count: "%{count} publications used specimen data from GBIF"
+    no_co_collectors_alert: Co-collectors have not yet been recorded.
+    co_collectors_alert: "Has collected with:"
+    co_collectors: Co-collectors
+    identified_for: Identified For
+    identifications_by: Identifications By
+    no_identifications_by_alert: Identifications made to collected specimens have not yet been recorded.
+    identifications_by_alert: "Has collected specimens later identified by:"
+    no_identified_for_alert: Identifications made to others' collected specimens have not yet been recorded.
+    identified_for_alert: "Has identified specimens collected by:"
+    comment_alert: Share an anecdote about a collecting trip, event or anything else.
+    no_institutions_alert: Institutions have not yet been recorded.
+    institutions_alert: "Specimens deposited and curated at the following institution(s):"
+    organizations: organizations
+    specimens_metric: specimens
+    specimens_identified: Specimens Identified
+    specimens_collected: Specimens Collected
+    no_specialities_alert: Specialties have not yet been recorded.
+    specialties_alert: "Collected or identified specimens in the following Families:"
+    families_collected: Families Collected
+    families_identified: Families Identified
+    no_claims_alert: Claims or attributions have not yet been recorded.
+    progress: Progress
+    identified_from: Identified From
+    collected_from: Collected From
+    dates_identified_collected: Dates Identified and Collected
+    specimens_attributed: specimens attributed
+    collected: collected
+    identified: identified
+    not_all_columns: Not all available columns are shown.

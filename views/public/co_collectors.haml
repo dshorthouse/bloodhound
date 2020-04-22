@@ -16,22 +16,12 @@
   %div{class:"col-12 col-lg-8 mt-2"}
     - if @viewed_user.is_public?
       = haml :'partials/user/tabs', layout: false, locals: { active_page: "network" }
-
-      %nav{id:"network-nav", class:"navbar navbar-light navbar-expand bg-light overflow-auto"}
-        %ul{class:"navbar-nav"}
-          %li{class:"nav-item"}
-            %a{class:"nav-link#{locals[:active_tab] == "co_collectors" ? " active" : nil}", href:"/#{@viewed_user.identifier}/co-collectors"} Co-collectors
-          %li{class:"nav-item"}
-            %a{class:"nav-link#{locals[:active_tab] == "identified_for" ? " active" : nil}", href:"/#{@viewed_user.identifier}/identified-for"} Identified For
-          %li{class:"nav-item"}
-            %a{class:"nav-link#{locals[:active_tab] == "identifications_by" ? " active" : nil}", href:"/#{@viewed_user.identifier}/identifications-by"} Identifications By
+      = haml :'partials/user/network_tabs', layout: false, locals: { active_tab: locals[:active_tab] }
 
       - if @pagy.count == 0
-        %div{class: "alert alert-info tiny-margins", role: "alert"}
-          Co-collectors have not yet been recorded.
+        %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('user.no_co_collectors_alert')
       - else
-        %div{class: "alert alert-info tiny-margins", role: "alert"}
-          Has collected with:
+        %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('user.co_collectors_alert')
 
         %div{class:"container-fluid"}
           - @results.in_groups_of(2).each do |group|

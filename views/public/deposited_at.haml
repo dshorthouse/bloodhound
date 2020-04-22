@@ -16,31 +16,45 @@
       = haml :'partials/user/tabs', layout: false, locals: { active_page: "deposits" }
 
       - if @recordings_at.empty? && @identifications_at.empty?
-        %div{class: "alert alert-info tiny-margins", role: "alert"}
-          Institutions have not yet been recorded.
+        %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('user.no_institutions_alert')
 
       - if !@recordings_at.empty? || !@identifications_at.empty?
 
-        %div{class: "alert alert-info tiny-margins", role: "alert"}
-          Specimens deposited and curated at the following institution(s):
+        %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('user.institutions_alert')
 
         %div{class: "row"}
           %div{class: "col-12 col-lg-6 mb-3"}
             - if @recordings_at.empty? && !@identifications_at.empty?
-              %h4{class: "mt-0"} Specimens Identified
+              %h4{class: "mt-0"}= I18n.t('user.specimens_identified')
               %div{class: "d-flex justify-content-between list-header h5"}
-                %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@identifications_at.count)} #{'organization'.pluralize(@identifications_at.count)}
-                %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@identifications_at.values.inject(0){|sum,x| sum + x })} specimens
+                %div
+                  %span{class: "badge badge-light badge-secondary"}
+                    #{number_with_delimiter(@identifications_at.count)}
+                  %span{class: "small"}
+                    = I18n.t('user.organizations')
+                %div
+                  %span{class: "badge badge-light badge-secondary"}
+                    #{number_with_delimiter(@identifications_at.values.inject(0){|sum,x| sum + x })}
+                  %span{class: "small"}
+                    = I18n.t('user.specimens_metric')
               %ul{class: "list-group"}
                 - @identifications_at.each do |k,v|
                   %li{class: "list-group-item d-flex justify-content-between align-items-center"}
                     #{k}
                     %span{class: "badge badge-light badge-pill"} #{number_with_delimiter(v)}
             - elsif !@recordings_at.empty?
-              %h4{class: "mt-0"} Specimens Collected
+              %h4{class: "mt-0"}= I18n.t('user.specimens_collected')
               %div{class: "d-flex justify-content-between list-header h5"}
-                %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@recordings_at.count)} #{'organization'.pluralize(@recordings_at.count)}
-                %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@recordings_at.values.inject(0){|sum,x| sum + x })} specimens
+                %div
+                  %span{class: "badge badge-light badge-secondary"}
+                    #{number_with_delimiter(@recordings_at.count)}
+                  %span{class: "small"}
+                    = I18n.t('user.organizations')
+                %div
+                  %span{class: "badge badge-light badge-secondary"}
+                    #{number_with_delimiter(@recordings_at.values.inject(0){|sum,x| sum + x })}
+                  %span{class: "small"}
+                    = I18n.t('user.specimens_metric')
               %ul{class: "list-group"}
                 - @recordings_at.each do |k,v|
                   %li{class: "list-group-item d-flex justify-content-between align-items-center"}
@@ -48,10 +62,18 @@
                     %span{class: "badge badge-light badge-pill"} #{number_with_delimiter(v)}
           %div{class: "col-12 col-lg-6 mb-3"}
             - if !@recordings_at.empty? && !@identifications_at.empty?
-              %h4{class: "mt-0"} Specimens Identified
+              %h4{class: "mt-0"}= I18n.t('user.specimens_identified')
               %div{class: "d-flex justify-content-between list-header h5"}
-                %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@identifications_at.count)} #{'organization'.pluralize(@identifications_at.count)}
-                %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@identifications_at.values.inject(0){|sum,x| sum + x })} specimens
+                %div
+                  %span{class: "badge badge-light badge-secondary"}
+                    #{number_with_delimiter(@identifications_at.count)}
+                  %span{class: "small"}
+                    = I18n.t('user.organizations')
+                %div
+                  %span{class: "badge badge-light badge-secondary"}
+                    #{number_with_delimiter(@identifications_at.values.inject(0){|sum,x| sum + x })}
+                  %span{class: "small"}
+                    = I18n.t('user.specimens_metric')
               %ul{class: "list-group"}
                 - @identifications_at.each do |k,v|
                   %li{class: "list-group-item d-flex justify-content-between align-items-center"}

@@ -15,8 +15,7 @@
     - if @viewed_user.is_public?
       = haml :'partials/user/tabs', layout: false
 
-    %div{class: "alert alert-info tiny-margins", role: "alert"}
-      Share an anecdote about a collecting trip, event or anything else.
+    %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('user.comment_alert')
 
     - if Settings.disqus.shortname
       %div{id: "disqus_thread"}

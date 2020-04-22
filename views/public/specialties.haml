@@ -16,18 +16,16 @@
       = haml :'partials/user/tabs', layout: false, locals: { active_page: "specialties" }
 
       - if @families_identified.empty? && @families_recorded.empty?
-        %div{class: "alert alert-info tiny-margins", role: "alert"}
-          Specialties have not yet been recorded.
+        %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('user.no_specialities_alert')
 
       - if !@families_identified.empty? || !@families_recorded.empty?
-        %div{class: "alert alert-info tiny-margins", role: "alert"}
-          Collected or identified specimens in the following Families:
+        %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('user.specialties_alert')
 
         %div{class: "row"}
           %div{class: "col-12 col-lg-6 mb-3"}
             - if @families_recorded.empty? && !@families_identified.empty?
               %h4{class: "d-flex justify-content-between mt-0"}
-                Families Identified
+                = I18n.t('user.families_identified')
                 %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@families_identified.count)}
               %ul{class: "list-group mt-3"}
                 - @families_identified.each do |k,v|
@@ -36,7 +34,7 @@
                     %span{class: "badge badge-light badge-pill"} #{number_with_delimiter(v)}
             - elsif !@families_recorded.empty?
               %h4{class: "d-flex justify-content-between mt-0"}
-                Families Collected
+                = I18n.t('user.families_collected')
                 %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@families_recorded.count)}
               %ul{class: "list-group mt-3"}
                 - @families_recorded.each do |k,v|
@@ -46,7 +44,7 @@
           %div{class: "col-12 col-lg-6 mb-3"}
             - if !@families_recorded.empty? && !@families_identified.empty?
               %h4{class: "d-flex justify-content-between mt-0"}
-                Families Identified
+                = I18n.t('user.families_identified')
                 %span{class: "badge badge-light badge-secondary"} #{number_with_delimiter(@families_identified.count)}
               %ul{class: "list-group mt-3"}
                 - @families_identified.each do |k,v|

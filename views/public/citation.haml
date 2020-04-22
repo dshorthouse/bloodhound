@@ -16,17 +16,15 @@
       = haml :'partials/user/tabs', layout: false, locals: { active_page: "citations" }
 
       - if @pagy.count == 0
-        %div{class: "alert alert-info row tiny-margins", role: "alert"}
-          Specimens have not been cited for this research article.
-
+        %div{class: "alert alert-info row tiny-margins", role: "alert"}= I18n.t('user.no_specimens_cited')
       - else
         %div{class: "alert alert-info tiny-margins", role: "alert"}
           %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
-            collected
+            = I18n.t('user.collected')
           %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
-            identified
+            = I18n.t("user.identified")
 
-        %h4 Specimen Data Used In
+        %h4= I18n.t('user.specimen_used')
         %p{class: "citation"}
           #{@article.citation}
           %a{href: "https://doi.org/#{@article.doi}"} https://doi.org/#{@article.doi}
@@ -36,14 +34,14 @@
             %thead{class: "thead-light"}
               %tr
                 %th{scope: "col", style:"min-width:65px"}
-                %th{scope: "col"} Scientific Name
-                %th{scope: "col"} Collected By
-                %th{scope: "col"} Identified By
-                %th{scope: "col"} Date Collected
-                %th{scope: "col"} Date Identified
-                %th{scope: "col"} Institution
-                %th{scope: "col"} Catalog Number
-                %th{scope: "col"} Type Status
+                %th{scope: "col"}= I18n.t('specimen.scientific_name')
+                %th{scope: "col"}= I18n.t('specimen.collected_by')
+                %th{scope: "col"}= I18n.t('specimen.identified_by')
+                %th{scope: "col"}= I18n.t('specimen.date_collected')
+                %th{scope: "col"}= I18n.t('specimen.date_identified')
+                %th{scope: "col"}= I18n.t('specimen.institution')
+                %th{scope: "col"}= I18n.t('specimen.catalog_number')
+                %th{scope: "col"}= I18n.t('specimen.type_status')
 
             %tbody
               - @results.each do |uo|
@@ -51,12 +49,12 @@
                 %tr
                   %td
                     - if uo.action == "recorded"
-                      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+                      %img{src:"/images/net-unselected.png", alt:"#{I18n.t('user.collected')}", title:"#{I18n.t('user.collected')}", width:18}
                     - elsif uo.action == "identified"
-                      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+                      %img{src:"/images/microscope-unselected.png", alt:"#{I18n.t('user.identified')}", title:"#{I18n.t('user.identified')}", width:18}
                     - else
-                      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
-                      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+                      %img{src:"/images/net-unselected.png", alt:"#{I18n.t('user.collected')}", title:"#{I18n.t('user.collected')}", width:18}
+                      %img{src:"/images/microscope-unselected.png", alt:"#{I18n.t('user.identified')}", title:"#{I18n.t('user.identified')}", width:18}
                   %td
                     - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
                     %a{href: "https://www.gbif.org/occurrence/#{o.id}", target: "_blank" }
