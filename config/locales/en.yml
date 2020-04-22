@@ -85,6 +85,15 @@ en:
     If you have many more than this, you may work in batches.
     This routine does not update underlying specimen data nor does it update existing claims. If existing claims are present in the upload, these will be skipped.
     Your uploaded csv must use a comma to separate columns each optionally enclosed by quotes."
+  get_started:
+    get_started_title: Get Started
+    lede:  Four steps to claim the specimens you collected or identified and to help acknowledge your peers, mentors, and organizations.
+    orcid_description: ORCID is a nonprofit organization helping create a world in which all who participate in research, scholarship and innovation are uniquely identified and connected to their contributions and affiliations, across disciplines, borders, and time.
+    suggested: Suggested details to make publicly visible in your ORCID account
+    step1: "Step 1: Authenticate via ORCID"
+    step2: "Step 2: Visit the Specimens tab"
+    step3: "Step 3: Claim your specimens"
+    step4: "Step 4: Attribute specimens to others"
   help:
     help_title: Help Attribute Specimens
     country_title: Help Attribute Specimens
@@ -153,6 +162,13 @@ en:
     support: Give Support
   not_authorized:
     not_authorized: Not authorized or session terminated.
+  occurrence:
+    occurrence_title: Specimen Record
+    lede: From partial data obtained from GBIF
+    record: Record
+    event: Event
+    identification: Identification
+    location: Location
   offline:
     message: Bloodhound is currently offline, following the scent of new data.
   on_this_day:
