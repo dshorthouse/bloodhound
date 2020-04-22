@@ -21,7 +21,7 @@
           %td{class: "selector"}
             = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo, klass: "restore-ignored" }
           %td
-            - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
+            - scientific_name = o.scientificName.nil? ? "#{I18n.t('specimen.not_recorded')}" : o.scientificName
             %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"}
               #{h(scientific_name)}
             - if o.hasImage?

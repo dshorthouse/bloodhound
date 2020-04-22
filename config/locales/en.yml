@@ -257,6 +257,8 @@ en:
     type_status: Type Status
     trainer: Trainer
     not_me: Not me
+    not_recorded: not recorded
+    remove: Remove
   trainers:
     trainers_title: Trainers
     lede: "%{trainer_count} people who have attributed natural history specimens to their peers, mentors, and role models"

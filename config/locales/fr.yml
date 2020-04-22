@@ -257,6 +257,8 @@ fr:
     type_status: État du type
     trainer: Entraîneur
     not_me: Pas moi
+    not_recorded: not recorded
+    remove: Remove
   trainers:
     trainers_title: Entraîneurs
     lede: "%{trainer_count} personnes qui ont attribué des spécimens d'histoire naturelle à leurs pairs, mentors et modèles"

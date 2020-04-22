@@ -21,7 +21,7 @@
           %td{class: "selector"}
             = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo }
           %td
-            - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
+            - scientific_name = o.scientificName.nil? ? "#{I18n.t('specimen.not_recorded')}" : o.scientificName
             %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"} #{h(scientific_name)}
             - if o.hasImage?
               %i{class:"fas fa-image ml-1"}
@@ -33,7 +33,7 @@
           %td #{h(o.catalogNumber)}
           %td #{h(o.typeStatus)}
           %td
-            %button{type:"button", class:"btn btn-sm btn-danger remove", "data-occurrence-id":"#{uo.user_occurrence_id}"} Remove
+            %button{type:"button", class:"btn btn-sm btn-danger remove", "data-occurrence-id":"#{uo.user_occurrence_id}"}= I18n.t('specimen.remove')
 
     - if @total > 25
       %tfoot{class: "thead-light"}

@@ -7,4 +7,4 @@
       %img{src:"/images/microscope.png", alt:"#{I18n.t('general.identified_all')}", title: "#{I18n.t('general.identified_all')}",width:18}
   %label{class:"btn  btn-choice btn-dark"}
     %input{type:"radio", name:"selection-all",  class:"action-radio #{locals[:klass]}", "data-action": "recorded,identified", autocomplete:"off"}= I18n.t('general.both')
-%div.bulk-label Bulk Assignment
+%div{class: "bulk-label"}= I18n.t('general.bulk_assignment')

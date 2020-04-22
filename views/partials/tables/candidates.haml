@@ -14,7 +14,7 @@
         %th{scope: "col"}= I18n.t('specimen.type_status')
         %th{scope: "col", class:"btn-selector-wide"}
           - if @searched_user.nil?
-            %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"} Not me
+            %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"}= I18n.t('specimen.not_me')
 
     %tbody
       - @results.each do |o|
@@ -22,7 +22,7 @@
           %td{class: "selector"}
             = haml :'partials/single_selector', layout: false, locals: { occurrence: o }
           %td
-            - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
+            - scientific_name = o.scientificName.nil? ? "#{I18n.t('specimen.not_recorded')}" : o.scientificName
             %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"}
               #{h(scientific_name)}
             - if o.hasImage?
@@ -36,7 +36,7 @@
           %td #{h(o.typeStatus)}
           %td
             - if @searched_user.nil?
-              %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{o.id}"} Not me
+              %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{o.id}"}= I18n.t('specimen.not_me')
 
     - if @total > 25
       %tfoot{class: "thead-light"}
