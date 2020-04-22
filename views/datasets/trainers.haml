@@ -1,7 +1,7 @@
 = haml :'partials/dataset/twitter_img', layout: false
 
 -content_for :title do
-  #{@dataset.title} Trainers
+  #{@dataset.title} – #{I18n.t('dataset.trainers_title')}
 
 %div{class:"row"}
   = haml :'partials/dataset/jumbotron', layout:false
@@ -10,11 +10,9 @@
     = haml :'partials/dataset/tabs', layout:false, locals: { active_tab: locals[:active_tab] }
 
     - if @pagy.count == 0
-      %div{class: "alert alert-info tiny-margins", role: "alert"}
-        Trainers have not yet attributed specimens to collector or determimers represented in this dataset
+      %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('dataset.no_trainers_alert')
     - else
-      %div{class: "alert alert-info tiny-margins", role: "alert"}
-        #{number_with_delimiter(@pagy.count)} #{'trainer'.pluralize(@pagy.count)} attributed specimens to collectors or determiners represented in this dataset
+      %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('dataset.trainers_alert', count: @pagy.count)
 
       - @results.in_groups_of(3).each do |group|
         %div{class: "card-deck"}

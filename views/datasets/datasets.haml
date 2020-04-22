@@ -1,5 +1,5 @@
 -content_for :title do
-  Datasets
+  = I18n.t('dataset.dataset_title')
 
 -content_for :scripts do
   %script{src: "/js/application.js"}
@@ -11,10 +11,8 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
-      %h1{class:"h2"} Datasets
-      %p.lead.text-muted
-        #{number_with_delimiter(Dataset.count)} datasets from
-        %a{href: "https://gbif.org"} GBIF
+      %h1{class:"h2"}= I18n.t('dataset.dataset_title')
+      %p{class: "lead text-muted"}= I18n.t('dataset.lede', count: number_with_delimiter(Dataset.count))
     = haml :'partials/dataset/search', layout: false
 
 - @results.in_groups_of(3).each do |group|

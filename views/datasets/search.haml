@@ -1,5 +1,5 @@
 -content_for :title do
-  Datasets Search
+  = I18n.t('dataset.search_title')
 
 -content_for :scripts do
   %script{src: "/js/application.js"}
@@ -11,20 +11,14 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
-      %h1{class:"h2"} Datasets
-      %p.lead.text-muted
-        #{number_with_delimiter(Dataset.count)} datasets from
-        %a{href: "https://gbif.org"} GBIF
+      %h1{class:"h2"}= I18n.t('dataset.dataset_title')
+      %p{class: "lead text-muted"}= I18n.t('dataset.lede', count: number_with_delimiter(Dataset.count))
     = haml :'partials/dataset/search', layout: false
 
 - if @pagy && @pagy.count == 0
-  %div{class: "alert alert-warning tiny-margins", role: "alert"}
-    No datasets found for
-    %span{class: "font-weight-bold"} #{h(params[:q])}
+  %div{class: "alert alert-warning tiny-margins", role: "alert"}= I18n.t('dataset.none_found', searched: h(params[:q]))
 - elsif @pagy && @pagy.count > 0
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    #{@pagy.count} search results for
-    %span{class: "font-weight-bold"} #{h(params[:q])}
+  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('dataset.search_found', searched: h(params[:q]), count: @pagy.count)
 
   - @results.in_groups_of(3).each do |group|
     %div{class: "card-deck"}

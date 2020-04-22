@@ -52,7 +52,7 @@
               %div{class:"modal-header"}
                 %h5{class:"modal-title", id:"helperPublicLabel"}
                   %i{class:"fas fa-unlock"}
-                  Make Public
+                  = I18n.t('help.make_public')
                 %button{type:"button", class:"close", "data-dismiss":"modal", "aria-label":"Close"}
                   %span{"aria-hidden":"true"} &times;
               %div{class:"modal-body"}
@@ -68,7 +68,7 @@
 
               %div{class:"modal-footer"}
                 %form{id: "visibility-form", action: "/help-others/#{@viewed_user.identifier}/visibility", method: :post}
-                  %button{type:"button", class:"btn btn-sm btn-outline-secondary", "data-dismiss":"modal"} Not yet
+                  %button{type:"button", class:"btn btn-sm btn-outline-secondary", "data-dismiss":"modal"}= I18n.t('help.not_yet')
                   %input{type: :hidden, name: "_method", value: 'PUT'}
                   %input{type: :hidden, name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
                   %input{type: :submit, class:"btn btn-sm btn-outline-success", value:"Yes, Make Public"}
@@ -78,12 +78,12 @@
           - if @viewed_user.is_public?
             %a{href: "/#{@viewed_user.identifier}", class:"mr-2 mb-2"}
               %i{class:"fas fa-user"}
-              Public Profile
+              = I18n.t('help.public_profile')
 
           - if !@viewed_user.is_public? && !@viewed_user.wikidata.nil?
             %a{href:"#", class:"mr-2 mb-2", "data-toggle": "modal", "data-target": "#helperPublicModal"}
               %i{class:"fas fa-unlock"}
-              Make Public
+              = I18n.t('help.make_public')
 
           %a{href:"/help-others/#{@viewed_user.identifier}/refresh.json", class:"mr-2 profile-refresh"}
             %i{class: "fas fa-sync-alt"}
@@ -96,7 +96,7 @@
           - if admin_authorized?
             %a{href: "/admin/user/#{@viewed_user.identifier}/settings", class:"mb-2"}
               %i{class:"fas fa-cog"}
-              Settings
+              = I18n.t('general.settings')
 
         %div{id:"refresh-message", class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
           - source = @viewed_user.orcid ? "ORCID" : "Wikidata"

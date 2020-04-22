@@ -1,6 +1,6 @@
 %nav{id:"helped-nav", class:"navbar navbar-light navbar-expand bg-light overflow-auto"}
   %ul{class:"navbar-nav"}
     %li{class:"nav-item"}
-      %a{class:"nav-link#{locals[:active_subtab] == "specimens" ? " active" : nil}", href:"/help-others/#{@viewed_user.identifier}/specimens"} Specimens
+      %a{class:"nav-link#{locals[:active_subtab] == "specimens" ? " active" : nil}", href:"/help-others/#{@viewed_user.identifier}/specimens"}= I18n.t('help.specimens')
     %li{class:"nav-item"}
-      %a{class:"nav-link#{locals[:active_subtab] == "visualizations" ? " active" : nil}", href:"/help-others/#{@viewed_user.identifier}/visualizations"} Visualizations
+      %a{class:"nav-link#{locals[:active_subtab] == "visualizations" ? " active" : nil}", href:"/help-others/#{@viewed_user.identifier}/visualizations"}= I18n.t('help.visualizations')

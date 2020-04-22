@@ -1,7 +1,7 @@
 = haml :'partials/dataset/twitter_img', layout: false
 
 -content_for :title do
-  #{@dataset.title} People
+  #{@dataset.title} – #{I18n.t('dataset.people')}
 
 -content_for :scripts do
   %script{src: "/js/application.js"}
@@ -17,12 +17,10 @@
     = haml :'partials/dataset/tabs', layout:false, locals: { active_tab: locals[:active_tab] }
 
     - if @pagy.count == 0
-      %div{class: "alert alert-info tiny-margins", role: "alert"}
-        People have not yet claimed or were attributed specimens represented in this dataset
+      %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('dataset.no_users_alert')
     - else
       %div{class: "alert alert-info tiny-margins row", role: "alert"}
-        %div{class: "col-12 col-md-8"}
-          #{number_with_delimiter(@pagy.count)} #{'person'.pluralize(@pagy.count)} claimed or were attributed specimens represented in this dataset
+        %div{class: "col-12 col-md-8"}= I18n.t('dataset.users_alert', count: number_with_delimiter(@pagy.count))
         %div{class: "col-12 col-md-4 text-md-right"}
           - if @compressed_file_size
             %a{href: "/dataset/#{@dataset.datasetKey}.zip", alt: "Frictionless Data package"}

@@ -12,17 +12,10 @@
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
       %h1{class:"h2"} #{@country.name}
-      %p.lead.text-muted
-        From countries stated in
-        %a{href:"https://orcid.org"} ORCID
-        or
-        %a{href: "https://www.wikidata.org"} Wikidata
-        accounts
+      %p{class: "lead text-muted"}= I18n.t('country.lede')
 
 - if @pagy.count == 0
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    No one found from
-    %span{class: "font-weight-bold"} #{@country.name}
+  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('country.no_one_alert', country: @country.name)
 - else
   - @results.in_groups_of(3).each do |group|
     %div{class: "card-deck"}

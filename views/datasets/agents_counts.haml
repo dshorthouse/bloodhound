@@ -1,28 +1,19 @@
 = haml :'partials/dataset/twitter_img', layout: false
 
 -content_for :title do
-  #{@dataset.title} Agent Strings
+  #{@dataset.title} – #{I18n.t('dataset.agent_strings')}
 
 %div{class:"row"}
   = haml :'partials/dataset/jumbotron', layout:false
 
   %div{class:"col-12 col-lg-8 mt-2"}
-    = haml :'partials/dataset/tabs', layout:false, locals: { active_tab: locals[:active_tab] }
-
-    %nav{id:"network-nav", class:"navbar navbar-light navbar-expand bg-light overflow-auto"}
-      %ul{class:"navbar-nav"}
-        %li{class:"nav-item"}
-          %a{class:"nav-link#{locals[:active_subtab] == "default" ? " active" : nil}", href:"/dataset/#{@dataset.datasetKey}/agents"} Alphabetical
-        %li{class:"nav-item"}
-          %a{class:"nav-link#{locals[:active_subtab] == "counts" ? " active" : nil}", href:"/dataset/#{@dataset.datasetKey}/agents/counts"} Counts
+    = haml :'partials/dataset/tabs', layout: false, locals: { active_tab: locals[:active_tab] }
+    = haml :'partials/dataset/agent_nav', layout: false, locals: { active_subtab: locals[:active_subtab] }
 
     - if @pagy.count == 0
-      %div{class: "alert alert-info tiny-margins", role: "alert"}
-        Raw strings from parsed collector and determiner names in specimen data included in this dataset have not yet been recorded
+      %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('dataset.no_agents_alert')
     - else
-      %div{class: "alert alert-info tiny-margins", role: "alert"}
-        #{number_with_delimiter(@pagy.count)} raw #{'string'.pluralize(@pagy.count)} from parsed collector and determiner names in specimen data included in this dataset
-
+      %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('dataset.agents_alert', agent_count: number_with_delimiter(@pagy.count))
       %div{class: "row"}
         - @results.in_groups_of(25, false).each do |group|
           %div{class: "col-12 col-sm-3 mb-3"}
