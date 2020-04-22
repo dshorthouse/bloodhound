@@ -71,9 +71,14 @@ en:
   on_this_day:
     global_title: On This Day
     born_title: Collector Born On This Day
+    died_title: Collector Dies On This Day
+    collected_title: Collected On This Day
     collector_born: Collector Born
     collector_died: Collector Died
     type_collected: Type Specimens Collected
+    none_died_alert: "No one found who died on %{date}"
+    limit_alert: Results limited to 50 holotype or paratype specimen records
+    no_types_alert: "No type specimens found collected on %{date}"
   trainers:
     trainers_title: Trainers
     lede: "%{trainer_count} people who have attributed natural history specimens to their peers, mentors, and role models"

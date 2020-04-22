@@ -1,5 +1,5 @@
 -content_for :title do
-  Collected On This Day
+  = I18n.t('on_this_day.collected_title')
 
 -content_for :stylesheets do
   %link{href:"/css/bootstrap-datepicker3.standalone.min.css", rel:"stylesheet", type:"text/css"}
@@ -32,20 +32,12 @@
             %i{class:"fas fa-calendar-alt"}
         %input{type:"text", class:"form-control", placeholder:"#{@date.strftime("%Y-%m-%d")}", size:"12"}
 
-%ul{class: "nav nav-tabs mt-3 mb-3"}
-  %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_tab] == "born" ? " active" : nil}", href: "/on-this-day"}= I18n.t('on_this_day.collector_born')
-  %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_tab] == "died" ? " active" : nil}", href: "/on-this-day/died"}= I18n.t('on_this_day.collector_died')
-  %li{class: "nav-item"}
-    %a{class: "nav-link#{locals[:active_tab] == "specimens" ? " active" : nil}", href: "/on-this-day/collected"}= I18n.t('on_this_day.type_collected')
+= haml :'partials/on_this_day/tabs', layout: false, locals: { active_tab: "collected" }
 
 - if @pagy.count == 0
-  %div{class: "alert alert-warning tiny-margins", role: "alert"}
-    No type specimens found collected on #{@date.strftime("%B %-d")}
+  %div{class: "alert alert-warning tiny-margins", role: "alert"}= I18n.t('on_this_day.no_types_alert', date: @date.strftime("%B %-d"))
 - else
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    Results limited to 50 holotype or paratype specimen records
+  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('on_this_day.limit_alert')
 
   %div{class:"table-responsive-lg"}
     %table{class:"table table-hover table-sm"}
