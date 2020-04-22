@@ -1,5 +1,5 @@
 -content_for :title do
-  Organizations
+  = I18n.t('organization.organization_title')
 
 -content_for :scripts do
   %script{src: "/js/application.js"}
@@ -11,21 +11,15 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
-      %h1{class:"h2"} Organizations
-      %p.lead.text-muted
-        #{number_with_delimiter(Organization.active_user_organizations.count)} organizations from employment and academic records in
-        %a{href: "https://orcid.org/"} ORCID
-        accounts
+      %h1{class:"h2"}= I18n.t('organization.organization_title')
+      %p{class:"lead text-muted"}= I18n.t('organization.lede', count: number_with_delimiter(Organization.active_user_organizations.count))
+
     = haml :'partials/organization/search', layout: false
 
 - if @pagy && @pagy.count == 0
-  %div{class: "alert alert-warning tiny-margins", role: "alert"}
-    No organizations found for
-    %span{class: "font-weight-bold"} #{h(params[:q])}
+  %div{class: "alert alert-warning tiny-margins", role: "alert"}= I18n.t('organization.no_search_alert', searched: h(params[:q]))
 - elsif @pagy && @pagy.count > 0
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    #{@pagy.count} search results for
-    %span{class: "font-weight-bold"} #{h(params[:q])}
+  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('organization.search_alert', searched: h(params[:q]), count: @pagy.count)
 
   - @results.in_groups_of(3).each do |group|
     %div{class: "card-deck"}

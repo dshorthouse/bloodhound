@@ -79,6 +79,30 @@ fr:
     none_died_alert: "No one found who died on %{date}"
     limit_alert: Results limited to 50 holotype or paratype specimen records
     no_types_alert: "No type specimens found collected on %{date}"
+  organization:
+    organization_title: Organizations
+    lede: "%{count} organizations from ORCID accounts and Wikidata entries"
+    placeholder: Canadian Museum of Nature
+    affiliation_none_alert: Publications based on specimens collected or identified by current and previous personnel have not yet been recorded by GBIF
+    affiliation_alert: "%{count} publications used specimen data downloaded from GBIF based on specimens collected or identified by current and previous personnel while affiliated with %{org_name}"
+    collected_by: "Specimens collected or identified by:"
+    science_enabled: Science Enabled Through Specimens Collected or Identified by Personnel
+    impact: Impact on Activities in Other Organizations
+    no_metric_alert: "Current and previous personnel have not yet claimed or have been attributed specimens now curated at other organizations while they were affiliated with %{org_name}."
+    metric_alert: "Current and previous personnel have claimed or were attributed specimens now curated at the following organizations while affiliated with %{org_name}."
+    none_collected_alert: "Specimens collected or identified in %{year} by personnel and curated elsewhere have not yet been claimed or attributed."
+    all_years: All Years
+    specimens: specimens
+    specimens_identified: Specimens Identified
+    specimens_collected: Specimens Collected
+    no_current_members_alert: "Current members of %{org_name} have not yet been recorded."
+    no_previous_members_alert: "Previous members of %{org_name} have not yet been recorded."
+    no_search_alert: "No organizations found for %{searched}"
+    search_alert: "%{count} search results for %{searched}"
+    current: Current
+    previous: Previous
+    metrics: Metrics
+    science_enabled: Science Enabled
   trainers:
     trainers_title: Entraîneurs
     lede: "%{trainer_count} personnes qui ont attribué des spécimens d'histoire naturelle à leurs pairs, mentors et modèles"
@@ -117,8 +141,6 @@ fr:
     people: People
     no_users_alert: People have not yet claimed or were attributed specimens represented in this dataset
     users_alert: "%{count} people claimed or were attributed specimens represented in this dataset"
-  organization:
-    placeholder: Musée canadien de la nature
   oops:
     not_found_title: Pas trouvé
     not_found: Désolé, cette page n'a pas été trouvée

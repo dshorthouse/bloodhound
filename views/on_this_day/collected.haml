@@ -32,7 +32,7 @@
             %i{class:"fas fa-calendar-alt"}
         %input{type:"text", class:"form-control", placeholder:"#{@date.strftime("%Y-%m-%d")}", size:"12"}
 
-= haml :'partials/on_this_day/tabs', layout: false, locals: { active_tab: "collected" }
+= haml :'partials/on_this_day/tabs', layout: false, locals: { active_tab: "specimens" }
 
 - if @pagy.count == 0
   %div{class: "alert alert-warning tiny-margins", role: "alert"}= I18n.t('on_this_day.no_types_alert', date: @date.strftime("%B %-d"))
