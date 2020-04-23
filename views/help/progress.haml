@@ -1,5 +1,5 @@
 -content_for :title do
-  Help Progress
+  = I18n.t('help.latest_title')
 
 - content_for :scripts do
   %script{src: "/js/application.js"}
@@ -21,12 +21,7 @@
 = haml :'partials/help/main_tabs', layout: false, locals: { active_main_tab: "latest" }
 
 %div
-  %nav{id:"network-nav", class:"navbar navbar-light navbar-expand bg-light overflow-auto"}
-    %ul{class:"navbar-nav"}
-      %li{class:"nav-item"}
-        %a{class:"nav-link#{locals[:active_tab] == "orcid" ? " active" : nil}", href:"/help-others/progress"} ORCID
-      %li{class:"nav-item"}
-        %a{class:"nav-link#{locals[:active_tab] == "wikidata" ? " active" : nil}", href:"/help-others/progress/wikidata"} Wikidata
+  = haml :'partials/help/progress_tabs', layout: false, locals: { active_tab: locals[:active_tab] }
 
 %div{class:"table-responsive-lg mt-4"}
   %table{class:"table table-hover table-sm"}

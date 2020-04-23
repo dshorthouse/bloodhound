@@ -1,5 +1,5 @@
 -content_for :title do
-  New People
+  = I18n.t('help.new_people')
 
 - content_for :scripts do
   %script{src: "/js/application.js"}
@@ -14,32 +14,23 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap alert-warning-light"}
     %div{class: "mr-auto p-2"}
-      %h1{class:"h2"} Newly Found People
-      %p{class:"lead text-muted"}
-        Attribute specimens for recently discovered people in
-        %a{href:"https://orcid.org"} ORCID
-        or
-        %a{href: "https://www.wikidata.org"} Wikidata
+      %h1{class:"h2"}= I18n.t('help.new_people_title')
+      %p{class:"lead text-muted"}= I18n.t('help.new_people_lede')
     = haml :'partials/help/search', layout: false
 
 = haml :'partials/help/main_tabs', layout: false, locals: { active_main_tab: "new" }
 
 %div
-  %nav{id:"network-nav", class:"navbar navbar-light navbar-expand bg-light overflow-auto"}
-    %ul{class:"navbar-nav"}
-      %li{class:"nav-item"}
-        %a{class:"nav-link#{locals[:active_tab] == "orcid" ? " active" : nil}", href:"/help-others/new-people"} ORCID
-      %li{class:"nav-item"}
-        %a{class:"nav-link#{locals[:active_tab] == "wikidata" ? " active" : nil}", href:"/help-others/new-people/wikidata"} Wikidata
+  = haml :'partials/help/new_people_tabs', layout: false, locals: { active_tab: locals[:active_tab] }
 
 %div{class:"table-responsive-lg mt-4"}
   %table{class:"table table-hover table-sm"}
     %thead{class: "thead-light"}
       %tr
-        %th{scope: "col"} Person
-        %th{scope: "col"} Progress
-        %th{scope: "col"} Public
-        %th{scope: "col"} Created
+        %th{scope: "col"}= I18n.t('help.person')
+        %th{scope: "col"}= I18n.t('help.progress')
+        %th{scope: "col"}= I18n.t('help.public')
+        %th{scope: "col"}= I18n.t('help.created')
 
     %tbody
       - @results.each do |user|
