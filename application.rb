@@ -7,7 +7,7 @@ class BLOODHOUND < Sinatra::Base
   set :root, File.dirname(__FILE__)
   set :haml, :format => :html5
   set :public_folder, 'public'
-  set :show_exceptions, :after_handler
+  set :show_exceptions, false
 
   register Sinatra::I18nSupport
   load_locales File.join(root, 'config', 'locales')
