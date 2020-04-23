@@ -1,5 +1,5 @@
 -content_for :title do
-  Help Fix Attributions for #{@viewed_user.fullname}
+  = I18n.t('help.fix_title')
 
 -content_for :scripts do
   %script{src: "/js/application.js"}
@@ -17,62 +17,62 @@
 
 %div{id: "helper-info", class: "alert alert-info tiny-margins", role: "alert"}
   - if @stats[:specimens][:identified] == 0 && @stats[:specimens][:recorded] == 0
-    Bloodhound trainers have not yet helped attribute specimens.
+    = I18n.t('help.viz_none_alert')
   - else
-    Click regions on the map or bars in the chart to execute a filter.
+    = I18n.t('help.viz_alert')
 
 - if @stats[:specimens][:identified] > 0 || @stats[:specimens][:recorded] > 0
 
   - if @viewed_user.wikidata
-    %h4 Problems Discovered
+    %h4= I18n.t('help.problems')
 
     %ul{class:"mt-3"}
       %li
-        Collections made before birth:
+        = I18n.t('help.collections_before_birth')
         - count = @viewed_user.claims_type_before_birth("recordings").count
         - if count > 0
           %a{href: "/help-others/#{@viewed_user.identifier}/specimens?action=collected&start_year=0&end_year=#{@viewed_user.date_born.year}"}
-            (#{count} view)
+            (#{count} #{I18n.t('help.view')})
         - else
-          %span{class:"text-success"} (none)
+          %span{class:"text-success"} (#{I18n.t('help.none')})
       %li
-        Collections made after death:
+        = I18n.t('help.collections_after_death')
         - count = @viewed_user.claims_type_after_death("recordings").count
         - if count > 0
           %a{href: "/help-others/#{@viewed_user.identifier}/specimens?action=collected&start_year=#{@viewed_user.date_died.year}&end_year=#{Date.today.year}"}
-            (#{count} view)
+            (#{count} #{I18n.t('help.view')})
         - else
-          %span{class:"text-success"} (none)
+          %span{class:"text-success"} (#{I18n.t('help.none')})
       %li
-        Identifications made before birth:
+        = I18n.t('help.identifications_before_birth')
         - count = @viewed_user.claims_type_before_birth("identified").count
         - if count > 0
           %a{href: "/help-others/#{@viewed_user.identifier}/specimens?action=identified&start_year=0&end_year=#{@viewed_user.date_born.year}"}
-            (#{count} view)
+            (#{count} #{I18n.t('help.view')})
         - else
-          %span{class:"text-success"} (none)
+          %span{class:"text-success"} (#{I18n.t('help.none')})
       %li
-        Identifications made after death:
+        = I18n.t('help.identifications_after_death')
         - count = @viewed_user.claims_type_after_death("identified").count
         - if count > 0
           %a{href: "/help-others/#{@viewed_user.identifier}/specimens?action=identified&start_year=#{@viewed_user.date_died.year}&end_year=#{Date.today.year}"}
-            (#{count} view)
+            (#{count} #{I18n.t('help.view')})
         - else
-          %span{class:"text-success"} (none)
+          %span{class:"text-success"} (#{I18n.t('help.none')})
 
   %div{class:"row d-flex mt-3"}
     %div{class:"col-10 col-md-6"}
-      %h4 Identified From
+      %h4= I18n.t('help.identified_from')
       #map-identified{style:"width: 100%; height: 350px"}
     %div{class:"col-10 col-md-6"}
-      %h4 Collected From
+      %h4= I18n.t('help.collected_from')
       #map-collected{style:"width: 100%; height: 350px"}
 - else
   #map-identified{style:"width: 0%; height: 0%; display: none;"}
   #map-collected{style:"width: 0%; height: 0%; display: none;"}
 
 - if @stats[:activity_dates].length > 0
-  %h4 Dates Identified and Collected
+  %h4= I18n.t('help.dates_identified_collected')
   %div{id: "chart"}
 - else
   %div{id: "chart", style:"width: 0%; height: 0%; display:none;"}

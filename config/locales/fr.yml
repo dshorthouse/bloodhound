@@ -111,6 +111,7 @@ fr:
     latest_title: Latest Recipients
     country_name_title: "Help Attribute Specimens for People From %{country}"
     advanced_search_title: "Advanced Search & Filter"
+    fix_title: Help Fix Attributions
     basic_instructions_lede: Basic instructions to get you started
     country_name_lede: From countries stated in ORCID or Wikidata
     latest_lede: Join the trainers by helping to attribute specimens
@@ -137,6 +138,20 @@ fr:
     public_profile: Public Profile
     make_public: Make Public
     not_yet: Not yet
+    viz_none_alert: Bloodhound trainers have not yet helped attribute specimens.
+    viz_alert: Click regions on the map or bars in the chart to execute a filter.
+    problems: Problems Discovered
+    collections_before_birth: "Collections made before birth:"
+    collections_after_death: "Collections made after death:"
+    identifications_before_birth: "Identifications made before birth:"
+    identifications_after_death: "Identifications made after death:"
+    view: view
+    none: none
+    identified_from: Identified From
+    collected_from: Collected From
+    dates_identified_collected: Dates Identified and Collected
+    no_filter: Bloodhound trainers have not yet helped attribute specimens under this filter.
+    not_helped_alert: Bloodhound trainers have not yet helped attribute specimens.
   home:
     tagline: Réclamez les spécimens que vous avez collectés ou identifiés, suivez leur utilisation dans les nouvelles publications scientifiques et aidez à reconnaître vos pairs, vos mentors et vos organismes.
     get_started: Commencer
@@ -271,6 +286,7 @@ fr:
     type_status: État du type
     trainer: Entraîneur
     not_me: Pas moi
+    not_them: Not them
     not_recorded: not recorded
     remove: Remove
   trainers:
