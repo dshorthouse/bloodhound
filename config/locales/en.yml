@@ -112,6 +112,7 @@ en:
     country_name_title: "Help Attribute Specimens for People From %{country}"
     advanced_search_title: "Advanced Search & Filter"
     fix_title: Help Fix Attributions
+    upload_title: Upload
     basic_instructions_lede: Basic instructions to get you started
     country_name_lede: From countries stated in ORCID or Wikidata
     latest_lede: Join the trainers by helping to attribute specimens
@@ -152,6 +153,8 @@ en:
     dates_identified_collected: Dates Identified and Collected
     no_filter_alert: Bloodhound trainers have not yet helped attribute specimens under this filter.
     not_helped_alert: Bloodhound trainers have not yet helped attribute specimens.
+    upload_message: "A total of %{count} records were handled. Existing claims, if present in your upload, were skipped."
+    help_question: "Want to help attribute specimens to %{name}?"
   home:
     tagline: Claim the natural history specimens you collected or identified, track their use in new science, and help acknowledge your peers, mentors, and organizations.
     get_started: Get started
@@ -242,6 +245,15 @@ en:
     metrics: Metrics
     science_enabled: Science Enabled
   profile:
+    thanks_title: Thanks Received
+    candidates_title: Unclaimed Specimens
+    ignored_title: Ignored
+    specimens_title: Specimens
+    support_title: Help Received
+    upload_title: Upload
+    helped_title: People Helped
+    citation_title: Citation
+    citations_title: Citations
     overview: Overview
     specimens: Specimens
     people_helped: People Helped
@@ -283,6 +295,8 @@ en:
     email_procedure: "Receive notification of new publications that made use of data derived from the specimens you identified or collected. Your primary, publicly available email address, %{email} comes from your ORCID account."
     disconnect: Disconnect
     disconnect_warning: Are you sure you want to disconnect your account from Zenodo? Your data will remain archived and accessible but no new versions will be created. If you later reconnect your account, a new data package will be created.
+    connect_zenodo: Connect your account to Zenodo where versioned snapshots of your claims will be stored and a DataCite DOI assigned. A citation will be provided for inclusion in your resume.
+    connect_zenodo_claim: Claim at least one of your specimens and return here to connect your account to Zenodo where versioned snapshots of your claims will be stored and a DataCite DOI assigned. A citation will be provided for inclusion in your resume.
     disconnect_zenodo: Disconnect From Zenodo
     integrate_zenodo: Integrate with Zenodo
     zenodo_linked: Your account is now linked and data will be pushed within the hour
@@ -293,6 +307,10 @@ en:
     private: Private
     active: "On"
     inactive: "Off"
+    make_public_message: Include your account in public Profiles. Your claims will be included in a bulk data download, exposed through Google Chrome and Firefox extensions and a Tweet will be sent from @BloodhoundTrack.
+    no_candidates_alert: Bloodhound did not sniff any specimens indexed by GBIF that you may have collected or identified.
+    ignored_alert: Specimen records you marked as "Not me" will appear here.
+    trainer_not_helped: This Bloodhound trainer has not yet helped you claim specimens.
   roster:
     roster_title: Public Profiles
     lede: "%{user_count} people who share their profiles and the profiles of others they revere"

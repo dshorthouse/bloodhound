@@ -112,6 +112,7 @@ fr:
     country_name_title: "Aidez à attribuer des spécimens aux personnes du %{country}"
     advanced_search_title: "Recherche avancée et filtre"
     fix_title: Aide à corriger les attributions
+    upload_title: Télécharger
     basic_instructions_lede: Instructions de base pour vous aider à démarrer
     country_name_lede: De pays indiqués dans ORCID ou Wikidata
     latest_lede: Rejoignez les entraîneurs en aidant à attribuer des spécimens
@@ -152,6 +153,8 @@ fr:
     dates_identified_collected: Dates Identifiées et Collectées
     no_filter: Les entraîneurs Bloodhound n'ont pas encore aidé à attribuer des spécimens sous ce filtre.
     not_helped_alert: Les entraîneurs Bloodhound n'ont pas encore aidé à attribuer des spécimens.
+    upload_message: "Au total, %{count} enregistrements ont été traités. Les réclamations existantes, si elles étaient présentes dans votre téléchargement, ont été ignorées."
+    help_question: "Vous voulez aider à attribuer des spécimens à %{name}?"
   home:
     tagline: Réclamez les spécimens que vous avez collectés ou identifiés, suivez leur utilisation dans les nouvelles publications scientifiques et aidez à reconnaître vos pairs, vos mentors et vos organismes.
     get_started: Commencer
@@ -242,6 +245,15 @@ fr:
     metrics: Métrique
     science_enabled: Science Activée
   profile:
+    thanks_title: Remerciements Reçus
+    candidates_title: Spécimens non réclamés
+    ignored_title: Ignorés
+    specimens_title: Spécimens
+    support_title: Aide Reçue
+    upload_title: Télécharger
+    helped_title: Personnes Aidées
+    citation_title: Citation
+    citations_title: Citations
     overview: Aperçu
     specimens: Spécimens
     people_helped: Gens Aidés
@@ -283,6 +295,8 @@ fr:
     email_procedure: "Recevez une notification des nouvelles publications qui ont utilisé des données dérivées des spécimens que vous avez identifiés ou collectés. Votre adresse e-mail principale accessible au public, %{email} provient de votre compte ORCID."
     disconnect: Déconnecter
     disconnect_warning: Voulez-vous vraiment déconnecter votre compte de Zenodo? Vos données resteront archivées et accessibles mais aucune nouvelle version ne sera créée. Si vous reconnectez votre compte ultérieurement, un nouveau package de données sera créé.
+    connect_zenodo: Connectez votre compte à Zenodo où les versions de vos réclamations seront stockées et un DOI DataCite attribué. Une citation sera fournie pour inclusion dans votre CV.
+    connect_zenodo_claim: Réclamez au moins un de vos spécimens et revenez ici pour connecter votre compte à Zenodo où les versions de vos réclamations seront stockées et un DOI DataCite attribué. Une citation sera fournie pour inclusion dans votre CV.
     disconnect_zenodo: Déconnectez Zenodo
     integrate_zenodo: Intégration avec Zenodo
     zenodo_linked: Votre compte est maintenant lié et les données seront transmises dans l'heure
@@ -293,6 +307,10 @@ fr:
     private: Privé
     active: Actif
     inactive: Inactif
+    make_public_message: Incluez votre compte dans les profils publics. Vos réclamations seront incluses dans un téléchargement de données en masse, exposées via les extensions Google Chrome et Firefox et un Tweet sera envoyé par @BloodhoundTrack.
+    no_candidates_alert: Bloodhound n'a reniflé aucun spécimen répertorié par GBIF que vous ayez collecté ou identifié.
+    ignored_alert: Les spécimens que vous avez marqués comme "Pas moi" apparaîtront ici.
+    trainer_not_helped: Cet entraîneur Bloodhound ne vous a pas encore aidé à récupérer des spécimens.
   roster:
     roster_title: Profils publics
     lede: "%{user_count} personnes qui partagent leurs profils et les profils des autres qu'ils vénèrent"

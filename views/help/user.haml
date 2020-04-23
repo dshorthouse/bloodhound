@@ -82,9 +82,9 @@
       %div{class: "col col-12 col-md-8"}
         Help attribute #{number_with_delimiter(@total, delimeter: ",")} #{'specimen'.pluralize(@total)}.
         Choose
-        %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+        %img{src:"/images/net-unselected.png", alt:"#{I18n.t('general.collected')}", title:"#{I18n.t('general.collected')}", width:18}
         collected,
-        %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+        %img{src:"/images/microscope-unselected.png", alt:"#{I18n.t('general.identified')}", title:"#{I18n.t('general.identified')}", width:18}
         identified, or Both.
         %div{class:"form-check d-inline-flex"}
           %input{type:"checkbox", class:"form-check-input", id:"relaxed", checked: checked }
@@ -101,16 +101,16 @@
           %tr
             %th{scope: "col", class:"selector"}
               = haml :'partials/bulk_selector_top', layout: false
-            %th{scope: "col"} Scientific Name
-            %th{scope: "col"} Collected By
-            %th{scope: "col"} Identified By
-            %th{scope: "col"} Date Collected
-            %th{scope: "col"} Date Identified
-            %th{scope: "col"} Institution
-            %th{scope: "col"} Catalog Number
-            %th{scope: "col"} Type Status
+            %th{scope: "col"}= I18n.t('specimen.scientific_name')
+            %th{scope: "col"}= I18n.t('specimen.collected_by')
+            %th{scope: "col"}= I18n.t('specimen.identified_by')
+            %th{scope: "col"}= I18n.t('specimen.date_collected')
+            %th{scope: "col"}= I18n.t('specimen.date_identified')
+            %th{scope: "col"}= I18n.t('specimen.institution')
+            %th{scope: "col"}= I18n.t('specimen.catalog_number')
+            %th{scope: "col"}= I18n.t('specimen.type_status')
             %th{scope: "col", class:"btn-selector-wide"}
-              %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"} Not them
+              %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"}= I18n.t('specimen.not_them')
 
         %tbody
           - @results.each do |o|
@@ -118,7 +118,7 @@
               %td{class: "selector"}
                 = haml :'partials/single_selector', layout: false, locals: { occurrence: o }
               %td
-                - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
+                - scientific_name = o.scientificName.nil? ? "#{I18n.t('specimen.not_recorded')}" : o.scientificName
                 %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"}
                   #{h(scientific_name)}
                 - if o.hasImage?
@@ -131,23 +131,23 @@
               %td #{h(o.catalogNumber)}
               %td #{h(o.typeStatus)}
               %td
-                %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{o.id}"} Not them
+                %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{o.id}"}= I18n.t('specimen.not_them')
 
         - if @total > 25
           %tfoot{class: "thead-light"}
             %tr
               %th{scope: "col", class:"selector"}
                 = haml :'partials/bulk_selector_bottom', layout: false
-              %th{scope: "col"} Scientific Name
-              %th{scope: "col"} Collected By
-              %th{scope: "col"} Identified By
-              %th{scope: "col"} Date Collected
-              %th{scope: "col"} Date Identified
-              %th{scope: "col"} Institution
-              %th{scope: "col"} Catalog Number
-              %th{scope: "col"} Type Status
+              %th{scope: "col"}= I18n.t('specimen.scientific_name')
+              %th{scope: "col"}= I18n.t('specimen.collected_by')
+              %th{scope: "col"}= I18n.t('specimen.identified_by')
+              %th{scope: "col"}= I18n.t('specimen.date_collected')
+              %th{scope: "col"}= I18n.t('specimen.date_identified')
+              %th{scope: "col"}= I18n.t('specimen.institution')
+              %th{scope: "col"}= I18n.t('specimen.catalog_number')
+              %th{scope: "col"}= I18n.t('specimen.type_status')
               %th{scope: "col"}
-                %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"} Not them
+                %button{type:"button", name:"notme-all", class:"btn btn-sm btn-warning hide-all"}= I18n.t('specimen.not_them')
 
     - if @total > 25
       = haml :'partials/page_size', layout: false

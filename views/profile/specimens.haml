@@ -1,5 +1,5 @@
 -content_for :title do
-  Specimens
+  = I18n.t('profile.specimens_title')
 
 -content_for :scripts do
   = haml :'partials/profile/scripts', layout: false, locals: { action_type: "PUT" }
@@ -28,9 +28,9 @@
   %div{class: "alert alert-info row tiny-margins", role: "alert"}
     %div{class: "col-12 col-md-8"}
       Choose
-      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+      %img{src:"/images/net-unselected.png", alt:"#{I18n.t('general.collected')}", title:"#{I18n.t('general.collected')}", width:18}
       collected,
-      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+      %img{src:"/images/microscope-unselected.png", alt:"#{I18n.t('general.identified')}", title:"#{I18n.t('general.identified')}", width:18}
       identified, or Both to correct your claims.
     %div{class: "col-12 col-md-4 text-md-right"}
       %a{href: "/profile/download.csv", alt:"CSV file download", class:"mr-2"}

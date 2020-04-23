@@ -1,5 +1,5 @@
 -content_for :title do
-  People Helped
+  = I18n.t('profile.helped_title')
 
 -content_for :scripts do
   = haml :'partials/profile/scripts', layout: false, locals: { action_type: "PUT" }

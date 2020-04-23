@@ -1,5 +1,5 @@
 -content_for :title do
-  Helping #{@viewed_user.fullname}
+  = I18n.t('help.help_title')
 
 -content_for :scripts do
   %script{src: "/js/application.js"}
@@ -12,7 +12,7 @@
   = haml :'partials/help/jumbotron', layout: false
 
 - if !authorized?
-  %p Want to help attribute specimens to #{@viewed_user.fullname}?
+  %p= I18n.t('help.help_question', name: h(@viewed_user.fullname))
 
   %form{action: "/auth/orcid?lang=#{I18n.locale}", method: "POST" }
     %button{class: "btn btn-lg btn-outline-dark"}

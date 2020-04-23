@@ -1,5 +1,5 @@
 -content_for :title do
-  Ignored
+  = I18n.t('profile.ignored_title')
 
 -content_for :scripts do
   = haml :'partials/profile/scripts', layout: false, locals: { action_type: "PUT" }
@@ -13,13 +13,13 @@
 
 %div{class: "alert alert-info tiny-margins", role: "alert"}
   - if @pagy.count == 0
-    Specimen records you marked as "Not me" will appear here.
+    = I18n.t('profile.ignored_alert')
 
   - else
     Choose
-    %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+    %img{src:"/images/net-unselected.png", alt:"#{I18n.t('general.collected')}", title:"#{I18n.t('general.collected')}", width:18}
     collected,
-    %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+    %img{src:"/images/microscope-unselected.png", alt:"#{I18n.t('general.identified')}", title:"#{I18n.t('general.identified')}", width:18}
     identified, or Both to claim specimens
     %span{class:"font-weight-bold"} you may have mistakenly marked as "Not me".
 

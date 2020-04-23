@@ -12,16 +12,14 @@
     = haml :'partials/profile/subtabs_specimens', layout: false, locals: { active_tab: "support"}
 
 - if @pagy.count == 0
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    This Bloodhound trainer has not yet helped you claim specimens.
-
+  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('profile.trainer_not_helped')
 - else
   %div{class: "alert alert-info row tiny-margins", role: "alert"}
     %div{class: "col col-12"}
       Choose
-      %img{src:"/images/net-unselected.png", alt:"Collected", title:"Collected", width:18}
+      %img{src:"/images/net-unselected.png", alt:"#{I18n.t('general.collected')}", title:"#{I18n.t('general.collected')}", width:18}
       collected,
-      %img{src:"/images/microscope-unselected.png", alt:"Collected", title:"Collected", width:18}
+      %img{src:"/images/microscope-unselected.png", alt:"#{I18n.t('general.identified')}", title:"#{I18n.t('general.identified')}", width:18}
       identified, or Both to adjust what
       %span{class:"font-weight-bold"}
         #{@helped_user.fullname}
@@ -33,14 +31,14 @@
         %tr
           %th{scope: "col", class:"selector"}
             = haml :'partials/bulk_selector_top', layout: false
-          %th{scope: "col"} Scientific Name
-          %th{scope: "col"} Collected By
-          %th{scope: "col"} Identified By
-          %th{scope: "col"} Date Collected
-          %th{scope: "col"} Date Identified
-          %th{scope: "col"} Institution
-          %th{scope: "col"} Catalog Number
-          %th{scope: "col"} Type Status
+          %th{scope: "col"}= I18n.t('specimen.scientific_name')
+          %th{scope: "col"}= I18n.t('specimen.collected_by')
+          %th{scope: "col"}= I18n.t('specimen.identified_by')
+          %th{scope: "col"}= I18n.t('specimen.date_collected')
+          %th{scope: "col"}= I18n.t('specimen.date_identified')
+          %th{scope: "col"}= I18n.t('specimen.institution')
+          %th{scope: "col"}= I18n.t('specimen.catalog_number')
+          %th{scope: "col"}= I18n.t('specimen.type_status')
           %th{scope: "col", class:"btn-selector"}
 
       %tbody
@@ -50,7 +48,7 @@
             %td{class: "selector"}
               = haml :'partials/single_selector_preselected', layout: false, locals: { occurrence: uo }
             %td
-              - scientific_name = o.scientificName.nil? ? "not recorded" : o.scientificName
+              - scientific_name = o.scientificName.nil? ? "#{I18n.t('specimen.not_recorded')}" : o.scientificName
               %a{href: "https://gbif.org/occurrence/#{o.id}", target:"_blank"} #{h(scientific_name)}
             %td #{h(o.recordedBy)}
             %td #{h(o.identifiedBy)}
@@ -60,21 +58,21 @@
             %td #{h(o.catalogNumber)}
             %td #{h(o.typeStatus)}
             %td
-              %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{uo.user_occurrence_id}"} Not me
+              %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{uo.user_occurrence_id}"}= I18n.t('specimen.not_me')
 
       - if @total > 25
         %tfoot{class: "thead-light"}
           %tr
             %th{scope: "col", class:"selector"}
               = haml :'partials/bulk_selector_bottom', layout: false
-            %th{scope: "col"} Scientific Name
-            %th{scope: "col"} Collected By
-            %th{scope: "col"} Identified By
-            %th{scope: "col"} Date Collected
-            %th{scope: "col"} Date Identified
-            %th{scope: "col"} Institution
-            %th{scope: "col"} Catalog Number
-            %th{scope: "col"} Type Status
+            %th{scope: "col"}= I18n.t('specimen.scientific_name')
+            %th{scope: "col"}= I18n.t('specimen.scientific_name')
+            %th{scope: "col"}= I18n.t('specimen.scientific_name')
+            %th{scope: "col"}= I18n.t('specimen.scientific_name')
+            %th{scope: "col"}= I18n.t('specimen.scientific_name')
+            %th{scope: "col"}= I18n.t('specimen.scientific_name')
+            %th{scope: "col"}= I18n.t('specimen.scientific_name')
+            %th{scope: "col"}= I18n.t('specimen.scientific_name')
             %th{scope: "col"}
 
   - if @total > 25

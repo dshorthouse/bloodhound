@@ -1,5 +1,5 @@
 -content_for :title do
-  Unclaimed Specimens
+  = I18n.t('profile.candidates_title')
 
 -content_for :scripts do
   = haml :'partials/profile/scripts', layout: false, locals: { action_type: "POST" }
@@ -20,9 +20,7 @@
 - if @pagy.count == 0
   %div{class: "alert alert-info row tiny-margins", role:"alert"}
     %div{class: "col col-12 col-sm-12 col-md-8 col-lg-8"}
-      Bloodhound did not sniff any specimens indexed by
-      %a{href:"https://gbif.org", target:"_blank"} GBIF
-      that you may have collected or identified.
+      = I18n.t('profile.no_candidates_alert')
 
       %div{class:"form-check d-inline-flex"}
         - checked = params[:relaxed] == "1" ? "checked" : nil

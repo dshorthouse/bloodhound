@@ -1,5 +1,5 @@
 -content_for :title do
-  Upload for #{@viewed_user.fullname}
+  = I18n.t('help.upload_title')
 
 -content_for :scripts do
   %script{src: "/js/application.js"}
@@ -17,9 +17,5 @@
   %div{class: "alert alert-danger tiny-margins", role: "alert"}
     #{flash[:error]}
     %a{href: "/help-others/#{@viewed_user.identifier}/upload"} Try again.
-
 - else
-  %div{class: "alert alert-info tiny-margins", role: "alert"}
-    A total of
-    %span{class:"font-weight-bold"} #{number_with_delimiter(@record_count)} #{'record'.pluralize(@record_count)}
-    were handled. Existing claims, if present in your upload, were skipped.
+  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('help.upload_message', count: number_with_delimiter(@record_count))

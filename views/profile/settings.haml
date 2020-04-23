@@ -16,19 +16,7 @@
         %div{class:"card"}
           %h5{class:"card-header"}= I18n.t('profile.public_availability')
           %div{class:"card-body"}
-            %p{class:"card-text"}
-              Include your account in public
-              = succeed "." do
-                %a{href: "/roster"} Profiles
-              Your claims will be included in a bulk
-              = succeed ", " do
-                %a{href: "/developers"} data download
-              exposed through Google Chrome and Firefox
-              = succeed ", " do
-                %a{href:"/integrations"} extensions
-              and a Tweet will be sent from
-              = succeed "." do
-                %a{href: "https://twitter.com/BloodhoundTrack"} @BloodhoundTrack
+            %p{class:"card-text"}= I18n.t('profile.make_public_message')
             %div{class:"row"}
               %div{class:"col"}
                 %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"#{I18n.t('profile.public')}", "data-off":"#{I18n.t('profile.private')}", "data-onstyle": "success", "data-size": "small", checked: @user.is_public?, class:"btn-claim", "data-url": "/profile/visibility.json" }
@@ -60,20 +48,10 @@
           %h5{class:"card-header"}= I18n.t('profile.make_citable')
           %div{class:"card-body"}
             - if !@user.made_claim?
-              %p{class:"card-text"}
-                Claim at least one of your specimens and return here to connect your account to
-                %a{href:"https://zenodo.org/", target:"_blank"}
-                  Zenodo
-                  %i{class:"fas fa-external-link-alt"}
-                where versioned snapshots of your claims will be stored and a DataCite DOI assigned. A citation will be provided for inclusion in your resume.
+              %p{class:"card-text"}= I18n.t('profile.connect_zenodo_claim')
             - else
               - if !@user.zenodo_concept_doi
-                %p{class:"card-text"}
-                  Connect your account to
-                  %a{href:"https://zenodo.org/", target:"_blank"}
-                    Zenodo
-                    %i{class:"fas fa-external-link-alt"}
-                  where versioned snapshots of your claims will be stored and a DataCite DOI assigned. A citation will be provided for inclusion in your resume.
+                %p{class:"card-text"}= I18n.t('profile.connect_zenodo')
                 - if @user.zenodo_access_token.empty?
                   %form{action: "/auth/zenodo", method: "POST" }
                     %p{class:"card-text"}
