@@ -16,14 +16,14 @@
         return window.location.href.search("[?&]date=") != -1;
       };
       if (!date_param() && server_date !== browser_date) {
-        window.location = "/on-this-day?date=" + browser_date;
+        window.location = "/on-this-day/died?date=" + browser_date;
       }
       Application.init("", "GET", "/on-this-day");
       $('#datepicker').datepicker({
         format: 'yyyy-mm-dd'
       }).on("changeDate", function(e) {
         var selected_date = e.format(0, "yyyy-mm-dd");
-        window.location = "/on-this-day?date=" + selected_date;
+        window.location = "/on-this-day/died?date=" + selected_date;
       });
     });
 
