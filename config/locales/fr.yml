@@ -271,6 +271,23 @@ fr:
     dates_identified_collected: Dates Identifiées et Collectées
     resume: Pour votre CV
     specimens_used: Spécimens Utilisés Dans
+    public_availability: Disponibilité Publique
+    public_profile: Profil Public
+    make_citable: Rendez vos Données Exploitables
+    email_notifications: Notifications Par Courriel
+    delete_account: Supprimer Votre Compte
+    delete: Supprimer
+    permanent_delete: Supprimez définitivement votre compte.
+    delete_warning: Voulez-vous vraiment supprimer votre compte? Toutes vos réclamations ET toutes les attributions que vous avez faites seront définitivement supprimées.
+    email_instructions: Recevez des notifications par courriel de nouveaux articles scientifiques qui ont utilisé des données dérivées des spécimens que vous avez identifiés ou collectés. Rendez votre adresse courriel principale accessible au public dans votre compte ORCID, puis actualisez vos données ci-dessus.
+    email_procedure: "Recevez une notification des nouvelles publications qui ont utilisé des données dérivées des spécimens que vous avez identifiés ou collectés. Votre adresse e-mail principale accessible au public, %{email} provient de votre compte ORCID."
+    disconnect: Déconnecter
+    disconnect_warning: Voulez-vous vraiment déconnecter votre compte de Zenodo? Vos données resteront archivées et accessibles mais aucune nouvelle version ne sera créée. Si vous reconnectez votre compte ultérieurement, un nouveau package de données sera créé.
+    disconnect_zenodo: Déconnectez Zenodo
+    integrate_zenodo: Intégration avec Zenodo
+    zenodo_linked: Votre compte est maintenant lié et les données seront transmises dans l'heure
+    orcid_updates: Tirez de nouvelles mises à jour de votre nom, alias, mots clés, pays, éducation et emploi accessibles au public à partir de votre compte ORCID.
+    refresh: Rafraîchir
   roster:
     roster_title: Profils publics
     lede: "%{user_count} personnes qui partagent leurs profils et les profils des autres qu'ils vénèrent"

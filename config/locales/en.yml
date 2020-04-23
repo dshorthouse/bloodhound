@@ -271,6 +271,23 @@ en:
     dates_identified_collected: Dates Identified and Collected
     resume: For Your Resume
     specimens_used: Specimens Used In
+    public_availability: Public Availability
+    public_profile: Public Profile
+    make_citable: Make Your Data Citable
+    email_notifications: Email Notifications
+    delete_account: Delete Your Account
+    delete: Delete
+    permanent_delete: Permanently delete your account.
+    delete_warning: Are you sure you want to delete your account? All your claims AND all the attributions you have made for others will be permanently removed.
+    email_instructions: Receive email notifications of new papers that made use of data derived from the specimens you identified or collected. Make your primary email address publicly available in your ORCID account and then refresh your ORCID data above.
+    email_procedure: "Receive notification of new publications that made use of data derived from the specimens you identified or collected. Your primary, publicly available email address, %{email} comes from your ORCID account."
+    disconnect: Disconnect
+    disconnect_warning: Are you sure you want to disconnect your account from Zenodo? Your data will remain archived and accessible but no new versions will be created. If you later reconnect your account, a new data package will be created.
+    disconnect_zenodo: Disconnect From Zenodo
+    integrate_zenodo: Integrate with Zenodo
+    zenodo_linked: Your account is now linked and data will be pushed within the hour
+    orcid_updates: Pull new updates to your publicly available name, aliases, keywords, country, education, and employment from your ORCID account.
+    refresh: Refresh
   roster:
     roster_title: Public Profiles
     lede: "%{user_count} people who share their profiles and the profiles of others they revere"

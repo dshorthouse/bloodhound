@@ -1,10 +1,9 @@
 -content_for :title do
-  Overview
+  = I18n.t('profile.overview')
 
 -content_for :scripts do
   = haml :'partials/profile/scripts', layout: false, locals: { action_type: "POST" }
   = haml :'partials/viz_scripts', layout: false, locals: { path: "/profile" }
-
 
 %div{class:"row"}
   = haml :'partials/profile/jumbotron', layout: false
