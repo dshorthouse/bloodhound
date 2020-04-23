@@ -335,7 +335,8 @@ module Sinatra
             records = occurrences_by_agent_ids(agent_ids)
                         .where.not({ occurrence_id: @viewed_user.user_occurrences.select(:occurrence_id) })
                         .limit(Settings.helping_download_limit)
-            body ::Bloodhound::IO.csv_stream_candidates(records)
+            io = ::Bloodhound::IO.new
+            body io.csv_stream_candidates(records)
           end
 
           app.post '/help-others/:id/upload-result' do

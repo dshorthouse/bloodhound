@@ -257,7 +257,8 @@ module Sinatra
                         .not(occurrence_id: @user.user_occurrences.select(:occurrence_id))
                         .limit(5_000)
             csv_stream_headers("bloodhound-candidates")
-            body ::Bloodhound::IO.csv_stream_candidates(records)
+            io = ::Bloodhound::IO.new
+            body io.csv_stream_candidates(records)
           end
 
           app.get '/profile/candidates' do
