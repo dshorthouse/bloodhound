@@ -1,5 +1,5 @@
 -content_for :title do
-  = I18n.t('agents.agents_title')
+  = I18n.t('agent.agent_title')
 
 -content_for :scripts do
   %script{src: "/js/application.js"}
@@ -11,19 +11,18 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
-      %h1{class:"h2"}= I18n.t('agents.search_title')
-      %p.lead.text-muted
-        = I18n.t('agents.lede', agent_count: number_with_delimiter(@count))
+      %h1{class:"h2"}= I18n.t('agent.search_title')
+      %p{class: "lead text-muted"}= I18n.t('agent.lede', agent_count: number_with_delimiter(@count))
 
     = haml :'partials/agent/search', layout: false
 
 - if params[:q] && !params[:q].empty? && @formatted_results.empty?
   %div{class: "alert alert-warning tiny-margins mt-0", role: "alert"}
-    = I18n.t('agents.search_none')
+    = I18n.t('agent.search_none')
     %span{class: "font-weight-bold"} #{h(params[:q])}
 - elsif @pagy && @pagy.count > 0
   %div{class: "alert alert-info tiny-margins mt-0", role: "alert"}
-    = I18n.t('agents.search_count', search_count: @pagy.count)
+    = I18n.t('agent.search_count', search_count: @pagy.count)
     %span{class: "font-weight-bold"} #{h(params[:q])}
 
   %div{class: "row"}
@@ -40,5 +39,5 @@
 
 - else
   %div{class: "alert alert-warning tiny-margins mt-0", role: "alert"}
-    %span{class:"font-weight-bold"}= I18n.t('agents.warning')
-    = I18n.t('agents.warning_statement')
+    %span{class:"font-weight-bold"}= I18n.t('agent.warning')
+    = I18n.t('agent.warning_statement')

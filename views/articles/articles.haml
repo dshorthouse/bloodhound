@@ -1,5 +1,5 @@
 -content_for :title do
-  Articles
+  = I18n.t('article.articles_title')
 
 -content_for :scripts do
   %script{src: "https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"}
@@ -12,10 +12,9 @@
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
-      %h1{class:"h2"} Articles
-      %p.lead.text-muted
-        #{number_with_delimiter(Article.count)} articles that cited downloads from
-        %a{href: "https://gbif.org"} GBIF
+      %h1{class:"h2"}= I18n.t('article.articles_title')
+      %p{class: "lead text-muted"}= I18n.t('article.articles_lede', count: number_with_delimiter(Article.count))
+
     = haml :'partials/article/search', layout: false
 
 - @results.each do |article|
@@ -30,10 +29,10 @@
     %div{class: "card-footer d-flex"}
       %div{class: "col small text-left text-muted"}
         %span{class: "badge badge-light badge-pill citation-correction"} #{number_with_delimiter(article.claimed_specimen_count)}
-        #{'claim'.pluralize(article.claimed_specimen_count)}
+        = I18n.t('article.claims')
       %div{class: "col small text-right text-muted"}
         %span{class: "badge badge-light badge-pill citation-correction"} #{number_with_delimiter(article.article_occurrences.count)}
-        #{'specimen'.pluralize(article.article_occurrences.count)}
+        = I18n.t('article.specimens')
 
 - if @pagy.pages > 1
   %div{style:"overflow-y:scroll"}

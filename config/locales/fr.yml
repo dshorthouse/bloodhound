@@ -5,8 +5,8 @@ fr:
     metrics: Mesures sur les organisations
   admin:
     change_photo: Change profile photo
-  agents:
-    agents_title: Chaînes d'agent
+  agent:
+    agent_title: Chaînes d'agent
     search_title: Recherche de chaîne d'agent
     lede: "%{agent_count} chaînes brutes du collecteur et détermineur analysé dans les données de spécimen du GBIF"
     search_none: Aucune chaîne d'agent trouvée pour
@@ -19,11 +19,22 @@ fr:
     search_html: "Recherchez %{agent_link} la personne et aidez à attribuer des spécimens."
   article:
     article_title: Article
+    articles_title: Articles
+    articles_lede: "%{count} articles that cited downloads from GBIF"
     no_claims_alert: People have not yet claimed or were attributed specimens represented in data downloaded from GBIF in support of this article
     claims_alert: "%{person_count} people collected or identified specimens included in data downloaded from GBIF in support of this article"
     placeholder: "Evolution and systematics of..."
     people: People
     agent_strings: Agent Strings
+    agent_title: Article Agents
+    alphabetical: Alphabertical
+    counts: Counts
+    no_agent_strings_alert: Raw strings from parsed collector and determiner names in specimen data downloaded from GBIF in support of this article have not been found
+    agent_strings_alert: "%{count} raw strings from parsed collector and determiner names in specimen data downloaded from in support of this article"
+    claims: claims
+    specimens: specimens
+    no_search_alert: "No articles found for %{searched}"
+    search_alert: "%{count} search results for %{searched}"
   country:
     country_title: Countries
     lede: From countries stated in ORCID accounts and Wikidata entries
