@@ -27,10 +27,10 @@ en:
     people: People
     agent_strings: Agent Strings
     agent_title: Article Agents
-    alphabetical: Alphabertical
+    alphabetical: Alphabetical
     counts: Counts
     no_agent_strings_alert: Raw strings from parsed collector and determiner names in specimen data downloaded from GBIF in support of this article have not been found
-    agent_strings_alert: "%{count} raw strings from parsed collector and determiner names in specimen data downloaded from in support of this article"
+    agent_strings_alert: "%{count} raw strings from parsed collector and determiner names in specimen data downloaded from GBIF in support of this article"
     claims: claims
     specimens: specimens
     no_search_alert: "No articles found for %{searched}"
@@ -203,7 +203,7 @@ en:
   on_this_day:
     global_title: On This Day
     born_title: Collector Born On This Day
-    died_title: Collector Dies On This Day
+    died_title: Collector Died On This Day
     collected_title: Collected On This Day
     collector_born: Collector Born
     collector_died: Collector Died

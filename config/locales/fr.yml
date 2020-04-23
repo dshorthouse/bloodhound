@@ -4,7 +4,7 @@ fr:
     the_problem: Le problème
     metrics: Mesures sur les organisations
   admin:
-    change_photo: Change profile photo
+    change_photo: Changer votre photo
   agent:
     agent_title: Chaînes d'agent
     search_title: Recherche de chaîne d'agent
@@ -20,53 +20,53 @@ fr:
   article:
     article_title: Article
     articles_title: Articles
-    articles_lede: "%{count} articles that cited downloads from GBIF"
-    no_claims_alert: People have not yet claimed or were attributed specimens represented in data downloaded from GBIF in support of this article
+    articles_lede: "%{count} articles citant des téléchargements du GBIF"
+    no_claims_alert: Des gens n'ont pas encore revendiqué ou attribué des spécimens représentés dans les données téléchargées du GBIF à l'appui de cet article
     claims_alert: "%{person_count} people collected or identified specimens included in data downloaded from GBIF in support of this article"
     placeholder: "Evolution and systematics of..."
-    people: People
-    agent_strings: Agent Strings
-    agent_title: Article Agents
-    alphabetical: Alphabertical
-    counts: Counts
-    no_agent_strings_alert: Raw strings from parsed collector and determiner names in specimen data downloaded from GBIF in support of this article have not been found
-    agent_strings_alert: "%{count} raw strings from parsed collector and determiner names in specimen data downloaded from in support of this article"
-    claims: claims
-    specimens: specimens
-    no_search_alert: "No articles found for %{searched}"
-    search_alert: "%{count} search results for %{searched}"
+    people: Gens
+    agent_strings: Chaînes d'agent
+    agent_title: Agents d'article
+    alphabetical: Alphabétique
+    counts: Compte
+    no_agent_strings_alert: Les chaînes brutes des noms de collecteur et de détermineur analysés dans les données de spécimen téléchargées à partir du GBIF à l'appui de cet article n'ont pas été trouvées
+    agent_strings_alert: "%{count} chaînes brutes des noms de collecteur et de détermineur analysés dans les données de spécimen téléchargées à partir du GBIF à l'appui de cet article"
+    claims: réclamations
+    specimens: spécimens
+    no_search_alert: "Aucun article trouvé pour %{searched}"
+    search_alert: "%{count} résultats de recherche pour %{searched}"
   country:
-    country_title: Countries
-    lede: From countries stated in ORCID accounts and Wikidata entries
-    no_one_alert: "No one found from %{country}"
+    country_title: Pays
+    lede: Depuis les pays indiqués dans les comptes ORCID et les entrées Wikidata
+    no_one_alert: "Personne trouvé du %{country}"
   dataset:
-    dataset_title: Datasets
-    search_title: Datasets Search
-    trainers_title: Trainers
-    lede: "%{count} datasets from GBIF"
+    dataset_title: Jeux de données
+    search_title: Recherche de Jeux de Données
+    trainers_title: Entraîneurs
+    lede: "%{count} jeux de données de GBIF"
     placeholder: papillons du Brésil
-    people: People
-    trainers: Trainers
+    people: Gens
+    trainers: Entraîneurs
     agents: Agents
-    agent_strings: Agent Strings
-    alphabetical: Alphabetical
-    counts: Counts
-    no_agents_alert: Raw strings from parsed collector and determiner names in specimen data included in this dataset have not yet been recorded
-    agents_alert: "%{agent_count} raw strings from parsed collector and determiner names in specimen data included in this dataset"
-    none_found: "No datasets found for %{searched}"
-    search_found: "%{count} search results for %{searched}"
-    no_trainers_alert: Trainers have not yet attributed specimens to collector or determimers represented in this dataset
-    trainers_alert: "%{count} trainers attributed specimens to collectors or determiners represented in this dataset"
-    people: People
-    no_users_alert: People have not yet claimed or were attributed specimens represented in this dataset
-    users_alert: "%{count} people claimed or were attributed specimens represented in this dataset"
+    agent_strings: Chaînes d'Agent
+    alphabetical: Alphabétique
+    counts: Compte
+    no_agents_alert: Les chaînes brutes des noms de collecteur et de détermineur incluses dans cet ensemble de données n'ont pas encore été enregistrées
+    agents_alert: "%{agent_count} chaînes brutes des noms de collecteur et de détermineur incluses dans cet ensemble de données"
+    none_found: "Aucun jeu de données trouvé pour %{searched}"
+    search_found: "%{count} résultats de recherche pour %{searched}"
+    no_trainers_alert: Les entraîneurs n'ont pas encore attribué les spécimens au collecteurs ou détermineurs représentés dans cet ensemble de données
+    trainers_alert: "%{count} entraîneurs ont attribué les spécimens au collecteurs ou détermineurs représentés dans cet ensemble de données"
+    people: Gens
+    no_users_alert: Les gens n'ont pas encore réclamé ou ont été attribués des spécimens représentés dans cet ensemble de données
+    users_alert: "%{count} gens ont réclamé ou ont été attribués des spécimens représentés dans cet ensemble de données"
   developer:
-    search_reconcile: "Search & Reconcile"
-    structured_data: Structured Data
-    raw_data: Raw Data
-    code: Code
-    reconcile_title: Reconcile
-    recommended_use: Recommended Use
+    search_reconcile: "Rechercher et Rapprocher"
+    structured_data: Données Structurées
+    raw_data: Données Brutes
+    code: Code Informatique
+    reconcile_title: Réconcilier
+    recommended_use: Utilisation recommandée
   donate:
     donate_title: Faire un don
     lede: Votre don unique ou périodique contribuera à compléter le pipeline de données et à garantir que le crédit est accordé aux contributions faites aux collections d'histoire naturelle le plus rapidement et le plus facilement possible.
@@ -80,78 +80,78 @@ fr:
     help_attribute: Attribuer
     rebuild_stats: Reconstruire les statistiques
     settings: Paramètres
-    bulk_assignment: Bulk Assignment
-    collected_all: Collected All
-    collected: Collected
-    identified_all: Identified All
-    identified: Identified
-    both: Both
-    per_page: Per page
-    download: Download
-    submit: Submit
+    bulk_assignment: En masse
+    collected_all: Tout collecté
+    collected: Collecter
+    identified_all: Tout identifié
+    identified: Identifier
+    both: Les deux
+    per_page: Par page
+    download: Télécharger
+    submit: Soumettre
     upload_csv_instructions: Upload csv with claims
-    download_records: Download discovered records
+    download_records: Téléchargez csv avec des réclamations
     download_alert: "Download discovered specimen records, work offline, then upload new claims as a csv. A file containing at most
     %{num_records} records is generated.
     If you have many more than this, you may work in batches.
     This routine does not update underlying specimen data nor does it update existing claims. If existing claims are present in the upload, these will be skipped.
     Your uploaded csv must use a comma to separate columns each optionally enclosed by quotes."
   get_started:
-    get_started_title: Get Started
-    lede:  Four steps to claim the specimens you collected or identified and to help acknowledge your peers, mentors, and organizations.
-    orcid_description: ORCID is a nonprofit organization helping create a world in which all who participate in research, scholarship and innovation are uniquely identified and connected to their contributions and affiliations, across disciplines, borders, and time.
-    suggested: Suggested details to make publicly visible in your ORCID account
-    step1: "Step 1: Authenticate via ORCID"
-    step2: "Step 2: Visit the Specimens tab"
-    step3: "Step 3: Claim your specimens"
-    step4: "Step 4: Attribute specimens to others"
+    get_started_title: Commencer
+    lede: Quatre étapes pour réclamer les spécimens que vous avez collectés ou identifiés et pour aider à reconnaître vos pairs, mentors et organisations.
+    orcid_description: ORCID est une organisation à but non lucratif qui aide à créer un monde dans lequel tous ceux qui participent à la recherche, à l'érudition et à l'innovation sont identifiés de manière unique et connectés à leurs contributions et affiliations, à travers les disciplines, les frontières et le temps.
+    suggested: Détails suggérés pour rendre publiquement visible dans votre compte ORCID
+    step1: "Étape 1: authentification via ORCID"
+    step2: "Étape 2: visitez l'onglet Spécimens"
+    step3: "Étape 3: réclamez vos spécimens"
+    step4: "Étape 4: Attribuer des spécimens à d'autres"
   help:
-    help_title: Help Attribute Specimens
-    country_title: Help Attribute Specimens
-    latest_title: Latest Recipients
-    country_name_title: "Help Attribute Specimens for People From %{country}"
-    advanced_search_title: "Advanced Search & Filter"
-    fix_title: Help Fix Attributions
-    basic_instructions_lede: Basic instructions to get you started
-    country_name_lede: From countries stated in ORCID or Wikidata
-    latest_lede: Join the trainers by helping to attribute specimens
-    country_lede: Join the trainers in acknowledging your peers, mentors, or anyone who inspires you
-    person: Person
-    progress: Progress
-    public: Public
-    created: Created
-    latest_trainer: Latest Trainer
-    latest_claim: Latest Claim
-    help_add: "Help / Add"
-    latest_recipients: Latest Recipients
-    new_people: New People
-    new_people_title: Newly Found People
-    new_people_lede: Attribute specimens for recently discovered people in ORCID or Wikidata
-    by_country: By Country
-    not_ignored_alert: Bloodhound trainers have not flagged specimens to be ignored.
-    agent_string: Agent String
-    dataset: Dataset
-    datasets: Datasets
+    help_title: Aider à attribuer des spécimens
+    country_title: Aider à attribuer des spécimens
+    latest_title: Derniers Bénéficiaires
+    country_name_title: "Aidez à attribuer des spécimens aux personnes du %{country}"
+    advanced_search_title: "Recherche avancée et filtre"
+    fix_title: Aide à corriger les attributions
+    basic_instructions_lede: Instructions de base pour vous aider à démarrer
+    country_name_lede: De pays indiqués dans ORCID ou Wikidata
+    latest_lede: Rejoignez les entraîneurs en aidant à attribuer des spécimens
+    country_lede: Rejoignez les entraîneurs pour remercier vos pairs, mentors ou toute personne qui vous inspire
+    person: Personne
+    progress: Progrès
+    public: Publique
+    created: Créé
+    latest_trainer: Dernier entraîneur
+    latest_claim: Dernière réclamation
+    help_add: "Aider / Ajouter"
+    latest_recipients: Derniers Bénéficiaires
+    new_people: Nouvelles Personnes
+    new_people_title: Personnes Nouvellement Trouvées
+    new_people_lede: Attribuer des spécimens aux personnes récemment découvertes dans ORCID ou Wikidata
+    by_country: Par Pays
+    not_ignored_alert: Les entraîneurs n'ont pas signalé les spécimens à ignorer
+    agent_string: Chaîne d'agent
+    dataset: Base de données
+    datasets: Jeux de données
     agents: Agents
-    specimens: Specimens
-    visualizations: Visualizations
-    public_profile: Public Profile
-    make_public: Make Public
-    not_yet: Not yet
-    viz_none_alert: Bloodhound trainers have not yet helped attribute specimens.
-    viz_alert: Click regions on the map or bars in the chart to execute a filter.
-    problems: Problems Discovered
-    collections_before_birth: "Collections made before birth:"
-    collections_after_death: "Collections made after death:"
-    identifications_before_birth: "Identifications made before birth:"
-    identifications_after_death: "Identifications made after death:"
-    view: view
-    none: none
-    identified_from: Identified From
-    collected_from: Collected From
-    dates_identified_collected: Dates Identified and Collected
-    no_filter: Bloodhound trainers have not yet helped attribute specimens under this filter.
-    not_helped_alert: Bloodhound trainers have not yet helped attribute specimens.
+    specimens: Spécimens
+    visualizations: Visualisations
+    public_profile: Profil Public
+    make_public: Rendre Public
+    not_yet: Pas encore
+    viz_none_alert: Les entraîneurs Bloodhound n'ont pas encore aidé à attribuer des spécimens.
+    viz_alert: Cliquez sur les régions de la carte ou les barres du graphique pour exécuter un filtre.
+    problems: Problèmes Découverts
+    collections_before_birth: "Collections faites avant la naissance:"
+    collections_after_death: "Collections faites après la mort:"
+    identifications_before_birth: "Identifications faites avant la naissance:"
+    identifications_after_death: "Identifications faites après la mort:"
+    view: vue
+    none: aucun
+    identified_from: Identifié à Partir de
+    collected_from: Collectés à Partir de
+    dates_identified_collected: Dates Identifiées et Collectées
+    no_filter: Les entraîneurs Bloodhound n'ont pas encore aidé à attribuer des spécimens sous ce filtre.
+    not_helped_alert: Les entraîneurs Bloodhound n'ont pas encore aidé à attribuer des spécimens.
   home:
     tagline: Réclamez les spécimens que vous avez collectés ou identifiés, suivez leur utilisation dans les nouvelles publications scientifiques et aidez à reconnaître vos pairs, vos mentors et vos organismes.
     get_started: Commencer
@@ -192,25 +192,25 @@ fr:
   not_authorized:
     not_authorized: Non autorisé ou session terminée.
   occurrence:
-    occurrence_title: Specimen Record
-    lede: From partial data obtained from GBIF
-    record: Record
-    event: Event
+    occurrence_title: Enregistrement de Spécimen
+    lede: À partir de données partielles obtenues auprès GBIF
+    record: Enregistrement
+    event: Événement
     identification: Identification
-    location: Location
+    location: Emplacement
   offline:
     message: Bloodhound est actuellement hors ligne, suivant l’odeur de nouvelles données.
   on_this_day:
     global_title: Ce jour-là
     born_title: Collectionneur né ce jour-là
-    died_title: Collector Dies On This Day
-    collected_title: Collected On This Day
+    died_title: Collectionneur décédé ce jour-là
+    collected_title: Recueilli ce jour-là
     collector_born: Collectionneur né
     collector_died: Collectionneur mort
     type_collected: Spécimens types collectés
-    none_died_alert: "No one found who died on %{date}"
-    limit_alert: Results limited to 50 holotype or paratype specimen records
-    no_types_alert: "No type specimens found collected on %{date}"
+    none_died_alert: "Personne trouvé qui est décédé le %{date}"
+    limit_alert: Résultats limités à 50 enregistrements d'holotype ou de paratype
+    no_types_alert: "Aucun spécimen type trouvé collecté le %{date}"
   oops:
     not_found_title: Pas trouvé
     not_found: Désolé, cette page n'a pas été trouvée
@@ -243,7 +243,7 @@ fr:
     science_enabled: Science Enabled
   profile:
     overview: Overview
-    specimens: Specimens
+    specimens: Spécimens
     people_helped: People Helped
     science_enabled: Science Enabled
     claimed: Claimed
@@ -251,7 +251,7 @@ fr:
     upload: Upload
     ignored: Ignored
     help_received: Help Received
-    helped: Helped
+    helped: Aider
     helped_alert: You helped attribute specimens to the following people, with the most recent shown first.
     not_helped_alert: You have not yet attributed specimens to anyone.
     no_help_alert: Bloodhound trainers have not yet helped you claim specimens.
