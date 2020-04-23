@@ -114,7 +114,7 @@
             - if @user.email && !@user.email.empty?
               %p{class:"card-text"}= I18n.t('profile.email_procedure', email: @user.email)
               %p
-                %input{type:"checkbox", id: "toggle-mail", "data-toggle":"toggle", "data-on":"#{I18n.t('profile.on')}", "data-off":"#{I18n.t('profile.off')}", "data-onstyle": "success", "data-size": "small", checked: @user.wants_mail?, class:"btn-claim" }
+                %input{type:"checkbox", id: "toggle-mail", "data-toggle":"toggle", "data-on":"#{I18n.t('profile.active')}", "data-off":"#{I18n.t('profile.inactive')}", "data-onstyle": "success", "data-size": "small", checked: @user.wants_mail?, class:"btn-claim" }
             - else
               %p{class:"card-text"}= I18n.t('profile.email_instructions')
 

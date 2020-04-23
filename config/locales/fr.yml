@@ -291,8 +291,8 @@ fr:
     orcid_refreshed: Les données ORCID ont été actualisées.
     public: Public
     private: Privé
-    on: Actif
-    off: Inactif
+    active: Actif
+    inactive: Inactif
   roster:
     roster_title: Profils publics
     lede: "%{user_count} personnes qui partagent leurs profils et les profils des autres qu'ils vénèrent"

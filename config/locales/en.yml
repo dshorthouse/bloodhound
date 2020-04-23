@@ -291,8 +291,8 @@ en:
     orcid_refreshed: ORCID data was refreshed.
     public: Public
     private: Private
-    on: On
-    off: Off
+    active: On
+    inactive: Off
   roster:
     roster_title: Public Profiles
     lede: "%{user_count} people who share their profiles and the profiles of others they revere"
