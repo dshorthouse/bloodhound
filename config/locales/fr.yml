@@ -270,6 +270,7 @@ fr:
     collected_from: Collectés à Partir de
     dates_identified_collected: Dates Identifiées et Collectées
     resume: Pour votre CV
+    specimens_used: Spécimens Utilisés Dans
   roster:
     roster_title: Profils publics
     lede: "%{user_count} personnes qui partagent leurs profils et les profils des autres qu'ils vénèrent"

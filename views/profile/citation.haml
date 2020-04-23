@@ -22,7 +22,7 @@
       identified, or Both to
       %span{class:"font-weight-bold"} adjust your claims.
 
-  %h4 Specimens Used In
+  %h4= I18n.t('profile.specimens_used')
   %p{class: "citation"}
     #{@article.citation}
     %a{href: "https://doi.org/#{@article.doi}"} https://doi.org/#{@article.doi}

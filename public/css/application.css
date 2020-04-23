@@ -97,9 +97,9 @@ table th.selector{
 }
 
 table th.btn-selector{
-  width:75px;
-  min-width:75px;
-  max-width:75px;
+  width:80px;
+  min-width:80px;
+  max-width:80px;
 }
 
 table th.btn-selector-wide{

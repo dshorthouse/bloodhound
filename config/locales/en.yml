@@ -270,6 +270,7 @@ en:
     collected_from: Collected From
     dates_identified_collected: Dates Identified and Collected
     resume: For Your Resume
+    specimens_used: Specimens Used In
   roster:
     roster_title: Public Profiles
     lede: "%{user_count} people who share their profiles and the profiles of others they revere"
