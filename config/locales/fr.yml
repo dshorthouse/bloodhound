@@ -217,59 +217,59 @@ fr:
     error_title: Erreur
     error: Désolé, nous avons rencontré une erreur
   organization:
-    organization_title: Organizations
-    lede: "%{count} organizations from ORCID accounts and Wikidata entries"
-    placeholder: Canadian Museum of Nature
-    affiliation_none_alert: Publications based on specimens collected or identified by current and previous personnel have not yet been recorded by GBIF
+    organization_title: Organismes
+    lede: "%{count} organismes des comptes ORCID et des entrées Wikidata"
+    placeholder: Musée canadien de la nature
+    affiliation_none_alert: Les publications basées sur des spécimens collectés ou identifiés par le personnel actuel et antérieur n'ont pas encore été enregistrées par GBIF
     affiliation_alert: "%{count} publications used specimen data downloaded from GBIF based on specimens collected or identified by current and previous personnel while affiliated with %{org_name}"
-    collected_by: "Specimens collected or identified by:"
-    science_enabled: Science Enabled Through Specimens Collected or Identified by Personnel
-    impact: Impact on Activities in Other Organizations
-    no_metric_alert: "Current and previous personnel have not yet claimed or have been attributed specimens now curated at other organizations while they were affiliated with %{org_name}."
-    metric_alert: "Current and previous personnel have claimed or were attributed specimens now curated at the following organizations while affiliated with %{org_name}."
-    none_collected_alert: "Specimens collected or identified in %{year} by personnel and curated elsewhere have not yet been claimed or attributed."
-    all_years: All Years
-    specimens: specimens
-    organizations: organizations
-    specimens_identified: Specimens Identified
-    specimens_collected: Specimens Collected
-    no_current_members_alert: "Current members of %{org_name} have not yet been recorded."
-    no_previous_members_alert: "Previous members of %{org_name} have not yet been recorded."
-    no_search_alert: "No organizations found for %{searched}"
-    search_alert: "%{count} search results for %{searched}"
-    current: Current
-    previous: Previous
-    metrics: Metrics
-    science_enabled: Science Enabled
+    collected_by: "Spécimens collectés ou identifiés par:"
+    science_enabled: Science Grâce aux Spécimens Collectés ou Identifiés par le Personnel
+    impact: Impact sur les Activités dans d'Autres Organismes
+    no_metric_alert: "Les personnels actuels et antérieurs n'ont pas encore réclamé ou attribué de spécimens conservés dans d'autres organismes alors qu'il était affilié à %{org_name}."
+    metric_alert: "Les personnels actuels et antérieurs ont réclamé ou se sont attribué des spécimens maintenant conservés dans les organismes suivantes alors qu'il était affilié à %{org_name}."
+    none_collected_alert: "Les spécimens collectés ou identifiés en %{year} par des personnels et conservés ailleurs n'ont pas encore été réclamés ou attribués."
+    all_years: Toutes les Années
+    specimens: spécimens
+    organizations: organismes
+    specimens_identified: Spécimens Identifiés
+    specimens_collected: Spécimens Collectés
+    no_current_members_alert: "Les membres actuels de %{org_name} n'ont pas encore été enregistrés."
+    no_previous_members_alert: "Les membres précédents de %{org_name} n'ont pas encore été enregistrés."
+    no_search_alert: "Aucune organisme trouvée pour %{searched}"
+    search_alert: "%{count} résultats de recherche pour %{searched}"
+    current: Courant
+    previous: Précédent
+    metrics: Métrique
+    science_enabled: Science Activée
   profile:
-    overview: Overview
+    overview: Aperçu
     specimens: Spécimens
-    people_helped: People Helped
-    science_enabled: Science Enabled
-    claimed: Claimed
-    discovered: Discovered
-    upload: Upload
-    ignored: Ignored
-    help_received: Help Received
+    people_helped: Gens Aidés
+    science_enabled: Science Activée
+    claimed: Réclamés
+    discovered: Découverts
+    upload: Télécharger
+    ignored: Ignorés
+    help_received: Aide Reçue
     helped: Aider
-    helped_alert: You helped attribute specimens to the following people, with the most recent shown first.
-    not_helped_alert: You have not yet attributed specimens to anyone.
-    no_help_alert: Bloodhound trainers have not yet helped you claim specimens.
-    thanks_alert: Bloodhound trainers have helped you claim specimens. Send them your appreciation.
-    thanks_received: Thanks Received
-    thanks_received_alert: You have received thanks for attributing specimens.
-    no_thanks_received_alert: You have not yet received thanks for attributing specimen records to other collectors. Have you tried helping others?
-    change_photo: Change profile photo
-    remove: Remove
-    cancel: Cancel
-    settings: Settings & Integrations
-    no_science: Use of your specimen data has not yet been recorded.
-    no_citation_alert: Your specimens were not used for this study.
-    has_science: "%{pub_count} publications made use of your specimen data downloaded from GBIF"
-    identified_from: Identified From
-    collected_from: Collected From
-    dates_identified_collected: Dates Identified and Collected
-    resume: For Your Resume
+    helped_alert: Vous avez aidé à attribuer des spécimens aux personnes suivantes, les plus récentes étant affichées en premier.
+    not_helped_alert: Vous n'avez encore attribué de spécimens à personne.
+    no_help_alert: Les entraîneurs Bloodhound ne vous ont pas encore aidé à récupérer vos spécimens.
+    thanks_alert: Les entraîneurs Bloodhound vous ont aidé à récupérer vos spécimens. Envoyez votre appréciation.
+    thanks_received: Remerciements Reçus
+    thanks_received_alert: Vous avez été remercié d'avoir aidé à attribuer des spécimens.
+    no_thanks_received_alert: Vous n'avez pas encore reçu de remerciements pour avoir attribué un spécimen à d'autres collectionneurs. Avez-vous essayé d'aider les autres?
+    change_photo: Changer votre photo
+    remove: Enlever
+    cancel: Annuler
+    settings: Paramètres et Intégrations
+    no_science: L'utilisation de vos données de spécimen n'a pas encore été enregistrée.
+    no_citation_alert: Vos spécimens n'ont pas été utilisés pour cette étude.
+    has_science: "%{pub_count} publications ont utilisé vos données de spécimen téléchargées du GBIF"
+    identified_from: Identifié à Partir de
+    collected_from: Collectés à Partir de
+    dates_identified_collected: Dates Identifiées et Collectées
+    resume: Pour votre CV
   roster:
     roster_title: Profils publics
     lede: "%{user_count} personnes qui partagent leurs profils et les profils des autres qu'ils vénèrent"
@@ -286,9 +286,9 @@ fr:
     type_status: État du type
     trainer: Entraîneur
     not_me: Pas moi
-    not_them: Not them
-    not_recorded: not recorded
-    remove: Remove
+    not_them: Pas eux
+    not_recorded: pas enregistré
+    remove: Enlever
   trainers:
     trainers_title: Entraîneurs
     lede: "%{trainer_count} personnes qui ont attribué des spécimens d'histoire naturelle à leurs pairs, mentors et modèles"
@@ -300,43 +300,43 @@ fr:
     network: Réseau
     deposited_at: Déposé à
     specimens: Spécimens
-    science_enabled: Science activée
-    science_enabled_specimens: Science Enabled by Specimen Data
+    science_enabled: Science Activée
+    science_enabled_specimens: Science Rendue Possible
     helped_by: Assisté par
     no_trainer: Aucun spécimen n'a été attribué par un entraîneur.
     attributions_by: "Attribuer par:"
     private_no_claims: Cet profil n'est pas accessible au public.
     private_with_claims: "Bien que %{specimen_count} spécimens aient été attribués, ce profil n'est pas accessible au public."
-    no_specimens_cited: Specimens have not been cited for this research article.
-    specimen_used: Specimen Data Used In
-    no_publications: Publications have not yet been recorded by GBIF
-    publication_count: "%{count} publications used specimen data from GBIF"
-    no_co_collectors_alert: Co-collectors have not yet been recorded.
-    co_collectors_alert: "Has collected with:"
-    co_collectors: Co-collectors
-    identified_for: Identified For
-    identifications_by: Identifications By
-    no_identifications_by_alert: Identifications made to collected specimens have not yet been recorded.
-    identifications_by_alert: "Has collected specimens later identified by:"
-    no_identified_for_alert: Identifications made to others' collected specimens have not yet been recorded.
-    identified_for_alert: "Has identified specimens collected by:"
-    comment_alert: Share an anecdote about a collecting trip, event or anything else.
-    no_institutions_alert: Institutions have not yet been recorded.
-    institutions_alert: "Specimens deposited and curated at the following institution(s):"
-    organizations: organizations
-    specimens_metric: specimens
-    specimens_identified: Specimens Identified
-    specimens_collected: Specimens Collected
-    no_specialities_alert: Specialties have not yet been recorded.
-    specialties_alert: "Collected or identified specimens in the following Families:"
-    families_collected: Families Collected
-    families_identified: Families Identified
-    no_claims_alert: Claims or attributions have not yet been recorded.
-    progress: Progress
-    identified_from: Identified From
-    collected_from: Collected From
-    dates_identified_collected: Dates Identified and Collected
-    specimens_attributed: specimens attributed
-    collected: collected
-    identified: identified
-    not_all_columns: Not all available columns are shown.
+    no_specimens_cited: Aucun spécimen n'a été cité pour cet article de recherche.
+    specimen_used: Données des Spécimens Utilisées Dans
+    no_publications: Les publications n'ont pas encore été enregistrées par le GBIF
+    publication_count: "%{count} publications ont utilisé des données de spécimen du GBIF"
+    no_co_collectors_alert: Les co-collectionneurs n'ont pas encore été enregistrés.
+    co_collectors_alert: "A collecté avec:"
+    co_collectors: Co-collectionneurs
+    identified_for: Identifié Pour
+    identifications_by: Identifications Par
+    no_identifications_by_alert: Les identifications faites sur les spécimens collectés n'ont pas encore été enregistrées.
+    identifications_by_alert: "A recueilli des spécimens identifiés plus tard par:"
+    no_identified_for_alert: Les identifications faites aux spécimens collectés par d'autres n'ont pas encore été enregistrées.
+    identified_for_alert: "A identifié des spécimens collectés par:"
+    comment_alert: Partagez une anecdote sur un voyage de collecte, un événement ou toute autre chose.
+    no_institutions_alert: Les institutions n'ont pas encore été enregistrées.
+    institutions_alert: "Spécimens déposés et conservés dans les institutions suivantes:"
+    organizations: organismes
+    specimens_metric: spécimens
+    specimens_identified: Spécimens Identifiés
+    specimens_collected: Spécimens Collectés
+    no_specialities_alert: Les spécialités n'ont pas encore été enregistrées.
+    specialties_alert: "Spécimens collectés ou identifiés dans les familles suivantes:"
+    families_collected: Familles Recueillies
+    families_identified: Familles Identifiées
+    no_claims_alert: Les réclamations ou attributions n'ont pas encore été enregistrées.
+    progress: Progrès
+    identified_from: Identifié à Partir de
+    collected_from: Collectés à Partir de
+    dates_identified_collected: Dates Identifiées et Collectées
+    specimens_attributed: spécimens attribués
+    collected: collecté
+    identified: identifié
+    not_all_columns: Toutes les colonnes disponibles ne sont pas affichées.
