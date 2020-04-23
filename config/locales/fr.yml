@@ -11,7 +11,7 @@ fr:
     lede: "%{agent_count} chaînes brutes du collecteur et détermineur analysé dans les données de spécimen du GBIF"
     search_none: Aucune chaîne d'agent trouvée pour
     search_count: "%{search_count} résultats pour"
-    warning: "WARNING:"
+    warning: "AVERTISSEMENT:"
     warning_statement: Contrairement à toutes les autres URL de ce site, les URL des chaînes d'agent ne sont pas fiables car elles pointeront vers des résultats différents toutes les quelques semaines
     agent_name_title: "%{agent_name} Specimens"
     agent_lede: Une chaîne brute provenant de noms de collecteurs et de détermineurs analysés dans les données de spécimens d'histoire naturelle
@@ -21,7 +21,7 @@ fr:
     article_title: Article
     articles_title: Articles
     articles_lede: "%{count} articles citant des téléchargements du GBIF"
-    no_claims_alert: Des gens n'ont pas encore revendiqué ou attribué des spécimens représentés dans les données téléchargées du GBIF à l'appui de cet article
+    no_claims_alert: Des gens n'ont pas encore réclamé ou attribué des spécimens représentés dans les données téléchargées du GBIF à l'appui de cet article
     claims_alert: "%{person_count} people collected or identified specimens included in data downloaded from GBIF in support of this article"
     placeholder: "Evolution and systematics of..."
     people: Gens
@@ -246,7 +246,7 @@ fr:
     specimens: Spécimens
     people_helped: Gens Aidés
     science_enabled: Science Activée
-    claimed: Réclamés
+    claimed: Réclamations
     discovered: Découverts
     upload: Télécharger
     ignored: Ignorés
