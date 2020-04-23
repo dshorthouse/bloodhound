@@ -31,7 +31,7 @@
                 %a{href: "https://twitter.com/BloodhoundTrack"} @BloodhoundTrack
             %div{class:"row"}
               %div{class:"col"}
-                %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"Public", "data-off":"Private", "data-onstyle": "success", "data-size": "small", checked: @user.is_public?, class:"btn-claim", "data-url": "/profile/visibility.json" }
+                %input{type:"checkbox", id: "toggle-public", "data-toggle":"toggle", "data-on":"#{I18n.t('profile.public')}", "data-off":"#{I18n.t('profile.private')}", "data-onstyle": "success", "data-size": "small", checked: @user.is_public?, class:"btn-claim", "data-url": "/profile/visibility.json" }
               %div{class:"col text-right"}
                 - if @user.is_public?
                   %a{href: "/#{@user.orcid}", target: "_blank"}
@@ -51,7 +51,7 @@
                 %i{class:"fab fa-orcid"}
 
             %div{id:"refresh-message", class:"alert alert-success alert-dismissible fade show text-center", role: "alert"}
-              ORCID data was refreshed.
+              = I18n.t('profile.orcid_refreshed')
               %button{type:"button", class:"close", "data-dismiss":"alert", "aria-label":"Close"}
                 %span{"aria-hidden":"true"} &times;
 
@@ -114,7 +114,7 @@
             - if @user.email && !@user.email.empty?
               %p{class:"card-text"}= I18n.t('profile.email_procedure', email: @user.email)
               %p
-                %input{type:"checkbox", id: "toggle-mail", "data-toggle":"toggle", "data-on":"On", "data-off":"Off", "data-onstyle": "success", "data-size": "small", checked: @user.wants_mail?, class:"btn-claim" }
+                %input{type:"checkbox", id: "toggle-mail", "data-toggle":"toggle", "data-on":"#{I18n.t('profile.on')}", "data-off":"#{I18n.t('profile.off')}", "data-onstyle": "success", "data-size": "small", checked: @user.wants_mail?, class:"btn-claim" }
             - else
               %p{class:"card-text"}= I18n.t('profile.email_instructions')
 

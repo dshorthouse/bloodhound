@@ -288,6 +288,11 @@ en:
     zenodo_linked: Your account is now linked and data will be pushed within the hour
     orcid_updates: Pull new updates to your publicly available name, aliases, keywords, country, education, and employment from your ORCID account.
     refresh: Refresh
+    orcid_refreshed: ORCID data was refreshed.
+    public: Public
+    private: Private
+    on: On
+    off: Off
   roster:
     roster_title: Public Profiles
     lede: "%{user_count} people who share their profiles and the profiles of others they revere"
