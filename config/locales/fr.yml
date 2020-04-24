@@ -381,3 +381,43 @@ fr:
     collected: collecté
     identified: identifié
     not_all_columns: Toutes les colonnes disponibles ne sont pas affichées.
+    stats_identified_specimens_nocountry:
+      unit:
+        one: "spécimen identifié"
+        other: "spécimens identifiés"
+    stats_collected_specimens_nocountry:
+      unit:
+        one: "spécimen collecté"
+        other: "spécimens collectés"
+    stats_identified_specimens:
+      unit:
+        one: "spécimen identifié dans"
+        other: "spécimens identifiés dans au moins"
+    stats_identified_countries:
+      unit:
+        one: "pays"
+        other: "pays"
+    stats_collected_specimens:
+      unit:
+        one: "spécimen collecté dans"
+        other: "spécimens collectés dans au moins"
+    stats_collected_countries:
+      unit:
+        one: "pays"
+        other: "pays"
+    stats_attributions_specimens:
+      unit:
+        one: "spécimen attribué à"
+        other: "spécimens attribués à"
+    stats_attributions_people:
+      unit:
+        one: "personne"
+        other: "personnes"
+    stats_articles_specimens:
+      unit:
+        one: "spécimen utilisé dans"
+        other: "spécimens utilisés dans"
+    stats_articles_articles:
+      unit:
+        one: "publication"
+        other: "publications"

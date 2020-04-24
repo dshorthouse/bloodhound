@@ -4,6 +4,8 @@ module Sinatra
   module Bloodhound
     module Formatters
 
+      include ActionView::Helpers::NumberHelper
+
       def h(text)
         Rack::Utils.escape_html(text)
       end
@@ -14,13 +16,6 @@ module Sinatra
 
       def active_class(user_action, action)
         (user_action == action) ? "active" : ""
-      end
-
-      def number_with_delimiter(number, default_options = {})
-        options = {
-          :delimiter => ','
-        }.merge(default_options)
-        number.to_s.reverse.gsub(/(\d{3}(?=(\d)))/, "\\1#{options[:delimiter]}").reverse
       end
 
       def country_name(code)
