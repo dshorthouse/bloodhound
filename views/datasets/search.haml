@@ -12,13 +12,17 @@
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
       %h1{class:"h2"}= I18n.t('dataset.dataset_title')
-      %p{class: "lead text-muted"}= I18n.t('dataset.lede', count: number_with_delimiter(Dataset.count))
+      %p{class: "lead text-muted"}
+        #{number_to_human(Dataset.count, units: :'dataset.lede', delimiter: ",", precision: 0)}
     = haml :'partials/dataset/search', layout: false
 
 - if @pagy && @pagy.count == 0
   %div{class: "alert alert-warning tiny-margins", role: "alert"}= I18n.t('dataset.none_found', searched: h(params[:q]))
 - elsif @pagy && @pagy.count > 0
-  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('dataset.search_found', searched: h(params[:q]), count: @pagy.count)
+  %div{class: "alert alert-info tiny-margins", role: "alert"}
+    #{number_to_human(@pagy.count, units: :'dataset.search_found', delimiter: ",", precision: 0)}
+    %span{class: "font-weight-bold"}
+      #{h(params[:q])}
 
   - @results.in_groups_of(3).each do |group|
     %div{class: "card-deck"}

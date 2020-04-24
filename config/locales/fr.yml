@@ -8,15 +8,24 @@ fr:
   agent:
     agent_title: Chaînes d'agent
     search_title: Recherche de chaîne d'agent
-    lede: "%{agent_count} chaînes brutes du collecteur et détermineur analysé dans les données de spécimen du GBIF"
+    lede:
+      unit:
+        one: "chaîne brute du collecteur et détermineur analysé dans les données de spécimen du GBIF"
+        other: "chaînes brutes du collecteur et détermineur analysé dans les données de spécimen du GBIF"
     search_none: Aucune chaîne d'agent trouvée pour
-    search_count: "%{search_count} résultats pour"
+    search_count:
+      unit:
+        one: "résultat pour"
+        other: "résultats pour"
     warning: "AVERTISSEMENT:"
     warning_statement: Contrairement à toutes les autres URL de ce site, les URL des chaînes d'agent ne sont pas fiables car elles pointeront vers des résultats différents toutes les quelques semaines
     agent_name_title: "%{agent_name} Specimens"
     agent_lede: Une chaîne brute provenant de noms de collecteurs et de détermineurs analysés dans les données de spécimens d'histoire naturelle
-    sniffed_statement: "Reniflé %{specimen_count} spécimens. Toutes les colonnes ne sont pas affichées."
-    search_html: "Recherchez %{agent_link} la personne et aidez à attribuer des spécimens."
+    sniffed_statement:
+      unit:
+        one: "spécimen reniflé. Toutes les colonnes ne sont pas affichées."
+        other: "spécimens reniflés. Toutes les colonnes ne sont pas affichées."
+    search_html: "Recherchez %{agent_link} la personne et aidez à attribuer ces spécimens."
   article:
     article_title: Article
     articles_title: Articles
@@ -55,7 +64,10 @@ fr:
     dataset_title: Jeux de données
     search_title: Recherche de Jeux de Données
     trainers_title: Entraîneurs
-    lede: "%{count} jeux de données de GBIF"
+    lede:
+      unit:
+        one: "jeu de données de GBIF"
+        other: "jeux de données de GBIF"
     placeholder: papillons du Brésil
     people: Gens
     trainers: Entraîneurs
@@ -64,17 +76,26 @@ fr:
     alphabetical: Alphabétique
     counts: Compte
     no_agents_alert: Les chaînes brutes des noms de collecteur et de détermineur incluses dans cet ensemble de données n'ont pas encore été enregistrées
-    agents_alert: "%{agent_count} chaînes brutes des noms de collecteur et de détermineur incluses dans cet ensemble de données"
+    agents_alert:
+      unit:
+        one: "chaîne brute des noms de collecteur et de détermineur incluses dans cet ensemble de données"
+        other: "chaînes brutes des noms de collecteur et de détermineur incluses dans cet ensemble de données"
     none_found: "Aucun jeu de données trouvé pour %{searched}"
-    search_found: "%{count} résultats de recherche pour %{searched}"
+    search_found:
+      unit:
+        one: "résultat de recherche pour"
+        other: "résultats de recherche pour"
     no_trainers_alert: Les entraîneurs n'ont pas encore attribué les spécimens au collecteurs ou détermineurs représentés dans cet ensemble de données
-    trainers_alert: "%{count} entraîneurs ont attribué les spécimens au collecteurs ou détermineurs représentés dans cet ensemble de données"
-    people: Gens
-    no_users_alert: Les gens n'ont pas encore réclamé ou ont été attribués des spécimens représentés dans cet ensemble de données
+    trainers_alert:
+      unit:
+        one: "entraîneur a attribué des spécimens au collecteurs ou détermineurs représentés dans cet ensemble de données"
+        other: "entraîneurs ont attribué des spécimens au collecteurs ou détermineurs représentés dans cet ensemble de données"
+    people: Personnes
+    no_users_alert: Des personnes n'ont pas encore réclamé ou ont été attribués des spécimens représentés dans cet ensemble de données
     users_alert:
       unit:
-        one: "personne a réclamé ou a été attribuée des spécimens représentés dans cet ensemble de données"
-        other: "personnes ont réclamé ou ont été attribuées des spécimens représentés dans cet ensemble de données"
+        one: "personne a réclamé ou a été attribuée des spécimens dans cet ensemble de données"
+        other: "personnes ont réclamé ou ont été attribuées des spécimens dans cet ensemble de données"
   developer:
     search_reconcile: "Rechercher et Rapprocher"
     structured_data: Données Structurées

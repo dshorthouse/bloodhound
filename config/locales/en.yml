@@ -8,15 +8,24 @@ en:
   agent:
     agent_title: Agent Strings
     search_title: Agent String Search
-    lede: "%{agent_count} raw strings from parsed collector and determiner names in specimen data from GBIF"
+    lede:
+      unit:
+        one: "raw string from parsed collector and determiner names in specimen data from GBIF"
+        other: "raw strings from parsed collector and determiner names in specimen data from GBIF"
     search_none: No agent string found for
-    search_count: "%{search_count} search results for"
+    search_count:
+      unit:
+        one: "search result for"
+        other: "search results for"
     warning: "WARNING:"
     warning_statement: Unlike all other URLs in this site, URLs for agent strings are unreliable for linking because they will point to different results every few weeks
     agent_name_title: "%{agent_name} Specimens"
     agent_lede: A raw string from parsed collector and determiner names in natural history specimen data
-    sniffed_statement: "Sniffed %{specimen_count} specimens. Not all columns are shown."
-    search_html: "Search for %{agent_link} the person and help attribute specimens."
+    sniffed_statement:
+      unit:
+        one: "specimen sniffed. Not all columns are shown."
+        other: "specimens sniffed. Not all columns are shown."
+    search_html: "Search for %{agent_link} the person and help attribute their specimens."
   article:
     article_title: Article
     articles_title: Articles
@@ -55,7 +64,10 @@ en:
     dataset_title: Datasets
     search_title: Datasets Search
     trainers_title: Trainers
-    lede: "%{count} datasets from GBIF"
+    lede:
+      unit:
+        one: "dataset from GBIF"
+        other: "datasets from GBIF"
     placeholder: Butterflies of Brazil
     people: People
     trainers: Trainers
@@ -64,11 +76,20 @@ en:
     alphabetical: Alphabetical
     counts: Counts
     no_agents_alert: Raw strings from parsed collector and determiner names in specimen data included in this dataset have not yet been recorded
-    agents_alert: "%{agent_count} raw strings from parsed collector and determiner names in specimen data included in this dataset"
+    agents_alert:
+      unit:
+        one: "raw string from parsed collector and determiner names in specimen data included in this dataset"
+        other: "raw strings from parsed collector and determiner names in specimen data included in this dataset"
     none_found: "No datasets found for %{searched}"
-    search_found: "%{count} search results for %{searched}"
+    search_found:
+      unit:
+        one: "search result for"
+        other: "search results for"
     no_trainers_alert: Trainers have not yet attributed specimens to collector or determimers represented in this dataset
-    trainers_alert: "%{count} trainers attributed specimens to collectors or determiners represented in this dataset"
+    trainers_alert:
+      unit:
+        one: "trainer attributed specimens to collectors or determiners represented in this dataset"
+        other: "trainers attributed specimens to collectors or determiners represented in this dataset"
     people: People
     no_users_alert: People have not yet claimed or were attributed specimens represented in this dataset
     users_alert:

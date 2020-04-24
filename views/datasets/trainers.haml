@@ -12,7 +12,8 @@
     - if @pagy.count == 0
       %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('dataset.no_trainers_alert')
     - else
-      %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('dataset.trainers_alert', count: @pagy.count)
+      %div{class: "alert alert-info tiny-margins", role: "alert"}
+        #{number_to_human(@pagy.count, units: :'dataset.trainers_alert', delimiter: ",", precision: 0)}
 
       - @results.in_groups_of(3).each do |group|
         %div{class: "card-deck"}

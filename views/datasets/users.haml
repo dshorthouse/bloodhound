@@ -20,7 +20,8 @@
       %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('dataset.no_users_alert')
     - else
       %div{class: "alert alert-info tiny-margins row", role: "alert"}
-        %div{class: "col-12 col-md-8"}= number_to_human(@pagy.count, units: :'dataset.users_alert', delimiter: ",", precision: 0)
+        %div{class: "col-12 col-md-8"}
+          #{number_to_human(@pagy.count, units: :'dataset.users_alert', delimiter: ",", precision: 0)}
 
         %div{class: "col-12 col-md-4 text-md-right"}
           - if @compressed_file_size

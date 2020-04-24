@@ -13,7 +13,8 @@
     - if @pagy.count == 0
       %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('dataset.no_agents_alert')
     - else
-      %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('dataset.agents_alert', agent_count: number_with_delimiter(@pagy.count))
+      %div{class: "alert alert-info tiny-margins", role: "alert"}
+        #{number_to_human(@pagy.count, units: :'dataset.agents_alert', delimiter: ",", precision: 0)}
       %div{class: "row"}
         - @results.in_groups_of(25, false).each do |group|
           %div{class: "col-12 col-sm-3 mb-3"}
