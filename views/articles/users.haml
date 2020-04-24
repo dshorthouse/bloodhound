@@ -42,7 +42,8 @@
 - if @pagy.count == 0
   %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('article.no_claims_alert')
 - else
-  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('article.claims_alert', person_count: @pagy.count)
+  %div{class: "alert alert-info tiny-margins", role: "alert"}
+    #{number_to_human(@pagy.count, units: :'article.claims_alert', delimiter: ",", precision: 0)}
 
   - @results.in_groups_of(3).each do |group|
     %div{class: "card-deck mt-3"}

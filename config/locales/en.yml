@@ -20,9 +20,15 @@ en:
   article:
     article_title: Article
     articles_title: Articles
-    articles_lede: "%{count} articles that cited downloads from GBIF"
+    articles_lede:
+      unit:
+        one: "article cited downloads from GBIF"
+        other: "articles that cited downloads from GBIF"
     no_claims_alert: People have not yet claimed or were attributed specimens represented in data downloaded from GBIF in support of this article
-    claims_alert: "%{person_count} people collected or identified specimens included in data downloaded from GBIF in support of this article"
+    claims_alert:
+      unit:
+        one: "person collected or identified specimens included in data downloaded from GBIF in support of this article"
+        other: "people collected or identified specimens included in data downloaded from GBIF in support of this article"
     placeholder: "Evolution and systematics of..."
     people: People
     agent_strings: Agent Strings
@@ -30,11 +36,17 @@ en:
     alphabetical: Alphabetical
     counts: Counts
     no_agent_strings_alert: Raw strings from parsed collector and determiner names in specimen data downloaded from GBIF in support of this article have not been found
-    agent_strings_alert: "%{count} raw strings from parsed collector and determiner names in specimen data downloaded from GBIF in support of this article"
+    agent_strings_alert:
+      unit:
+        one: "raw string from parsed collector and determiner names in specimen data downloaded from GBIF in support of this article"
+        other: "raw strings from parsed collector and determiner names in specimen data downloaded from GBIF in support of this article"
     claims: claims
     specimens: specimens
     no_search_alert: "No articles found for %{searched}"
-    search_alert: "%{count} search results for %{searched}"
+    search_alert:
+      unit:
+        one: "search result found for"
+        other: "search results found for"
   country:
     country_title: Countries
     lede: From countries stated in ORCID accounts and Wikidata entries
@@ -59,7 +71,10 @@ en:
     trainers_alert: "%{count} trainers attributed specimens to collectors or determiners represented in this dataset"
     people: People
     no_users_alert: People have not yet claimed or were attributed specimens represented in this dataset
-    users_alert: "%{count} people claimed or were attributed specimens represented in this dataset"
+    users_alert:
+      unit:
+        one: "person claimed or was attributed specimens represented in this dataset"
+        other: "people claimed or were attributed specimens represented in this dataset"
   developer:
     search_reconcile: "Search & Reconcile"
     structured_data: Structured Data

@@ -20,21 +20,33 @@ fr:
   article:
     article_title: Article
     articles_title: Articles
-    articles_lede: "%{count} articles citant des téléchargements du GBIF"
+    articles_lede:
+      unit:
+        one: "article citant des téléchargements du GBIF"
+        other: "articles citant des téléchargements du GBIF"
     no_claims_alert: Des gens n'ont pas encore réclamé ou attribué des spécimens représentés dans les données téléchargées du GBIF à l'appui de cet article
-    claims_alert: "%{person_count} people collected or identified specimens included in data downloaded from GBIF in support of this article"
+    claims_alert:
+      unit:
+        one: "personne a collecté ou identifié des spécimens inclus dans les données téléchargées du GBIF à l'appui de cet article"
+        other: "personnes ont collecté ou identifié des spécimens inclus dans les données téléchargées du GBIF à l'appui de cet article"
     placeholder: "Evolution and systematics of..."
-    people: Gens
+    people: Personnes
     agent_strings: Chaînes d'agent
     agent_title: Agents d'article
     alphabetical: Alphabétique
     counts: Compte
     no_agent_strings_alert: Les chaînes brutes des noms de collecteur et de détermineur analysés dans les données de spécimen téléchargées à partir du GBIF à l'appui de cet article n'ont pas été trouvées
-    agent_strings_alert: "%{count} chaînes brutes des noms de collecteur et de détermineur analysés dans les données de spécimen téléchargées à partir du GBIF à l'appui de cet article"
+    agent_strings_alert:
+      unit:
+        one: "chaîne brute des noms de collecteur et de détermineur analysés dans les données de spécimen téléchargées à partir du GBIF à l'appui de cet article"
+        other: "chaînes brutes des noms de collecteur et de détermineur analysés dans les données de spécimen téléchargées à partir du GBIF à l'appui de cet article"
     claims: réclamations
     specimens: spécimens
     no_search_alert: "Aucun article trouvé pour %{searched}"
-    search_alert: "%{count} résultats de recherche pour %{searched}"
+    search_alert:
+      unit:
+        one: "résultat de recherche pour"
+        other: "résultats de recherche pour"
   country:
     country_title: Pays
     lede: Depuis les pays indiqués dans les comptes ORCID et les entrées Wikidata
@@ -59,7 +71,10 @@ fr:
     trainers_alert: "%{count} entraîneurs ont attribué les spécimens au collecteurs ou détermineurs représentés dans cet ensemble de données"
     people: Gens
     no_users_alert: Les gens n'ont pas encore réclamé ou ont été attribués des spécimens représentés dans cet ensemble de données
-    users_alert: "%{count} gens ont réclamé ou ont été attribués des spécimens représentés dans cet ensemble de données"
+    users_alert:
+      unit:
+        one: "personne a réclamé ou a été attribuée des spécimens représentés dans cet ensemble de données"
+        other: "personnes ont réclamé ou ont été attribuées des spécimens représentés dans cet ensemble de données"
   developer:
     search_reconcile: "Rechercher et Rapprocher"
     structured_data: Données Structurées
