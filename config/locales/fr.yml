@@ -321,8 +321,8 @@ fr:
     remove: Enlever
     cancel: Annuler
     settings: Paramètres et Intégrations
-    no_science: L'utilisation de vos données de spécimen n'a pas encore été enregistrée.
-    no_citation_alert: Vos spécimens n'ont pas été utilisés pour cette étude.
+    no_science: Vos données de spécimen n'ont pas encore été enregistrées lors des téléchargements du GBIF.
+    no_citation_alert: Vos données de spécimen n'ont pas été incluses dans un téléchargement du GBIF à l'appui de cette étude.
     has_science: "%{pub_count} publications ont utilisé vos données de spécimen téléchargées du GBIF"
     identified_from: Identifié à Partir de
     collected_from: Collectés à Partir de
@@ -394,10 +394,10 @@ fr:
     attributions_by: "Attribuer par:"
     private_no_claims: Cet profil n'est pas accessible au public.
     private_with_claims: "Bien que %{specimen_count} spécimens aient été attribués, ce profil n'est pas accessible au public."
-    no_specimens_cited: Aucun spécimen n'a été cité pour cet article de recherche.
+    no_specimens_cited: Les spécimens n'ont pas été inclus dans les téléchargements du GBIF et cités dans cet article de recherche.
     specimen_used: Données des Spécimens Utilisées Dans
-    no_publications: Les publications n'ont pas encore été enregistrées par le GBIF
-    publication_count: "%{count} publications ont utilisé des données de spécimen du GBIF"
+    no_publications: Les publications qui utilisaient des enregistrements de spécimens inclus dans un téléchargement du GBIF n'ont pas encore été enregistrées.
+    publication_count: "%{count} publications ont utilisé des données de spécimen téléchargées du GBIF"
     no_co_collectors_alert: Les co-collectionneurs n'ont pas encore été enregistrés.
     co_collectors_alert: "A collecté avec:"
     co_collectors: Co-collectionneurs
