@@ -131,10 +131,11 @@
     Too many specimen records or want to sort by columns and/or filter by content? Click the "Upload" page on your Specimens tab to view instructions on how to download, add claims in a spreadsheet, then upload a completed csv file.
 
 %h3= I18n.t('get_started.step4')
-%p
-  While authenticated via ORCID, visit
-  - if authorized?
-    %a{href:"/help-others"} Help Others
-  - else
-    Help Others
-  to search for your peers, mentors, or anyone who inspires you. Attribute specimens to them just as you claimed your own specimens. If they too have an ORCID ID, they may send you a quick thanks and these will appear in your Thanks Received tab.
+%div{class:"ml-3 mt-4"}
+  %p
+    While authenticated via ORCID, visit
+    - if authorized?
+      %a{href:"/help-others"} Help Others
+    - else
+      Help Others
+    to search for your peers, mentors, or anyone who inspires you. Attribute specimens to them just as you claimed your own specimens. If they too have an ORCID ID, they may send you a quick thanks and these will appear in your Thanks Received tab.

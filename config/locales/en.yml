@@ -1,4 +1,6 @@
 en:
+  "true": "Yes"
+  "false": "No"
   about:
     about_title: Rationale
     the_problem: The Problem
@@ -241,6 +243,7 @@ en:
     event: Event
     identification: Identification
     location: Location
+    has_image: Has Image
   offline:
     message: Bloodhound is currently offline, following the scent of new data.
   on_this_day:

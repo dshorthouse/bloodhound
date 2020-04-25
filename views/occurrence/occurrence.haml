@@ -7,7 +7,7 @@
       %h1{class:"h2"}= I18n.t('occurrence.occurrence_title')
       %p{class: "lead text-muted"}= I18n.t('occurrence.lede')
 
-%div{class: "card-deck occurrence"}
+%div{class: "card-deck occurrence mt-4"}
   %div{class:"card mb-4"}
     %div{class:"card-header border-bottom"}
       %h5= I18n.t('occurrence.record')
@@ -46,6 +46,11 @@
 
         %dt catalogNumber
         %dd #{h(@occurrence.catalogNumber)}
+        %dd{class:"line-break"}
+
+        %dt #{I18n.t('occurrence.has_image')}
+        %dd #{I18n.t(@occurrence.hasImage.present?.to_s)}
+
 
   %div{class:"card mb-4"}
     %div{class:"card-header border-bottom"}
@@ -76,7 +81,8 @@
         %dd
           #{h(@occurrence.recordedBy)}
           - if @occurrence.user_recordings.count > 0
-            %div{class:"border rounded p-2 mt-2"}
+            %hr
+            %div{class:"mt-2"}
               - @occurrence.user_recordings.each do |recorder|
                 %p{class: "orcid text-lg-left p-0 mt-1"}
                   - if recorder.user.orcid
@@ -114,7 +120,8 @@
         %dd
           #{h(@occurrence.identifiedBy)}
           - if @occurrence.user_identifications.count > 0
-            %div{class:"border rounded p-2 mt-2"}
+            %hr
+            %div{class:"mt-2"}
               - @occurrence.user_identifications.each do |determiner|
                 %p{class: "orcid text-lg-left p-0 mt-1"}
                   - if determiner.user.orcid

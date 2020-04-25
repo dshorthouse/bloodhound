@@ -1,4 +1,6 @@
 fr:
+  "true": "Oui"
+  "false": "Non"
   about:
     about_title: Raisonnement
     the_problem: Le problème
@@ -241,6 +243,7 @@ fr:
     event: Événement
     identification: Identification
     location: Emplacement
+    has_image: A une image
   offline:
     message: Bloodhound est actuellement hors ligne, suivant l’odeur de nouvelles données.
   on_this_day:
