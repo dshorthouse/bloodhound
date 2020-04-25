@@ -51,7 +51,7 @@ en:
         other: "raw strings from parsed collector and determiner names in specimen data downloaded from GBIF in support of this article"
     claims: claims
     specimens: specimens
-    no_search_alert: "No articles found for %{searched}"
+    no_search_alert: "No articles found for"
     search_alert:
       unit:
         one: "search result found for"
@@ -59,7 +59,7 @@ en:
   country:
     country_title: Countries
     lede: From countries stated in ORCID accounts and Wikidata entries
-    no_one_alert: "No one found from %{country}"
+    no_one_alert: "No one found from"
   dataset:
     dataset_title: Datasets
     search_title: Datasets Search
@@ -189,8 +189,12 @@ en:
     dates_identified_collected: Dates Identified and Collected
     no_filter_alert: Bloodhound trainers have not yet helped attribute specimens under this filter.
     not_helped_alert: Bloodhound trainers have not yet helped attribute specimens.
-    upload_message: "A total of %{count} records were handled. Existing claims, if present in your upload, were skipped."
+    upload_message:
+      unit:
+        one: "record was handled. Existing claims, if present in your upload, were skipped."
+        other: "records were handled. Existing claims, if present in your upload, were skipped."
     help_question: "Want to help attribute specimens to %{name}?"
+    try_again: Try again.
   home:
     tagline: Claim the natural history specimens you collected or identified, track their use in new science, and help acknowledge your peers, mentors, and organizations.
     get_started: Get started
@@ -257,7 +261,10 @@ en:
     error: Sorry, we experienced an error.
   organization:
     organization_title: Organizations
-    lede: "%{count} organizations from ORCID accounts and Wikidata entries"
+    lede:
+     unit:
+       one: "organization from ORCID accounts and Wikidata entries"
+       other: "organizations from ORCID accounts and Wikidata entries"
     placeholder: Canadian Museum of Nature
     affiliation_none_alert: Publications based on specimens collected or identified by current and previous personnel have not yet been recorded by GBIF
     affiliation_alert: "%{count} publications used specimen data downloaded from GBIF based on specimens collected or identified by current and previous personnel while affiliated with %{org_name}"

@@ -51,7 +51,7 @@ fr:
         other: "chaînes brutes des noms de collecteur et de détermineur analysés dans les données de spécimen téléchargées à partir du GBIF à l'appui de cet article"
     claims: réclamations
     specimens: spécimens
-    no_search_alert: "Aucun article trouvé pour %{searched}"
+    no_search_alert: "Aucun article trouvé pour"
     search_alert:
       unit:
         one: "résultat de recherche pour"
@@ -59,7 +59,7 @@ fr:
   country:
     country_title: Pays
     lede: Depuis les pays indiqués dans les comptes ORCID et les entrées Wikidata
-    no_one_alert: "Personne trouvé du %{country}"
+    no_one_alert: "Personne trouvé du"
   dataset:
     dataset_title: Jeux de données
     search_title: Recherche de Jeux de Données
@@ -189,8 +189,12 @@ fr:
     dates_identified_collected: Dates Identifiées et Collectées
     no_filter: Les entraîneurs Bloodhound n'ont pas encore aidé à attribuer des spécimens sous ce filtre.
     not_helped_alert: Les entraîneurs Bloodhound n'ont pas encore aidé à attribuer des spécimens.
-    upload_message: "Au total, %{count} enregistrements ont été traités. Les réclamations existantes, si elles étaient présentes dans votre téléchargement, ont été ignorées."
+    upload_message:
+      unit:
+        one: "enregistrement a été traité. Les réclamations existantes, si elles étaient présentes dans votre téléchargement, ont été ignorées."
+        other: "enregistrements ont été traités. Les réclamations existantes, si elles étaient présentes dans votre téléchargement, ont été ignorées."
     help_question: "Vous voulez aider à attribuer des spécimens à %{name}?"
+    try_again: Réessayer.
   home:
     tagline: Réclamez les spécimens que vous avez collectés ou identifiés, suivez leur utilisation dans les nouvelles publications scientifiques et aidez à reconnaître vos pairs, vos mentors et vos organismes.
     get_started: Commencer
@@ -257,7 +261,10 @@ fr:
     error: Désolé, nous avons rencontré une erreur
   organization:
     organization_title: Organismes
-    lede: "%{count} organismes des comptes ORCID et des entrées Wikidata"
+    lede:
+      unit:
+        one: "organisme des comptes ORCID et des entrées Wikidata"
+        other: "organismes des comptes ORCID et des entrées Wikidata"
     placeholder: Musée canadien de la nature
     affiliation_none_alert: Les publications basées sur des spécimens collectés ou identifiés par le personnel actuel et antérieur n'ont pas encore été enregistrées par GBIF
     affiliation_alert: "%{count} publications used specimen data downloaded from GBIF based on specimens collected or identified by current and previous personnel while affiliated with %{org_name}"

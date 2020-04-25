@@ -12,7 +12,8 @@
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
       %h1{class:"h2"}= I18n.t('organization.organization_title')
-      %p{class:"lead text-muted"}= I18n.t('organization.lede', count: number_with_delimiter(Organization.active_user_organizations.count))
+      %p{class:"lead text-muted"}
+        #{number_to_human(Organization.active_user_organizations.count, units: :'organization.lede', delimiter: ",", precision: 0)}
 
     = haml :'partials/organization/search', layout: false
 
