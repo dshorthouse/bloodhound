@@ -259,7 +259,7 @@ en:
     no_types_alert: "No type specimens found collected on %{date}"
   oops:
     not_found_title: Not found
-    not_found: Sorry, that page was not found.
+    not_found: We casted everywhere but lost the scent of that page.
     error_title: Error
     error: Sorry, we experienced an error.
   organization:
@@ -284,8 +284,11 @@ en:
     specimens_collected: Specimens Collected
     no_current_members_alert: "Current members of %{org_name} have not yet been recorded."
     no_previous_members_alert: "Previous members of %{org_name} have not yet been recorded."
-    no_search_alert: "No organizations found for %{searched}"
-    search_alert: "%{count} search results for %{searched}"
+    no_search_alert: "No organizations found for"
+    search_alert:
+      unit:
+        one: "search result for"
+        other: "search results for"
     current: Current
     previous: Previous
     metrics: Metrics
@@ -323,7 +326,10 @@ en:
     settings: Settings & Integrations
     no_science: Your specimen data have not yet been recorded in downloads from GBIF and used in new publications.
     no_citation_alert: Your specimens were not included in a download from GBIF in support of this study.
-    has_science: "%{pub_count} publications made use of your specimen data downloaded from GBIF"
+    has_science:
+      unit:
+        one: "publication made use of your specimen data downloaded from GBIF"
+        other: "publications made use of your specimen data downloaded from GBIF"
     identified_from: Identified From
     collected_from: Collected From
     dates_identified_collected: Dates Identified and Collected
@@ -359,9 +365,15 @@ en:
     trainer_not_helped: This Bloodhound trainer has not yet helped you claim specimens.
   roster:
     roster_title: Public Profiles
-    lede: "%{user_count} people who share their profiles and the profiles of others they revere"
+    lede:
+      unit:
+        one: "person who shared their profile"
+        other: "people who share their profiles and the profiles of others they revere"
     no_one_found: No one found by the name
-    search_result_count: "%{search_count} search results for"
+    search_result_count:
+      unit:
+        one: "search result for"
+        other: "search results for"
   specimen:
     scientific_name: Scientific Name
     collected_by: Collected By
@@ -378,7 +390,10 @@ en:
     remove: Remove
   trainers:
     trainers_title: Trainers
-    lede: "%{trainer_count} people who have attributed natural history specimens to their peers, mentors, and role models"
+    lede:
+      unit:
+        one: "person who has attributed natural history specimens to their peers, mentors, and role models"
+        many: "people who have attributed natural history specimens to their peers, mentors, and role models"
   user:
     field_notes: Field notes
     caches_rebuilt: Caches for counts and visualizations were rebuilt.
@@ -393,11 +408,17 @@ en:
     no_trainer: Specimens have not been attributed by a trainer.
     attributions_by: "Attributions made by:"
     private_no_claims: Profile is not publicly available.
-    private_with_claims: "Although %{specimen_count} specimens were claimed or attributed, this profile is not publicly available."
+    private_with_claims:
+      unit:
+        one: "specimen was claimed or attributed, but this profile is not publicly available."
+        other: "specimens were claimed or attributed, but this profile is not publicly available."
     no_specimens_cited: Specimens have not been included in downloads from GBIF and cited in this research article.
     specimen_used: Specimen Data Used In
     no_publications: Publications that used specimen records included in a download from GBIF have not yet been recorded.
-    publication_count: "%{count} publications used specimen data downloaded from GBIF"
+    publication_count:
+      unit:
+        one: "publication used specimen data downloaded from GBIF"
+        other: "publications used specimen data downloaded from GBIF"
     no_co_collectors_alert: Co-collectors have not yet been recorded.
     co_collectors_alert: "Has collected with:"
     co_collectors: Co-collectors

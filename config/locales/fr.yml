@@ -284,8 +284,11 @@ fr:
     specimens_collected: Spécimens Collectés
     no_current_members_alert: "Les membres actuels de %{org_name} n'ont pas encore été enregistrés."
     no_previous_members_alert: "Les membres précédents de %{org_name} n'ont pas encore été enregistrés."
-    no_search_alert: "Aucune organisme trouvée pour %{searched}"
-    search_alert: "%{count} résultats de recherche pour %{searched}"
+    no_search_alert: "Aucune organisme trouvée pour"
+    search_alert:
+      unit:
+        one: "résultats de recherche pour"
+        many: "résultat de recherche pour"
     current: Courant
     previous: Précédent
     metrics: Métrique
@@ -323,7 +326,10 @@ fr:
     settings: Paramètres et Intégrations
     no_science: Vos données de spécimen n'ont pas encore été enregistrées lors des téléchargements du GBIF.
     no_citation_alert: Vos données de spécimen n'ont pas été incluses dans un téléchargement du GBIF à l'appui de cette étude.
-    has_science: "%{pub_count} publications ont utilisé vos données de spécimen téléchargées du GBIF"
+    has_science:
+      unit:
+        one: "publication a utilisé vos données de spécimen téléchargées du GBIF"
+        other: "publications ont utilisé vos données de spécimen téléchargées du GBIF"
     identified_from: Identifié à Partir de
     collected_from: Collectés à Partir de
     dates_identified_collected: Dates Identifiées et Collectées
@@ -359,9 +365,15 @@ fr:
     trainer_not_helped: Cet entraîneur Bloodhound ne vous a pas encore aidé à récupérer des spécimens.
   roster:
     roster_title: Profils publics
-    lede: "%{user_count} personnes qui partagent leurs profils et les profils des autres qu'ils vénèrent"
+    lede:
+      unit:
+        one: "personne qui partage leur profil"
+        other: "personnes qui partagent leurs profils et les profils des autres qu'ils vénèrent"
     no_one_found: Personne trouvé par le nom
-    search_result_count: "%{search_count} résultats pour"
+    search_result_count:
+      unit:
+        one: "résultat pour"
+        other: "résultats pour"
   specimen:
     scientific_name: Nom scientifique
     collected_by: Collecté par
@@ -378,7 +390,10 @@ fr:
     remove: Enlever
   trainers:
     trainers_title: Entraîneurs
-    lede: "%{trainer_count} personnes qui ont attribué des spécimens d'histoire naturelle à leurs pairs, mentors et modèles"
+    lede:
+      unit:
+        one: "personne qui a attribué des spécimens d'histoire naturelle à leurs pairs, mentors et modèles"
+        other: "personnes qui ont attribué des spécimens d'histoire naturelle à leurs pairs, mentors et modèles"
   user:
     field_notes: Notes du terrain
     caches_rebuilt: Les dénombrements et les visualisations ont été reconstruites.
@@ -393,11 +408,17 @@ fr:
     no_trainer: Aucun spécimen n'a été attribué par un entraîneur.
     attributions_by: "Attribuer par:"
     private_no_claims: Cet profil n'est pas accessible au public.
-    private_with_claims: "Bien que %{specimen_count} spécimens aient été attribués, ce profil n'est pas accessible au public."
+    private_with_claims:
+      unit:
+        one: "spécimen a été attribué, mais ce profil n'est pas accessible au public."
+        other: "spécimens aient été attribués, mais ce profil n'est pas accessible au public."
     no_specimens_cited: Les spécimens n'ont pas été inclus dans les téléchargements du GBIF et cités dans cet article de recherche.
     specimen_used: Données des Spécimens Utilisées Dans
     no_publications: Les publications qui utilisaient des enregistrements de spécimens inclus dans un téléchargement du GBIF n'ont pas encore été enregistrées.
-    publication_count: "%{count} publications ont utilisé des données de spécimen téléchargées du GBIF"
+    publication_count:
+      unit:
+        one: "publications a utilisé des données de spécimen téléchargées du GBIF"
+        others: "publication ont utilisé des données de spécimen téléchargées du GBIF"
     no_co_collectors_alert: Les co-collectionneurs n'ont pas encore été enregistrés.
     co_collectors_alert: "A collecté avec:"
     co_collectors: Co-collectionneurs

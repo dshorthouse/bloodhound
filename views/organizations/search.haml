@@ -18,9 +18,13 @@
     = haml :'partials/organization/search', layout: false
 
 - if @pagy && @pagy.count == 0
-  %div{class: "alert alert-warning tiny-margins", role: "alert"}= I18n.t('organization.no_search_alert', searched: h(params[:q]))
+  %div{class: "alert alert-warning tiny-margins", role: "alert"}
+    = I18n.t('organization.no_search_alert')
+    %span{class:"font-weight-bold"} #{h(params[:q])}
 - elsif @pagy && @pagy.count > 0
-  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('organization.search_alert', searched: h(params[:q]), count: @pagy.count)
+  %div{class: "alert alert-info tiny-margins", role: "alert"}
+    #{number_to_human(@pagy.count, units: :'organization.search_alert', delimiter: ",", precision: 0)}
+    %span{class:"font-weight-bold"} #{h(params[:q])}
 
   - @results.in_groups_of(3).each do |group|
     %div{class: "card-deck"}

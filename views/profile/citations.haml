@@ -14,7 +14,8 @@
 - if @pagy.count == 0
   %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('profile.no_science')
 - else
-  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('profile.has_science', pub_count: number_with_delimiter(@pagy.count))
+  %div{class: "alert alert-info tiny-margins", role: "alert"}
+    #{number_to_human(@pagy.count, units: :'profile.has_science', delimiter: ",", precision: 0)}
 
   %div{class:"citation-wrapper"}
     - @results.each do |article|

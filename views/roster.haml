@@ -15,8 +15,9 @@
   %div{id:"roster-jumbotron", class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
       %h1{class:"h2"}= I18n.t('roster.roster_title')
-      %p.lead.text-muted
-        = I18n.t('roster.lede', user_count: number_with_delimiter(User.where(is_public: true).count))
+      %p{class:"lead text-muted"}
+        #{number_to_human(User.where(is_public: true).count, units: :'roster.lede', delimiter: ",", precision: 0)}
+
     = haml :'partials/user/search', layout: false
 
 - if @pagy.count == 0 && params[:q] && params[:q].present?
@@ -26,7 +27,7 @@
 - else
   - if params[:q] && params[:q].present?
     %div{class: "alert alert-info tiny-margins", role: "alert"}
-      = I18n.t('roster.search_result_count', search_count: @pagy.count)
+      #{number_to_human(@pagy.count, units: :'roster.search_result_count', delimiter: ",", precision: 0)}
       %span{class: "font-weight-bold"} #{h(params[:q])}
 
   - @results.in_groups_of(3).each do |group|
