@@ -19,6 +19,7 @@ import org.apache.spark.sql.Column
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.avro._
+import scala.util.matching.Regex
 
 val verbatimTerms = List(
   "gbifID",
@@ -72,7 +73,9 @@ val processedTerms = List(
   "countryCode",
   "dateIdentified",
   "eventDate",
-  "mediaType"
+  "mediaType",
+  "recordedByID",
+  "identifiedByID"
 )
 
 val df2 = spark.
@@ -102,6 +105,18 @@ val df2 = spark.
     read.
     format("avro").
     load("processed")
+
+val recordedByTerms = List(
+  "gbifID",
+  "recordedByID",
+  "identifiedByID"
+)
+
+val df3 = df2.
+    select(recordedByTerms.map(col): _*).
+    filter($"recordedByID" rlike "(orcid|wikidata)")
+
+df3.write.mode("overwrite").format("avro").save("claimed")
 
 val occurrences = df1.join(df2, Seq("gbifID"), "leftouter").orderBy($"gbifID").distinct
 
