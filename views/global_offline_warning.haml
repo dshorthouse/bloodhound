@@ -14,7 +14,7 @@
     %div{class:"modal-content"}
       %div{class:"modal-header"}
         %h5{class:"modal-title"} Offline Warning
-        %button{type:"button", class:"close","data-dismiss":"modal", "aria-label":"Close"}
+        %button{type:"button", class:"close", "data-dismiss":"modal", "aria-label":"Close"}
           %span{"aria-hidden":"true"} &times;
       %div{class:"modal-body"}
         %p= I18n.t(offline.warning, datetime_off: Settings.offline_warning.off_datetime, duration: Settings.offline_warning.off_duration)

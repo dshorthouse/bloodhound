@@ -1,14 +1,14 @@
 -content_for :title do
-  For Collection Data Managers
+  = I18n.t('cdm.title')
 
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
-      %h1{class:"h2"} For Collection Data Managers
+      %h1{class:"h2"}= I18n.t('cdm.title')
 
 %div{class: "container-fluid"}
 
-  %h3 Background
+  %h3= I18n.t('cdm.background_title')
   %p
     Bloodhound
     %a{href:"/trainers"} trainers
@@ -22,7 +22,7 @@
 
   %div{class: "row"}
     %div{class: "col-12 col-md-6"}
-      %h3 Engaging With Your Community
+      %h3= I18n.t('cdm.engaging_title')
 
       %p
         Bloodhound trainers are a welcoming, international group of enthusiasts who are driven to help you attribute specimen records to the collectors and determiners represented in your dataset(s). They work tirelessly to enhance entries in
@@ -45,7 +45,7 @@
   %div{class: "row"}
     %div{class: "col-12 col-md-6"}
 
-      %h3 Incorporating Enhancements
+      %h3= I18n.t('cdm.enhancements_title')
 
       %p
         Every few weeks, Bloodhound refreshes a subset of the Darwin Core data you publish to
@@ -94,7 +94,7 @@
 
     %div{class:"col-12 col-md-6"}
 
-      %h3 Assessing Data Quality
+      %h3= I18n.t('cdm.dq_title')
 
       %p
         In the set of "Help Others" pages where specimen records are attributed to collectors and determiners, there are tabs to Fix and Visualize records.

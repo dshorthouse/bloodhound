@@ -1,14 +1,14 @@
 -content_for :title do
-  For Developers: Code
+  = I18n.t('developer.code_title')
 
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
-      %h1{class:"h2"} For Developers
+      %h1{class:"h2"}= I18n.t('developer.title')
 
 = haml :'partials/developers/tabs', layout:false, locals: { active_tab: locals[:active_tab] }
 
-%h3{class:"mt-4 mb-3"} Code
+%h3{class:"mt-4 mb-3"}= I18n.t('developer.code')
 
 %p{class:"mb-4"}
   The MIT-licensed code is available on

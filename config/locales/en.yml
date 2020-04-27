@@ -58,6 +58,12 @@ en:
       unit:
         one: "search result found for"
         other: "search results found for"
+  cdm:
+    title: For Collection Data Managers
+    background_title: Background
+    engaging_title: Engaging With Your Community
+    enhancements_title: Incorporating Enhancements
+    dq_title: Assessing Data Quality
   country:
     country_title: Countries
     lede: From countries stated in ORCID accounts and Wikidata entries
@@ -105,6 +111,9 @@ en:
     code: Code
     reconcile_title: Reconcile
     recommended_use: Recommended Use
+    title: For Developers
+    code_title: "For Developers: Code"
+    code: Code
   donate:
     donate_title: Donate
     lede: Your one-time or periodic donation will help complete the data pipeline and ensure that credit is given for contributions made to natural history collections as quickly and as seamlessly as possible.
@@ -205,6 +214,13 @@ en:
     sample_profiles: Sample Profiles
     orcid_login: Log in with ORCID
     orcid_logo: ORCID logo
+  how_works:
+    title: How it Works
+    inner_workings: Inner Workings
+    gbif_title: Integration with GBIF
+    wikidata_title: Integration with Wikidata
+    orcid_title: Integration with ORCID
+    zenodo_title: Integration with Zenodo
   layout:
     profiles: Profiles
     trainers: Trainers

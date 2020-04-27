@@ -58,6 +58,12 @@ fr:
       unit:
         one: "résultat de recherche pour"
         other: "résultats de recherche pour"
+  cdm:
+    title: Pour les gestionnaires de données de collecte
+    background_title: Contexte
+    engaging_title: S'engager Avec Votre Communauté
+    enhancements_title: Intégration d'Améliorations
+    dq_title: Évaluation de la Qualité des Données
   country:
     country_title: Pays
     lede: Depuis les pays indiqués dans les comptes ORCID et les entrées Wikidata
@@ -105,6 +111,9 @@ fr:
     code: Code Informatique
     reconcile_title: Réconcilier
     recommended_use: Utilisation recommandée
+    title: For Developers
+    code_title: "For Developers: Code"
+    code: Code
   donate:
     donate_title: Faire un don
     lede: Votre don unique ou périodique contribuera à compléter le pipeline de données et à garantir que le crédit est accordé aux contributions faites aux collections d'histoire naturelle le plus rapidement et le plus facilement possible.
@@ -205,6 +214,13 @@ fr:
     sample_profiles: Exemples
     orcid_login: connecter avec ORCID
     orcid_logo: logo ORCID
+  how_works:
+    title: Comment ça Marche
+    inner_workings: Fonctionnement Intérieur
+    gbif_title: Intégration avec GBIF
+    wikidata_title: Intégration avec Wikidata
+    orcid_title: Intégration avec ORCID
+    zenodo_title: Intégration avec Zenodo
   layout:
     profiles: Profils
     trainers: Entraîneurs

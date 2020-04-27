@@ -1,10 +1,10 @@
 -content_for :title do
-  How it Works
+  = I18n.t('how_works.title')
 
 -content_for :jumbotron do
   %div{class:"jumbotron jumbotron-fluid d-flex flex-wrap"}
     %div{class:"mr-auto p-2"}
-      %h1{class:"h2"} How it Works
+      %h1{class:"h2"}= I18n.t('how_works.title')
 
 %p
   This application is developed and maintained by
@@ -23,7 +23,7 @@
   %a{href: "https://www.wikidata.org"} wikidata identifiers
   were integrated to capture the names, birth, and dates of death for deceased biologists to help maximize downstream data integration, engagement, and as means to discover errors or inconsistencies in natural history specimemn data.
 
-%h3 Inner Workings
+%h3= I18n.t('how_works.inner_working')
 
 %p
   Names of collectors and determiners are parsed and cleaned using the test-driven
@@ -33,7 +33,7 @@
   and incorporated as a method in the dwc_agent gem. These scores are used to help expand the search for candidate specimens, presented in order of greatest to least probable. If you declared alternate names in your ORCID account such as a maiden name or if aliases are mentioned in wikidata profiles, these are used to search for candidate specimen records. Processing this large number of specimen records is an intensive though repeatable process using MIT-licensed,
   %a{href: "https://github.com/dshorthouse/bloodhound"} open source code.
 
-%h4 Integration with GBIF
+%h4= I18n.t('how_works.gbif_title')
 
 %div{class:"media mb-3 mt-3 d-flex flex-wrap flex-column flex-md-row"}
   %a{href:"https://gbif.org"}
@@ -57,9 +57,9 @@
       %li
         daily poll for
         %a{href:"https://www.gbif.org/resource/search?contentType=literature&relevance=GBIF_USED"} cited data download packages
-        (less than 100MB zipped), extracted and linked to attributed specimens records 
+        (less than 100MB zipped), extracted and linked to attributed specimens records
 
-%h4 Integration with Wikidata
+%h4= I18n.t('how_works.wikidata_title')
 
 %div{class:"media mb-3 mt-3 d-flex flex-wrap flex-column flex-md-row"}
   %a{href:"https://www.wikidata.org"}
@@ -98,7 +98,7 @@
       %em Entomologists of the World (P5370)
       but all the watched properties are used in production
 
-%h4 Integration with ORCID
+%h4= I18n.t('how_works.orcid_title')
 
 %div{class:"media mb-3 mt-3 d-flex flex-wrap flex-column flex-md-row"}
   %a{href:"https://orcid.org"}
@@ -130,7 +130,7 @@
       %li
         user or a Trainer can refresh on-demand
 
-%h4 Integration with Zenodo
+%h4= I18n.t('how_works.zenodo_title')
 
 %div{class:"media mb-3 mt-3 d-flex flex-wrap flex-column flex-md-row"}
   %a{href:"https://zenodo.org"}
