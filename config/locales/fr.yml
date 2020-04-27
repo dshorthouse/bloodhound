@@ -148,6 +148,7 @@ fr:
     country_title: Aider à attribuer des spécimens
     latest_title: Derniers Bénéficiaires
     country_name_title: "Aidez à attribuer des spécimens aux personnes du %{country}"
+    country_no_one: "Personne trouvé de"
     advanced_search_title: "Recherche avancée et filtre"
     fix_title: Aide à corriger les attributions
     upload_title: Télécharger

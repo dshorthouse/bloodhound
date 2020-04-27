@@ -148,6 +148,7 @@ en:
     country_title: Help Attribute Specimens
     latest_title: Latest Recipients
     country_name_title: "Help Attribute Specimens for People From %{country}"
+    country_no_one: "No one found from"
     advanced_search_title: "Advanced Search & Filter"
     fix_title: Help Fix Attributions
     upload_title: Upload
