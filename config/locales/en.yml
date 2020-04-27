@@ -247,6 +247,7 @@ en:
     has_image: Has Image
   offline:
     message: Bloodhound is currently offline, following the scent of new data.
+    warning: "Bloodhound will be offline %{datetime_off} for approximately %{duration}, following the scent of new data."
   on_this_day:
     global_title: On This Day
     born_title: Collector Born On This Day

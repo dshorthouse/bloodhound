@@ -247,6 +247,7 @@ fr:
     has_image: A une image
   offline:
     message: Bloodhound est actuellement hors ligne, suivant l’odeur de nouvelles données.
+    warning: "Bloodhound sera hors ligne %{datetime_off} pendant environ %{duration}, suivant l'odeur des nouvelles données."
   on_this_day:
     global_title: Ce jour-là
     born_title: Collectionneur né ce jour-là
