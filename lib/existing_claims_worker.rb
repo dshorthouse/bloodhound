@@ -45,6 +45,12 @@ module Bloodhound
       orcid = ORCID_REGEX.match(id)
       if wiki
         user = User.create_or_find_by({ wikidata: wiki[0] })
+        if !user.valid_wikicontent?
+          es = ::Bloodhound::ElasticUser.new
+          es.delete(user) rescue nil
+          user.delete
+          user = nil
+        end
       elsif orcid
         user = User.create_or_find_by({ orcid: orcid[0] })
       end
