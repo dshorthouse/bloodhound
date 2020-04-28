@@ -5,6 +5,7 @@ Sinatra app to parse people names from structured biodiversity occurrence data, 
 
 ## Recent Updates
 
+- **April 30, 2020**: Import existing claims from recordedByID and identifiedByID.
 - **April 15, 2020**: Make OpenRefine endpoint.
 - **March 23, 2020**: Create dedicated API repository.
 - **December 1, 2019**: Include datasets indexed by GBIF, each with pages for people and agents.
@@ -80,13 +81,17 @@ Example on Mac with homebrew:
      $ brew services start neo4j # recreates graph.db
      $ rake neo4j:migrate # recreate the constraint on graph.db
 
+### Step 6: Import Existing recordedByID and identifiedByID
+
+First, import all users and user_occurrences content from production.
+
 Finally:
 
      $ RACK_ENV=production ./bin/cluster_agents.rb --truncate --cluster
      # Can start 2+ workers, each with 40 threads to help speed-up processing
      $ RACK_ENV=production sidekiq -c 40 -q cluster -r ./application.rb
 
-### Step 6: Populate Search in Elasticsearch
+### Step 7: Populate Search in Elasticsearch
 
      $ RACK_ENV=production ./bin/populate_search.rb --index agent
 
@@ -94,7 +99,7 @@ Or from scratch:
 
      $ RACK_ENV=production ./bin/populate_search.rb --rebuild
 
-### Step 7: Populate dataset metadata
+### Step 8: Populate dataset metadata
 
      $ RACK_ENV=production ./bin/gbif_datasets.rb --new
      $ RACK_ENV=production ./bin/gbif_datasets.rb --flush

@@ -106,18 +106,6 @@ val df2 = spark.
     format("avro").
     load("processed")
 
-val recordedByTerms = List(
-  "gbifID",
-  "recordedByID",
-  "identifiedByID"
-)
-
-val df3 = df2.
-    select(recordedByTerms.map(col): _*).
-    filter($"recordedByID" rlike "(orcid|wikidata)")
-
-df3.write.mode("overwrite").format("avro").save("claimed")
-
 val occurrences = df1.join(df2, Seq("gbifID"), "leftouter").orderBy($"gbifID").distinct
 
 occurrences.write.mode("overwrite").format("avro").save("occurrences")
@@ -189,6 +177,34 @@ unioned.select("agents", "gbifIDs_recordedBy", "gbifIDs_identifiedBy").
     option("quote", "\"").
     option("escape", "\"").
     csv("agents-unioned-csv")
+
+//aggregate recordedByID
+val recordedByIDGroups = occurrences.
+    filter($"recordedByID".isNotNull).
+    groupBy($"recordedByID" as "agentIDs").
+    agg(collect_set($"gbifID") as "gbifIDs_recordedByIDs")
+
+//aggregate identifiedByID
+val identifiedByIDGroups = occurrences.
+    filter($"identifiedByID".isNotNull).
+    groupBy($"identifiedByID" as "agentIDs").
+    agg(collect_set($"gbifID") as "gbifIDs_identifiedByIDs")
+
+//union identifiedByID and recordedByID entries
+val unioned2 = spark.
+    read.
+    json(recordedByIDGroups.toJSON.union(identifiedByIDGroups.toJSON))
+
+//write aggregated agenIDs to csv files for the Populate Existing Claims script, /bin/populate_existing_claims.rb
+unioned2.select("agentIDs", "gbifIDs_recordedByIDs", "gbifIDs_identifiedByIDs").
+    withColumn("gbifIDs_recordedByIDs", stringify($"gbifIDs_recordedByIDs")).
+    withColumn("gbifIDs_identifiedByIDs", stringify($"gbifIDs_identifiedByIDs")).
+    write.
+    mode("overwrite").
+    option("header", "true").
+    option("quote", "\"").
+    option("escape", "\"").
+    csv("claims-unioned-csv")
 
 //aggregate families (Taxa)
 val familyGroups = occurrences.
