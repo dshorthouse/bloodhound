@@ -85,6 +85,10 @@ Example on Mac with homebrew:
 
 First, import all users and user_occurrences content from production.
 
+    $ RACK_ENV=production ./bin/populate_existing_claims.rb --truncate --directory /directory-to-spark-csv-files/
+    # Can start 2+ workers, each with 40 threads to help speed-up processing
+    $ RACK_ENV=production sidekiq -c 40 -q existing_claims -r ./application.rb
+
 Finally:
 
      $ RACK_ENV=production ./bin/cluster_agents.rb --truncate --cluster

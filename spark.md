@@ -19,7 +19,6 @@ import org.apache.spark.sql.Column
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.avro._
-import scala.util.matching.Regex
 
 val verbatimTerms = List(
   "gbifID",
