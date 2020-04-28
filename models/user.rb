@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  BOT_IDS = [1]
+  BOT_IDS = [1,2]
 
   serialize :zenodo_access_token, Hash
 
