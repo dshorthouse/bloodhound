@@ -106,6 +106,28 @@ module Bloodhound
       )
     end
 
+    def wikidata_by_property_query(prop, id)
+      properties = {
+        viaf: "P214",
+        ipni: "P586",
+        bhl: "P4081"
+      }
+      property = properties[prop.downcase.to_sym]
+      return if property.nil?
+
+      %Q(
+        SELECT ?item ?itemLabel
+        WHERE {
+          VALUES ?identifier {"#{id}"} {
+            ?item wdt:#{property} ?identifier .
+          }
+          SERVICE wikibase:label {
+            bd:serviceParam wikibase:language "en" .
+          }
+        }
+      )
+    end
+
     def merged_wikidata_people_query(property)
       %Q(
         SELECT (REPLACE(STR(?item),".*Q","Q") AS ?qid) (REPLACE(STR(?redirect),".*Q","Q") AS ?redirect_toqid)
@@ -406,6 +428,14 @@ module Bloodhound
       data = {}
       @sparql.query(wikidata_by_orcid_query(orcid)).each_solution do |solution|
         data[:twitter] = solution.to_h[:twitter] rescue nil
+      end
+      data
+    end
+
+    def wiki_by_property(property, identifier)
+      data = {}
+      @sparql.query(wikidata_by_property_query(property, identifier)).each_solution do |solution|
+        data[:wikidata] = solution.to_h[:item].to_s.match(/Q[0-9]{1,}/).to_s
       end
       data
     end

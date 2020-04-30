@@ -12,7 +12,7 @@ OptionParser.new do |opts|
     options[:directory] = directory
   end
 
-  opts.on("-t", "--truncate", "Truncate redis stats") do |a|
+  opts.on("-t", "--truncate", "Remove existing claims from GBIF Agent") do |a|
     options[:truncate] = true
   end
 
@@ -26,6 +26,7 @@ if options[:truncate]
   redis = Redis.new(url: ENV['REDIS_URL'])
   redis.flushdb
   Sidekiq::Stats.new.reset
+  UserOccurrence.where(created_by: User::GBIF_AGENT_ID).delete_all
 end
 
 if options[:directory]

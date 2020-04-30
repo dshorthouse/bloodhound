@@ -1,20 +1,5 @@
 # encoding: utf-8
 
-class String
-  def is_orcid?
-    orcid_pattern = /^(\d{4}-){3}\d{3}[0-9X]{1}$/
-    orcid_pattern.match?(self)
-  end
-  def is_wiki_id?
-    wiki_pattern = /^Q[0-9]{1,}$/
-    wiki_pattern.match?(self)
-  end
-  def is_doi?
-    doi_pattern = /^10.\d{4,9}\/[-._;()\/:<>A-Z0-9]+$/i
-    doi_pattern.match?(self)
-  end
-end
-
 module Sinatra
   module Bloodhound
     module Helpers

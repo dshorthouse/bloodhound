@@ -89,13 +89,17 @@ First, import all users and user_occurrences content from production.
     # Can start 2+ workers, each with 40 threads to help speed-up processing
     $ RACK_ENV=production sidekiq -c 40 -q existing_claims -r ./application.rb
 
-Finally:
+Then, export all attributions now made by the "GBIF Source" agent
+
+    $ mysqldump -u root -p --no-create-info --where="created_by = 2" bloodhound user_occurrences > claimed_user_occurrences.sql
+
+### Step 7: Cluster Agents
 
      $ RACK_ENV=production ./bin/cluster_agents.rb --truncate --cluster
      # Can start 2+ workers, each with 40 threads to help speed-up processing
      $ RACK_ENV=production sidekiq -c 40 -q cluster -r ./application.rb
 
-### Step 7: Populate Search in Elasticsearch
+### Step 8: Populate Search in Elasticsearch
 
      $ RACK_ENV=production ./bin/populate_search.rb --index agent
 
@@ -103,7 +107,7 @@ Or from scratch:
 
      $ RACK_ENV=production ./bin/populate_search.rb --rebuild
 
-### Step 8: Populate dataset metadata
+### Step 9: Populate dataset metadata
 
      $ RACK_ENV=production ./bin/gbif_datasets.rb --new
      $ RACK_ENV=production ./bin/gbif_datasets.rb --flush

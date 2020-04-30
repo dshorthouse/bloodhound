@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
 
   BOT_IDS = [1,2]
 
+  GBIF_AGENT_ID = 2
+
   serialize :zenodo_access_token, Hash
 
   has_many :user_occurrences, dependent: :delete_all

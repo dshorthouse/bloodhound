@@ -5,8 +5,6 @@ module Bloodhound
     include Sidekiq::Worker
     sidekiq_options queue: :existing_claims
 
-    ORCID_REGEX = /(\d{4}-){3}\d{3}[0-9X]{1}/
-    WIKI_REGEX = /Q[0-9]{1,}/
     EXTERNAL_USER_ID = 2
 
     def perform(row)
@@ -41,18 +39,46 @@ module Bloodhound
 
     def get_user(id)
       user = nil
-      wiki = WIKI_REGEX.match(id)
-      orcid = ORCID_REGEX.match(id)
-      if wiki
-        user = User.find_or_create_by({ wikidata: wiki[0] })
-        if !user.valid_wikicontent?
-          es = ::Bloodhound::ElasticUser.new
-          es.delete(user) rescue nil
-          user.delete
-          user = nil
+      w = ::Bloodhound::WikidataSearch.new
+      if id.wiki_from_url
+        user = get_wiki_user(id.wiki_from_url)
+      end
+      if id.orcid_from_url
+        user = User.find_or_create_by({ orcid: id.orcid_from_url })
+      end
+      if id.viaf_from_url
+        wikidata = w.wiki_by_property('viaf', id.viaf_from_url)[:wikidata] rescue nil
+        if wikidata
+          user = get_wiki_user(wikidata)
         end
-      elsif orcid
-        user = User.find_or_create_by({ orcid: orcid[0] })
+      end
+      if id.ipni_from_url
+        wikidata = w.wiki_by_property('ipni', id.ipni_from_url)[:wikidata] rescue nil
+        if wikidata
+          user = get_wiki_user(wikidata)
+        end
+      end
+      if id.bhl_from_url
+        wikidata = w.wiki_by_property('bhl', id.bhl_from_url)[:wikidata] rescue nil
+        if wikidata
+          user = get_wiki_user(wikidata)
+        end
+      end
+      user
+    end
+
+    def get_wiki_user(id)
+      user = User.find_or_create_by({ wikidata: id })
+      sleep(2)
+      if !user.valid_wikicontent?
+        es = ::Bloodhound::ElasticUser.new
+        es.delete(user) rescue nil
+        user.delete
+        user = nil
+      elsif !user.is_public?
+        user.is_public = true
+        user.made_public = Time.now
+        user.save
       end
       user
     end
