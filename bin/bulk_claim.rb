@@ -28,15 +28,39 @@ OptionParser.new do |opts|
     options[:wikidata] = wikidata
   end
 
+  opts.on("-f", "--file [FILE]", String, "Import attributions using a csv file whose first column is an ORCID or wikidata identifier") do |file|
+    options[:file] = file
+  end
+
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
   end
 end.parse!
 
-if !options[:agent_id] || [options[:orcid], options[:wikidata]].compact.empty?
-  puts "ERROR: Both -a and -o or -w are required".red
-else
+if options[:file]
+  mime_type = `file --mime -b "#{options[:file]}"`.chomp
+  raise RuntimeError, 'File must be a csv' if !mime_type.include?("text/plain")
+  CSV.foreach(options[:file], headers: true) do |row|
+    next if !row["identifier"].is_orcid? && !row["identifier"].is_wiki_id?
+    if row["identifier"].is_wiki_id?
+      u = User.find_or_create_by({ wikidata: row["identifier"] })
+    elsif row["identifier"].is_orcid?
+      u = User.find_or_create_by({ orcid: row["identifier"] })
+    end
+    if u.wikidata && !u.valid_wikicontent?
+      u.delete_search
+      u.delete
+      next
+    end
+    UserOccurrence.create({
+        user_id: u.id,
+        occurrence_id: row["occurrence_id"].to_i,
+        action: row["action"],
+        created_by: row["created_by"].to_i
+    })
+  end
+elsif options[:agent_id] && ![options[:orcid], options[:wikidata]].compact.empty?
   agent = Agent.find(options[:agent_id])
 
   if options[:orcid]
@@ -52,5 +76,6 @@ else
     result = user.bulk_claim(agent: agent, conditions: options[:conditions], ignore: options[:ignore])
     puts result.green
   end
-
+else
+  puts "ERROR: Either -f or both -a and one of -o or -k are required".red
 end

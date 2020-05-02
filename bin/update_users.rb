@@ -108,6 +108,7 @@ if options[:file]
       u = User.find_or_create_by({ orcid: row[0] })
     end
     if u.wikidata && !u.valid_wikicontent?
+      u.delete_search
       u.delete
       puts "#{u.wikidata} deleted. Missing either family name, birth or death date or has an ORCID".red
     else
@@ -119,6 +120,7 @@ end
 if options[:wikidata]
   u = User.find_or_create_by({ wikidata: options[:wikidata] })
   if !u.valid_wikicontent?
+    u.delete_search
     u.delete
     puts "#{u.wikidata} deleted. Missing either family name, birth or death date or has an ORCID".red
   else

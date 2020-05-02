@@ -16,6 +16,10 @@ OptionParser.new do |opts|
     options[:truncate] = true
   end
 
+  opts.on("-e", "--export [directory]", String, "Export a csv of attributions at the completion of all jobs") do |directory|
+    options[:export] = directory
+  end
+
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
@@ -47,4 +51,13 @@ if options[:directory]
     puts file.green
   end
 
+end
+
+if options[:export]
+  CSV.open(options[:export], "wb") do |csv|
+    csv << ["identifier", "occurrence_id", "action", "created_by"]
+    UserOccurrence.includes(:user).where(created_by: User::GBIF_AGENT_ID).find_each do |o|
+      csv << [o.user.identifier, o.occurrence_id, o.action, o.created_by]
+    end
+  end
 end

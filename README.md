@@ -86,12 +86,16 @@ Example on Mac with homebrew:
 First, import all users and user_occurrences content from production.
 
     $ RACK_ENV=production ./bin/populate_existing_claims.rb --truncate --directory /directory-to-spark-csv-files/
-    # Can start 2+ workers, each with 40 threads to help speed-up processing
-    $ RACK_ENV=production sidekiq -c 40 -q existing_claims -r ./application.rb
+    # Reduce number of workers for now until we have many more records to process
+    $ RACK_ENV=production sidekiq -c 2 -q existing_claims -r ./application.rb
 
-Then, export all attributions now made by the "GBIF Source" agent
+Then, find newly created users and manually create them in production. Export a csv of all claims made by User::GBIF_AGENT_ID
 
-    $ mysqldump -u root -p --no-create-info --where="created_by = 2" bloodhound user_occurrences > claimed_user_occurrences.sql
+     $ RACK_ENV=production ./bin/populate_existing_claims.rb --export "gbif_claims.csv"
+
+Finally, import the bulk claims on production:
+
+    $ RACK_ENV=production ./bin/bulk_claim.rb --file "gbif_claims.csv"
 
 ### Step 7: Cluster Agents
 

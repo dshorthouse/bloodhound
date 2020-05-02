@@ -660,6 +660,14 @@ class User < ActiveRecord::Base
     BLOODHOUND.cache_clear("fragments/#{identifier}-trainer")
   end
 
+  def delete_search
+    es = Bloodhound::ElasticUser.new
+    begin
+      es.delete(self)
+    rescue
+    end
+  end
+
   private
 
   def family_part
