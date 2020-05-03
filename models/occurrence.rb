@@ -30,7 +30,9 @@ class Occurrence < ActiveRecord::Base
     "gbifID",
     "dateIdentified_processed",
     "eventDate_processed",
-    "hasImage"
+    "hasImage",
+    "recordedByID",
+    "identifiedByID"
   ]
 
   def self.enqueue(o)

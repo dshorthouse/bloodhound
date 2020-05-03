@@ -22,7 +22,7 @@ module Bloodhound
 
     def ignored_cols(keep_gbifID = true)
       if keep_gbifID
-        ["dateIdentified_processed", "eventDate_processed", "hasImage"]
+        ["dateIdentified_processed", "eventDate_processed", "hasImage", "recordedByID", "identifiedByID"]
       else
         Occurrence::IGNORED_COLUMNS_OUTPUT
       end
