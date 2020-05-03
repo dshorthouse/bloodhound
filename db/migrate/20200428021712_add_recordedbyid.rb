@@ -1,4 +1,4 @@
-class Recordedbyid < ActiveRecord::Migration[6.0]
+class AddRecordedbyid < ActiveRecord::Migration[6.0]
   def up
     unless column_exists? :occurrences, :recordedByID
       add_column :occurrences, :recordedByID, :text
