@@ -187,10 +187,6 @@ Now copy the \*.ibd files for the above 6 tables from the bloodhound_restore dat
       ALTER TABLE `taxa` IMPORT TABLESPACE;
       ALTER TABLE `taxon_occurrences` IMPORT TABLESPACE;
 
-Lastly, rebuild the Elasticsearch indices:
-
-      RACK_ENV=production ./bin/populate_search.rb --rebuild
-
 ## License
 
 The MIT License (MIT)

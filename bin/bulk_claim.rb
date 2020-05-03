@@ -45,13 +45,13 @@ if options[:file]
     next if !row["identifier"].is_orcid? && !row["identifier"].is_wiki_id?
     if row["identifier"].is_wiki_id?
       u = User.find_or_create_by({ wikidata: row["identifier"] })
+      if u.wikidata && !u.valid_wikicontent?
+        u.delete_search
+        u.delete
+        next
+      end
     elsif row["identifier"].is_orcid?
       u = User.find_or_create_by({ orcid: row["identifier"] })
-    end
-    if u.wikidata && !u.valid_wikicontent?
-      u.delete_search
-      u.delete
-      next
     end
     UserOccurrence.create({
         user_id: u.id,
