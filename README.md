@@ -81,12 +81,20 @@ Example on Mac with homebrew:
      $ brew services start neo4j # recreates graph.db
      $ rake neo4j:migrate # recreate the constraint on graph.db
 
+Now populate the clusters.
+
+     $ RACK_ENV=production ./bin/cluster_agents.rb --truncate --cluster
+     # Can start 2+ workers, each with 40 threads to help speed-up processing
+     $ RACK_ENV=production sidekiq -c 40 -q cluster -r ./application.rb
+
+See Neo4j Dump & Restore below for additional steps.
+
 ### Step 6: Import Existing recordedByID and identifiedByID
 
 First, import all users and user_occurrences content from production.
 
     $ RACK_ENV=production ./bin/populate_existing_claims.rb --truncate --directory /directory-to-spark-csv-files/
-    # Reduce number of workers for now until we have many more records to process
+    # Reduce number of workers for now until we have many more records to process, bottleneck is queries to wikidata
     $ RACK_ENV=production sidekiq -c 2 -q existing_claims -r ./application.rb
 
 Then, find newly created users and manually create them in production. Export a csv of all claims made by User::GBIF_AGENT_ID
@@ -97,13 +105,7 @@ Finally, import the bulk claims on production:
 
     $ RACK_ENV=production ./bin/bulk_claim.rb --file "gbif_claims.csv"
 
-### Step 7: Cluster Agents
-
-     $ RACK_ENV=production ./bin/cluster_agents.rb --truncate --cluster
-     # Can start 2+ workers, each with 40 threads to help speed-up processing
-     $ RACK_ENV=production sidekiq -c 40 -q cluster -r ./application.rb
-
-### Step 8: Populate Search in Elasticsearch
+### Step 7: Populate Search in Elasticsearch
 
      $ RACK_ENV=production ./bin/populate_search.rb --index agent
 
@@ -111,7 +113,7 @@ Or from scratch:
 
      $ RACK_ENV=production ./bin/populate_search.rb --rebuild
 
-### Step 9: Populate dataset metadata
+### Step 8: Populate dataset metadata
 
      $ RACK_ENV=production ./bin/gbif_datasets.rb --new
      $ RACK_ENV=production ./bin/gbif_datasets.rb --flush
