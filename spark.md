@@ -36,7 +36,9 @@ val verbatimTerms = List(
   "catalogNumber",
   "recordedBy",
   "scientificName",
-  "typeStatus"
+  "typeStatus",
+  "recordedByID",
+  "identifiedByID"
 )
 
 //load a big, verbatim tsv file from a DwC-A download
@@ -72,9 +74,7 @@ val processedTerms = List(
   "countryCode",
   "dateIdentified",
   "eventDate",
-  "mediaType",
-  "recordedByID",
-  "identifiedByID"
+  "mediaType"
 )
 
 val df2 = spark.

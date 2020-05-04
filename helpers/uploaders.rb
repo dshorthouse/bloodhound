@@ -20,8 +20,11 @@ module Sinatra
           raise IOError.new('Only files of type text/csv or text/plain less than 5MB are accepted.')
         end
 
+        contents = File.read(tempfile)
+        detection = CharlockHolmes::EncodingDetector.detect(contents)
+
         items = []
-        CSV.foreach(tempfile, headers: true, header_converters: :symbol, encoding: "#{mime_encoding[1]}:utf-8") do |row|
+        CSV.foreach(tempfile, headers: true, header_converters: :symbol, encoding: "#{detection[:encoding]}:utf-8") do |row|
           if !row.headers.include?(:gbifid)
             tempfile.unlink
             raise RuntimeError.new("Missing a gbifID column header")
