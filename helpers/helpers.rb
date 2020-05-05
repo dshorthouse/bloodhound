@@ -156,6 +156,10 @@ module Sinatra
           results = results.where(occurrences: { countryCode: params[:country_code] })
         end
 
+        if params[:family]
+          results = results.where(occurrences: { family: params[:family] })
+        end
+
         results
       end
 
@@ -209,6 +213,11 @@ module Sinatra
           end
           results = results.where(occurrences: { countryCode: params[:country_code] })
         end
+
+        if params[:family]
+          results = results.where(occurrences: { family: params[:family] })
+        end
+
         results
       end
 

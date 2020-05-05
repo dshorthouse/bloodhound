@@ -98,10 +98,12 @@ module Sinatra
               range = [params[:start_year], params[:end_year]].join(" – ")
             end
             country = IsoCountryCodes.find(params[:country_code]).name rescue nil
+            family = params[:family] rescue nil
             @filter = {
               action: params[:action],
               country: country,
-              range: range
+              range: range,
+              family: family
             }.compact
 
             begin
