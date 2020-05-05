@@ -148,7 +148,7 @@ module Sinatra
           results = user.visible_occurrences
         end
 
-        if params[:country_code]
+        if params[:country_code] && !params[:country_code].blank?
           country = IsoCountryCodes.find(params[:country_code]) rescue nil
           if country.nil?
             halt 404
@@ -156,7 +156,7 @@ module Sinatra
           results = results.where(occurrences: { countryCode: params[:country_code] })
         end
 
-        if params[:family]
+        if params[:family] && !params[:family].blank?
           results = results.where(occurrences: { family: params[:family] })
         end
 
@@ -206,7 +206,7 @@ module Sinatra
           results = @viewed_user.claims_received.joins(:occurrence)
         end
 
-        if params[:country_code]
+        if params[:country_code] && !params[:country_code].blank?
           country = IsoCountryCodes.find(params[:country_code]) rescue nil
           if country.nil?
             halt 404
@@ -214,7 +214,7 @@ module Sinatra
           results = results.where(occurrences: { countryCode: params[:country_code] })
         end
 
-        if params[:family]
+        if params[:family] && !params[:family].blank?
           results = results.where(occurrences: { family: params[:family] })
         end
 
