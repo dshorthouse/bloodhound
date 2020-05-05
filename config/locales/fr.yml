@@ -184,6 +184,7 @@ fr:
     agents: Agents
     specimens: Spécimens
     visualizations: Visualisations
+    specialties: Spécialtiés
     public_profile: Profil Public
     make_public: Rendre Public
     not_yet: Pas encore
@@ -207,6 +208,8 @@ fr:
         other: "enregistrements ont été traités. Les réclamations existantes, si elles étaient présentes dans votre téléchargement, ont été ignorées."
     help_question: "Vous voulez aider à attribuer des spécimens à %{name}?"
     try_again: Réessayer.
+    no_specialities_alert: Les entraîneurs Bloodhound n'ont pas encore aidé à attribuer des spécimens.
+    specialties_alert: "Spécimens collectés ou identifiés dans les familles suivantes:"
   home:
     tagline: Réclamez les spécimens que vous avez collectés ou identifiés, suivez leur utilisation dans les nouvelles publications scientifiques et aidez à reconnaître vos pairs, vos mentors et vos organismes.
     get_started: Commencer

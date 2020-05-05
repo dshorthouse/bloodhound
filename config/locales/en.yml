@@ -184,6 +184,7 @@ en:
     agents: Agents
     specimens: Specimens
     visualizations: Visualizations
+    specialties: Specialties
     public_profile: Public Profile
     make_public: Make Public
     not_yet: Not yet
@@ -207,6 +208,8 @@ en:
         other: "records were handled. Existing claims, if present in your upload, were skipped."
     help_question: "Want to help attribute specimens to %{name}?"
     try_again: Try again.
+    no_specialities_alert: Bloodhound trainers have not yet helped attribute specimens.
+    specialties_alert: "Collected or identified specimens in the following Families:"
   home:
     tagline: Claim the natural history specimens you collected or identified, track their use in new science, and help acknowledge your peers, mentors, and organizations.
     get_started: Get started

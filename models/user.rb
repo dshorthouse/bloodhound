@@ -131,12 +131,38 @@ class User < ActiveRecord::Base
         .to_h
   end
 
+  def identified_families_helped
+    visible_user_occurrences.where(qry_identified)
+        .where.not(created_by: self)
+        .joins(:taxon_occurrence)
+        .joins(taxon_occurrence: :taxon)
+        .select("taxa.family")
+        .group("taxa.family")
+        .count
+        .sort_by{|_key, value| value}
+        .reverse
+        .to_h
+  end
+
   def top_family_identified
     identified_families.first[0] rescue nil
   end
 
   def recorded_families
     visible_user_occurrences.where(qry_recorded)
+        .joins(:taxon_occurrence)
+        .joins(taxon_occurrence: :taxon)
+        .select("taxa.family")
+        .group("taxa.family")
+        .count
+        .sort_by{|_key, value| value}
+        .reverse
+        .to_h
+  end
+
+  def recorded_families_helped
+    visible_user_occurrences.where(qry_recorded)
+        .where.not(created_by: self)
         .joins(:taxon_occurrence)
         .joins(taxon_occurrence: :taxon)
         .select("taxa.family")

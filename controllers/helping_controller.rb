@@ -271,10 +271,12 @@ module Sinatra
               range = [params[:start_year], params[:end_year]].join(" – ")
             end
             country = IsoCountryCodes.find(params[:country_code]).name rescue nil
+            family = params[:family] rescue nil
             @filter = {
               action: params[:action],
               country: country,
-              range: range
+              range: range,
+              family: family
             }.compact
 
             @pagy, @results = pagy(helping_specimen_filters, items: search_size, page: @page)
@@ -289,6 +291,17 @@ module Sinatra
             @viewed_user = find_user(@params[:id])
             @stats = helping_user_stats(@viewed_user)
             haml :'help/visualizations', locals: { active_page: "help" }
+          end
+
+          app.get '/help-others/:id/specialties' do
+            protected!
+            check_identifier
+            check_redirect
+
+            @viewed_user = find_user(@params[:id])
+            @families_identified = @viewed_user.identified_families_helped
+            @families_recorded = @viewed_user.recorded_families_helped
+            haml :'help/specialties', locals: { active_page: "help" }
           end
 
           app.get '/help-others/:id/ignored' do
