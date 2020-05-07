@@ -15,7 +15,7 @@ module Sinatra
         filename = params[:file][:filename]
         mime_encoding = detect_mime_encoding(tempfile.path)
 
-        if !["text/csv", "text/plain"].include?(mime_encoding[0]) || tempfile.size > 5_000_000
+        if !["text/csv", "text/plain", "application/octet-stream"].include?(mime_encoding[0]) || tempfile.size > 5_000_000
           tempfile.unlink
           raise IOError.new('Only files of type text/csv or text/plain less than 5MB are accepted.')
         end
