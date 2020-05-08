@@ -190,11 +190,20 @@ module Bloodhound
         header = occurrence_resource[:schema][:fields].map{ |u| u[:name] }
         y << CSV::Row.new(header, header, true).to_s
         gbif_ids = []
+        ignored = [
+          "id",
+          "dateIdentified_processed",
+          "eventDate_processed",
+          "visible",
+          "hasImage",
+          "recordedByID",
+          "identifiedByID"
+        ]
         @dataset.claimed_occurrences.find_each(batch_size: 10_000) do |o|
           next if !o.visible || gbif_ids.include?(o.gbifID)
           gbif_ids << o.gbifID
           data = o.attributes
-                  .except("id", "dateIdentified_processed", "eventDate_processed", "visible", "hasImage")
+                  .except(*ignored)
                   .values
           y << CSV::Row.new(header, data).to_s
         end
