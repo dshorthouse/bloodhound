@@ -20,6 +20,30 @@ class User < ActiveRecord::Base
   after_update :update_search
   after_destroy :remove_search, :create_destroyed_user
 
+  def self.merge_wikidata(qid, dest_qid)
+    DestroyedUser.create(identifier: qid, redirect_to: dest_qid)
+
+    src = self.find_by_wikidata(qid)
+    dest = self.find_by_wikidata(dest_qid)
+    if dest.nil?
+      src.wikidata = dest_qid
+      src.save
+      src.reload
+      src.update_wikidata_profile
+    else
+      occurrences = src.user_occurrences
+      dest.user_occurrences.pluck(:occurrence_id).in_groups_of(500, false) do |group|
+        occurrences.where.not(occurrence_id: group).update_all({ user_id: dest.id })
+      end
+      if src.is_public?
+        dest.is_public = true
+        dest.save
+      end
+      dest.update_wikidata_profile
+      src.destroy
+    end
+  end
+
   def is_public?
     is_public
   end
@@ -618,6 +642,10 @@ class User < ActiveRecord::Base
   def update_wikidata_profile
     wikidata_lib = Bloodhound::WikidataSearch.new
     data = wikidata_lib.wiki_user_data(wikidata)
+    if wikidata != data[:wikidata]
+      User.merge_wikidata(wikidata, data[:wikidata])
+      return
+    end
     if data
       data[:organizations].each do |org|
         update_affiliation(org)

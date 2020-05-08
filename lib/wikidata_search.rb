@@ -212,27 +212,7 @@ module Bloodhound
       qids_to_merge = merged_wikicodes.keys & existing_wikicodes
       qids_to_merge.each do |qid|
         dest_qid = merged_wikicodes[qid]
-        DestroyedUser.create(identifier: qid, redirect_to: dest_qid)
-
-        src = User.find_by_wikidata(qid)
-        dest = User.find_by_wikidata(dest_qid)
-        if dest.nil?
-          src.wikidata = dest_qid
-          src.save
-          src.reload
-          src.update_wikidata_profile
-        else
-          occurrences = src.user_occurrences
-          dest.user_occurrences.pluck(:occurrence_id).in_groups_of(500, false) do |group|
-            occurrences.where.not(occurrence_id: group).update_all({ user_id: dest.id })
-          end
-          if src.is_public?
-            dest.is_public = true
-            dest.save
-          end
-          dest.update_wikidata_profile
-          src.destroy
-        end
+        User.merge_wikidata(qid, dest_qid)
         puts "#{qid} => #{dest_qid}".red
       end
     end
@@ -368,6 +348,7 @@ module Bloodhound
       end
 
       {
+        wikidata: wiki_user.id,
         family: family,
         given: given,
         particle: particle,
