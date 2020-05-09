@@ -171,7 +171,8 @@ fr:
     created: Créé
     latest_trainer: Dernier entraîneur
     latest_claim: Dernière réclamation
-    help_add: "Aider / Ajouter"
+    help_documentation: "Documentation d'Aide"
+    add_someone: "Ajouter Quelqu'un"
     latest_recipients: Derniers Bénéficiaires
     new_people: Nouvelles Personnes
     new_people_title: Personnes Nouvellement Trouvées

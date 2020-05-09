@@ -17,46 +17,39 @@
 
 = haml :'partials/help/main_tabs', layout: false, locals: { active_main_tab: "help" }
 
-%div{class:"mt-4"}
-  %div{class:"alert alert-info tiny-margins", role:"alert"}
-    Couldn't find someone?
-    %ul
-      %li
-        %strong
-          Living:
-        Ask them to create an
-        %a{href: "https://orcid.org/register"} ORCID account
-        with a publicly available name. If they assign themselves one or more of the keywords
-        %span{class: "font-italic"} #{Settings.orcid.keywords.join(", ")}
-        to their ORCID account, Bloodhound will add them the following day
-      %li
-        %strong
-          Deceased:
-        Search on
-        %a{href:"https://www.wikidata.org"} Wikidata
-        and ensure they have a birth and death date accurate to the day and there is a value for any of the properties:
-        %span{class: "font-italic"} #{::Bloodhound::WikidataSearch::PEOPLE_PROPERTIES.keys.join(", ")}
-        \. Bloodhound will also add them by the following day.
+%p{class:"mt-4"}
+  Trainer
+  %a{href: "/0000-0002-5398-7721"} Siobhan Leachman
+  (see her
+  = succeed ")" do
+    %a{href:"https://twitter.com/SiobhanLeachman"} Twitter feed
+  assumed control of the
+  %a{href: "https://twitter.com/BloodhoundTrack"} @BloodhoundTrack
+  Twitter account May 4–8, 2020 and posted a helpful series of tweet threads.
 
-%h4 Add a Person
-
-%form{id:"form-user-wrapper", method: "post", action: "/help-others/add", "accept-charset" => "UTF-8", class:"helpers"}
-  %div{class:"d-flex flex-sm-row flex-column mt-3"}
-    %div{class:"form-group"}
-      %label{for: "identifier", class:"font-weight-bold"}= "Add ORCID Identifier or Wikidata Q Number"
-      %input{class: "orcid-add", type: :text, name: "identifier", placeholder: "Q1234567", size:"12"}
-      %input{type: :hidden, name:"authenticity_token", value:"#{env['rack.session'][:csrf]}"}
-      %input{type: :submit, class:"btn btn-success mt-3", value: "Add"}
-
-- if flash[:new_user]
-  %div{class: "row"}
-    %div{class: "col-sm-8 col-md-6 col-xl-6"}
-      - if !flash[:new_user][:slug].nil?
-        %div{class:"alert alert-success tiny-margins d-block", role: "alert"}
-          %span{class:"font-weight-bold"}
-            %a{href: "/help-others/#{flash[:new_user][:slug]}"} #{flash[:new_user][:fullname]}
-          was created or updated.
-      - else
-        %div{class:"alert alert-danger tiny-margins d-block", role: "alert"}
-          %span{class:"font-weight-bold"} #{h(flash[:new_user][:fullname])}
-          not created because the identifier was incorrectly formatted or in the case of wikidata, the item is not a human, the family name and/or birth and death dates are not accurate to the day, or the user already exists with an ORCID identifier.
+%div{class:"row mt-4"}
+  %div{class:"col mb-3"}
+    %div{class:"card"}
+      %div{class:"card-header border-bottom"}
+        %h4 Getting Started with ORCID & Claiming Specimen Records
+      %div{class:"card-body mt-3"}
+        %iframe{type:"text/html", width:"100%", height:"600", frameborder:"0", align:"left", style:"align:left;max-width:100%;margin-top:20px;border:none;overflow-y: auto;", src:"https://threadreaderapp.com/embed/1257010391600660481.html"}
+  %div{class:"col mb-3"}
+    %div{class:"card"}
+      %div{class:"card-header border-bottom"}
+        %h4 Helping Others
+      %div{class:"card-body mt-3"}
+        %iframe{type:"text/html", width:"100%", height:"600", frameborder:"0", align:"left", style:"align:left;max-width:100%;margin-top:20px;border:none;overflow-y: auto;", src:"https://threadreaderapp.com/embed/1257020903163981824.html"}
+%div{class:"row mt-4"}
+  %div{class:"col mb-3"}
+    %div{class:"card"}
+      %div{class:"card-header border-bottom"}
+        %h4 Creating a Wikidata Item
+      %div{class:"card-body mt-3"}
+        %iframe{type:"text/html", width:"100%", height:"600", frameborder:"0", align:"left", style:"align:left;max-width:100%;margin-top:20px;border:none;overflow-y: auto;", src:"https://threadreaderapp.com/embed/1257053327809888256.html"}
+  %div{class:"col mb-3"}
+    %div{class:"card"}
+      %div{class:"card-header border-bottom"}
+        %h4 Uploads to Attribute Records in Bulk
+      %div{class:"card-body mt-3"}
+        %iframe{type:"text/html", width:"100%", height:"600", frameborder:"0", align:"left", style:"align:left;max-width:100%;margin-top:20px;border:none;overflow-y: auto;", src:"https://threadreaderapp.com/embed/1258487417876688901.html"}

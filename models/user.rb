@@ -642,7 +642,7 @@ class User < ActiveRecord::Base
   def update_wikidata_profile
     wikidata_lib = Bloodhound::WikidataSearch.new
     data = wikidata_lib.wiki_user_data(wikidata)
-    if wikidata != data[:wikidata]
+    if data && wikidata != data[:wikidata]
       User.merge_wikidata(wikidata, data[:wikidata])
       return
     end

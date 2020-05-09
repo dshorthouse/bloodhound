@@ -171,7 +171,8 @@ en:
     created: Created
     latest_trainer: Latest Trainer
     latest_claim: Latest Claim
-    help_add: "Help / Add"
+    help_documentation: "Help Documentation"
+    add_someone: "Add Someone"
     latest_recipients: Latest Recipients
     new_people: New People
     new_people_title: Newly Found People

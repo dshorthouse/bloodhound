@@ -61,10 +61,15 @@ module Sinatra
             haml :'help/progress', locals: { active_page: "help", active_tab: "orcid" }
           end
 
+          app.get '/help-others/add' do
+            protected!
+            haml :'help/add', locals: { active_page: "add" }
+          end
+
           app.post '/help-others/add' do
             protected!
             create_user
-            redirect '/help-others/help'
+            redirect '/help-others/add'
           end
 
           app.get '/help-others/progress/wikidata' do
