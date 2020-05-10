@@ -3,6 +3,13 @@
 -content_for :title do
   #{@dataset.title} – #{I18n.t('dataset.trainers_title')}
 
+-content_for :scripts do
+  %script{src: "/js/application.js"}
+  :javascript
+    $(function() {
+      Application.init();
+    });
+
 %div{class:"row"}
   = haml :'partials/dataset/jumbotron', layout:false
 
