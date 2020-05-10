@@ -177,6 +177,17 @@ module Sinatra
             haml :'datasets/agents_counts', locals: locals
           end
 
+          app.get '/dataset/:id/progress.json' do
+            content_type "application/json"
+            expires 0, :no_cache, :must_revalidate
+
+            dataset_from_param
+            qry = Occurrence.where(datasetKey: @dataset.datasetKey)
+            total = qry.count
+            claimed = qry.joins(:user_occurrences).count
+            { claimed: claimed, unclaimed: total - claimed }.to_json
+          end
+
           app.get '/dataset.json' do
             content_type "application/json", charset: 'utf-8'
             search_dataset
