@@ -8,6 +8,15 @@
   %span{class:"font-weight-bold"}= I18n.t('agent.warning')
   = I18n.t('agent.warning_statement')
 
+- if @filter.length > 0
+  %div{class: "alert alert-warning", role: "alert"}
+    %i{class:"fas fa-filter"}
+    Filtered by
+    %span{class:"font-weight-bold mr-2"}
+      #{h([@filter[:dataset]].compact.join(", "))}
+    %a{href: "/agent/#{@agent.id}"}
+      Remove
+
 %div{class: "alert alert-info tiny-margins", role:"alert"}
   %div{class:"row"}
     %div{class: "col col-12 col-lg-10"}

@@ -19,9 +19,27 @@ module Sinatra
           app.get '/agent/:id' do
             id = params[:id].to_i
             page = (params[:page] || 1).to_i
+
+            dataset_name = nil
+            if params[:datasetKey]
+              begin
+                dataset_name = Dataset.find_by_datasetKey(params[:datasetKey]).title
+              rescue
+                halt 404
+              end
+            end
+
+            @filter = {
+              dataset: dataset_name
+            }.compact
+
             begin
               @agent = Agent.find(id)
-              @pagy, @results = pagy(@agent.occurrences, page: page)
+              occurrences = @agent.occurrences
+              if params[:datasetKey]
+                occurrences = occurrences.where({ datasetKey: params[:datasetKey] })
+              end
+              @pagy, @results = pagy(occurrences, page: page)
 
               haml :'agents/agent', locals: { active_page: "agents" }
             rescue
