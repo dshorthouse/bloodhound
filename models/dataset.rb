@@ -118,6 +118,25 @@ class Dataset < ActiveRecord::Base
              .count
   end
 
+  def agents_occurrence_unclaimed_counts
+    determiners = OccurrenceDeterminer
+                    .joins(:occurrence)
+                    .left_outer_joins(occurrence: :user_occurrences)
+                    .where(occurrences: { datasetKey: datasetKey })
+                    .where(user_occurrences: { occurrence_id: nil })
+                    .distinct
+    recorders = OccurrenceRecorder
+                    .joins(:occurrence)
+                    .left_outer_joins(occurrence: :user_occurrences)
+                    .where(occurrences: { datasetKey: datasetKey })
+                    .where(user_occurrences: { occurrence_id: nil })
+                    .distinct
+    recorders.union(determiners)
+             .group(:agent_id)
+             .order(Arel.sql("count(*) desc"))
+             .count
+  end
+
   def trainers
     trainers = User.joins("INNER JOIN ( SELECT DISTINCT
               user_occurrences.created_by, user_occurrences.visible

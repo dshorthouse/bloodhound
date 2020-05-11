@@ -81,13 +81,19 @@ en:
     trainers: Trainers
     agents: Agents
     agent_strings: Agent Strings
+    agent_strings_unclaimed: Unclaimed Agent Strings
     alphabetical: Alphabetical
     counts: Counts
+    unclaimed: Unclaimed
     no_agents_alert: Raw strings from parsed collector and determiner names in specimen data included in this dataset have not yet been recorded
     agents_alert:
       unit:
         one: "raw string from parsed collector and determiner names in specimen data included in this dataset"
         other: "raw strings from parsed collector and determiner names in specimen data included in this dataset"
+    agents_alert_unclaimed:
+      unit:
+        one: "raw string from parsed collector and determiner names in entirely unattributed specimen data included in this dataset"
+        other: "raw strings from parsed collector and determiner names in entirely unattributed specimen data included in this dataset"
     none_found: "No datasets found for %{searched}"
     search_found:
       unit:

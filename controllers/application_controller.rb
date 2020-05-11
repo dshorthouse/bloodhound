@@ -177,6 +177,16 @@ module Sinatra
             haml :'datasets/agents_counts', locals: locals
           end
 
+          app.get '/dataset/:id/agents/unclaimed' do
+            dataset_agents_unclaimed_counts
+            locals = {
+              active_page: "datasets",
+              active_tab: "agents",
+              active_subtab: "unclaimed"
+            }
+            haml :'datasets/agents_unclaimed', locals: locals
+          end
+
           app.get '/dataset/:id/progress.json' do
             content_type "application/json"
             expires 0, :no_cache, :must_revalidate

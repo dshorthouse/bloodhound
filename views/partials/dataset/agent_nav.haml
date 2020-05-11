@@ -4,3 +4,5 @@
       %a{class:"nav-link#{locals[:active_subtab] == "default" ? " active" : nil}", href:"/dataset/#{@dataset.datasetKey}/agents"}= I18n.t('dataset.alphabetical')
     %li{class:"nav-item"}
       %a{class:"nav-link#{locals[:active_subtab] == "counts" ? " active" : nil}", href:"/dataset/#{@dataset.datasetKey}/agents/counts"}= I18n.t('dataset.counts')
+    %li{class:"nav-item"}
+      %a{class:"nav-link#{locals[:active_subtab] == "unclaimed" ? " active" : nil}", href:"/dataset/#{@dataset.datasetKey}/agents/unclaimed"}= I18n.t('dataset.unclaimed')

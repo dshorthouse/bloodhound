@@ -35,22 +35,47 @@ module Sinatra
         else
           data = Dataset.order(:title)
         end
-        @pagy, @results = pagy(data)
+        begin
+          @pagy, @results = pagy(data)
+        rescue Pagy::OverflowError
+          halt 404
+        end
       end
 
       def dataset_users
         dataset_from_param
-        @pagy, @results = pagy(@dataset.users.order(:family))
+        begin
+          @pagy, @results = pagy(@dataset.users.order(:family))
+        rescue Pagy::OverflowError
+          halt 404
+        end
       end
 
       def dataset_agents
         dataset_from_param
-        @pagy, @results = pagy_array(@dataset.agents.to_a, items: 75)
+        begin
+          @pagy, @results = pagy_array(@dataset.agents.to_a, items: 75)
+        rescue Pagy::OverflowError
+          halt 404
+        end
       end
 
       def dataset_agents_counts
         dataset_from_param
-        @pagy, @results = pagy_array(@dataset.agents_occurrence_counts.to_a, items: 75)
+        begin
+          @pagy, @results = pagy_array(@dataset.agents_occurrence_counts.to_a, items: 75)
+        rescue Pagy::OverflowError
+          halt 404
+        end
+      end
+
+      def dataset_agents_unclaimed_counts
+        dataset_from_param
+        begin
+          @pagy, @results = pagy_array(@dataset.agents_occurrence_unclaimed_counts.to_a, items: 75)
+        rescue Pagy::OverflowError
+          halt 404
+        end
       end
 
       def dataset_stats
@@ -60,7 +85,11 @@ module Sinatra
 
       def dataset_trainers
         dataset_from_param
-        @pagy, @results = pagy(@dataset.trainers.order(:family))
+        begin
+          @pagy, @results = pagy(@dataset.trainers.order(:family))
+        rescue Pagy::OverflowError
+          halt 404
+        end
       end
 
     end

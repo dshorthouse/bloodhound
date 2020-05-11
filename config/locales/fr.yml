@@ -81,13 +81,19 @@ fr:
     trainers: Entraîneurs
     agents: Agents
     agent_strings: Chaînes d'Agent
+    agent_strings_unclaimed: Chaînes d'Agent non Attribuées
     alphabetical: Alphabétique
     counts: Compte
+    unclaimed: Non Attribuées
     no_agents_alert: Les chaînes brutes des noms de collecteur et de détermineur incluses dans cet ensemble de données n'ont pas encore été enregistrées
     agents_alert:
       unit:
         one: "chaîne brute des noms de collecteur et de détermineur incluses dans cet ensemble de données"
         other: "chaînes brutes des noms de collecteur et de détermineur incluses dans cet ensemble de données"
+    agents_alert_unclaimed:
+      unit:
+        one: "chaîne brute des noms de collecteur et de détermineur entièrement non attribuées mais incluses dans cet ensemble de données"
+        other: "chaînes brutes des noms de collecteur et de détermineur entièrement non attribuées mais incluses dans cet ensemble de données"
     none_found: "Aucun jeu de données trouvé pour %{searched}"
     search_found:
       unit:
