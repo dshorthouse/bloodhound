@@ -109,8 +109,8 @@ module Bloodhound
       given = data[:person][:name][:"given-names"][:value].strip rescue nil
 
       credit_name = [data[:person][:name][:"credit-name"][:value].strip] rescue []
-      aliases = data[:person][:"other-names"][:"other-name"].map{|n| n[:content]} rescue []
-      other_names = (credit_name + aliases).compact.join("|") rescue ""
+      aliases = data[:person][:"other-names"][:"other-name"].map{|n| n[:content].strip} rescue []
+      other_names = (credit_name + aliases).uniq.compact.join("|") rescue ""
 
       keywords = data[:person][:keywords][:keyword].map{|k| k[:content]}.compact.join("|") rescue nil
       email = nil
