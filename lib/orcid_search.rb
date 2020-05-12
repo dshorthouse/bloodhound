@@ -107,7 +107,11 @@ module Bloodhound
 
       family = data[:person][:name][:"family-name"][:value].strip rescue nil
       given = data[:person][:name][:"given-names"][:value].strip rescue nil
-      other_names = data[:person][:"other-names"][:"other-name"].map{|n| n[:content]}.join("|") rescue ""
+
+      credit_name = data[:person][:name][:"credit-name"][:value].strip rescue nil
+      other_names = [data[:person][:"other-names"][:"other-name"].map{|n| n[:content]}, credit_name]
+                      .compact.join("|") rescue ""
+
       keywords = data[:person][:keywords][:keyword].map{|k| k[:content]}.compact.join("|") rescue nil
       email = nil
       data[:person][:emails][:email].each do |mail|
