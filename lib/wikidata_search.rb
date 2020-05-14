@@ -273,12 +273,14 @@ module Bloodhound
       if !date.nil?
         precision = "day"
       else
-        date = Date.parse(wiki_user.properties(property).compact.map{|a| a.value.time if a.precision_key == :month}.compact.first) rescue nil
-        if !date.nil?
+        wiki_date = wiki_user.properties(property).compact.map{|a| a.value.time if a.precision_key == :month}.compact.first rescue nil
+        if !wiki_date.nil?
+          date = Date.parse(wiki_date[1..7] + "-01")
           precision = "month"
         else
-          date = Date.parse(wiki_user.properties(property).compact.map{|a| a.value.time if a.precision_key == :year}.compact.first) rescue nil
-          if !date.nil?
+          wiki_date = wiki_user.properties(property).compact.map{|a| a.value.time if a.precision_key == :year}.compact.first rescue nil
+          if !wiki_date.nil?
+            date = Date.parse(wiki_date[1..4] + "-01-01")
             precision = "year"
           end
         end
