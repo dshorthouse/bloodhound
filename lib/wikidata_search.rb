@@ -23,7 +23,7 @@ module Bloodhound
             ?item ?itemLabel
           WHERE {
             ?item wdt:#{property} ?id .
-            ?item wdt:P569 ?date_of_death .
+            ?item wdt:P570 ?date_of_death .
             SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
           }
         )
@@ -130,7 +130,7 @@ module Bloodhound
         WHERE {
           ?redirect wdt:P31 wd:Q5 .
           ?redirect wdt:#{property} ?id .
-          ?redirect wdt:P569 ?date_of_death .
+          ?redirect wdt:P570 ?date_of_death .
           ?item owl:sameAs ?redirect .
           SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
         }
@@ -143,7 +143,7 @@ module Bloodhound
         SELECT (REPLACE(STR(?item),".*Q","Q") AS ?qid)
         WHERE {
           ?item wdt:P31 wd:Q5 .
-          ?item wdt:P569 ?date_of_death .
+          ?item wdt:P570 ?date_of_death .
           ?item wdt:#{property} ?id .
           ?item schema:dateModified ?change .
           SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
