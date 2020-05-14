@@ -127,6 +127,8 @@ module Bloodhound
     end
 
     def document(u)
+      date_born = (u.date_born_precision == "day") ? u.date_born : nil
+      date_died = (u.date_died_precision == "day") ? u.date_died : nil
       {
         id: u.id,
         orcid: u.orcid,
@@ -136,8 +138,8 @@ module Bloodhound
         fullname: u.fullname,
         fullname_reverse: u.fullname_reverse,
         other_names: u.other_names.split("|").map(&:strip),
-        date_born: u.date_born,
-        date_died: u.date_died,
+        date_born: date_born,
+        date_died: date_died,
         families_collected: u.recorded_families.keys.map(&:strip),
         families_identified: u.identified_families.keys.map(&:strip)
       }
