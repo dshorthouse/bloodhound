@@ -6,6 +6,9 @@ module Sinatra
 
       include ActionView::Helpers::NumberHelper
 
+      Date::DATE_FORMATS[:month_and_year] = '%B, %Y'
+      Date::DATE_FORMATS[:year] = '%Y'
+
       def h(text)
         Rack::Utils.escape_html(text)
       end
@@ -136,8 +139,26 @@ module Sinatra
       end
 
       def format_lifespan(user)
-        born = !user.date_born.nil? ? user.date_born.to_formatted_s(:long) : "?"
-        died = !user.date_died.nil? ? user.date_died.to_formatted_s(:long) : "?"
+        if user.date_born_precision == "day"
+          born = user.date_born.to_formatted_s(:long)
+        elsif user.date_born_precision == "month"
+          born = user.date_born.to_formatted_s(:month_and_year)
+        elsif user.date_born_precision == "year"
+          born = user.date_born.to_formatted_s(:year)
+        else
+          born = "?"
+        end
+
+        if user.date_died_precision == "day"
+          died = user.date_died.to_formatted_s(:long)
+        elsif user.date_died_precision == "month"
+          died = user.date_died.to_formatted_s(:month_and_year)
+        elsif user.date_died_precision == "year"
+          died = user.date_died.to_formatted_s(:year)
+        else
+          died = "?"
+        end
+
         "(" + ["b. " + born, "d. " + died].join(" &ndash; ") + ")"
       end
 

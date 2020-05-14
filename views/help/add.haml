@@ -34,7 +34,7 @@
           Deceased:
         Search on
         %a{href:"https://www.wikidata.org"} Wikidata
-        and ensure they have a birth and death date accurate to the day and there is a value for any of the properties:
+        and ensure they have a death date and there is a value for any of the properties:
         %span{class: "font-italic"} #{::Bloodhound::WikidataSearch::PEOPLE_PROPERTIES.keys.join(", ")}
         \. Bloodhound will also add them by the following day.
 
@@ -59,4 +59,4 @@
       - else
         %div{class:"alert alert-danger tiny-margins d-block", role: "alert"}
           %span{class:"font-weight-bold"} #{h(flash[:new_user][:fullname])}
-          not created because the identifier was incorrectly formatted or in the case of wikidata, the item is not a human, the family name and/or birth and death dates are not accurate to the day, or the user already exists with an ORCID identifier.
+          not created because the identifier was incorrectly formatted or in the case of wikidata, the item is not a human, is not deceased, a family name was not found, or the user already exists with an ORCID identifier.

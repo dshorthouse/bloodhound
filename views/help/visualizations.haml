@@ -23,42 +23,46 @@
 
 - if @stats[:specimens][:identified] > 0 || @stats[:specimens][:recorded] > 0
 
-  - if @viewed_user.wikidata
+  - if @viewed_user.wikidata && ( @viewed_user.date_born || @viewed_user.date_died )
     %h4= I18n.t('help.problems')
 
     %ul{class:"mt-3"}
-      %li
-        = I18n.t('help.collections_before_birth')
-        - count = @viewed_user.claims_type_before_birth("recordings").count
-        - if count > 0
-          %a{href: "/help-others/#{@viewed_user.identifier}/specimens?action=collected&start_year=0&end_year=#{@viewed_user.date_born.year}"}
-            (#{count} #{I18n.t('help.view')})
-        - else
-          %span{class:"text-success"} (#{I18n.t('help.none')})
-      %li
-        = I18n.t('help.collections_after_death')
-        - count = @viewed_user.claims_type_after_death("recordings").count
-        - if count > 0
-          %a{href: "/help-others/#{@viewed_user.identifier}/specimens?action=collected&start_year=#{@viewed_user.date_died.year}&end_year=#{Date.today.year}"}
-            (#{count} #{I18n.t('help.view')})
-        - else
-          %span{class:"text-success"} (#{I18n.t('help.none')})
-      %li
-        = I18n.t('help.identifications_before_birth')
-        - count = @viewed_user.claims_type_before_birth("identified").count
-        - if count > 0
-          %a{href: "/help-others/#{@viewed_user.identifier}/specimens?action=identified&start_year=0&end_year=#{@viewed_user.date_born.year}"}
-            (#{count} #{I18n.t('help.view')})
-        - else
-          %span{class:"text-success"} (#{I18n.t('help.none')})
-      %li
-        = I18n.t('help.identifications_after_death')
-        - count = @viewed_user.claims_type_after_death("identified").count
-        - if count > 0
-          %a{href: "/help-others/#{@viewed_user.identifier}/specimens?action=identified&start_year=#{@viewed_user.date_died.year}&end_year=#{Date.today.year}"}
-            (#{count} #{I18n.t('help.view')})
-        - else
-          %span{class:"text-success"} (#{I18n.t('help.none')})
+      - if @viewed_user.date_born
+        %li
+          = I18n.t('help.collections_before_birth')
+          - count = @viewed_user.claims_type_before_birth("recordings").count
+          - if count > 0
+            %a{href: "/help-others/#{@viewed_user.identifier}/specimens?action=collected&start_year=0&end_year=#{@viewed_user.date_born.year}"}
+              (#{count} #{I18n.t('help.view')})
+          - else
+            %span{class:"text-success"} (#{I18n.t('help.none')})
+      - if @viewed_user.date_died
+        %li
+          = I18n.t('help.collections_after_death')
+          - count = @viewed_user.claims_type_after_death("recordings").count
+          - if count > 0
+            %a{href: "/help-others/#{@viewed_user.identifier}/specimens?action=collected&start_year=#{@viewed_user.date_died.year}&end_year=#{Date.today.year}"}
+              (#{count} #{I18n.t('help.view')})
+          - else
+            %span{class:"text-success"} (#{I18n.t('help.none')})
+      - if @viewed_user.date_born
+        %li
+          = I18n.t('help.identifications_before_birth')
+          - count = @viewed_user.claims_type_before_birth("identified").count
+          - if count > 0
+            %a{href: "/help-others/#{@viewed_user.identifier}/specimens?action=identified&start_year=0&end_year=#{@viewed_user.date_born.year}"}
+              (#{count} #{I18n.t('help.view')})
+          - else
+            %span{class:"text-success"} (#{I18n.t('help.none')})
+      - if @viewed_user.date_died
+        %li
+          = I18n.t('help.identifications_after_death')
+          - count = @viewed_user.claims_type_after_death("identified").count
+          - if count > 0
+            %a{href: "/help-others/#{@viewed_user.identifier}/specimens?action=identified&start_year=#{@viewed_user.date_died.year}&end_year=#{Date.today.year}"}
+              (#{count} #{I18n.t('help.view')})
+          - else
+            %span{class:"text-success"} (#{I18n.t('help.none')})
 
   %div{class:"row d-flex mt-3"}
     %div{class:"col-10 col-md-6"}

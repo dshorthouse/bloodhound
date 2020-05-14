@@ -1,4 +1,6 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -85,7 +87,9 @@ CREATE TABLE `occurrences` (
   `typeStatus` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `dateIdentified_processed` datetime DEFAULT NULL,
   `eventDate_processed` datetime DEFAULT NULL,
-  `hasImage` tinyint(1) DEFAULT NULL
+  `hasImage` tinyint(1) DEFAULT NULL,
+  `recordedByID` text COLLATE utf8mb4_bin,
+  `identifiedByID` text COLLATE utf8mb4_bin
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `occurrence_determiners` (
@@ -143,7 +147,9 @@ CREATE TABLE `users` (
   `image_url` text,
   `signature_url` varchar(255) DEFAULT NULL,
   `date_born` date DEFAULT NULL,
+  `date_born_precision` varchar(255) DEFAULT NULL,
   `date_died` date DEFAULT NULL,
+  `date_died_precision` varchar(255) DEFAULT NULL,
   `is_public` tinyint(1) DEFAULT '0',
   `can_comment` tinyint(1) NOT NULL DEFAULT '1',
   `made_public` timestamp NULL DEFAULT NULL,
@@ -288,6 +294,7 @@ ALTER TABLE `user_occurrences`
 
 ALTER TABLE `user_organizations`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

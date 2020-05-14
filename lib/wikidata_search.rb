@@ -23,12 +23,8 @@ module Bloodhound
             ?item ?itemLabel
           WHERE {
             ?item wdt:#{property} ?id .
+            ?item wdt:P569 ?date_of_death .
             SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-            OPTIONAL { ?item p:P569/psv:P569 [wikibase:timePrecision ?birth_precision; wikibase:timeValue ?birth]
-            BIND(if(?birth_precision=11,?birth,if(?birth_precision=10,concat(month(?birth)," ",year(?birth)),year(?birth))) as ?date_of_birth) }
-            OPTIONAL { ?item p:P570/psv:P570 [wikibase:timePrecision ?death_precision; wikibase:timeValue ?death]
-            BIND(if(?death_precision=11,?death,if(?death_precision=10,concat(month(?death)," ",year(?death)),year(?death))) as ?date_of_death) }
-            FILTER(?birth_precision=11 && ?death_precision=11)
           }
         )
     end
@@ -134,13 +130,9 @@ module Bloodhound
         WHERE {
           ?redirect wdt:P31 wd:Q5 .
           ?redirect wdt:#{property} ?id .
+          ?redirect wdt:P569 ?date_of_death .
           ?item owl:sameAs ?redirect .
           SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
-          OPTIONAL { ?redirect p:P569/psv:P569 [wikibase:timePrecision ?birth_precision; wikibase:timeValue ?birth]
-          BIND(if(?birth_precision=11,?birth,if(?birth_precision=10,concat(month(?birth)," ",year(?birth)),year(?birth))) as ?date_of_birth) }
-          OPTIONAL { ?redirect p:P570/psv:P570 [wikibase:timePrecision ?death_precision; wikibase:timeValue ?death]
-          BIND(if(?death_precision=11,?death,if(?death_precision=10,concat(month(?death)," ",year(?death)),year(?death))) as ?date_of_death) }
-          FILTER(?birth_precision=11 && ?death_precision=11 )
         }
       )
     end
@@ -151,14 +143,11 @@ module Bloodhound
         SELECT (REPLACE(STR(?item),".*Q","Q") AS ?qid)
         WHERE {
           ?item wdt:P31 wd:Q5 .
+          ?item wdt:P569 ?date_of_death .
           ?item wdt:#{property} ?id .
           ?item schema:dateModified ?change .
           SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
-          OPTIONAL { ?item p:P569/psv:P569 [wikibase:timePrecision ?birth_precision; wikibase:timeValue ?birth]
-          BIND(if(?birth_precision=11,?birth,if(?birth_precision=10,concat(month(?birth)," ",year(?birth)),year(?birth))) as ?date_of_birth) }
-          OPTIONAL { ?item p:P570/psv:P570 [wikibase:timePrecision ?death_precision; wikibase:timeValue ?death]
-          BIND(if(?death_precision=11,?death,if(?death_precision=10,concat(month(?death)," ",year(?death)),year(?death))) as ?date_of_death) }
-          FILTER(?birth_precision=11 && ?death_precision=11 && ?change > "#{yesterday.iso8601}"^^xsd:dateTime)
+          FILTER(?change > "#{yesterday.iso8601}"^^xsd:dateTime)
         }
       )
     end
@@ -277,6 +266,26 @@ module Bloodhound
       { year: year, month: month, day: day }
     end
 
+    def wiki_date_precision(wiki_user, property)
+      date = nil
+      precision = nil
+      date = Date.parse(wiki_user.properties(property).compact.map{|a| a.value.time if a.precision_key == :day}.compact.first) rescue nil
+      if !date.nil?
+        precision = "day"
+      else
+        date = Date.parse(wiki_user.properties(property).compact.map{|a| a.value.time if a.precision_key == :month}.compact.first) rescue nil
+        if !date.nil?
+          precision = "month"
+        else
+          date = Date.parse(wiki_user.properties(property).compact.map{|a| a.value.time if a.precision_key == :year}.compact.first) rescue nil
+          if !date.nil?
+            precision = "year"
+          end
+        end
+      end
+      [date, precision]
+    end
+
     def wiki_user_data(wikicode)
       wiki_user = Wikidata::Item.find(wikicode)
 
@@ -335,8 +344,8 @@ module Bloodhound
         other_names = aliases.uniq.join("|")
       end
 
-      date_born = Date.parse(wiki_user.properties("P569").compact.map{|a| a.value.time if a.precision_key == :day}.compact.first) rescue nil
-      date_died = Date.parse(wiki_user.properties("P570").compact.map{|a| a.value.time if a.precision_key == :day}.compact.first) rescue nil
+      date_born, date_born_precision = wiki_date_precision(wiki_user, "P569")
+      date_died, date_died_precision = wiki_date_precision(wiki_user, "P570")
 
       organizations = []
       ["P108", "P1416"].each do |property|
@@ -360,7 +369,9 @@ module Bloodhound
         image_url: image_url,
         signature_url: signature_url,
         date_born: date_born,
+        date_born_precision: date_born_precision,
         date_died: date_died,
+        date_died_precision: date_died_precision,
         organizations: organizations
       }
     end
