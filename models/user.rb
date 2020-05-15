@@ -101,7 +101,11 @@ class User < ActiveRecord::Base
   end
 
   def valid_wikicontent?
-    !family.nil? && !date_died.nil? && !date_died_precision.nil? && orcid.nil?
+    !family.nil? && orcid.nil? &&
+    (
+      ( !date_died.nil? && !date_died_precision.nil? ) ||
+      ( !date_born.nil? && !date_born_precision.nil? && Date.today.year - date_born.year >= 120 )
+    )
   end
 
   def visible_user_occurrences

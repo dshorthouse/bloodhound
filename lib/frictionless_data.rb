@@ -168,6 +168,8 @@ module Bloodhound
         y << CSV::Row.new(header, header, true).to_s
         @dataset.users.find_each do |u|
           aliases = u.other_names.split("|").to_s if !u.other_names.blank?
+          date_born = (u.date_born_precision == "day") ? u.date_born : nil
+          date_died = (u.date_died_precision == "day") ? u.date_died : nil
           data = [
             u.id,
             u.fullname,
@@ -177,8 +179,8 @@ module Bloodhound
             u.uri,
             u.orcid,
             u.wikidata,
-            u.date_born,
-            u.date_died
+            date_born,
+            date_died
           ]
           y << CSV::Row.new(header, data).to_s
         end
