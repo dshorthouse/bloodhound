@@ -71,8 +71,7 @@ module Bloodhound
       user = User.find_or_create_by({ wikidata: id })
       sleep(2)
       if !user.valid_wikicontent?
-        es = ::Bloodhound::ElasticUser.new
-        es.delete(user) rescue nil
+        user.delete_search
         user.delete
         user = nil
       elsif !user.is_public?

@@ -170,6 +170,7 @@ module Bloodhound
 
         u = User.find_or_create_by({ wikidata: wikicode })
         if !u.valid_wikicontent?
+          u.delete_search
           u.delete
           puts "#{u.wikidata} deleted. Missing either family name, birth or death date".red
         else

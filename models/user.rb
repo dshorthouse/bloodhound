@@ -719,11 +719,7 @@ class User < ActiveRecord::Base
   end
 
   def delete_search
-    es = Bloodhound::ElasticUser.new
-    begin
-      es.delete(self)
-    rescue
-    end
+    remove_search
   end
 
   private
