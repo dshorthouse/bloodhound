@@ -274,7 +274,8 @@ module Sinatra
             if params[:date]
               @date = DateTime.parse(params[:date]) rescue @date
             end
-            users = User.where("MONTH(date_born) = ? and DAY(date_born) = ?", @date.month, @date.day)
+            users = User.where(date_born_precision: "day")
+                        .where("MONTH(date_born) = ? and DAY(date_born) = ?", @date.month, @date.day)
                         .order(:family)
             @pagy, @results = pagy(users)
             haml :'on_this_day/born', locals: { active_tab: "born" }
@@ -285,7 +286,8 @@ module Sinatra
             if params[:date]
               @date = DateTime.parse(params[:date]) rescue @date
             end
-            users = User.where("MONTH(date_died) = ? and DAY(date_died) = ?", @date.month, @date.day)
+            users = User.where(date_died_precision: "day")
+                        .where("MONTH(date_died) = ? and DAY(date_died) = ?", @date.month, @date.day)
                         .order(:family)
             @pagy, @results = pagy(users)
             haml :'on_this_day/died', locals: { active_tab: "died" }
