@@ -17,6 +17,6 @@
         %button{type:"button", class:"close", "data-dismiss":"modal", "aria-label":"Close"}
           %span{"aria-hidden":"true"} &times;
       %div{class:"modal-body"}
-        %p= I18n.t(offline.warning, datetime_off: Settings.offline_warning.off_datetime, duration: Settings.offline_warning.off_duration)
+        %p= I18n.t('offline.warning', datetime_off: Settings.offline_warning.off_datetime, duration: Settings.offline_warning.off_duration)
       %div{class:"modal-footer"}
         %button{type:"button", class:"btn btn-secondary", "data-dismiss":"modal"} Close

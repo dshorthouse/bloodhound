@@ -161,11 +161,11 @@ To migrate tables, use mydumper and myloader. But for even faster data migration
 
       brew install mydumper
 
-      mydumper --user root --password <PASSWORD> --database bloodhound --tables-list agents,occurrences,occurrence_recorders,occurrence_determiners,taxa,taxon_occurrences --compress --threads 8 --rows 10000000 --trx-consistency-only --outputdir /Users/dshorthouse/Documents/bloodhound_dump
+      mydumper --user root --password <PASSWORD> --database bloodhound --tables-list agents,occurrences,occurrence_recorders,occurrence_determiners,taxa,taxon_occurrences --compress --threads 8 --rows 10000000 --trx-consistency-only --long-query-guard 6000 --outputdir /Users/dshorthouse/Documents/bloodhound_dump
 
       apt-get install mydumper
       # Restore tables use nohup into a new database `bloodhound_restore`. See https://blogs.oracle.com/jsmyth/apparmor-and-mysql if symlinks might be used in the MySQL data directory to another partition.
-      nohup myloader --database bloodhound_restore --user bloodhound --password <PASSWORD> --threads 8 --queries-per-transaction 100 --compress-protocol --overwrite-tables --directory /home/dshorthouse/bloodhound_restore &
+      nohup myloader --database bloodhound_restore --user bloodhound --password <PASSWORD> --threads 2 --queries-per-transaction 100 --compress-protocol --overwrite-tables --directory /home/dshorthouse/bloodhound_restore &
 
 One way to make this even faster is to copy database files from one database to another rather than dropping/truncating and importing, but this has to be done with a bit of care.
 
