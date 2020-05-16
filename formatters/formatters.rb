@@ -91,12 +91,17 @@ module Sinatra
 
       def format_users
         @results.map{ |n|
+          user = User.find(n[:_source][:id])
+          lifespan = user.wikidata ? format_lifespan(user) : nil
+          thumbnail = user.image_url ? profile_image(user, "thumbnail") : "/images/photo24X24.png"
           { id: n[:_source][:id],
             score: n[:_score],
             orcid: n[:_source][:orcid],
             wikidata: n[:_source][:wikidata],
             fullname: n[:_source][:fullname],
-            fullname_reverse: n[:_source][:fullname_reverse]
+            fullname_reverse: n[:_source][:fullname_reverse],
+            thumbnail: thumbnail,
+            lifespan: lifespan
           }
         }
       end

@@ -103,7 +103,9 @@ var Application = (function($, window) {
       });
     },
     typeahead: function(){
-      var self = this;
+      var self = this,
+          user_template = (typeof Handlebars === 'undefined') ? "" : Handlebars.compile($("#result-template").html()),
+          user_empty = (typeof Handlebars === 'undefined') ? "" : Handlebars.compile($("#empty-template").html());
 
       $("#typeahead-agent").typeahead({
           minLength: 3,
@@ -136,7 +138,11 @@ var Application = (function($, window) {
           name: "user",
           limit: 10,
           source : this.data_sources.user.ttAdapter(),
-          display : "fullname_reverse"
+          display : "fullname_reverse",
+          templates: {
+            suggestion: user_template,
+            empty: user_empty
+          }
         }
         ).on("typeahead:select", function(obj, datum) {
           var identifier = datum.orcid || datum.wikidata;
