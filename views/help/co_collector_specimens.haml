@@ -15,7 +15,8 @@
 = haml :'partials/help/subtabs_fix', layout: false, locals: { active_subtab: "co_collectors" }
 
 - if @pagy.count == 0
-  %div{class: "alert alert-info tiny-margins", role: "alert"}= I18n.t('help.not_helped_alert')
+  %div{class:"alert alert-warning", role: "alert"}
+    #{I18n.t('help.not_co_collector_name', { name: @co_collector.fullname })}
 - else
   = haml :'partials/help/fixed_navbar', layout: false
   %div{class:"alert alert-warning", role: "alert"}

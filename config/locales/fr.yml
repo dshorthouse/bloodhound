@@ -224,6 +224,7 @@ fr:
     co_collectors_alert: "Choisissez un co-collectionneur pour ajuster les attributions faites pour les spécimens en commun."
     co_collector_name: "Spécimens co-collectés avec %{name}."
     switch: Changer de place
+    not_co_collector_name: "Spécimens not pas été co-collectés avec %{name}."
   home:
     tagline: Réclamez les spécimens que vous avez collectés ou identifiés, suivez leur utilisation dans les nouvelles publications scientifiques et aidez à reconnaître vos pairs, vos mentors et vos organismes.
     get_started: Commencer

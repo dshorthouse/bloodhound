@@ -61,7 +61,6 @@ if options[:file]
           created_by: row["created_by"].to_i
       })
     rescue ActiveRecord::RecordNotUnique => e
-      puts "Record already exists."
     end
   end
 elsif options[:agent_id] && ![options[:orcid], options[:wikidata]].compact.empty?
