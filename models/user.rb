@@ -241,6 +241,13 @@ class User < ActiveRecord::Base
     "user_occurrences.action IS NOT NULL"
   end
 
+  def recordings_with(co_collector)
+    co_claims = co_collector.visible_user_occurrences
+                            .select(:occurrence_id)
+                            .where(co_collector.qry_recorded)
+    recordings.where(occurrence_id: co_claims)
+  end
+
   def claims_given
     claims.where(visible: true).where.not(user: self)
   end

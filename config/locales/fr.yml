@@ -219,6 +219,11 @@ fr:
     try_again: Réessayer.
     no_specialities_alert: Les entraîneurs Bloodhound n'ont pas encore aidé à attribuer des spécimens.
     specialties_alert: "Spécimens collectés ou identifiés dans les familles suivantes:"
+    co-collectors: Co-collectionneurs
+    no_co_collectors_alert: Les co-collectionneurs n'ont pas encore été enregistrés.
+    co_collectors_alert: "Choisissez un co-collectionneur pour ajuster les attributions faites pour les spécimens en commun."
+    co_collector_name: "Spécimens co-collectés avec %{name}."
+    switch: Changer de place
   home:
     tagline: Réclamez les spécimens que vous avez collectés ou identifiés, suivez leur utilisation dans les nouvelles publications scientifiques et aidez à reconnaître vos pairs, vos mentors et vos organismes.
     get_started: Commencer

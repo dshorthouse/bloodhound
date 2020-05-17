@@ -309,6 +309,43 @@ module Sinatra
             haml :'help/specialties', locals: { active_page: "help" }
           end
 
+          app.get '/help-others/:id/co-collectors' do
+            protected!
+            check_identifier
+            check_redirect
+
+            @viewed_user = find_user(@params[:id])
+            begin
+              page = (params[:page] || 1).to_i
+              @pagy, @results = pagy(@viewed_user.recorded_with, page: page)
+              haml :'help/co_collectors', locals: { active_page: "help" }
+            rescue Pagy::OverflowError
+              halt 404, haml(:oops)
+            end
+          end
+
+          app.get '/help-others/:id/co-collector/:id2' do
+            protected!
+            check_identifier
+            check_redirect
+
+            @viewed_user = find_user(@params[:id])
+            @co_collector = find_user(@params[:id2])
+
+            @page = (params[:page] || 1).to_i
+            co_collections = @viewed_user.recordings_with(@co_collector)
+            @total = co_collections.count
+
+            if @page*search_size > @total
+              bump_page = @total % search_size.to_i != 0 ? 1 : 0
+              @page = @total/search_size.to_i + bump_page
+            end
+
+            @page = 1 if @page <= 0
+            @pagy, @results = pagy(co_collections, items: search_size, page: @page)
+            haml :'help/co_collector_specimens', locals: { active_page: "help" }
+          end
+
           app.get '/help-others/:id/ignored' do
             protected!
             check_identifier
