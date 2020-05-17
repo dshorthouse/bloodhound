@@ -53,12 +53,16 @@ if options[:file]
     elsif row["identifier"].is_orcid?
       u = User.find_or_create_by({ orcid: row["identifier"] })
     end
-    UserOccurrence.create({
-        user_id: u.id,
-        occurrence_id: row["occurrence_id"].to_i,
-        action: row["action"],
-        created_by: row["created_by"].to_i
-    })
+    begin
+      UserOccurrence.create!({
+          user_id: u.id,
+          occurrence_id: row["occurrence_id"].to_i,
+          action: row["action"],
+          created_by: row["created_by"].to_i
+      })
+    rescue ActiveRecord::RecordNotUnique => e
+      puts "Record already exists."
+    end
   end
 elsif options[:agent_id] && ![options[:orcid], options[:wikidata]].compact.empty?
   agent = Agent.find(options[:agent_id])
