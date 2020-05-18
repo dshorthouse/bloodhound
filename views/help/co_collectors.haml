@@ -55,7 +55,7 @@
               %div{class: "small text-left text-muted mr-2"}
                 Co-collected
                 %span{class:"badge badge-light"}
-                  #{@viewed_user.recordings_with(u).count}
+                  #{number_with_delimiter(@viewed_user.recordings_with(u).count, delimiter: ",")}
                 specimens
               %div{class:"small ml-auto text-muted"}
 
