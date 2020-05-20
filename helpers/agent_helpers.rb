@@ -34,6 +34,16 @@ module Sinatra
 
       def candidate_agents(user)
         agents = search_agents(user.fullname)
+        #full_names = [user.fullname.dup]
+        #given_names = [user.given.dup]
+
+        #initials = user.initials
+        #initials.split(".").each_with_index do |element, index|
+        #  abbreviated_name = [initials[0..index*2+1], user.family].join(" ")
+        #  agents.concat search_agents(abbreviated_name)
+        #  full_names << abbreviated_name
+        #  given_names << initials[0..index*2+1].dup
+        #end
 
         abbreviated_name = [user.initials, user.family].join(" ")
         agents.concat search_agents(abbreviated_name)
@@ -70,6 +80,7 @@ module Sinatra
           end
         end
 
+#        given_names.sort_by!(&:length).reverse!.uniq!
         given_names.uniq!
         full_names.uniq!
 
