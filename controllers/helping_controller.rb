@@ -205,7 +205,7 @@ module Sinatra
                     id_scores.concat(node.agent_nodes_weights.map{|a| { id: a[0], score: a[1] }})
                   end
                 else
-                  id_scores = candidate_agents(@viewed_user).map{|a| { id: a[:id], score: a[:score] } }.compact
+                  id_scores = candidate_agents(@viewed_user)
                 end
                 if !id_scores.empty?
                   ids = id_scores.map{|a| a[:id]}

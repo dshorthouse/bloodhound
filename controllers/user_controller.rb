@@ -288,7 +288,7 @@ module Sinatra
 
             viewed_user = find_user(params[:id])
             claimed = viewed_user.all_occurrences_count
-            agent_ids = candidate_agents(viewed_user).map{|a| a[:id] }.compact
+            agent_ids = candidate_agents(viewed_user).pluck(:id)
             unclaimed = occurrences_by_agent_ids(agent_ids)
                           .where.not({ occurrence_id: viewed_user.user_occurrences.select(:occurrence_id) })
                           .distinct

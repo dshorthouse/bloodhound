@@ -230,7 +230,7 @@ module Sinatra
             content_type "application/json", charset: 'utf-8'
             return { count: 0}.to_json if @user.family.nil?
 
-            agent_ids = candidate_agents(@user).map{|a| a[:id] }.compact
+            agent_ids = candidate_agents(@user).pluck(:id)
             count = occurrences_by_agent_ids(agent_ids)
                       .where.not(occurrence_id: @user.user_occurrences.select(:occurrence_id))
                       .pluck(:occurrence_id)
@@ -271,8 +271,7 @@ module Sinatra
               @results = []
               @total = nil
             else
-              id_scores = candidate_agents(@user).map{|a| { id: a[:id], score: a[:score] } }
-                                                 .compact
+              id_scores = candidate_agents(@user)
 
               if !id_scores.empty?
                 ids = id_scores.map{|a| a[:id]}

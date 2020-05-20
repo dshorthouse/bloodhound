@@ -27,31 +27,26 @@ module Sinatra
       def search_agents(search)
         client = Elasticsearch::Client.new url: Settings.elastic.server
         body = build_name_query(search)
-        response = client.search index: Settings.elastic.agent_index, size: 25, body: body
+        response = client.search index: Settings.elastic.agent_index, size: 50, body: body
         results = response["hits"].deep_symbolize_keys
         results[:hits].map{|n| n[:_source].merge(score: n[:_score]) }.compact rescue []
       end
 
       def candidate_agents(user)
         agents = search_agents(user.fullname)
-        #full_names = [user.fullname.dup]
-        #given_names = [user.given.dup]
-
-        #initials = user.initials
-        #initials.split(".").each_with_index do |element, index|
-        #  abbreviated_name = [initials[0..index*2+1], user.family].join(" ")
-        #  agents.concat search_agents(abbreviated_name)
-        #  full_names << abbreviated_name
-        #  given_names << initials[0..index*2+1].dup
-        #end
-
-        abbreviated_name = [user.initials, user.family].join(" ")
-        agents.concat search_agents(abbreviated_name)
-
         full_names = [user.fullname.dup]
-        full_names << abbreviated_name
         given_names = [user.given.dup]
-        given_names << user.initials.dup
+
+        full_names << user.family.dup
+        agents.concat search_agents(user.family.dup)
+
+        initials = user.initials
+        initials.split(".").each_with_index do |element, index|
+          abbreviated_name = [initials[0..index*2+1], user.family].join(" ")
+          agents.concat search_agents(abbreviated_name)
+          full_names << abbreviated_name
+          given_names << initials[0..index*2+1].dup
+        end
 
         if !user.other_names.nil?
           user.other_names.split("|").each do |other_name|
@@ -80,27 +75,29 @@ module Sinatra
           end
         end
 
-#        given_names.sort_by!(&:length).reverse!.uniq!
-        given_names.uniq!
+        given_names.sort_by!(&:length).reverse!.uniq!
         full_names.uniq!
 
         if !params.has_key?(:relaxed) || params[:relaxed] == "0"
           remove_agents = []
 
           agents.each do |a|
-            # Boost score above cutoff if exact match to name or abbreviation
             if full_names.include?(a[:fullname])
               a[:score] += 40
+            else
+              scores = given_names.map{ |g| DwcAgent.similarity_score(g, a[:given]) }
+              remove_agents << a[:id] if scores.include?(0)
             end
-            scores = given_names.map{ |g| DwcAgent.similarity_score(g, a[:given]) }
-            remove_agents << a[:id] if scores.reject{|a| a == 0}.empty?
-            remove_agents << a[:id] if scores.include?(0) && given_names.count == 2
           end
 
           agents.delete_if{|a| remove_agents.include?(a[:id]) || a[:score] < 40 }
         end
 
-        agents.compact.uniq.sort_by{|a| a[:score]}.reverse
+        agents.pluck(:id)
+              .uniq
+              .map{|b| [b, agents.map{|v| v[:score] if v[:id] == b }.compact.max]}
+              .sort_by{|k,v| -v}
+              .map{|a| { id: a[0], score: a[1] }}
       end
 
     end
