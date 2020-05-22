@@ -124,7 +124,8 @@ var Application = (function($, window) {
           } else if (self.path === "/agents") {
             window.location.href = "/agent/" + datum.id;
           } else if (self.path === "/help-others") {
-            window.location.href = "/help-others/" + self.identifier + "?agent_id=" + datum.id;
+            var datasetKey = (typeof DataSet !== "undefined") ? DataSet.datasetKey : "";
+            window.location.href = "/help-others/" + self.identifier + "/advanced-search?agent_id=" + datum.id + "&datasetKey=" + datasetKey;
           } else {
             window.location.href = "/profile/candidates/agent/" + datum.id;
           }
@@ -186,7 +187,8 @@ var Application = (function($, window) {
           if (self.path === "/admin") {
             window.location.href = "/admin/dataset/" + datum.datasetkey;
           } else if (self.path === "/help-others") {
-            window.location.href = "/help-others/" + self.identifier + "?datasetKey=" + datum.datasetkey;
+            var agent_id = (typeof DataSet !== "undefined") ? DataSet.agent_id : "";
+            window.location.href = "/help-others/" + self.identifier + "/advanced-search?datasetKey=" + datum.datasetkey + "&agent_id=" + agent_id;
           } else {
             window.location.href = "/dataset/" + datum.datasetkey;
           }

@@ -18,6 +18,7 @@
     %span{class:"font-weight-bold mr-2"}
       #{h([@filter[:action], @filter[:country], @filter[:range]].compact.join(", "))}
     %a{href: "/profile/specimens"}
+      %i{class:"fas fa-minus-circle"}
       Remove
 
 - if @pagy.count == 0

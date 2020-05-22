@@ -233,13 +233,21 @@ module Sinatra
 
             @agent_results = []
             @dataset_results = []
-            if params[:agent]
-              search_agent({ item_size: 75 })
-              @agent_results = format_agents
-            end
-            if params[:dataset]
+            @agent = nil
+            @dataset = nil
+
+            if params[:datasetKey]
+              @dataset = Dataset.find_by_datasetKey(params[:datasetKey]).title rescue nil
+            elsif params[:dataset]
               search_dataset
               @dataset_results = format_datasets
+            end
+
+            if params[:agent_id]
+              @agent = Agent.find(params[:agent_id]).fullname_reverse rescue nil
+            elsif params[:agent]
+              search_agent({ item_size: 75 })
+              @agent_results = format_agents
             end
 
             haml :'help/advanced_search', locals: { active_page: "help" }
@@ -251,6 +259,12 @@ module Sinatra
             check_redirect
 
             @viewed_user = find_user(params[:id])
+            if params[:datasetKey]
+              @dataset = Dataset.find_by_datasetKey(params[:datasetKey]).title rescue nil
+            end
+            if params[:agent_id]
+              @agent = Agent.find(params[:agent_id]).fullname_reverse rescue nil
+            end
             haml :'help/advanced_search', locals: { active_page: "help" }
           end
 

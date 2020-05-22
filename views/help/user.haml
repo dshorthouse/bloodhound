@@ -45,23 +45,25 @@
 
   - if @dataset
     %div{class: "alert alert-warning", role: "alert"}
+      %a{href: "/help-others/#{@viewed_user.identifier}?agent_id=#{params[:agent_id]}", class:"ml-2"}
+        %i{class:"fas fa-minus-circle"}
+        Remove
       %i{class:"fas fa-filter"}
       Filtered by
       %span{class:"font-weight-bold mr-2"}
         #{@dataset.title.truncate(125, separator: ' ')}
       %a{href: "#{@dataset.license}", itemprop: "license"}
         %img{src:"#{@dataset.license_icon("small")}"}
-      %a{href: "/help-others/#{@viewed_user.identifier}", class:"ml-2"}
-        Remove
 
   - if @agent
     %div{class: "alert alert-warning", role: "alert"}
+      %a{href: "/help-others/#{@viewed_user.identifier}?datasetKey=#{params[:datasetKey]}", class:"ml-2"}
+        %i{class:"fas fa-minus-circle"}
+        Remove
       %i{class:"fas fa-search"}
       Searched for
       %span{class:"font-weight-bold mr-2"}
         #{@agent.fullname_reverse}
-      %a{href: "/help-others/#{@viewed_user.identifier}", class:"ml-2"}
-        Remove
 
   - if @pagy.count == 0
     %div{class: "alert alert-info tiny-margins row", role: "alert"}

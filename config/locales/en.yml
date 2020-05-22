@@ -130,6 +130,7 @@ en:
     lede: Thanks to the following donors who are supporting the completion of the data pipeline.
   general:
     search: Search
+    view: View
     help_attribute: Help Attribute
     rebuild_stats: Rebuild stats
     settings: Settings
@@ -225,6 +226,10 @@ en:
     co_collector_name: "Specimens co-collected with %{name}."
     switch: Switch
     not_co_collector_name: "Specimens have not beed co-collected with %{name}."
+    bulk_attribution: Bulk Attributions
+    reclaim_ignored: Reclaim Ignored
+    fix_claims: Fix Attributions
+    discovered: Discovered
   home:
     tagline: Claim the natural history specimens you collected or identified, track their use in new science, and help acknowledge your peers, mentors, and organizations.
     get_started: Get started
