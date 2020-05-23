@@ -1,3 +1,14 @@
+%script{src: "/js/jquery.collapser.min.js"}
+:javascript
+  $(function() {
+    $('.truncate').show().collapser({
+      mode: 'lines',
+      truncate: 3,
+      showText: '[Show more...]',
+      hideText: '[Hide]'
+    });
+  });
+
 %div{class:"col-12 col-lg-4 text-center sidebar alert-warning pt-3 pb-3"}
   %form{id:"form-wrapper", method: :post, action: "/", enctype: "multipart/form-data", "accept-charset": "UTF-8", class: "form"}
     - bg_class = @admin_user.image_url ? "" : "profile-image-bg"
@@ -17,7 +28,7 @@
   %h1{class:"display-6 h3"}= @admin_user.fullname
 
   - if !@admin_user.other_names.blank?
-    %p{class:"text-center text-muted p-0 mt-1 mb-1"} #{@admin_user.other_names.split("|").join("; ")}
+    %p{class:"text-center text-muted p-0 mt-1 mb-1 truncate"} #{@admin_user.other_names.split("|").join("; ")}
 
   - if @admin_user.wikidata
     %p{class:" text-center text-muted p-0 mt-1 mb-1"}= format_lifespan(@admin_user)

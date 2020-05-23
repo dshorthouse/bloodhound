@@ -49,7 +49,7 @@ module Sinatra
         end
 
         if !user.other_names.nil?
-          user.other_names.split("|").each do |other_name|
+          user.other_names.split("|").first(10).each do |other_name|
             #Attempt to ignore botanist abbreviation or naked family name, often as "other" name in wikidata
             next if user.family.include?(other_name.gsub(".",""))
 

@@ -435,6 +435,14 @@ dl.citation{
   background-color:#fff;
 }
 
+.truncate {
+  display:none;
+}
+
+.truncate a {
+  font-size: 0.85rem;
+}
+
 /* pre code display */
 .token.property, .token.symbol {
   color: #f8c555;
