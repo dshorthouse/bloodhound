@@ -1,0 +1,39 @@
+describe "Identifier library" do
+
+  it "extracts an IPNI id an IPNI URL with value 13860-1" do
+    url = "https://www.ipni.org/ipni/idAuthorSearch.do?id=13860-1"
+    id = "13860-1"
+    expect(url.ipni_from_url).to eq id
+  end
+
+  it "extracts an ORCID id from an ORCID URL with value 0000-0002-7101-9767" do
+    url = "https://orcid.org/0000-0002-7101-9767"
+    id = "0000-0002-7101-9767"
+    expect(url.orcid_from_url).to eq id
+  end
+
+  it "extracts an VIAF id from an VIAF URL with value 120062731" do
+    url = "https://viaf.org/viaf/120062731/"
+    id = "120062731"
+    expect(url.viaf_from_url).to eq id
+  end
+
+  it "extracts a wiki Q number from a wikidata URL with value Q3518898" do
+    url = "http://www.wikidata.org/entity/Q3518898"
+    id = "Q3518898"
+    expect(url.wiki_from_url).to eq id
+  end
+
+  it "extracts a BHL creator ID from a BHL URL with value 1368" do
+    url = "http://www.biodiversitylibrary.org/creator/1368"
+    id = "1368"
+    expect(url.bhl_from_url).to eq id
+  end
+
+  it "extracts an ISNI from an ISNI URL with value " do
+    url = "http://www.isni.org/0000+0001+2146+438X"
+    id = "0000 0001 2146 438X"
+    expect(url.isni_from_url).to eq id
+  end
+
+end

@@ -130,7 +130,7 @@ en:
     lede: Thanks to the following donors who are supporting the completion of the data pipeline.
   general:
     search: Search
-    view: View
+    apply: Apply
     help_attribute: Help Attribute
     rebuild_stats: Rebuild stats
     settings: Settings

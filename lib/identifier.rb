@@ -25,6 +25,9 @@ class String
   def bhl_from_url
     ::Bloodhound::Identifier.extract_bhl_regex.match(self)[0] rescue nil
   end
+  def isni_from_url
+    URI.decode_www_form_component(::Bloodhound::Identifier.extract_isni_regex.match(self)[0]) rescue nil
+  end
 end
 
 module Bloodhound
@@ -52,7 +55,7 @@ module Bloodhound
       end
 
       def extract_ipni_regex
-        /(?:ipni.org\/(.*)\?id\=)\K(.*)/
+        /(?:ipni.org\/(?:.*)\?id\=)\K(.*)/
       end
 
       def extract_viaf_regex
@@ -62,6 +65,11 @@ module Bloodhound
       def extract_bhl_regex
         /(?<=biodiversitylibrary.org\/creator\/)([0-9]{1,})/
       end
+
+      def extract_isni_regex
+        /(?<=isni.org\/)(.*)/
+      end
+
     end
 
   end

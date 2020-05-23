@@ -73,7 +73,7 @@
       %button{type:"submit", class:"btn btn-success"}= I18n.t('general.search')
 
       - if @agent || @dataset
-        %a{href: "/help-others/#{@viewed_user.identifier}?datasetKey=#{params[:datasetKey]}&agent_id=#{params[:agent_id]}", class:"btn btn-info"}= I18n.t('general.view')
+        %a{href: "/help-others/#{@viewed_user.identifier}?datasetKey=#{params[:datasetKey]}&agent_id=#{params[:agent_id]}", class:"btn btn-info"}= I18n.t('general.apply')
 
   - if params[:dataset] && params[:dataset].size > 0 && !@dataset_results.empty? && params[:agent] && params[:agent].size > 0 && !@agent_results.empty?
     %p{class:"mt-3"}

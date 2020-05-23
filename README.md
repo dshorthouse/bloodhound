@@ -103,6 +103,9 @@ Then, find newly created users and manually create them in production. Export a 
 
 Finally, import the bulk claims on production:
 
+But first, delete all existing claims made by User::GBIF_AGENT_ID.
+
+    $ DELETE FROM user_occurrences where created_by = 2;
     $ RACK_ENV=production ./bin/bulk_claim.rb --file "gbif_claims.csv"
 
 ### Step 7: Populate Search in Elasticsearch
