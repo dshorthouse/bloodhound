@@ -16,7 +16,7 @@ OptionParser.new do |opts|
     options[:truncate] = true
   end
 
-  opts.on("-e", "--export [directory]", String, "Export a csv of attributions made less than 7 days ago at the completion of all jobs") do |directory|
+  opts.on("-e", "--export [directory]", String, "Export a csv of attributions made at the completion of all jobs") do |directory|
     options[:export] = directory
   end
 
