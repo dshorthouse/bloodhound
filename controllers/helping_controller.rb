@@ -437,8 +437,8 @@ module Sinatra
               @viewed_user.update_profile
               @viewed_user.flush_caches
               if !Settings.twitter.consumer_key.blank?
-                twitter = ::Bloodhound::Twitter.new
-                twitter.welcome_user(@viewed_user)
+                vars = { user_id: @viewed_user.id }
+                ::Bloodhound::TwitterWorker.perform_async(vars)
               end
               flash.next[:public] = true
               redirect "/help-others/#{@viewed_user.identifier}"

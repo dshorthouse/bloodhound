@@ -188,8 +188,8 @@ module Sinatra
             if req[:is_public]
               @user.made_public = Time.now
               if !Settings.twitter.consumer_key.blank?
-                twitter = ::Bloodhound::Twitter.new
-                twitter.welcome_user(@user)
+                vars = { user_id: @user.id }
+                ::Bloodhound::TwitterWorker.perform_async(vars)
               end
             end
             @user.save

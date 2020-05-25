@@ -2,7 +2,6 @@
 
 module Bloodhound
   class Twitter
-
     attr_reader :client
     attr_reader :base_url
 
