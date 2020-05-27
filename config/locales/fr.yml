@@ -423,6 +423,7 @@ fr:
     date_identified: Date identifiée
     institution: Institution
     catalog_number: Numéro de catalogue
+    family: Famille
     type_status: État du type
     trainer: Entraîneur
     not_me: Pas moi
