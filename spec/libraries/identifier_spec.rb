@@ -30,10 +30,16 @@ describe "Identifier library" do
     expect(url.bhl_from_url).to eq id
   end
 
-  it "extracts an ISNI from an ISNI URL with value " do
+  it "extracts an ISNI from an ISNI URL with value 0000 0001 2146 438X" do
     url = "http://www.isni.org/0000+0001+2146+438X"
     id = "0000 0001 2146 438X"
     expect(url.isni_from_url).to eq id
+  end
+
+  it "extracts a ZooBank Author ID with value B3C52D0E-E3FF-454B-B342-9235AB7E1545" do
+    url = "http://zoobank.org/Authors/B3C52D0E-E3FF-454B-B342-9235AB7E1545"
+    id = "B3C52D0E-E3FF-454B-B342-9235AB7E1545"
+    expect(url.zoobank_from_url).to eq id
   end
 
 end

@@ -28,6 +28,9 @@ class String
   def isni_from_url
     URI.decode_www_form_component(::Bloodhound::Identifier.extract_isni_regex.match(self)[0]) rescue nil
   end
+  def zoobank_from_url
+    ::Bloodhound::Identifier.extract_zoobank_regex.match(self)[0] rescue nil
+  end
 end
 
 module Bloodhound
@@ -68,6 +71,10 @@ module Bloodhound
 
       def extract_isni_regex
         /(?<=isni.org\/)(.*)/
+      end
+
+      def extract_zoobank_regex
+        /(?<=zoobank.org\/Authors\/)(.*)/
       end
 
     end

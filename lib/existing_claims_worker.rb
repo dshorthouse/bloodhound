@@ -64,6 +64,9 @@ module Bloodhound
           user = get_wiki_user(wikidata)
         end
       end
+      if id.zoobank_from_url
+        wikidata = w.wiki_by_property('zoobank', id.zoobank_from_url)[:wikidata] rescue nil
+      end
       user
     end
 

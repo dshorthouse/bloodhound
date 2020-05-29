@@ -194,7 +194,7 @@ val unioned2 = spark.
     json(recordedByIDGroups.toJSON.union(identifiedByIDGroups.toJSON))
 
 //write aggregated agenIDs to csv files for the Populate Existing Claims script, /bin/populate_existing_claims.rb
-unioned2.select("agentIDs", "gbifIDs_identifiedByIDs", "gbifIDs_recordedByIDs").
+unioned2.select("agentIDs", "gbifIDs_recordedByIDs", "gbifIDs_identifiedByIDs").
     withColumn("gbifIDs_recordedByIDs", stringify($"gbifIDs_recordedByIDs")).
     withColumn("gbifIDs_identifiedByIDs", stringify($"gbifIDs_identifiedByIDs")).
     write.
