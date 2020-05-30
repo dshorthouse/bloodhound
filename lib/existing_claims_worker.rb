@@ -66,13 +66,15 @@ module Bloodhound
       end
       if id.zoobank_from_url
         wikidata = w.wiki_by_property('zoobank', id.zoobank_from_url)[:wikidata] rescue nil
+        if wikidata
+          user = get_wiki_user(wikidata)
+        end
       end
       user
     end
 
     def get_wiki_user(id)
       user = User.find_or_create_by({ wikidata: id })
-      sleep(2)
       if !user.valid_wikicontent?
         user.delete_search
         user.delete

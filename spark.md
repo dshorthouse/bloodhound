@@ -147,20 +147,25 @@ occurrences.write.mode("append").jdbc(url, "occurrences", prop)
 
 //aggregate recordedBy
 val recordedByGroups = occurrences.
+    select($"gbifID", $"recordedBy").
     filter($"recordedBy".isNotNull).
     groupBy($"recordedBy" as "agents").
-    agg(collect_set($"gbifID") as "gbifIDs_recordedBy")
+    agg(collect_set($"gbifID") as "gbifIDs_recordedBy").
+    withColumn("gbifIDs_identifiedBy", lit(null))
 
 //aggregate identifiedBy
 val identifiedByGroups = occurrences.
+    select($"gbifID", $"identifiedBy").
     filter($"identifiedBy".isNotNull).
     groupBy($"identifiedBy" as "agents").
-    agg(collect_set($"gbifID") as "gbifIDs_identifiedBy")
+    agg(collect_set($"gbifID") as "gbifIDs_identifiedBy").
+    withColumn("gbifIDs_recordedBy", lit(null))
 
-//union identifiedBy and recordedBy entries
-val unioned = spark.
-    read.
-    json(recordedByGroups.toJSON.union(identifiedByGroups.toJSON))
+//union identifiedBy and recordedBy entries & groupBy gbifID
+val unioned = recordedByGroups.
+    unionByName(identifiedByGroups).
+    groupBy($"agents").
+    agg(flatten(collect_set($"gbifIDs_recordedBy")) as "gbifIDs_recordedBy", flatten(collect_set($"gbifIDs_identifiedBy")) as "gbifIDs_identifiedBy")
 
 //concatenate arrays into strings
 def stringify(c: Column) = concat(lit("["), concat_ws(",", c), lit("]"))
@@ -178,22 +183,27 @@ unioned.select("agents", "gbifIDs_recordedBy", "gbifIDs_identifiedBy").
 
 //aggregate recordedByID
 val recordedByIDGroups = occurrences.
+    select($"gbifID", $"recordedByID").
     filter($"recordedByID".isNotNull).
     groupBy($"recordedByID" as "agentIDs").
-    agg(collect_set($"gbifID") as "gbifIDs_recordedByIDs")
+    agg(collect_set($"gbifID") as "gbifIDs_recordedByIDs").
+    withColumn("gbifIDs_identifiedByIDs", lit(null))
 
 //aggregate identifiedByID
 val identifiedByIDGroups = occurrences.
+    select($"gbifID", $"identifiedByID").
     filter($"identifiedByID".isNotNull).
     groupBy($"identifiedByID" as "agentIDs").
-    agg(collect_set($"gbifID") as "gbifIDs_identifiedByIDs")
+    agg(collect_set($"gbifID") as "gbifIDs_identifiedByIDs").
+    withColumn("gbifIDs_recordedByIDs", lit(null))
 
-//union identifiedByID and recordedByID entries
-val unioned2 = spark.
-    read.
-    json(recordedByIDGroups.toJSON.union(identifiedByIDGroups.toJSON))
+//union identifiedByID, recordedByID entries then group by agentIDs
+val unioned2 = recordedByIDGroups.
+    unionByName(identifiedByIDGroups).
+    groupBy($"agentIDs").
+    agg(flatten(collect_set($"gbifIDs_recordedByIDs")) as "gbifIDs_recordedByIDs", flatten(collect_set($"gbifIDs_identifiedByIDs")) as "gbifIDs_identifiedByIDs")
 
-//write aggregated agenIDs to csv files for the Populate Existing Claims script, /bin/populate_existing_claims.rb
+//write aggregated agentIDs to csv files for the Populate Existing Claims script, /bin/populate_existing_claims.rb
 unioned2.select("agentIDs", "gbifIDs_recordedByIDs", "gbifIDs_identifiedByIDs").
     withColumn("gbifIDs_recordedByIDs", stringify($"gbifIDs_recordedByIDs")).
     withColumn("gbifIDs_identifiedByIDs", stringify($"gbifIDs_identifiedByIDs")).
