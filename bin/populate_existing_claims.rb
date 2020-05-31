@@ -38,15 +38,10 @@ if options[:directory]
   raise "Directory not found" unless File.directory?(directory)
   accepted_formats = [".csv"]
   files = Dir.entries(directory).select {|f| accepted_formats.include?(File.extname(f))}
-
   files.each do |file|
     file_path = File.join(options[:directory], file)
-    group = []
     CSV.foreach(file_path, headers: true).with_index do |row, i|
-      group << [row.to_hash]
-      next if i % 100 != 0
-      Sidekiq::Client.push_bulk({ 'class' => Bloodhound::ExistingClaimsWorker, 'args' => group })
-      group = []
+      Sidekiq::Client.push('class' => Bloodhound::ExistingClaimsWorker, 'args' => [row.to_hash])
     end
     puts file.green
   end

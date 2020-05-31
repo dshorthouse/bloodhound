@@ -208,7 +208,7 @@ unioned2.select("agentIDs", "gbifIDs_recordedByIDs", "gbifIDs_identifiedByIDs").
     withColumn("gbifIDs_recordedByIDs", stringify($"gbifIDs_recordedByIDs")).
     withColumn("gbifIDs_identifiedByIDs", stringify($"gbifIDs_identifiedByIDs")).
     write.
-    mode("overwrite").
+    mode("overwrite").  
     option("header", "true").
     option("quote", "\"").
     option("escape", "\"").

@@ -12,9 +12,15 @@ describe "Identifier library" do
     expect(url.orcid_from_url).to eq id
   end
 
-  it "extracts an VIAF id from an VIAF URL with value 120062731" do
+  it "extracts an VIAF id from an VIAF URL with value 120062731/" do
     url = "https://viaf.org/viaf/120062731/"
     id = "120062731"
+    expect(url.viaf_from_url).to eq id
+  end
+
+  it "extracts an VIAF id from an VIAF URL with value 120062739" do
+    url = "https://viaf.org/viaf/120062739"
+    id = "120062739"
     expect(url.viaf_from_url).to eq id
   end
 
