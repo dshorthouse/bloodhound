@@ -160,6 +160,10 @@ module Sinatra
           results = results.where(occurrences: { family: params[:family] })
         end
 
+        if params[:institutionCode] && !params[:institutionCode].blank?
+          results = results.where(occurrences: { institutionCode: params[:institutionCode] })
+        end
+
         results
       end
 

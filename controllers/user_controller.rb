@@ -99,11 +99,13 @@ module Sinatra
             end
             country = IsoCountryCodes.find(params[:country_code]).name rescue nil
             family = params[:family] rescue nil
+            institutionCode = params[:institutionCode] rescue nil
             @filter = {
               action: params[:action],
               country: country,
               range: range,
-              family: family
+              family: family,
+              institutionCode: institutionCode
             }.compact
 
             begin
