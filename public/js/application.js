@@ -586,7 +586,9 @@ var Application = (function($, window) {
         var helpers_list = $("#helpers-list").hide().next();
         $("#helpers-list-none").hide();
         helpers_list.empty();
-        $('#visibility-form').preventDoubleSubmission();
+        $('#visibility-form').preventDoubleSubmission().submit(function() {
+          $(this).find("button[type='submit']").prop('disabled',true);
+        });
         $.ajax({
           method: "GET",
           url: "/help-others/" + self.identifier + "/helpers.json"
