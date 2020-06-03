@@ -77,7 +77,15 @@ var Profile = (function($, window) {
               contentType: false,
               cache: false
           }).done(function(data) {
-            location.reload();
+            var response = JSON.parse(data);
+            if (response.message === "ok") {
+              location.reload();
+            } else {
+              $('#profile-image').find("img").remove();
+              $('#image-alert').addClass("show").show().on('close.bs.alert', function() {
+                $('#profile-remove').trigger("click");
+              });
+            }
           });
         }
       });

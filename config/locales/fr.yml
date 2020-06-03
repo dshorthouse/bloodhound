@@ -404,6 +404,7 @@ fr:
     no_candidates_alert: Bloodhound n'a reniflé aucun spécimen répertorié par GBIF que vous ayez collecté ou identifié.
     ignored_alert: Les spécimens que vous avez marqués comme "Pas moi" apparaîtront ici.
     trainer_not_helped: Cet entraîneur Bloodhound ne vous a pas encore aidé à récupérer des spécimens.
+    upload_error: Veuillez télécharger une image d'une taille inférieure à 5 Mo.
   roster:
     roster_title: Profils publics
     lede:

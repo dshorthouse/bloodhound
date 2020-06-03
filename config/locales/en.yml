@@ -404,6 +404,7 @@ en:
     no_candidates_alert: Bloodhound did not sniff any specimens indexed by GBIF that you may have collected or identified.
     ignored_alert: Specimen records you marked as "Not me" will appear here.
     trainer_not_helped: This Bloodhound trainer has not yet helped you claim specimens.
+    upload_error: Please upload an image less than 5MB in size.
   roster:
     roster_title: Public Profiles
     lede:
