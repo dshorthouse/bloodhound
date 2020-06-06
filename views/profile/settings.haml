@@ -70,7 +70,7 @@
                   and your claims are versioned and archived.
                 %p
                   %a{href:"https://doi.org/#{@user.zenodo_concept_doi}"}
-                    %img{"async-src":"https://zenodo.org/badge/DOI/#{@user.zenodo_concept_doi}.svg"}
+                    %img{src:"/images/#{@user.zenodo_concept_doi}.svg"}
                 %p
                   %button{type: "button", class:"btn btn-sm btn-outline-danger", "data-toggle": "modal", "data-target": "#zenodoModal"}= I18n.t('profile.disconnect')
 

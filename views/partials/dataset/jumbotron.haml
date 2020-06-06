@@ -21,7 +21,7 @@
   - if @dataset.doi
     %p
       %a{href: "https://doi.org/#{@dataset.doi}"}
-        %img{"async-src":"https://zenodo.org/badge/DOI/#{@dataset.doi}.svg"}
+        %img{src:"/images/#{@dataset.doi}.svg"}
 
   - if admin_authorized?
     %div{class:"mt-3 pt-3 border-top"}

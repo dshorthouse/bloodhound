@@ -261,6 +261,15 @@ module Sinatra
             haml :how_it_works
           end
 
+          app.get '/images/*.svg' do
+            content_type "image/svg+xml", charset: 'utf-8'
+            if !params[:splat][0].is_doi?
+              halt 404
+            end
+            @doi = params[:splat][0]
+            haml :doi_svg, layout: false
+          end
+
           app.get '/integrations' do
             haml :integrations
           end

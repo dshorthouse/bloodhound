@@ -40,7 +40,6 @@ var Application = (function($, window) {
       this.identifier = typeof identifier !== 'undefined' ? identifier : "";
 
       this.ajax_setup();
-      this.async_images();
       this.profile_cards();
       this.bloodhound();
       this.typeahead();
@@ -73,11 +72,6 @@ var Application = (function($, window) {
       };
       $(document).ajaxSend(register_xhr);
       $(document).ajaxComplete(unregister_xhr);
-    },
-    async_images: function() {
-      $("img[async-src]").each(function() {
-        $(this).attr("src", $(this).attr("async-src"));
-      });
     },
     profile_cards: function() {
       $(".card-profile").on("click", function(e) {
