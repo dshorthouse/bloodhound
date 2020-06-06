@@ -405,6 +405,7 @@ fr:
     ignored_alert: Les spécimens que vous avez marqués comme "Pas moi" apparaîtront ici.
     trainer_not_helped: Cet entraîneur Bloodhound ne vous a pas encore aidé à récupérer des spécimens.
     upload_error: Veuillez télécharger une image d'une taille inférieure à 5 Mo.
+    bulk_claim: En masse
   roster:
     roster_title: Profils publics
     lede:

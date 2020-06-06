@@ -405,6 +405,7 @@ en:
     ignored_alert: Specimen records you marked as "Not me" will appear here.
     trainer_not_helped: This Bloodhound trainer has not yet helped you claim specimens.
     upload_error: Please upload an image less than 5MB in size.
+    bulk_claim: Bulk Claim
   roster:
     roster_title: Public Profiles
     lede:
