@@ -166,6 +166,15 @@ module Sinatra
             { message: "ok" }.to_json
           end
 
+          app.delete '/help-others/user-occurrence/:id.json' do
+            protected!
+            content_type "application/json", charset: 'utf-8'
+            req = JSON.parse(request.body.read).symbolize_keys
+            UserOccurrence.where(id: params[:id].to_i, user_id: req[:user_id].to_i)
+                          .delete_all
+            { message: "ok" }.to_json
+          end
+
           app.get '/help-others/:id' do
             check_identifier
             check_redirect

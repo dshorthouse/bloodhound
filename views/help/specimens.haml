@@ -52,8 +52,9 @@
           %th{scope: "col"}= I18n.t('specimen.institution')
           %th{scope: "col"}= I18n.t('specimen.catalog_number')
           %th{scope: "col"}= I18n.t('specimen.type_status')
-          %th{scope: "col"}= I18n.t('specimen.trainer')
           %th{scope: "col", class:"btn-selector-wide"}
+          %th{scope: "col", class:"btn-selector-wide"}
+          %th{scope: "col"}= I18n.t('specimen.trainer')
 
       %tbody
         - @results.each do |uo|
@@ -76,14 +77,16 @@
             %td #{h(o.catalogNumber)}
             %td #{h(o.typeStatus)}
             %td
+              %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{uo.user_occurrence_id}"}= I18n.t('specimen.not_them')
+            %td
+              %button{type:"button", class:"btn btn-sm btn-outline-danger remove", "data-occurrence-id":"#{uo.user_occurrence_id}"}= I18n.t('specimen.remove')
+            %td
               - if uo.claimant.is_bot?
                 #{uo.claimant.fullname}
               - elsif uo.claimant.is_public?
                 %a{href: "/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
               - else
                 %a{href: "https://orcid.org/#{uo.claimant.orcid}"} #{uo.claimant.fullname_reverse}
-            %td
-              %button{type:"button", class:"btn btn-sm btn-outline-warning hide", "data-occurrence-id":"#{uo.user_occurrence_id}"}= I18n.t('specimen.not_them')
 
       - if @total > 25
         %tfoot{class: "thead-light"}
@@ -99,8 +102,9 @@
             %th{scope: "col"}= I18n.t('specimen.institution')
             %th{scope: "col"}= I18n.t('specimen.catalog_number')
             %th{scope: "col"}= I18n.t('specimen.type_status')
-            %th{scope: "col"}= I18n.t('specimen.trainer')
             %th
+            %th
+            %th{scope: "col"}= I18n.t('specimen.trainer')
 
   - if @total > 25
     = haml :'partials/page_size', layout: false

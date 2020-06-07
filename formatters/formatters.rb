@@ -21,6 +21,10 @@ module Sinatra
         (user_action == action) ? "active" : ""
       end
 
+      def radio_checked(user_action, action)
+        (user_action == action) ? true : false
+      end
+
       def country_name(code)
         IsoCountryCodes.find(code).name rescue nil
       end
