@@ -53,7 +53,7 @@
   z-index:10000 !important;
 }
 
-.tt-suggestion {
+.tt-suggestion, .tt-no-result {
   padding: 3px 10px;
   font-size: 1rem;
   line-height: 1.1rem;
